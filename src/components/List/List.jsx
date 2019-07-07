@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import './list.scss';
 
-import Item from './Item.jsx';
+import Item from './Item';
+const projects = require('../../projects.json').projects;
 
 class List extends React.PureComponent {
 
@@ -15,8 +16,8 @@ class List extends React.PureComponent {
     }
 
     state = {
-        list: [...this.props.children.projects],
-        listCount: this.props.children.count
+        list: [...projects],
+        listCount: projects.length
 
     }
 

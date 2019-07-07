@@ -12,12 +12,8 @@ class ProjectsSection extends React.PureComponent {
         projects: PropTypes.array,
     }
 
-    state = {
-        projects: [...this.props.children]
-    }
-
     render(){
-        console.log(this.state.projects);
+
         return (
                 <section className = 'projectsList'>
                 <div className = 'container'>
@@ -25,9 +21,7 @@ class ProjectsSection extends React.PureComponent {
                         <div className = 'projectsList__about'>
                             <h3>Your Projects</h3>
                         </div>
-                        <List>
-                            {{projects: this.state.projects, count: this.state.projects.length}}
-                        </List>
+                        <List />
                     </div>
                 </div>
                 </section>
