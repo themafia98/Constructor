@@ -1,5 +1,6 @@
 
 
+
 header {
     width: 100%;
     height: 60px;
@@ -11,11 +12,31 @@ header {
             display: inline-block;
             color: grey;
         }
+        img[alt='icon']{
+            transform: translate(0,30%);
+            width: 45px;
+            height: 45px;
+        }
+    }
+
+    .Navigator {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        transform: translate(-50%);
+        cursor: pointer;
 
         img[alt='icon']{
             transform: translate(0,30%);
             width: 45px;
             height: 45px;
+            transition: 0.3s linear;
+        }
+    }
+
+    .Navigator:hover {
+        img[alt='icon'] {
+            transform: translate(0,30%) scale(1.1);
         }
     }
 
@@ -39,7 +60,7 @@ header {
     }
 
     .header__newProject__AddButton:hover {
-        transform: translate(-50%);
+        transform: translate(-50%) scale(1.1);
         background: greenyellow;
     }
 }

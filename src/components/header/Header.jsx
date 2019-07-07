@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './header.scss';
 
+import {withRouter} from 'react-router-dom';
+
 import eventStream from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
 
@@ -17,6 +19,10 @@ class Header extends React.Component {
 
     state = {
 
+    }
+
+    redirect = (e) => {
+        this.props.history.push('/About');
     }
 
     add = (e) => {
@@ -38,6 +44,9 @@ class Header extends React.Component {
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>
                                     <Icon path = '/img/plus.png' />
                                 </div>
+                                <div onClick = {this.redirect} className = 'Navigator'>
+                                    <Icon title = 'about' path = '/img/about_logo.svg' />
+                                </div>
                     </div>
                     </div>
                 </div>
@@ -46,4 +55,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);
