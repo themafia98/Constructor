@@ -1,7 +1,9 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 import './header.scss';
 
+import eventStream from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
 
 
@@ -19,6 +21,7 @@ class Header extends React.Component {
 
     add = (e) => {
         console.log('add');
+        eventStream.emit('EventChangeWorkMode',{action: 'newProject'});
     }
 
     render(){

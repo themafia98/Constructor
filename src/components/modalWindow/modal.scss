@@ -1,0 +1,44 @@
+
+
+.Modal {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%);
+    z-index: 999;
+    left: 50%;
+    width: 30%;
+    height: 20rem;
+    background-color: rgb(217, 230, 225);
+    border: 1px solid black;
+    border-radius: 10px;
+
+    input, select {
+        outline: none;
+        margin: 5px;
+        width: 30%;
+    }
+
+    ::placeholder, select {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .acceptButton {
+        font-weight: bold;
+    }
+
+    .warning {
+        font-weight: bold;
+        color: red;
+    }
+
+    .ready {
+        border: 2px solid green;
+    }
+
+    .wrong{
+        border: 2px solid red;
+    }
+}
