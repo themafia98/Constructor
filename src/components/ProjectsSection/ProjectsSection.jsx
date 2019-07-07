@@ -9,23 +9,26 @@ import './ProjectsSection.scss';
 class ProjectsSection extends React.PureComponent {
 
     static propTypes = {
-        projects: PropTypes.object,
+        projects: PropTypes.array,
     }
 
     state = {
+        projects: [...this.props.children]
     }
 
     render(){
-
+        console.log(this.state.projects);
         return (
                 <section className = 'projectsList'>
-                <div className = 'container center'>
-                    <div className = 'projectsList__about'>
-                        <h3>Your Projects</h3>
+                <div className = 'container'>
+                <div className = 'flex-column'>
+                        <div className = 'projectsList__about'>
+                            <h3>Your Projects</h3>
+                        </div>
+                        <List>
+                            {{projects: this.state.projects, count: this.state.projects.length}}
+                        </List>
                     </div>
-                    <List>
-                        {{count: 10}}
-                    </List>
                 </div>
                 </section>
         )

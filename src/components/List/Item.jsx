@@ -4,7 +4,7 @@ function Item(props) {
     const [id] = useState(props.id);
     const [item] = useState({...props.item});
     return (
-        <div className = 'item' data-id = {id}>{item.name}</div>
+        <div className = 'item' data-id = {id}>{props.name}</div>
     )
 }
 

@@ -8,30 +8,30 @@ import Item from './Item.jsx';
 class List extends React.PureComponent {
 
     static propTypes = {
-        children: PropTypes.object,
+        children: PropTypes.shape({
+            projects: PropTypes.array.isRequired,
+           count: PropTypes.number.isRequired,
+        })
     }
 
     state = {
+        list: [...this.props.children.projects],
         listCount: this.props.children.count
 
     }
 
-    makeList = (count = 0) => {
+    makeList = (list) => {
 
-        let items = [];
-        for (let i = 0; i < count; i++){
-            items.push(
-                <Item id = {i} item = {{name: 'Project 1'}} />
-            )
-        }
+        return list.map (project => {
 
-        return items;
+            return <Item id = {project.id} name = {project.title} />
+        });
     }
 
     render(){
         return (
             <div className = 'projectsList__list'>
-                {this.makeList(this.state.listCount)}
+                {this.makeList([...this.state.list])}
             </div>
         )
     }

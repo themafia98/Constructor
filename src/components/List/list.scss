@@ -1,11 +1,36 @@
 .projectsList__list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(4, 20vw);
+    text-align: center;
 
     .item {
-        width: 250px;
-        height: 200px;
+        height: 20vh;
         border: 1px solid red;
+        margin: 5px;
+    }
+}
+
+
+@media screen and (max-width: 850px){
+
+    .projectsList__list {
+        grid-template-columns: repeat(3, 25vw);
+    }
+}
+
+@media screen and (max-width: 650px){
+
+    .projectsList__list {
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media screen and (max-width: 450px){
+
+    .projectsList__list {
+        width: 100%;
+        grid-template-columns: 1fr;
     }
 }

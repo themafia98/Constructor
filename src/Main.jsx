@@ -8,6 +8,7 @@ import ProjectsSection from './components/ProjectsSection/ProjectsSection';
 import './main.scss';
 
 const title = require('./config.json').title;
+const projects = require('./projects.json').projects;
 
 
 class App extends React.Component {
@@ -17,6 +18,7 @@ class App extends React.Component {
   }
 
   state = {
+    projects: {}
 
   }
 
@@ -25,7 +27,7 @@ class App extends React.Component {
     return (
       <Fragment>
         <Header><h3>{title}</h3></Header>
-        <ProjectsSection></ProjectsSection>
+        <ProjectsSection>{projects}</ProjectsSection>
       </Fragment>
     )
   }
