@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
+import List from '../List/List.jsx';
+
 import './ProjectsSection.scss';
 
 class ProjectsSection extends React.PureComponent {
@@ -20,6 +23,9 @@ class ProjectsSection extends React.PureComponent {
                     <div className = 'projectsList__about'>
                         <h3>Your Projects</h3>
                     </div>
+                    <List>
+                        {{count: 10}}
+                    </List>
                 </div>
                 </section>
         )
