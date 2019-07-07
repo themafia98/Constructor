@@ -1,14 +1,13 @@
 import React,{Fragment} from 'react';
 import {Route} from 'react-router-dom';
-import App from './App';
+import Main from './Main';
 
 class Router extends React.Component {
 
     render(){
         return (
             <Fragment>
-                <Route path = '/' exact component = {App}/>
-                <Route path = '/login' exact component = {App} />
+                <Route path = '/' exact component = {Main}/>
             </Fragment>
         );
     }

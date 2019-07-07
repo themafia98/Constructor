@@ -1,0 +1,47 @@
+
+
+header {
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid grey;
+
+    .header__mainInfo{
+        display: inline-block;
+
+        h3 {
+            display: inline-block;
+            letter-spacing: 1.5px;
+            color: grey;
+        }
+
+        img[alt='icon']{
+            transform: translate(0,30%);
+            width: 45px;
+            height: 45px;
+        }
+    }
+
+    .header__newProject__AddButton {
+
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 30px;
+        border: 1px solid black;
+        background: lightblue;
+        cursor: pointer;
+        transition: 0.3s linear;
+
+        img {
+            width: inherit;
+        }
+    }
+
+    .header__newProject__AddButton:hover {
+        transform: translate(-50%);
+        background: greenyellow;
+    }
+}

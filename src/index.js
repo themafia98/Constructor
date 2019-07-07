@@ -8,6 +8,8 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import combineReducers from './redux/reducers';
 
+import 'normalize.css';
+
 const store = createStore(combineReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
@@ -16,5 +18,6 @@ ReactDOM.render(
                 <Router />
         </BrowserRouter>
     </Provider>
-    , document.getElementById('root'));
+    , document.getElementById('root')
+    );
 
