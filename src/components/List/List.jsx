@@ -24,7 +24,7 @@ class List extends React.PureComponent {
 
         return list.map (project => {
 
-            return <Item id = {project.id} name = {project.title} />
+            return <Item key = {project.id} id = {project.id} name = {project.title} />
         });
     }
 
