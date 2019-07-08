@@ -1,6 +1,5 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 
 import eventStream from '../../EventEmitter.js';
 
@@ -12,7 +11,7 @@ import './main.scss';
 
 const title = require('../../config.json').title;
 
-class App extends React.Component {
+class Main extends React.Component {
 
   static propTypes = {
     title: PropTypes.string,
@@ -51,4 +50,4 @@ class App extends React.Component {
   }
 }
 
-export default connect()(App);
+export default Main;

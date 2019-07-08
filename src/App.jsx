@@ -1,19 +1,28 @@
 import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
-import Router from './Router';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import combineReducers from './redux/reducers';
 
-const store = createStore(combineReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
+import Main from './Pages/Main/Main';
+import About from './Pages/About/About';
+import Build from './Pages/Build/Build';
+
+const store = createStore(combineReducers,
+                window.__REDUX_DEVTOOLS_EXTENSION__ &&
+                 window.__REDUX_DEVTOOLS_EXTENSION__());
 function App(){
 
     return (
         <Provider store = {store}>
         <BrowserRouter>
-                <Router />
+                <Switch>
+                    <Route path = '/' exact component = {Main}/>
+                    <Route path = '/About' component = {About}/>
+                    <Route path = '/Build/:param'  component = {Build}/>
+                </Switch>
         </BrowserRouter>
     </Provider>
     )
