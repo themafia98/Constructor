@@ -15,12 +15,29 @@ class InstrumentsPanel extends React.PureComponent {
         acceptInstruments: this.props.editComponent.edit,
     }
 
+    makePanelInstruments = () => {
+
+        return (
+            <div  className= 'instuments'>
+                <p className = 'title_bg'>Background:</p>
+                <input type = 'color'></input>
+                <input type = 'button' value = 'Save'></input>
+            </div>
+        )
+    }
+
     render(){
         console.log(this.props);
         return (
             <div className = 'instumentsPanel'>
                 <h3>Instruments</h3>
-                {this.state.acceptInstruments ? null :
+                {
+                    this.state.acceptInstruments ? 
+                    <p className = 'titleComponent important'>{this.props.editComponent.name}</p>
+                    : null
+                }
+                {
+                    this.state.acceptInstruments ? this.makePanelInstruments() :
                     <p className = 'warningInstruments'>Select elements for accses edit instuments</p>
                 }
             </div>

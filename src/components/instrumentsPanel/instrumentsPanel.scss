@@ -12,8 +12,18 @@
         color: red;
     }
 
-    .warningInstruments {
+    .warningInstruments, .titleComponent {
         font-weight: bold;
         text-align: center;
+    }
+
+    .instuments {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .title_bg {
+            font-weight:  bold;
+        }
     }
 }
