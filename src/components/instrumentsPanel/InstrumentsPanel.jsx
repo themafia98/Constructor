@@ -19,15 +19,11 @@ class InstrumentsPanel extends React.PureComponent {
 
         return (
             <div  className= 'instuments'>
-                <p className = 'title_bg'>Background:</p>
-                <input type = 'color'></input>
-                <input type = 'button' value = 'Save'></input>
             </div>
         )
     }
 
     render(){
-        console.log(this.props);
         return (
             <div className = 'instumentsPanel'>
                 <h3>Instruments</h3>
@@ -38,7 +34,7 @@ class InstrumentsPanel extends React.PureComponent {
                 }
                 {
                     this.state.acceptInstruments ? this.makePanelInstruments() :
-                    <p className = 'warningInstruments'>Select elements for accses edit instuments</p>
+                    <p className = 'warningInstruments'>Select elements for accses edit instruments</p>
                 }
             </div>
         )

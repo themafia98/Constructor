@@ -1,19 +1,23 @@
 .instumentsPanel {
     position: fixed;
-    z-index: 99999;
-    transform: translate(-100%);
-    left: 100%;
+    z-index: 999;
+    transform: translate(-50%);
+    left: 89%;
     width: 20%;
-    height: 100%;
-    background: rgb(212, 203, 203);
+    height: calc(100% - 50px);
+    overflow: hidden;
+    background-color: #35414c;
 
     h3 {
+        font-size: 1.5rem;
         text-align: center;
-        color: red;
+        color: white;
     }
 
+
     .warningInstruments, .titleComponent {
-        font-weight: bold;
+        font-size: 1rem;
+        color: white;
         text-align: center;
     }
 

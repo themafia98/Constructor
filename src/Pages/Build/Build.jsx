@@ -41,7 +41,10 @@ class Build extends React.PureComponent {
         return (
             <Fragment>
                 <Header title = {config.title} />
-                <InstrumentsPanel editComponent = {{...this.state.editComponent}} id = {this.state.idProject} />
+                { this.state.editComponent.edit ?
+                    <InstrumentsPanel editComponent = {{...this.state.editComponent}} id = {this.state.idProject} />
+                    : null
+                }
                 <HeaderBuild id = {this.state.idProject}>
                     {{...this.state.editComponent, name: 'Header'}}
                 </HeaderBuild>
