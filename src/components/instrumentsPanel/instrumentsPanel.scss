@@ -1,0 +1,19 @@
+.instumentsPanel {
+    position: fixed;
+    z-index: 99999;
+    transform: translate(-100%);
+    left: 100%;
+    width: 20%;
+    height: 100%;
+    background: rgb(212, 203, 203);
+
+    h3 {
+        text-align: center;
+        color: red;
+    }
+
+    .warningInstruments {
+        font-weight: bold;
+        text-align: center;
+    }
+}

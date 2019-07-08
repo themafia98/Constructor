@@ -14,7 +14,9 @@ class ModalWindow extends React.PureComponent {
         workMode: this.props.workMode,
 
         newProject: {
-            validate: false,
+            validateName: false,
+            validateType: false,
+            disabled: true,
             name: '',
             type: 'empty'
         },
@@ -27,9 +29,13 @@ class ModalWindow extends React.PureComponent {
 
     inputSelect = null;
 
+    disabledButton = (action) => {
+
+    }
+
     addNewProject = (event) => {
         let mode = this.state[this.state.workMode];
-        if (mode.validate &&  mode.type !== 'empty') {
+        if (mode.validateType &&  mode.validateName) {
             eventStream.emit('EventAddHTML', 
             {
                 title: this.state[this.state.workMode].name,
@@ -44,10 +50,12 @@ class ModalWindow extends React.PureComponent {
 
         let inputs = {...this.state[this.state.workMode]};
         inputs.type = event.target.value;
+        inputs.validateType = inputs.type !== 'empty';
+        inputs.disabled = inputs.validateType && inputs.validateName ? false : true;
         this.setState({
             ...this.state,
             [this.state.workMode]: inputs
-        })
+        });
     }
 
     validateName = (event) => {
@@ -55,13 +63,18 @@ class ModalWindow extends React.PureComponent {
         let inputs = {...this.state[this.state.workMode]};
         inputs.name = event.target.value;
         let lengthInput = inputs.name.length;
-        inputs.validate = lengthInput > 0 && lengthInput < 20 ? true : false
-        console.log(inputs);
+        inputs.validateName = lengthInput > 0 && lengthInput < 20 ? true : false;
+        inputs.disabled = inputs.validateType && inputs.validateName ? false : true;
+
         this.setState({
             ...this.state,
             [this.state.workMode]: inputs
         })
     };
+
+    cancel = (event) => {
+        eventStream.emit('EventChangeWorkMode',{action: 'default'});
+    }
 
     refSelect = (node) => this.inputSelect = node;
 
@@ -82,14 +95,14 @@ class ModalWindow extends React.PureComponent {
                                 <span className = 'warning'>{this.state.warning.lengthMax}</span> : null
                             }
                             <input
-                                className = {this.state[this.state.workMode].validate ? 'ready' : 'wrong'}
+                                className = {this.state[this.state.workMode].validateName ? 'ready' : 'wrong'}
                                 value = {this.state[this.state.workMode].name}
                                 onChange = {this.validateName}
                                 type = 'text'
                                 placeholder = "Project name"
                             />
                             {
-                                this.state[this.state.workMode].type === 'empty' ?
+                                !this.state[this.state.workMode].validateType ?
                                 <span className = 'warning'>{this.state.warning.type}</span> : null
                             }
                             <select onChange = {this.selectOption} >
@@ -100,9 +113,11 @@ class ModalWindow extends React.PureComponent {
                             <input 
                                 onClick = {this.addNewProject}
                                 className = 'acceptButton'
+                                disabled = {this.state[this.state.workMode].disabled}
                                 type = 'button'
                                 value = 'Submit'
                             />
+                            <input onClick = {this.cancel} type ='button' value = 'Cancel' />
                         </div>
                 )
             }

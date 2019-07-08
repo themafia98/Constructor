@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './header.scss';
 
-import {withRouter} from 'react-router-dom';
+import {withRouter, NavLink} from 'react-router-dom';
 
 import eventStream from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
@@ -14,7 +14,7 @@ const iconPath = require('../../config.json').mainIcon;
 class Header extends React.Component {
 
     static propTypes = {
-        children: PropTypes.object.isRequired, // jsx
+        title: PropTypes.string.isRequired,
     }
 
     state = {
@@ -31,7 +31,6 @@ class Header extends React.Component {
     }
 
     render(){
-
         return (
             <header>
                 <div className = 'container'>
@@ -39,11 +38,14 @@ class Header extends React.Component {
                     <div className = 'col-12'>
                             <div className = 'header__mainInfo'>
                                 <Icon path = {iconPath} />
-                                    {this.props.children}
+                                <NavLink to = '/'><h3>{this.props.title}</h3></NavLink>
                             </div>
+                            {this.props.location.pathname === '/' ?
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>
                                     <Icon path = '/img/plus.png' />
                                 </div>
+                                : null
+                            }
                                 <div onClick = {this.redirect} className = 'Navigator'>
                                     <Icon title = 'about' path = '/img/about_logo.svg' />
                                 </div>
