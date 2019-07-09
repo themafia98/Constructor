@@ -1,9 +1,16 @@
 .projectsList__list {
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 80vw;
+
     display: grid;
     grid-template-columns: repeat(4, 20vw);
     text-align: center;
 
     .item {
+        flex: 0 0 20vw;
         cursor: pointer;
         height: 20vh;
         border: 1px solid red;
@@ -15,7 +22,11 @@
 @media screen and (max-width: 850px){
 
     .projectsList__list {
+
         grid-template-columns: repeat(3, 25vw);
+    }
+    .item {
+        flex: 0 0 25vw;
     }
 }
 
@@ -25,6 +36,10 @@
         width: 100%;
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .item {
+        flex: 0 0 50%;
+    }
 }
 
 
@@ -33,5 +48,9 @@
     .projectsList__list {
         width: 100%;
         grid-template-columns: 1fr;
+    }
+
+    .item {
+        flex: 0 0 100%;
     }
 }

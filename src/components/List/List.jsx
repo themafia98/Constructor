@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {saveChangesAction} from '../../redux/actions';
 
 import './list.scss';
 
 import Item from './Item';
 import eventStream from '../../EventEmitter.js';
-const projects = require('../../projects.json').projects;
 
 class List extends React.PureComponent {
 
@@ -13,26 +14,15 @@ class List extends React.PureComponent {
         children: PropTypes.shape({
             projects: PropTypes.array.isRequired,
            count: PropTypes.number.isRequired,
-        })
+        }),
+        list: PropTypes.array.isRequired,
     }
 
-    state = {
-        list: [...projects],
-        listCount: projects.length
-
-    }
-    
     addHTML = (item) => {
-
-        let lastProject = [...this.state.list];
-        const lastIndex = lastProject[lastProject.length-1].id + 1;
+        let lastProject = [...this.props.list];
+        const lastIndex = lastProject.length  ? lastProject[lastProject.length-1].id + 1 : 0;
         lastProject.push({"id": lastIndex, "title": item.title});
-
-        this.setState({
-            ...this.state,
-            list: lastProject,
-            listCount: lastProject.length
-        });
+        this.props.dispatch(saveChangesAction(lastProject));
     }
 
     makeList = (list) => {
@@ -44,21 +34,24 @@ class List extends React.PureComponent {
     }
 
     render(){
-        console.log('render');
+        console.log('render list');
         return (
             <div className = 'projectsList__list'>
-                {this.makeList([...this.state.list])}
+                {this.makeList([...this.props.list])}
             </div>
         )
     }
 
-    componentWillMount = () => {
+    componentWillMount = () =>
         eventStream.on('EventAddHTML', this.addHTML);
-      }
-    
-      componentWillUnmount = () => {
+
+      componentWillUnmount = () =>
         eventStream.off('EventAddHTML', this.addHTML);
-      }
+
 }
 
-export default List;
+const mapStateToProps = (state) => {
+    return {list: [...state.builder.project]}
+}
+
+export default connect(mapStateToProps)(List);

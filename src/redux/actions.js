@@ -1,14 +1,23 @@
 const SAVE_CHANGES = 'SAVE_CHANGES';
+const LOAD_PROJECTS = 'LOAD_PROJECTS';
 
 
-const saveChangesAction = function(state){
+const saveChangesAction = (state) => {
     return {
         type: SAVE_CHANGES,
-        buildState: state
+        project: state,
     }
+}
+
+const loadProjectsAction = (state) => {
+    return {
+        type: LOAD_PROJECTS,
+    }
+
 }
 
 
 export {
-    SAVE_CHANGES, saveChangesAction
+    SAVE_CHANGES, saveChangesAction,
+    LOAD_PROJECTS, loadProjectsAction
 }

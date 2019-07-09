@@ -1,14 +1,13 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter.js';
-import {connect} from 'react-redux';
 
+import store from '../../redux/store';
 import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
 import ProjectsSection from '../../components/ProjectsSection/ProjectsSection';
 
 import './main.scss';
-
 const title = require('../../config.json').title;
 
 class Main extends React.Component {
@@ -20,18 +19,19 @@ class Main extends React.Component {
 
   state = {
     workMode: 'default',
+    information: store.getState().main
   }
 
   changeWorkMode = (event) => {
-    console.log(event.action);
     this.setState ({
       ...this.state,
-      workMode: event.action
+      workMode: event.action,
+      information: store.getState().main
     });
   }
 
   render(){
-    
+    console.log(this.state);
     return (
       <Fragment>
         <Header title = {title} />
@@ -45,22 +45,10 @@ class Main extends React.Component {
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
   }
 
-  componentDidUpdate = () => {
-    console.log('componentDidUpdate');
-  }
-
   componentWillUnmount = () => {
     eventStream.off('EventChangeWorkMode', this.changeWorkMode);
   }
 }
 
-const defaultState = (state) => {
-  console.log('redux main');
-  console.log(state);
-  return {
-    project: state.buildState
 
-  }
-}
-
-export default connect(defaultState)(Main);
+export default Main;

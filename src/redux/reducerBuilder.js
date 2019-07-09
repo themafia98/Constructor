@@ -1,23 +1,19 @@
-import {SAVE_CHANGES} from './actions';
+import {SAVE_CHANGES, LOAD_PROJECTS} from './actions';
 
 const initialState = {
-    idUser: 'id' + (Math.random() * 10),
-    project: {
-        components:{
-
-        }
-    },
+    project: [],
 };
 
 export default (state = initialState, action) => {
-
     switch (action.type){
-
         case SAVE_CHANGES: {
             return {
                 ...state,
-                project: {...state.project}
+                project: [...action.project]
             }
+        }
+        case LOAD_PROJECTS: {
+            return {...state}
         }
         default: return state;
     }

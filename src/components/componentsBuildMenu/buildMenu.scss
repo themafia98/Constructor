@@ -66,17 +66,17 @@
         left: 80%;
     }
 
-    .ButtonTool::before{
+    .ButtonTool:before{
         background-image: url('./ButtonTool.png');
         content: '';
     }
 
-    .VideoTool::before{
+    .VideoTool:before{
         background-image: url('./VideoTool.png');
         content: '';
     }
 
-    .TextTool::before{
+    .TextTool:before{
         background-image: url('./TextTool.png');
         content: '';
     }

@@ -35,7 +35,6 @@ class Header extends React.Component {
             <header>
                 <div className = 'container'>
                     <div className = 'flex-row'>
-                    <div className = 'col-12'>
                             <div className = 'header__mainInfo'>
                                 <Icon path = {iconPath} />
                                 <NavLink to = '/'><h3>{this.props.title}</h3></NavLink>
@@ -50,8 +49,7 @@ class Header extends React.Component {
                                     <Icon title = 'about' path = '/img/about_logo.svg' />
                                 </div>
                     </div>
-                    </div>
-                </div>
+               </div>
             </header>
         )
     }
