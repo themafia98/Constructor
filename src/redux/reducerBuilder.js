@@ -1,16 +1,22 @@
-import {ROOT_INIT} from './actions';
+import {SAVE_CHANGES} from './actions';
+
 const initialState = {
-    test: 0,
+    idUser: 'id' + (Math.random() * 10),
+    project: {
+        components:{
+
+        }
+    },
 };
 
 export default (state = initialState, action) => {
 
     switch (action.type){
 
-        case ROOT_INIT: {
+        case SAVE_CHANGES: {
             return {
                 ...state,
-                test: state.test + 1,
+                project: {...state.project}
             }
         }
         default: return state;

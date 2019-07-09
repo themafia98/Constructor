@@ -1,6 +1,7 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import eventEmitter from '../../EventEmitter';
+import {connect} from 'react-redux';
 
 import Header from '../../components/header/Header';
 import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel';
@@ -8,6 +9,7 @@ import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel
 import HeaderBuild from '../../components/buildComponents/header/headerBuild';
 
 import './build.scss';
+
 const config = require('../../config.json');
 
 class Build extends React.PureComponent {
@@ -61,4 +63,4 @@ class Build extends React.PureComponent {
     }
 }
 
-export default Build;
+export default connect()(Build);

@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
-import reducerRoot from './reducerRoot';
+import reducerBuilder from './reducerBuilder';
 
 export default combineReducers({
-    root: reducerRoot,
+    buildState: reducerBuilder,
 });

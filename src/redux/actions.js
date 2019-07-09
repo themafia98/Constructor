@@ -1,13 +1,14 @@
-const ROOT_INIT = 'ROOT_INIT';
+const SAVE_CHANGES = 'SAVE_CHANGES';
 
 
-const testRedux = function(){
+const saveChangesAction = function(state){
     return {
-        type: ROOT_INIT,
+        type: SAVE_CHANGES,
+        buildState: state
     }
 }
 
 
 export {
-    ROOT_INIT, testRedux
+    SAVE_CHANGES, saveChangesAction
 }

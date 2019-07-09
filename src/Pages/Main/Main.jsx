@@ -1,7 +1,7 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-
 import eventStream from '../../EventEmitter.js';
+import {connect} from 'react-redux';
 
 import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
@@ -31,7 +31,7 @@ class Main extends React.Component {
   }
 
   render(){
-
+    
     return (
       <Fragment>
         <Header title = {title} />
@@ -41,13 +41,26 @@ class Main extends React.Component {
     )
   }
 
-  componentDidMount(){
+  componentDidMount = () => {
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
   }
 
-  componentWillUnmount(){
+  componentDidUpdate = () => {
+    console.log('componentDidUpdate');
+  }
+
+  componentWillUnmount = () => {
     eventStream.off('EventChangeWorkMode', this.changeWorkMode);
   }
 }
 
-export default Main;
+const defaultState = (state) => {
+  console.log('redux main');
+  console.log(state);
+  return {
+    project: state.buildState
+
+  }
+}
+
+export default connect(defaultState)(Main);
