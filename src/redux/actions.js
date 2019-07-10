@@ -1,5 +1,5 @@
 const SAVE_CHANGES = 'SAVE_CHANGES';
-const LOAD_PROJECTS = 'LOAD_PROJECTS';
+const LOAD_CURRENT = 'LOAD_CURRENT';
 
 
 const saveChangesAction = (state) => {
@@ -9,9 +9,10 @@ const saveChangesAction = (state) => {
     }
 }
 
-const loadProjectsAction = (state) => {
+const loadCurrentProjectAction = (state) => {
     return {
-        type: LOAD_PROJECTS,
+        type: LOAD_CURRENT,
+        currentEditable: state,
     }
 
 }
@@ -19,5 +20,5 @@ const loadProjectsAction = (state) => {
 
 export {
     SAVE_CHANGES, saveChangesAction,
-    LOAD_PROJECTS, loadProjectsAction
+    LOAD_CURRENT, loadCurrentProjectAction
 }

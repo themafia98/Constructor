@@ -9,7 +9,7 @@ import eventStream from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
 
 
-const iconPath = require('../../config.json').mainIcon;
+const iconPath = require('../../config.json').CabinetIcon;
 
 class Header extends React.Component {
 
@@ -35,11 +35,11 @@ class Header extends React.Component {
             <header>
                 <div className = 'container'>
                     <div className = 'flex-row'>
-                            <div className = 'header__mainInfo'>
+                            <div className = 'header__CabinetInfo'>
                                 <Icon path = {iconPath} />
                                 <NavLink to = '/'><h3>{this.props.title}</h3></NavLink>
                             </div>
-                            {this.props.location.pathname === '/' ?
+                            {this.props.location.pathname === '/Cabinet' ?
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>
                                     <Icon path = '/img/plus.png' />
                                 </div>

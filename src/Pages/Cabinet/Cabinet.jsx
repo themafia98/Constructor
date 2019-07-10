@@ -7,10 +7,10 @@ import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
 import ProjectsSection from '../../components/ProjectsSection/ProjectsSection';
 
-import './main.scss';
+import './Cabinet.scss';
 const title = require('../../config.json').title;
 
-class Main extends React.Component {
+class Cabinet extends React.Component {
 
   static propTypes = {
     title: PropTypes.string,
@@ -19,14 +19,14 @@ class Main extends React.Component {
 
   state = {
     workMode: 'default',
-    information: store.getState().main
+    information: store.getState().Cabinet
   }
 
   changeWorkMode = (event) => {
     this.setState ({
       ...this.state,
       workMode: event.action,
-      information: store.getState().main
+      information: store.getState().Cabinet
     });
   }
 
@@ -51,4 +51,4 @@ class Main extends React.Component {
 }
 
 
-export default Main;
+export default Cabinet;

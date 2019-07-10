@@ -1,0 +1,26 @@
+.RegistrationBox {
+
+    margin-top: 20px;
+    box-shadow: 0 0 3px;
+    padding: 10px;
+    p {
+        text-align: center;
+        font-weight: bold;
+        margin: 5px;
+    }
+
+    .loginButton {
+        cursor: pointer;
+        width: 100%;
+        border: 1px solid black;
+        border-radius: 20px;
+        height: 30px;
+        font-weight: bold;
+        background: rgb(5, 122, 5);
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: block;
+        color: white;
+        transition: .3s all linear;
+    }
+}

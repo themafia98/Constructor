@@ -1,6 +1,6 @@
 {
     "title": "Constructor",
-    "mainIcon": "/img/logo.svg",
+    "CabinetIcon": "/img/logo.svg",
     "about": {
         "developer": "Pavel Petrovich",
         "year": "2019"

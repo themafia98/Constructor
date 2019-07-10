@@ -1,6 +1,9 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
+import {withRouter} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
+
+import {loadCurrentProjectAction} from '../../redux/actions';
 import {connect} from 'react-redux';
 
 import Header from '../../components/header/Header';
@@ -25,6 +28,7 @@ class Build extends React.PureComponent {
 
     state = {
         idProject: this.props.match.params.param,
+        component: {},
         editComponent: {
             name: '',
             edit: false
@@ -40,11 +44,16 @@ class Build extends React.PureComponent {
     }
 
     render(){
+        console.log(this.props);
         return (
             <Fragment>
                 <Header title = {config.title} />
                 { this.state.editComponent.edit ?
-                    <InstrumentsPanel editComponent = {{...this.state.editComponent}} id = {this.state.idProject} />
+                    <InstrumentsPanel
+                        editComponent = { this.props.currentEditable ? {...this.props.currentEditable} :
+                        {...this.props.editComponent}}
+                        id = {this.state.idProject}
+                    />
                     : null
                 }
                 <HeaderBuild id = {this.state.idProject}>
@@ -56,11 +65,26 @@ class Build extends React.PureComponent {
 
     componentDidMount = () => {
         eventEmitter.on('EventModeEdit', this.workModeEdit);
+
+        let currentComponents = this.props.project.find(item => {
+            return parseInt(item.id) === parseInt(this.state.idProject)
+        });
+        if (currentComponents)
+        this.props.dispatch(loadCurrentProjectAction({...currentComponents}));
+        else this.props.history.push('/');
     }
 
     componentWillUnmount = () => {
-        eventEmitter.on('EventModeEdit', this.workModeEdit);
+        eventEmitter.off('EventModeEdit', this.workModeEdit);
     }
 }
 
-export default connect()(Build);
+const mapStateToProps = (state) => {
+    return {
+        ...state.builder,
+        currentEditable: state.builder.currentEditable ? {...state.builder.currentEditable} : null,
+        project: [...state.builder.project]
+    }
+}
+
+export default connect(mapStateToProps)(withRouter(Build));

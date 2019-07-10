@@ -1,0 +1,92 @@
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    background-color:  rgb(195, 225, 231);
+}
+
+input {
+    outline: none;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 90vw;
+    margin: 0 auto;
+   
+}
+
+.flex-row { 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.col-12 {
+    flex: 0 0 100%;
+}
+
+.col-6 {
+    flex: 0 0 50%;
+}
+
+.LoginPage {
+
+    z-index: -1;
+    h1 {
+        color: green;
+    }
+    .LoginBox {
+        display: flex;
+        background-color:  lightcyan;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        box-shadow:  0 0 5px;
+        padding: 20px;
+        z-index: 100;
+
+        .LoginForm {
+
+            h3 {
+                margin: 0;
+                text-align: center;
+                color: rgb(17, 145, 17);
+            }
+            p {
+                text-align: center;
+                font-weight: bold;
+                margin: 5px;
+            }
+            .loginButton {
+                cursor: pointer;
+                width: 100%;
+                border: 1px solid black;
+                border-radius: 20px;
+                height: 30px;
+                font-weight: bold;
+                background: rgb(5, 122, 5);
+                margin-top: 10px;
+                margin-bottom: 10px;
+                display: block;
+                color: white;
+                transition: .3s all linear;
+            }
+            .loginButton:hover {
+                background: lightgreen;
+                color: red;
+            }
+        }
+    }
+}

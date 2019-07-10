@@ -1,9 +1,10 @@
-import {SAVE_CHANGES, LOAD_PROJECTS} from './actions';
+import {SAVE_CHANGES, LOAD_CURRENT} from './actions';
 
 const initialState = {
+    currentEditable: null,
     project: [],
 };
-
+console.log('reducerB');
 export default (state = initialState, action) => {
     switch (action.type){
         case SAVE_CHANGES: {
@@ -12,8 +13,11 @@ export default (state = initialState, action) => {
                 project: [...action.project]
             }
         }
-        case LOAD_PROJECTS: {
-            return {...state}
+        case LOAD_CURRENT: {
+            return {
+                ...state,
+                currentEditable: {...action.currentEditable}
+            }
         }
         default: return state;
     }

@@ -18,10 +18,10 @@ class List extends React.PureComponent {
         list: PropTypes.array.isRequired,
     }
 
-    addHTML = (item) => {
+    addNewProject = (item) => {
         let lastProject = [...this.props.list];
         const lastIndex = lastProject.length  ? lastProject[lastProject.length-1].id + 1 : 0;
-        lastProject.push({"id": lastIndex, "title": item.title});
+        lastProject.push({"id": lastIndex, "title": item.title, "type": item.type, components: {}});
         this.props.dispatch(saveChangesAction(lastProject));
     }
 
@@ -29,7 +29,14 @@ class List extends React.PureComponent {
 
         return list.map (project => {
 
-            return <Item key = {project.id} id = {project.id} name = {project.title} />
+            return(
+                <Item
+                    key = {project.id}
+                    id = {project.id}
+                    name = {project.title}
+                    type = {project.type}
+                />
+            )
         });
     }
 
@@ -43,10 +50,10 @@ class List extends React.PureComponent {
     }
 
     componentWillMount = () =>
-        eventStream.on('EventAddHTML', this.addHTML);
+        eventStream.on('EventAddProject',this.addNewProject);
 
       componentWillUnmount = () =>
-        eventStream.off('EventAddHTML', this.addHTML);
+        eventStream.off('EventAddProject',this.addNewProject);
 
 }
 

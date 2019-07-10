@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
 import reducerBuilder from './reducerBuilder';
-import reducerMain from './reducerMain';
+import reducerCabinet from './reducerCabinet';
 
 export default combineReducers({
     builder: reducerBuilder,
-    main: reducerMain,
+    Cabinet: reducerCabinet,
 });
