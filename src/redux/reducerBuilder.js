@@ -4,7 +4,6 @@ const initialState = {
     currentEditable: null,
     project: [],
 };
-console.log('reducerB');
 export default (state = initialState, action) => {
     switch (action.type){
         case SAVE_CHANGES: {

@@ -44,7 +44,6 @@ class Build extends React.PureComponent {
     }
 
     render(){
-        console.log(this.props);
         return (
             <Fragment>
                 <Header title = {config.title} />

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter';
 import {withRouter} from 'react-router-dom';
 
+import firebase from '../../components/Firebase/Firebase.js';
 import Registration from '../../components/Registration/Registration';
 
 import './index.scss';
@@ -28,7 +29,7 @@ class Index extends React.PureComponent {
                         registrationActive: false,
                         error: 'Account create!'
                     })
-        : console.log('errpr registration');
+        : console.log('error registration');
     }
 
     showBox = (event) => {
@@ -39,10 +40,9 @@ class Index extends React.PureComponent {
     }
 
     authTo = (event) => {
-        this.setState({...this.state, wrongEnter: false});
-        this.props.auth().signInWithEmailAndPassword(this.emailImput.value, this.passwordImput.value)
+
+        firebase.login(this.emailImput.value,this.passwordImput.value)
         .then(response => {
-            console.log(response);
             this.props.history.push('/Cabinet');
         })
         .catch((error) => {

@@ -3,10 +3,11 @@ html, body {
     height: 100%;
     min-height: 100%;
     overflow-x: hidden;
-    background-color:  rgb(195, 225, 231);
+    // background-color:  rgb(195, 225, 231);
 }
 
 input {
+    cursor: pointer;
     outline: none;
 }
 
@@ -77,7 +78,7 @@ input {
             .loginButton {
                 cursor: pointer;
                 width: 100%;
-                border: 1px solid black;
+                border: 1px solid rgb(145, 116, 116);
                 border-radius: 20px;
                 height: 30px;
                 font-weight: bold;
@@ -105,4 +106,10 @@ input {
             }
         }
     }
+}
+
+input[type='text'], input[type='password']{
+    background-color: white;
+    box-shadow:  0 0 3px;
+    border-radius: 10px;
 }

@@ -2,6 +2,7 @@ import React, {createRef, useEffect, useState} from 'react';
 import eventStream from '../../EventEmitter';
 import './registration.scss';
 
+import firebase from '../../components/Firebase/Firebase.js';
 
 function Registration(props){
 
@@ -21,7 +22,7 @@ function Registration(props){
         const email = ref.current.value;
         const password = ref2.current.value;
 
-        props.auth().createUserWithEmailAndPassword(email, password)
+        firebase.registration(email, password)
         .then (response => {
             eventStream.emit('EventRegistrationCorrect', response);
         })

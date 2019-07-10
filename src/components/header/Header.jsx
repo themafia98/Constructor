@@ -22,11 +22,10 @@ class Header extends React.Component {
     }
 
     redirect = (e) => {
-        this.props.history.push('/About');
+        this.props.history.push('/Cabinet/About');
     }
 
     add = (e) => {
-        console.log('add');
         eventStream.emit('EventChangeWorkMode',{action: 'newProject'});
     }
 
@@ -37,7 +36,7 @@ class Header extends React.Component {
                     <div className = 'flex-row'>
                             <div className = 'header__CabinetInfo'>
                                 <Icon path = {iconPath} />
-                                <NavLink to = '/'><h3>{this.props.title}</h3></NavLink>
+                                <NavLink to = '/Cabinet'><h3>{this.props.title}</h3></NavLink>
                             </div>
                             {this.props.location.pathname === '/Cabinet' ?
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>

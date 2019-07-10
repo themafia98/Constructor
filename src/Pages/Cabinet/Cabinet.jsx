@@ -1,8 +1,12 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter.js';
+import {withRouter} from 'react-router-dom';
 
+
+import firebase from '../../components/Firebase/Firebase.js';
 import store from '../../redux/store';
+
 import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
 import ProjectsSection from '../../components/ProjectsSection/ProjectsSection';
@@ -19,7 +23,8 @@ class Cabinet extends React.Component {
 
   state = {
     workMode: 'default',
-    information: store.getState().Cabinet
+    information: store.getState().Cabinet,
+    user: firebase.getCurrentUser(),
   }
 
   changeWorkMode = (event) => {
@@ -31,7 +36,7 @@ class Cabinet extends React.Component {
   }
 
   render(){
-    console.log(this.state);
+
     return (
       <Fragment>
         <Header title = {title} />
@@ -42,6 +47,7 @@ class Cabinet extends React.Component {
   }
 
   componentDidMount = () => {
+    if (!this.state.user) this.props.history.push('/');
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
   }
 
@@ -51,4 +57,4 @@ class Cabinet extends React.Component {
 }
 
 
-export default Cabinet;
+export default withRouter(Cabinet);

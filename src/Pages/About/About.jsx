@@ -1,11 +1,18 @@
 import React, {Fragment} from 'react';
+import {withRouter} from 'react-router-dom';
+
 import Header from '../../components/header/Header';
 
+import firebase from '../../components/Firebase/Firebase.js';
 import './about.scss';
 
 const config = require('../../config.json');
 
 class About extends React.Component {
+
+    state = {
+        user: firebase.getCurrentUser()
+    }
 
     render(){
 
@@ -26,6 +33,10 @@ class About extends React.Component {
             </Fragment>
         )
     }
+
+    componentWillMount = () => {
+        if (!this.state.user) this.props.history.push('/');
+    }
 }
 
-export default About;
+export default withRouter(About);
