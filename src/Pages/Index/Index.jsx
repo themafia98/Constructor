@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import eventStream from '../../EventEmitter';
 import {withRouter} from 'react-router-dom';
 
 import Registration from '../../components/Registration/Registration';
@@ -14,24 +15,39 @@ class Index extends React.PureComponent {
 
     state = {
         title:  this.props.config.title || "Constructor",
-        rgistrationActive: false,
+        registrationActive: false,
+        regStatus: false,
+        wrongEnter: false,
+        error: ''
+    }
+
+    statusRegistration = (event) => {
+        event.additionalUserInfo.isNewUser ?
+        this.setState({...this.state,
+                        regStatus: true,
+                        registrationActive: false,
+                        error: 'Account create!'
+                    })
+        : console.log('errpr registration');
     }
 
     showBox = (event) => {
         this.setState ({
             ...this.state,
-            rgistrationActive: this.state.rgistrationActive ? false : true
+        registrationActive: this.state.registrationActive ? false : true
         })
     }
 
-    sign = (event) => {
-
-        this.props.firebase.auth().signInWithEmailAndPassword(this.emailImput.value, this.passwordImput.value)
+    authTo = (event) => {
+        this.setState({...this.state, wrongEnter: false});
+        this.props.auth().signInWithEmailAndPassword(this.emailImput.value, this.passwordImput.value)
         .then(response => {
+            console.log(response);
             this.props.history.push('/Cabinet');
         })
-        .catch(function(error) {
-          return console.log(error);
+        .catch((error) => {
+          console.log(error);
+          this.setState({...this.state, wrongEnter: true, error: error.message});
           });
     }
     emailImput = null;
@@ -41,33 +57,50 @@ class Index extends React.PureComponent {
 
     render(){
 
-        console.log('index');
+        let currentSelected = this.state.registrationActive;
         return (
             <div className = 'LoginPage flex-column'>
                     <h1>{this.state.title}</h1>
                     <div className = 'LoginBox'>
                         <div className = 'LoginForm'>
                             <h3>Connect form</h3>
+                            {
+                                this.state.wrongEnter || this.state.regStatus ?
+                                <p className = 'error'>{this.state.error}</p>
+                                : null
+                            }
                             <p>E-mail</p>
                             <input ref = {this.emailRef} type = 'text' />
                             <p>Password</p>
                             <input ref = {this.passwordRef} type = 'password' />
-                            <input onClick = {this.sign} className = 'loginButton' type = 'button' value = 'enter' />
+                            <input 
+                                onClick = {this.authTo} 
+                                className = 'loginButton' 
+                                type = 'button' 
+                                value = 'enter' />
                             <input
                                 onClick = {this.showBox}
-                                className = 'loginButton'
+                                className = {currentSelected ? `loginButton selected` 
+                                    : 'loginButton'}
                                 type = 'button'
                                 value = 'registration'
                                 />
                         </div>
                     </div>
                     {
-                        this.state.rgistrationActive ?
-                        <Registration />
+                        this.state.registrationActive ?
+                        <Registration auth = {this.props.auth} />
                         : null
                     }
             </div>
         )
+    }
+
+    componentDidMount = (e) => {
+        eventStream.on('EventRegistrationCorrect', this.statusRegistration);
+    }
+    componentWillUnmount = (e) => {
+        eventStream.off('EventRegistrationCorrect', this.statusRegistration);
     }
 }
 

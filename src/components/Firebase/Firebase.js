@@ -1,4 +1,7 @@
-import firebase from 'firebase';
+import firebase from '@firebase/app';
+const auth = require('firebase/auth');
+
+// setings in root folder / firebase.env
 const firebaseConfig = {
         apiKey: "AIzaSyBrLv9RyGWXCeEETRqBbBo3EVOcibmnJwU",
         authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -10,7 +13,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 export default firebase;
 
+export { auth };
 

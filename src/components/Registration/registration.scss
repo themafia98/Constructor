@@ -1,8 +1,14 @@
 .RegistrationBox {
-
+    text-align: center;
+    width: 20%;
     margin-top: 20px;
     box-shadow: 0 0 3px;
     padding: 10px;
+    background-color: lightcyan;
+
+    h3 {
+        color: green;
+    }
     p {
         text-align: center;
         font-weight: bold;
@@ -22,5 +28,22 @@
         display: block;
         color: white;
         transition: .3s all linear;
+    }
+
+    .loginButton:hover {
+        background: lightgreen;
+        color: red;
+    }
+
+    .error {
+        color: red;
+    }
+
+
+    .RegForm {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 50%;
     }
 }

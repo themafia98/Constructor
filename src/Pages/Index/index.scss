@@ -48,16 +48,21 @@ input {
         color: green;
     }
     .LoginBox {
+        height: 400px;
         display: flex;
-        background-color:  lightcyan;
+        background-color: lightcyan;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        box-shadow:  0 0 5px;
-        padding: 20px;
+        box-shadow: 0 0 5px;
+        width: 40%;
         z-index: 100;
 
         .LoginForm {
+
+            display: flex;
+            flex-direction: column;
+            width: 50%;
 
             h3 {
                 margin: 0;
@@ -82,9 +87,20 @@ input {
                 display: block;
                 color: white;
                 transition: .3s all linear;
+
             }
+
             .loginButton:hover {
                 background: lightgreen;
+                color: red;
+            }
+
+            .selected {
+                color: red;
+                background-color: lightgreen;
+            }
+
+            .error {
                 color: red;
             }
         }
