@@ -1,6 +1,8 @@
 import firebase from '@firebase/app';
+import eventStream from '../../EventEmitter';
 const auth = require('firebase/auth');
 const firestore = require('firebase/firestore');
+
 
 // setings in root folder / firebase.env
 const firebaseConfig = {
@@ -14,6 +16,7 @@ const firebaseConfig = {
 };
 
 
+
 class Firebase {
         constructor(){
                 firebase.initializeApp(firebaseConfig);
@@ -23,7 +26,10 @@ class Firebase {
 
         login(email, password){
                 console.log('login');
-                return this.auth.signInWithEmailAndPassword(email, password)
+                return this.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+                .then(() =>{
+                return this.auth.signInWithEmailAndPassword(email, password);
+                });
         }
 
         registration(email, password){
@@ -39,8 +45,16 @@ class Firebase {
         }
 }
 
+let fireBase = new Firebase();
+fireBase.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+fireBase.auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log(user.uid);
+         eventStream.emit('EventRefresh', {'user': user, ses: true});
+        } else eventStream.emit('EventRefresh', {ses: false, redirect: true});
+      });
 
-export default new Firebase();
+export default fireBase;
 
 export { auth, firestore };
 

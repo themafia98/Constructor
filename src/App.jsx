@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {Fragment,useState, useEffect} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+
+import eventStream from './EventEmitter';
 
 import {Provider} from 'react-redux';
 import store from './redux/store';
@@ -11,13 +13,30 @@ import Build from './Pages/Build/Build';
 
 function App(props){
 
-    // const [firebase] = useState(props.firebase);
+    let [session, setSession] = useState(false);
+    let [redirect, setReditect] = useState(false);
+    const refresh = (event) => {
+        let eo = {...event};
+        setSession(eo.ses);
+        setReditect(eo.redirect);
+    }
+
+    useEffect(() => {
+        eventStream.on('EventRefresh', refresh);
+        return () => {
+            eventStream.off('EventRefresh', refresh);
+        };
+    } , []);
+
+
+    if (session || redirect){
     return (
+
         <Provider store = {store}>
         <BrowserRouter>
                 <Switch>
                     <Route path = "/" exact component = {
-                    () => <Index  config = {props.config} />
+                    () => <Index session = {session} config = {props.config} />
                     } />
                     <Route path = '/Cabinet' exact component = {Cabinet}/>
                     <Route path = '/Cabinet/About' component = {About}/>
@@ -25,6 +44,11 @@ function App(props){
                 </Switch>
         </BrowserRouter>
     </Provider>
+    )
+    } else return (
+        <Fragment>
+        <img className = 'loader' src = '/img/loading.gif' alt = 'loader'></img>
+      </Fragment>
     )
 }
 

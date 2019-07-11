@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {withRouter} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 import Header from '../../components/header/Header';
 
@@ -15,28 +15,29 @@ class About extends React.Component {
     }
 
     render(){
-
-        return (
-            <Fragment>
-                <Header title = {config.title} />
-                <section className = 'About'>
-                    <div className = 'container'>
-                        <div className = 'col-12'>
-                            <div className = 'information'>
-                            <img alt = 'img' className = 'logoAbout' src = {process.env.PUBLIC_URL + '/img/about.jpg'}></img>
-                                <p className ='developer'><span>Developer:</span> {config.about.developer}</p>
-                                <p className = 'year'><span>Year:</span> {config.about.year}</p>
+        console.log('About');
+        if (this.state.user) {
+            return (
+                <Fragment>
+                    <Header title = {config.title} />
+                    <section className = 'About'>
+                        <div className = 'container'>
+                            <div className = 'col-12'>
+                                <div className = 'information'>
+                                <img alt = 'img' className = 'logoAbout' src = {process.env.PUBLIC_URL + '/img/about.jpg'}></img>
+                                    <p className ='developer'><span>Developer:</span> {config.about.developer}</p>
+                                    <p className = 'year'><span>Year:</span> {config.about.year}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </Fragment>
-        )
+                    </section>
+                </Fragment>
+            )
+        } else return <Redirect to = '/' />
+
     }
 
-    componentWillMount = () => {
-        if (!this.state.user) this.props.history.push('/');
-    }
+
 }
 
-export default withRouter(About);
+export default About;
