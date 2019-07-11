@@ -24,6 +24,10 @@ class Firebase {
                 this.db = firebase.firestore();
         }
 
+        saveSession(rules){
+                return this.auth.setPersistence(firebase.auth.Auth.Persistence[rules]);
+        }
+
         login(email, password){
                 console.log('login');
                 return this.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -46,12 +50,11 @@ class Firebase {
 }
 
 let fireBase = new Firebase();
-fireBase.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+fireBase.saveSession('SESSION');
 fireBase.auth.onAuthStateChanged((user) => {
         if (user) {
-          console.log(user.uid);
-         eventStream.emit('EventRefresh', {'user': user, ses: true});
-        } else eventStream.emit('EventRefresh', {ses: false, redirect: true});
+         eventStream.emit('EventRefresh', {'user': user, session: true});
+        } else eventStream.emit('EventRefresh', {session: false, redirect: true});
       });
 
 export default fireBase;

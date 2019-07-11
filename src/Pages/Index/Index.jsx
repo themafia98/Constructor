@@ -2,9 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter';
 import {Redirect} from 'react-router-dom';
+
+
+import Loader from '../../components/loading/Loader';
 import firebase from '../../components/Firebase/Firebase.js';
 import Registration from '../../components/Registration/Registration';
 
+import {connect} from 'react-redux';
+import {loadUserAction} from '../../redux/actions';
 
 import './index.scss';
 
@@ -43,12 +48,12 @@ class Index extends React.PureComponent {
 
         firebase.login(this.emailImput.value,this.passwordImput.value)
         .then(user => {
-            this.props.history.push('/Cabinet');
+            this.props.dispatch(loadUserAction(user.user));
         })
         .catch((error) => {
           console.log(error);
           this.setState({...this.state, wrongEnter: true, error: error.message});
-          });
+        });
 }
     emailImput = null;
     passwordImput = null;
@@ -56,8 +61,8 @@ class Index extends React.PureComponent {
     passwordRef = (node) => this.passwordImput = node;
 
     render(){
-        console.log(this.props.session);
-        if (!this.props.session) {
+        console.log('index render');
+        if ((!this.props.session && !this.props.idUser) || this.props.idUser === 'NO_USER') {
             let currentSelected = this.state.registrationActive;
             return (
                 <div className = 'LoginPage flex-column'>
@@ -95,10 +100,12 @@ class Index extends React.PureComponent {
                         }
                 </div>
             )
-        } else return <Redirect to = '/Cabinet' />
+        } else if (this.props.idUser) return <Redirect to = '/Cabinet' />
+        else  return <Loader path = '/img/loading.gif' type = 'session' />
     }
 
     componentDidMount = (e) => {
+        if (this.props.session)  this.props.dispatch(loadUserAction(firebase.getCurrentUser()));
         eventStream.on('EventRegistrationCorrect', this.statusRegistration);
     }
     componentWillUnmount = (e) => {
@@ -106,4 +113,8 @@ class Index extends React.PureComponent {
     }
 }
 
-export default Index;
+const mapStateToProps = (state) => {
+    return {idUser: state.Cabinet.idUser}
+  }
+
+export default connect(mapStateToProps)(Index);

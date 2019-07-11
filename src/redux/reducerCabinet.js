@@ -1,11 +1,20 @@
+import {LOAD_USER_CABINET} from './actions';
+
 const initialState = {
-    idUser: 'id' + (Math.trunc(Math.random() * 10000)),
+    idUser: null,
     dateConnect: new Date(Date.now()).toLocaleString().replace(/\s/ig,'').split(','),
 };
 
-
 export default (state = initialState, action) => {
+    switch(action.type) {
+        case LOAD_USER_CABINET: {
 
-    return state;
+            return {
+                ...state,
+                idUser: action.idUser ? action.idUser : null,
+            }
+        }
+        default: return state;
+    }
 }
 

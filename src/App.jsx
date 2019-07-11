@@ -1,10 +1,13 @@
-import React, {Fragment,useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+
 
 import eventStream from './EventEmitter';
 
 import {Provider} from 'react-redux';
 import store from './redux/store';
+
+import Loader from './components/loading/Loader';
 
 import Index from './Pages/Index/Index';
 import Cabinet from './Pages/Cabinet/Cabinet';
@@ -15,18 +18,17 @@ function App(props){
 
     let [session, setSession] = useState(false);
     let [redirect, setReditect] = useState(false);
+
     const refresh = (event) => {
         let eo = {...event};
-        setSession(eo.ses);
+        setSession(eo.session);
         setReditect(eo.redirect);
     }
 
     useEffect(() => {
         eventStream.on('EventRefresh', refresh);
-        return () => {
-            eventStream.off('EventRefresh', refresh);
-        };
-    } , []);
+        return () => eventStream.off('EventRefresh', refresh);
+    }, []);
 
 
     if (session || redirect){
@@ -45,11 +47,7 @@ function App(props){
         </BrowserRouter>
     </Provider>
     )
-    } else return (
-        <Fragment>
-        <img className = 'loader' src = '/img/loading.gif' alt = 'loader'></img>
-      </Fragment>
-    )
+    } else return <Loader path = '/img/loading.gif' type = 'application' />
 }
 
 export default App;

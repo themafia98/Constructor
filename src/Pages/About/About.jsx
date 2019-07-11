@@ -15,7 +15,7 @@ class About extends React.Component {
     }
 
     render(){
-        console.log('About');
+        console.log('About render');
         if (this.state.user) {
             return (
                 <Fragment>

@@ -114,10 +114,25 @@ input[type='text'], input[type='password']{
     border-radius: 10px;
 }
 
-.loader {
-    width: 12%;
+
+
+.loaderBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     position: absolute;
     transform: translate(-50%,-50%);
     left: 50%;
     top: 50%;
+
+    p {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .loader {
+        width: 60%;
+    }
 }
