@@ -14,6 +14,7 @@ import Modal from '../../components/modalWindow/ModalWindow';
 import ProjectsSection from '../../components/ProjectsSection/ProjectsSection';
 
 import './Cabinet.scss';
+import { stat } from 'fs';
 const title = require('../../config.json').title;
 
 class Cabinet extends React.PureComponent {
@@ -55,19 +56,18 @@ class Cabinet extends React.PureComponent {
     else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
     }
 
-    // shouldComponentUpdate = (nProps, nState) => {
-    //   console.log('shouldComponentUpdate');
-    //   if (nProps.idUser !== this.props.idUser || this.props.redirect !== nProps.redirect)
-    //     return true;
-    //   else return false;
-    // }
 
   componentDidMount = () => {
     console.log('Cabinet componentDidMount');
-    if (!this.props.idUser) {
-    this.props.dispatch(loadUserAction(this.state.user));
+    if (!this.props.idUser && this.state.user) {
+    // this.props.dispatch(loadUserAction({uid: this.state.user.uid}));
     }
-
+    // componentDidMount = () => {
+    //   console.log('Cabinet componentDidMount');
+    //   if (!this.props.idUser) {
+    //     console.log(this.props);
+    //   this.props.dispatch(loadUserAction({uid: this.state.idUser}));
+    //   }
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
     eventStream.on('EventLogOut', this.logOut);
   }
@@ -79,7 +79,7 @@ class Cabinet extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  return {idUser: state.Cabinet.idUser}
+  return {idUser: state.Cabinet.idUser, projects: [...state.Cabinet.projects]}
 }
 
 

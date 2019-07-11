@@ -82,7 +82,6 @@ const mapStateToProps = (state) => {
     return {
         ...state.builder,
         currentEditable: state.builder.currentEditable ? {...state.builder.currentEditable} : null,
-        project: [...state.builder.project]
     }
 }
 

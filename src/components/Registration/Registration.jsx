@@ -24,14 +24,13 @@ function Registration(props){
 
         firebase.registration(email, password)
         .then(response => {
-            firebase.db.collection("users").add({
-                'id': response.user.uid,
+            firebase.db.collection("users").doc(response.user.uid).set({
+                'projects': [],
                 'email': email,
             })
             .then (response => {
-
                 console.log(response);
-            })
+            });
         })
         .then (response => {
             eventStream.emit('EventRegistrationCorrect', response);

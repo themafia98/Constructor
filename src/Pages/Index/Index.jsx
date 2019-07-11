@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter';
 import {Redirect} from 'react-router-dom';
 
+import middleware from '../../redux/middleware/loadUserMiddleware';
 
 import Loader from '../../components/loading/Loader';
 import firebase from '../../components/Firebase/Firebase.js';
@@ -45,23 +46,7 @@ class Index extends React.PureComponent {
     }
 
     authTo = (event) => {
-
-        firebase.login(this.emailImput.value,this.passwordImput.value)
-        .then(response =>{
-            firebase.db.collection("users").where("id", "==", response.user.uid).get()
-            .then((snapshot) => {
-                snapshot.forEach(doc => console.log(doc.data()))
-            })
-            .catch(error => console.warn(error));
-            return response;
-        })
-        .then(response => {
-            this.props.dispatch(loadUserAction(response.user));
-        })
-        .catch((error) => {
-          console.log(error);
-          this.setState({...this.state, wrongEnter: true, error: error.message});
-        });
+            this.props.dispatch(middleware(this.emailImput.value, this.passwordImput.value));
 }
     emailImput = null;
     passwordImput = null;
@@ -70,7 +55,7 @@ class Index extends React.PureComponent {
 
     render(){
         console.log('index render');
-        if ((!this.props.session && !this.props.idUser) ||
+        if ((!this.props.session || !this.props.idUser) ||
             this.props.idUser === 'NO_USER' || this.props.logout) {
             let currentSelected = this.state.registrationActive;
             return (
@@ -115,7 +100,7 @@ class Index extends React.PureComponent {
 
     componentDidMount = (e) => {
         console.log('logout:' + this.props.logout);
-        if (this.props.session)  this.props.dispatch(loadUserAction(firebase.getCurrentUser()));
+        // if (this.props.session)  this.props.dispatch(loadUserAction(firebase.getCurrentUser()));
         eventStream.on('EventRegistrationCorrect', this.statusRegistration);
     }
     componentWillUnmount = (e) => {

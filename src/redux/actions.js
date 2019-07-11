@@ -5,9 +5,10 @@ const LOAD_USER_CABINET = 'LOAD_USER_CABINET';
 
 
 const saveChangesAction = (state) => {
+    let copy = [...state];
     return {
         type: SAVE_CHANGES,
-        project: state,
+        project: copy,
     }
 }
 
@@ -20,10 +21,13 @@ const loadCurrentProjectAction = (state) => {
 }
 
 const loadUserAction = (state) => {
+    console.log(state);
+    let copy = [...state.projects];
     return {
         type: LOAD_USER_CABINET,
         logout: false,
-        idUser: state ? state.uid : 'NO_USER'
+        idUser: state.hasOwnProperty('uid') ? state.uid : 'NO_USER',
+        projects: copy
     }
 }
 
@@ -31,6 +35,7 @@ const logOutAction = (state) => {
     return {
         type: LOG_OUT_CABINET,
         logout: state.logout,
+        idUser: 'NO_USER'
     }
 }
 

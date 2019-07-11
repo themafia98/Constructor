@@ -2,14 +2,12 @@ import {SAVE_CHANGES, LOAD_CURRENT} from './actions';
 
 const initialState = {
     currentEditable: null,
-    project: [],
 };
 export default (state = initialState, action) => {
     switch (action.type){
         case SAVE_CHANGES: {
             return {
                 ...state,
-                project: [...action.project]
             }
         }
         case LOAD_CURRENT: {
