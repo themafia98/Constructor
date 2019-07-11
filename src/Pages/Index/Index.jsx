@@ -47,8 +47,16 @@ class Index extends React.PureComponent {
     authTo = (event) => {
 
         firebase.login(this.emailImput.value,this.passwordImput.value)
-        .then(user => {
-            this.props.dispatch(loadUserAction(user.user));
+        .then(response =>{
+            firebase.db.collection("users").where("id", "==", response.user.uid).get()
+            .then((snapshot) => {
+                snapshot.forEach(doc => console.log(doc.data()))
+            })
+            .catch(error => console.warn(error));
+            return response;
+        })
+        .then(response => {
+            this.props.dispatch(loadUserAction(response.user));
         })
         .catch((error) => {
           console.log(error);
@@ -62,7 +70,8 @@ class Index extends React.PureComponent {
 
     render(){
         console.log('index render');
-        if ((!this.props.session && !this.props.idUser) || this.props.idUser === 'NO_USER') {
+        if ((!this.props.session && !this.props.idUser) ||
+            this.props.idUser === 'NO_USER' || this.props.logout) {
             let currentSelected = this.state.registrationActive;
             return (
                 <div className = 'LoginPage flex-column'>
@@ -105,6 +114,7 @@ class Index extends React.PureComponent {
     }
 
     componentDidMount = (e) => {
+        console.log('logout:' + this.props.logout);
         if (this.props.session)  this.props.dispatch(loadUserAction(firebase.getCurrentUser()));
         eventStream.on('EventRegistrationCorrect', this.statusRegistration);
     }
@@ -114,7 +124,7 @@ class Index extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    return {idUser: state.Cabinet.idUser}
+    return {idUser: state.Cabinet.idUser, logout: state.Cabinet.logout}
   }
 
 export default connect(mapStateToProps)(Index);

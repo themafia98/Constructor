@@ -23,6 +23,16 @@ function Registration(props){
         const password = ref2.current.value;
 
         firebase.registration(email, password)
+        .then(response => {
+            firebase.db.collection("users").add({
+                'id': response.user.uid,
+                'email': email,
+            })
+            .then (response => {
+
+                console.log(response);
+            })
+        })
         .then (response => {
             eventStream.emit('EventRegistrationCorrect', response);
         })
@@ -32,7 +42,7 @@ function Registration(props){
             setError(error.message);
           });
     };
-
+    console.log('reg');
         return (
             <div className = 'RegistrationBox'>
                 <div className = 'RegistrationForm'>

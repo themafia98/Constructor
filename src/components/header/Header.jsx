@@ -21,6 +21,11 @@ class Header extends React.Component {
 
     }
 
+    logOut = (e) => {
+        console.log('logOut');
+        eventStream.emit('EventLogOut', 'logOut');
+    }
+
     redirect = (e) => {
         this.props.history.push('/Cabinet/About');
     }
@@ -44,8 +49,9 @@ class Header extends React.Component {
                                 </div>
                                 : null
                             }
-                                <div onClick = {this.redirect} className = 'Navigator'>
-                                    <Icon title = 'about' path = '/img/about_logo.svg' />
+                                <div  className = 'Navigator'>
+                                    <Icon onClick = {this.redirect} title = 'about' path = '/img/about_logo.svg' />
+                                    <Icon onClick = {this.logOut} title = 'logOut' path = '/img/logOut.svg' />
                                 </div>
                     </div>
                </div>

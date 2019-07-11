@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter.js';
 import {Redirect} from 'react-router-dom';
 
-import {loadUserAction} from '../../redux/actions';
+import {loadUserAction, logOutAction} from '../../redux/actions';
 import Loader from '../../components/loading/Loader';
 import {connect} from 'react-redux';
 
@@ -25,7 +25,14 @@ class Cabinet extends React.PureComponent {
 
   state = {
     workMode: 'default',
+    logOut: false,
     user: firebase.getCurrentUser()
+  }
+
+  logOut = (event) => {
+    console.log(event);
+    this.props.dispatch(logOutAction({logout: true}));
+    firebase.logout();
   }
 
   changeWorkMode = (event) => {
@@ -44,7 +51,7 @@ class Cabinet extends React.PureComponent {
             <ProjectsSection />
         </Fragment>
       )
-    } else if (this.props.idUser === 'NO_USER') return <Redirect to = '/' />
+    } else if (this.props.idUser === 'NO_USER' || this.state.logOut) return <Redirect to = '/' />
     else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
     }
 
@@ -62,10 +69,12 @@ class Cabinet extends React.PureComponent {
     }
 
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
+    eventStream.on('EventLogOut', this.logOut);
   }
 
   componentWillUnmount = () => {
     eventStream.off('EventChangeWorkMode', this.changeWorkMode);
+    eventStream.off('EventLogOut', this.logOut);
   }
 }
 

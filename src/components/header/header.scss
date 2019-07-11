@@ -20,6 +20,7 @@ header {
     }
 
     .Navigator {
+        display: flex;
         position: absolute;
         top: 0;
         left: 100%;
@@ -27,18 +28,17 @@ header {
         cursor: pointer;
 
         img[alt='icon']{
+            margin-right: 5px;
             transform: translate(0,30%);
             width: 45px;
             height: 45px;
             transition: 0.3s linear;
-        }
-    }
-
-    .Navigator:hover {
-        img[alt='icon'] {
+        } 
+        img[alt='icon']:hover {
             transform: translate(0,30%) scale(1.1);
         }
     }
+
 
     .header__newProject__AddButton {
 
