@@ -1,15 +1,15 @@
-import {SAVE_CHANGES, LOAD_CURRENT} from './actions';
+import {LOAD_CURRENT} from './actions';
 
 const initialState = {
     currentEditable: null,
 };
 export default (state = initialState, action) => {
     switch (action.type){
-        case SAVE_CHANGES: {
-            return {
-                ...state,
-            }
-        }
+        // case SAVE_CHANGES: {
+        //     return {
+        //         ...state,
+        //     }
+        // }
         case LOAD_CURRENT: {
             return {
                 ...state,

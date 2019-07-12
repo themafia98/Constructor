@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-
+// import Promise from 'promise-polyfill';
 import eventStream from './EventEmitter';
 
 import {Provider} from 'react-redux';

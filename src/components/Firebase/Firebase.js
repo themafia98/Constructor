@@ -30,17 +30,14 @@ class Firebase {
 
         login(email, password){
                 console.log('login');
-                return this.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
-                .then(() =>{
                 return this.auth.signInWithEmailAndPassword(email, password);
-                });
         }
 
         registration(email, password){
                 return this.auth.createUserWithEmailAndPassword(email, password)
         }
 
-        logout(){
+        signOut(){
                 return this.auth.signOut()
         }
 
@@ -53,7 +50,7 @@ let fireBase = new Firebase();
 fireBase.saveSession('SESSION');
 fireBase.auth.onAuthStateChanged((user) => {
         if (user) {
-         eventStream.emit('EventRefresh', {'user': user, session: true});
+         eventStream.emit('EventRefresh', {session: true});
         } else eventStream.emit('EventRefresh', {session: false, redirect: true});
       });
 

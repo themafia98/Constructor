@@ -1,14 +1,15 @@
-const SAVE_CHANGES = 'SAVE_CHANGES';
+const CREATE_PROJECT = 'CREATE_PROJECT';
 const LOAD_CURRENT = 'LOAD_CURRENT';
 const LOG_OUT_CABINET = 'LOG_OUT_CABINET';
 const LOAD_USER_CABINET = 'LOAD_USER_CABINET';
+const ERROR_CABINET = 'ERROR_CABINET';
 
 
-const saveChangesAction = (state) => {
-    let copy = [...state];
+const createProjectAction = (state) => {
+    console.log(state);
     return {
-        type: SAVE_CHANGES,
-        project: copy,
+        type: CREATE_PROJECT,
+        projects: [...state],
     }
 }
 
@@ -22,27 +23,35 @@ const loadCurrentProjectAction = (state) => {
 
 const loadUserAction = (state) => {
     console.log(state);
-    let copy = [...state.projects];
     return {
         type: LOAD_USER_CABINET,
-        logout: false,
-        idUser: state.hasOwnProperty('uid') ? state.uid : 'NO_USER',
-        projects: copy
+        active: true,
+        idUser: state.uid,
+        projects: [...state.projects]
     }
 }
 
 const logOutAction = (state) => {
+
     return {
         type: LOG_OUT_CABINET,
-        logout: state.logout,
-        idUser: 'NO_USER'
+        active: false,
+        idUser: null,
+        projects: []
     }
 }
 
+const errorAction = (state) => {
+    return {
+        type: ERROR_CABINET,
+        error: state
+    }
+}
 
 export {
-    SAVE_CHANGES, saveChangesAction,
-    LOAD_CURRENT, loadCurrentProjectAction,
-    LOAD_USER_CABINET, loadUserAction,
-    LOG_OUT_CABINET, logOutAction,
+    CREATE_PROJECT, createProjectAction, /* cabinet */
+    LOAD_USER_CABINET, loadUserAction, /* cabinet */
+    LOG_OUT_CABINET, logOutAction, /* cabinet */
+    LOAD_CURRENT, loadCurrentProjectAction, /* builder */
+    ERROR_CABINET, errorAction, /* both */
 }

@@ -9,16 +9,14 @@ const composeEnhancers =
       // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
     }) : compose;
 
-    let email = null;
-    let password = null;
-const enhancer = composeEnhancers(
-  applyMiddleware(thunk.withExtraArgument({email,password})
+const middleware = composeEnhancers(
+  applyMiddleware(thunk)
   // other store enhancers if any
-));
-const store = createStore(combineReducers, enhancer);
+);
+const store = createStore(combineReducers, middleware);
 
-store.subscribe(() => {
-    console.log(store.getState());
-  });
+// store.subscribe(() => {
+//     console.log(store.getState());
+//   });
 
 export default store;

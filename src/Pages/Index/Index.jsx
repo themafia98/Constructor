@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter';
 import {Redirect} from 'react-router-dom';
 
-import middleware from '../../redux/middleware/loadUserMiddleware';
+import {middlewareLogin} from '../../redux/middleware/loadUserMiddleware';
 
 import Loader from '../../components/loading/Loader';
-import firebase from '../../components/Firebase/Firebase.js';
 import Registration from '../../components/Registration/Registration';
 
 import {connect} from 'react-redux';
-import {loadUserAction} from '../../redux/actions';
 
 import './index.scss';
 
@@ -46,7 +44,7 @@ class Index extends React.PureComponent {
     }
 
     authTo = (event) => {
-            this.props.dispatch(middleware(this.emailImput.value, this.passwordImput.value));
+            this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value));
 }
     emailImput = null;
     passwordImput = null;
@@ -55,8 +53,8 @@ class Index extends React.PureComponent {
 
     render(){
         console.log('index render');
-        if ((!this.props.session || !this.props.idUser) ||
-            this.props.idUser === 'NO_USER' || this.props.logout) {
+        console.log(this.props);
+        if (!this.props.session) {
             let currentSelected = this.state.registrationActive;
             return (
                 <div className = 'LoginPage flex-column'>
@@ -94,13 +92,11 @@ class Index extends React.PureComponent {
                         }
                 </div>
             )
-        } else if (this.props.idUser) return <Redirect to = '/Cabinet' />
+        } else if (this.props.session || this.props.active) return <Redirect to = '/Cabinet' />
         else  return <Loader path = '/img/loading.gif' type = 'session' />
     }
 
     componentDidMount = (e) => {
-        console.log('logout:' + this.props.logout);
-        // if (this.props.session)  this.props.dispatch(loadUserAction(firebase.getCurrentUser()));
         eventStream.on('EventRegistrationCorrect', this.statusRegistration);
     }
     componentWillUnmount = (e) => {
@@ -109,7 +105,7 @@ class Index extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    return {idUser: state.Cabinet.idUser, logout: state.Cabinet.logout}
+    return {active: state.cabinet.active}
   }
 
 export default connect(mapStateToProps)(Index);

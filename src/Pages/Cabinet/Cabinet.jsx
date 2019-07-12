@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter.js';
 import {Redirect} from 'react-router-dom';
 
-import {loadUserAction, logOutAction} from '../../redux/actions';
+import {middlewareLoadUserData, middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
 import Loader from '../../components/loading/Loader';
 import {connect} from 'react-redux';
 
@@ -14,7 +14,7 @@ import Modal from '../../components/modalWindow/ModalWindow';
 import ProjectsSection from '../../components/ProjectsSection/ProjectsSection';
 
 import './Cabinet.scss';
-import { stat } from 'fs';
+
 const title = require('../../config.json').title;
 
 class Cabinet extends React.PureComponent {
@@ -32,8 +32,7 @@ class Cabinet extends React.PureComponent {
 
   logOut = (event) => {
     console.log(event);
-    this.props.dispatch(logOutAction({logout: true}));
-    firebase.logout();
+    this.props.dispatch(middlewareLogOutUser(this.props.idUser));
   }
 
   changeWorkMode = (event) => {
@@ -44,7 +43,7 @@ class Cabinet extends React.PureComponent {
   }
 
   render(){
-    if (this.props.idUser && this.props.idUser !== 'NO_USER'){
+    if (this.props.idUser){
       return (
         <Fragment>
           <Header title = {title} />
@@ -52,22 +51,18 @@ class Cabinet extends React.PureComponent {
             <ProjectsSection />
         </Fragment>
       )
-    } else if (this.props.idUser === 'NO_USER' || this.state.logOut) return <Redirect to = '/' />
+    } else if (!this.state.user) return <Redirect to = '/' />
     else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
     }
 
 
   componentDidMount = () => {
     console.log('Cabinet componentDidMount');
-    if (!this.props.idUser && this.state.user) {
-    // this.props.dispatch(loadUserAction({uid: this.state.user.uid}));
+    if (this.state.user && !this.props.idUser) {
+      console.log('Cabinet dispatch');
+    this.props.dispatch(middlewareLoadUserData(this.state.user.uid));
     }
-    // componentDidMount = () => {
-    //   console.log('Cabinet componentDidMount');
-    //   if (!this.props.idUser) {
-    //     console.log(this.props);
-    //   this.props.dispatch(loadUserAction({uid: this.state.idUser}));
-    //   }
+
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
     eventStream.on('EventLogOut', this.logOut);
   }
@@ -79,7 +74,7 @@ class Cabinet extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  return {idUser: state.Cabinet.idUser, projects: [...state.Cabinet.projects]}
+  return {idUser: state.cabinet.idUser, projects: [...state.cabinet.projects]}
 }
 
 
