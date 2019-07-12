@@ -2,7 +2,7 @@ import React, {createRef, useEffect, useState} from 'react';
 import eventStream from '../../EventEmitter';
 import './registration.scss';
 
-import firebase from '../../components/Firebase/Firebase.js';
+import firebase from '../../Firebase/Firebase';
 
 function Registration(props){
 

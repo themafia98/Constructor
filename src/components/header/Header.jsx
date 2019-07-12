@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './header.scss';
 
+import {middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
+import {connect} from 'react-redux';
 import {withRouter, NavLink} from 'react-router-dom';
 
 import eventStream from '../../EventEmitter.js';
@@ -18,16 +20,16 @@ class Header extends React.Component {
     }
 
     state = {
-
+        title: this.props.title,
     }
 
-    logOut = (e) => {
-        console.log('logOut');
-        eventStream.emit('EventLogOut', 'logOut');
-    }
+    logOut = (event) => {
+        this.props.dispatch(middlewareLogOutUser(this.props.idUser));
+      }
 
     redirect = (e) => {
-        this.props.history.push('/Cabinet/About');
+        if (this.props.location.pathname !== '/Cabinet/About')
+            this.props.history.push('/Cabinet/About');
     }
 
     add = (e) => {
@@ -41,7 +43,7 @@ class Header extends React.Component {
                     <div className = 'flex-row'>
                             <div className = 'header__CabinetInfo'>
                                 <Icon path = {iconPath} />
-                                <NavLink to = '/Cabinet'><h3>{this.props.title}</h3></NavLink>
+                                <NavLink to = '/Cabinet'><h3>{this.state.title}</h3></NavLink>
                             </div>
                             {this.props.location.pathname === '/Cabinet' ?
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>
@@ -60,4 +62,4 @@ class Header extends React.Component {
     }
 }
 
-export default withRouter(Header);
+export default connect()(withRouter(Header));

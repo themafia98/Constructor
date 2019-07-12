@@ -1,8 +1,9 @@
 import firebase from '@firebase/app';
-import eventStream from '../../EventEmitter';
+import eventStream from '../EventEmitter';
+
+
 const auth = require('firebase/auth');
 const firestore = require('firebase/firestore');
-
 
 // setings in root folder / firebase.env
 const firebaseConfig = {
@@ -15,9 +16,8 @@ const firebaseConfig = {
         appId: process.env.REACT_APP_APPID
 };
 
-
-
 class Firebase {
+
         constructor(){
                 firebase.initializeApp(firebaseConfig);
                 this.auth = firebase.auth();
@@ -52,7 +52,7 @@ fireBase.auth.onAuthStateChanged((user) => {
         if (user) {
          eventStream.emit('EventRefresh', {session: true});
         } else eventStream.emit('EventRefresh', {session: false, redirect: true});
-      });
+});
 
 export default fireBase;
 

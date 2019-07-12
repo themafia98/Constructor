@@ -6,7 +6,6 @@ const ERROR_CABINET = 'ERROR_CABINET';
 
 
 const createProjectAction = (state) => {
-    console.log(state);
     return {
         type: CREATE_PROJECT,
         projects: [...state],
@@ -22,7 +21,6 @@ const loadCurrentProjectAction = (state) => {
 }
 
 const loadUserAction = (state) => {
-    console.log(state);
     return {
         type: LOAD_USER_CABINET,
         active: true,

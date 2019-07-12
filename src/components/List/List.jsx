@@ -47,7 +47,6 @@ class List extends React.PureComponent {
 
     render(){
         console.log('render list');
-
         if (this.state.redirect)
             return <Redirect to = '/' />
             else return (
@@ -66,7 +65,6 @@ class List extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         idUser: state.cabinet.idUser,
         list: [...state.cabinet.projects]

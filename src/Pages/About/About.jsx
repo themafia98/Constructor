@@ -3,12 +3,12 @@ import {Redirect} from 'react-router-dom';
 
 import Header from '../../components/header/Header';
 
-import firebase from '../../components/Firebase/Firebase.js';
+import firebase from '../../Firebase/Firebase';
 import './about.scss';
 
 const config = require('../../config.json');
 
-class About extends React.Component {
+class About extends React.PureComponent {
 
     state = {
         user: firebase.getCurrentUser()
@@ -36,7 +36,6 @@ class About extends React.Component {
         } else return <Redirect to = '/' />
 
     }
-
 
 }
 

@@ -53,7 +53,6 @@ class Index extends React.PureComponent {
 
     render(){
         console.log('index render');
-        console.log(this.props);
         if (!this.props.session) {
             let currentSelected = this.state.registrationActive;
             return (

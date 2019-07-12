@@ -27,13 +27,10 @@ class Build extends React.PureComponent {
     }
 
     state = {
-        idProject: this.props.match.params.param,
-        component: {},
-        editComponent: {
-            name: '',
+            idProject: this.props.match.params.param,
+            component: {},
             edit: false
         }
-    }
 
     workModeEdit = (event) => {
         this.setState({
@@ -47,7 +44,7 @@ class Build extends React.PureComponent {
         return (
             <Fragment>
                 <Header title = {config.title} />
-                { this.state.editComponent.edit ?
+                { this.state.edit ?
                     <InstrumentsPanel
                         editComponent = { this.props.currentEditable ? {...this.props.currentEditable} :
                         {...this.props.editComponent}}
@@ -64,13 +61,14 @@ class Build extends React.PureComponent {
 
     componentDidMount = () => {
         eventEmitter.on('EventModeEdit', this.workModeEdit);
-
-        let currentComponents = this.props.project.find(item => {
-            return parseInt(item.id) === parseInt(this.state.idProject)
-        });
-        if (currentComponents)
-        this.props.dispatch(loadCurrentProjectAction({...currentComponents}));
-        else this.props.history.push('/');
+        console.log(this.props);
+        // let currentComponents = this.props.project.find(item => {
+        //     return parseInt(item.id) === parseInt(this.state.idProject)
+        // });
+        // if (currentComponents)
+        // this.props.dispatch(loadCurrentProjectAction({...currentComponents}));
+        if (!this.props.currentEditable)
+            this.props.history.push('/');
     }
 
     componentWillUnmount = () => {
@@ -79,10 +77,10 @@ class Build extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        ...state.builder,
-        currentEditable: state.builder.currentEditable ? {...state.builder.currentEditable} : null,
-    }
+    // let param = this.props.match.params.param;
+    // return {
+    //     ...state.builder,
+    //     currentEditable: {...state.cabinet.projects.find(item => item.id === parseInt(param))}
 }
 
 export default connect(mapStateToProps)(withRouter(Build));

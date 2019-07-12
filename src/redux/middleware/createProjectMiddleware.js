@@ -1,4 +1,4 @@
-import firebase from '../../components/Firebase/Firebase';
+import firebase from '../../Firebase/Firebase';
 import {createProjectAction, errorAction} from '../actions';
 
 

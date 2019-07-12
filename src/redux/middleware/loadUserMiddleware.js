@@ -1,8 +1,7 @@
-import firebase from '../../components/Firebase/Firebase';
+import firebase from '../../Firebase/Firebase';
 import {loadUserAction, errorAction, logOutAction} from '../actions';
 
 const middlewareLogin = (email,password) => async dispatch => {
-        console.log('middlewareLogin');
         await firebase.login(email,password)
         .then(response =>{
             firebase.db.collection("users").doc(response.user.uid).get()

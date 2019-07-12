@@ -7,7 +7,7 @@ import {middlewareLoadUserData, middlewareLogOutUser} from '../../redux/middlewa
 import Loader from '../../components/loading/Loader';
 import {connect} from 'react-redux';
 
-import firebase from '../../components/Firebase/Firebase.js';
+import firebase from '../../Firebase/Firebase';
 
 import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
@@ -46,7 +46,7 @@ class Cabinet extends React.PureComponent {
     if (this.props.idUser){
       return (
         <Fragment>
-          <Header title = {title} />
+          <Header title = {title} idUser = {this.props.idUser} />
           {(this.state.workMode === 'newProject') ? <Modal workMode = {this.state.workMode} /> : null}
             <ProjectsSection />
         </Fragment>
@@ -57,19 +57,15 @@ class Cabinet extends React.PureComponent {
 
 
   componentDidMount = () => {
-    console.log('Cabinet componentDidMount');
     if (this.state.user && !this.props.idUser) {
-      console.log('Cabinet dispatch');
     this.props.dispatch(middlewareLoadUserData(this.state.user.uid));
     }
 
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
-    eventStream.on('EventLogOut', this.logOut);
   }
 
   componentWillUnmount = () => {
     eventStream.off('EventChangeWorkMode', this.changeWorkMode);
-    eventStream.off('EventLogOut', this.logOut);
   }
 }
 
