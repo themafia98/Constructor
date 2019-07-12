@@ -5,11 +5,7 @@ const initialState = {
 };
 export default (state = initialState, action) => {
     switch (action.type){
-        // case SAVE_CHANGES: {
-        //     return {
-        //         ...state,
-        //     }
-        // }
+
         case LOAD_CURRENT: {
             return {
                 ...state,

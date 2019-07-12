@@ -40,7 +40,7 @@ let fireBase = new Firebase();
 fireBase.saveSession('SESSION');
 fireBase.auth.onAuthStateChanged((user) => {
         if (user) {
-         eventStream.emit('EventRefresh', {session: true});
+                eventStream.emit('EventRefresh', {session: true});
         } else eventStream.emit('EventRefresh', {session: false, redirect: true});
 });
 
