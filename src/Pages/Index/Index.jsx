@@ -16,7 +16,6 @@ class Index extends React.PureComponent {
 
     static propTypes = {
         config: PropTypes.object,
-        session: PropTypes.bool.isRequired,
     }
 
     state = {
@@ -55,7 +54,7 @@ class Index extends React.PureComponent {
     render(){
         console.log('index render');
         console.log(this.props);
-        if (!this.props.session) {
+        if (!this.props.active) {
             let currentSelected = this.state.registrationActive;
             return (
                 <div className = 'LoginPage flex-column'>
@@ -64,8 +63,8 @@ class Index extends React.PureComponent {
                             <div className = 'LoginForm'>
                                 <h3>Connect form</h3>
                                 {
-                                    this.state.wrongEnter || this.state.regStatus ?
-                                    <p className = 'error'>{this.state.error}</p>
+                                    this.props.wrongEnter || this.state.regStatus ?
+                                    <p className = 'error'>{this.props.wrongEnter}</p>
                                     : null
                                 }
                                 <p>E-mail</p>
@@ -74,12 +73,12 @@ class Index extends React.PureComponent {
                                 <input ref = {this.passwordRef} type = 'password' />
                                 <input 
                                     onClick = {this.authTo} 
-                                    className = 'loginButton' 
-                                    type = 'button' 
+                                    className = 'loginButton'
+                                    type = 'button'
                                     value = 'enter' />
                                 <input
                                     onClick = {this.showBox}
-                                    className = {currentSelected ? `loginButton selected` 
+                                    className = {currentSelected ? `loginButton selected`
                                         : 'loginButton'}
                                     type = 'button'
                                     value = 'registration'
@@ -93,7 +92,7 @@ class Index extends React.PureComponent {
                         }
                 </div>
             )
-        } else if (this.props.session) return <Redirect to = '/Cabinet' />
+        } else if (this.props.active) return <Redirect to = '/Cabinet' />
         else  return <Loader path = '/img/loading.gif' type = 'session' />
     }
 
@@ -106,7 +105,7 @@ class Index extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    return {active: state.cabinet.active}
+    return {active: state.cabinet.active, wrongEnter: state.cabinet.error}
   }
 
 export default connect(mapStateToProps)(Index);

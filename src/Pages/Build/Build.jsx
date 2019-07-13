@@ -1,11 +1,10 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {withRouter} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
-import firebase from '../../Firebase/Firebase';
-import {middlewareLoadUserData} from '../../redux/middleware/loadUserMiddleware';
-import {loadCurrentProjectAction} from '../../redux/actions';
+// import {middlewareLoadUserData} from '../../redux/middleware/loadUserMiddleware';
+import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
 
@@ -30,10 +29,7 @@ class Build extends React.PureComponent {
         }).isRequired
     }
 
-    loadUserData = async () => await this.props.dispatch(middlewareLoadUserData(this.state.user.uid));
-
     state = {
-            user: firebase.getCurrentUser(),
             idProject: this.props.match.params.param,
             typeProject: null,
             editComponent: {name: null, edit: false},
@@ -49,12 +45,13 @@ class Build extends React.PureComponent {
     }
 
     render(){
-
-        if (this.props.idUser){
+        console.log('Build');
+        console.log(this.props);
+        if (this.props.active){
             return (
                 <Fragment>
                     <Header title = {config.title} />
-                    { this.state.edit ?
+                    { this.state.editComponent.edit ?
                         <InstrumentsPanel
                             editComponent = { this.props.currentEditable ? {...this.props.currentEditable} :
                             {...this.props.editComponent}}
@@ -67,16 +64,12 @@ class Build extends React.PureComponent {
                     </HeaderBuild>
                 </Fragment>
             )
-        } else return <Loader path = '/img/loading.gif' type = 'build' />
+        } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
+        else return <Loader path = '/img/loading.gif' type = 'build' />
     }
 
     componentDidMount = () => {
         eventEmitter.on('EventModeEdit', this.workModeEdit);
-        console.log('build');
-        if (!this.props.idUser && this.state.user)
-            this.loadUserData().then(() => console.log('dispatch here in future...'))
-            .catch(error => { console.warn(error); this.props.history.push('/')});
-        else if (!this.state.user) this.props.history.push('/');
     }
 
     componentWillUnmount = () => {
@@ -88,9 +81,10 @@ const mapStateToProps = (state) => {
 
     return {
         ...state.builder,
+        active: state.cabinet.active,
         idUser: state.cabinet.idUser,
         currentEditable: {}
     }
 }
 
-export default connect(mapStateToProps)(withRouter(Build));
+export default connect(mapStateToProps)(withFirebase(Build));

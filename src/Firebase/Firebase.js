@@ -1,8 +1,6 @@
 import firebase from '@firebase/app';
 import {firebaseConfig} from './firebaseConfig';
 
-import eventStream from '../EventEmitter';
-
 const auth = require('firebase/auth');
 const firestore = require('firebase/firestore');
 

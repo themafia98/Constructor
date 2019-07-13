@@ -6,7 +6,10 @@ function Item(props) {
     const [name] = useState(props.name);
     const [type] = useState(props.type);
 
-    const build = (event) => props.history.push(`/Cabinet/Build/${id}`);
+    const build = (event) => {
+        props.history.push(`/Cabinet/Build/${id}`);
+        event.stopPropagation();
+    };
     return (
         <div onClick = {build} className = 'item' data-id = {id}>
             <p className = 'ProjectName'>{name}</p>

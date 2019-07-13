@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
+import {middlewareLoadUserData} from './redux/middleware/loadUserMiddleware';
+import {connect} from 'react-redux';
 import withFirebase from './components/firebaseHOC';
 import Loader from './components/loading/Loader';
 
@@ -9,7 +11,6 @@ import Index from './Pages/Index/Index';
 import Cabinet from './Pages/Cabinet/Cabinet';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
-
 
 class App extends React.PureComponent {
 
@@ -20,27 +21,29 @@ class App extends React.PureComponent {
 
     state = {
         firebase: this.props.firebase,
-        session: false,
         firebaseLoadState: false,
     }
 
     componentDidMount(){
-        if (this.props.firebase)
+
         this.props.firebase.auth.onAuthStateChanged((user) => {
-            if (user) return this.setState({firebaseLoadState: true, session: true});
-            else return this.setState({firebaseLoadState: true, session: false});
+
+            if (!this.state.firebaseLoadState){
+                if (user) this.props.dispatch(middlewareLoadUserData(user.uid));
+                this.setState({firebaseLoadState: true});
+            }
         });
+
     }
 
     render(){
-        console.log('app');
         if (this.state.firebaseLoadState){
         return (
             <BrowserRouter>
                     <Switch>
                         <Route
                             path = '/' exact
-                            render = {(props) => <Index {...props} session = {this.state.session} />}
+                            render = {(props) => <Index {...props} />}
                         />
                         <Route path = '/Cabinet/' exact component = {Cabinet}/>
                         <Route
@@ -55,4 +58,10 @@ class App extends React.PureComponent {
     }
 }
 
-export default withFirebase(App);
+const mapStateToProps = (state) => {
+    return {
+      active: state.cabinet.active
+    }
+  }
+
+export default connect(mapStateToProps)(withFirebase(App));

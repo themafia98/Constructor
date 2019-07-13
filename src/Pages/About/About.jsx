@@ -15,13 +15,13 @@ class About extends React.PureComponent {
     }
 
     state = {
-        user: this.props.firebase.getCurrentUser()
+        config: this.props.config
     };
 
     render(){
         console.log('About render');
-        if (this.state.user) {
-            const { config } = this.props;
+        if (this.props.firebase.getCurrentUser()) {
+            const { config } = this.state;
             return (
                 <Fragment>
                     <Header title = {config.title} />

@@ -21,10 +21,12 @@ const loadCurrentProjectAction = (state) => {
 }
 
 const loadUserAction = (state) => {
+    console.log(state);
     return {
         type: LOAD_USER_CABINET,
         active: true,
         idUser: state.uid,
+        error: '',
         projects: [...state.projects]
     }
 }
@@ -35,6 +37,7 @@ const logOutAction = (state) => {
         type: LOG_OUT_CABINET,
         active: false,
         idUser: null,
+        error: '',
         projects: []
     }
 }
