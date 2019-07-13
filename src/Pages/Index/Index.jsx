@@ -15,11 +15,12 @@ import './index.scss';
 class Index extends React.PureComponent {
 
     static propTypes = {
-        config: PropTypes.object
+        config: PropTypes.object,
+        session: PropTypes.bool.isRequired,
     }
 
     state = {
-        title:  this.props.config.title || "Constructor",
+        title:  "Constructor",
         registrationActive: false,
         regStatus: false,
         wrongEnter: false,
@@ -53,6 +54,7 @@ class Index extends React.PureComponent {
 
     render(){
         console.log('index render');
+        console.log(this.props);
         if (!this.props.session) {
             let currentSelected = this.state.registrationActive;
             return (
@@ -91,7 +93,7 @@ class Index extends React.PureComponent {
                         }
                 </div>
             )
-        } else if (this.props.session || this.props.active) return <Redirect to = '/Cabinet' />
+        } else if (this.props.session) return <Redirect to = '/Cabinet' />
         else  return <Loader path = '/img/loading.gif' type = 'session' />
     }
 

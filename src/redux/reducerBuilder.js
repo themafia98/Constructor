@@ -1,7 +1,8 @@
 import {LOAD_CURRENT} from './actions';
 
 const initialState = {
-    currentEditable: null,
+    nameEditComponent: null,
+    settingsEditComponent: {},
 };
 export default (state = initialState, action) => {
     switch (action.type){

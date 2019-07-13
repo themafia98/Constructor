@@ -30,11 +30,13 @@ class Build extends React.PureComponent {
         }).isRequired
     }
 
+    loadUserData = async () => await this.props.dispatch(middlewareLoadUserData(this.state.user.uid));
+
     state = {
             user: firebase.getCurrentUser(),
             idProject: this.props.match.params.param,
-            component: {},
-            editComponent: {edit: false},
+            typeProject: null,
+            editComponent: {name: null, edit: false},
             edit: false
         }
 
@@ -72,7 +74,8 @@ class Build extends React.PureComponent {
         eventEmitter.on('EventModeEdit', this.workModeEdit);
         console.log('build');
         if (!this.props.idUser && this.state.user)
-            this.props.dispatch(middlewareLoadUserData(this.state.user.uid));
+            this.loadUserData().then(() => console.log('dispatch here in future...'))
+            .catch(error => { console.warn(error); this.props.history.push('/')});
         else if (!this.state.user) this.props.history.push('/');
     }
 

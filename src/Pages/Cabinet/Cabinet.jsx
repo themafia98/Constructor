@@ -2,12 +2,11 @@ import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter.js';
 import {Redirect} from 'react-router-dom';
+import withFirebase from '../../components/firebaseHOC';
 
 import {middlewareLoadUserData, middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
 import Loader from '../../components/loading/Loader';
 import {connect} from 'react-redux';
-
-import firebase from '../../Firebase/Firebase';
 
 import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
@@ -20,14 +19,14 @@ const title = require('../../config.json').title;
 class Cabinet extends React.PureComponent {
 
   static propTypes = {
-    title: PropTypes.string,
-    mode: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    firebase: PropTypes.object.isRequired
   }
 
   state = {
     workMode: 'default',
     logOut: false,
-    user: firebase.getCurrentUser()
+    user: this.props.firebase.getCurrentUser()
   }
 
   logOut = (event) => {
@@ -75,4 +74,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps)(Cabinet);
+export default connect(mapStateToProps)(withFirebase(Cabinet));

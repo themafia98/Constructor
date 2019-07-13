@@ -1,26 +1,33 @@
-import React, {createRef, useEffect, useState} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import eventStream from '../../EventEmitter';
 import './registration.scss';
 
-import firebase from '../../Firebase/Firebase';
-
-function Registration(props){
-
-    const [error,setError] = useState(null);
-    const ref = createRef();
-    const ref2 = createRef();
+import withFirebase from '../../components/firebaseHOC';
 
 
-    useEffect(() => {
+class Registration extends React.PureComponent {
 
-        ref.current.focus();
-        ref2.current.focus();
-    });
+    static propTypes = {
+        firebase: PropTypes.object.isRequired,
+    }
 
-    const createUser = (event) => {
+    state = {
+        firebase: this.props.firebase,
+        error: null,
+    }
 
-        const email = ref.current.value;
-        const password = ref2.current.value;
+    emailRef = null;
+    passwordRef = null;
+
+    setRefEmail = (node) => this.emailRef = node;
+    setRefPassword = (node) => this.passwordRef = node;
+
+    createUser = (event) => {
+
+        const email = this.emailRef.value;
+        const password = this.passwordRef.value;
+        const { firebase } = this.props;
 
         firebase.registration(email, password)
         .then(response => {
@@ -38,10 +45,13 @@ function Registration(props){
         .catch((error) => {
             console.log(error);
 
-            setError(error.message);
+            this.setState({error: error.message});
           });
     };
-    console.log('reg');
+
+    render(){
+        let  { error } = this.state;
+
         return (
             <div className = 'RegistrationBox'>
                 <div className = 'RegistrationForm'>
@@ -52,10 +62,10 @@ function Registration(props){
                             : null
                         }
                         <p>E-mail</p>
-                        <input ref = {ref} type = 'text' />
+                        <input ref = {this.setRefEmail} type = 'text' />
                         <p>Password</p>
-                        <input ref = {ref2} type = 'password' />
-                        <input onClick = {createUser}
+                        <input ref = {this.setRefPassword} type = 'password' />
+                        <input onClick = {this.createUser}
                                 className = 'loginButton'
                                 type = 'button'
                                 value = 'registration'
@@ -64,6 +74,7 @@ function Registration(props){
                 </div>
             </div>
         )
-}
+    }
 
-export default Registration;
+}
+export default withFirebase(Registration);

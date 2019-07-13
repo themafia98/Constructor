@@ -19,7 +19,6 @@ class Firebase {
         }
 
         login(email, password){
-                console.log('login');
                 return this.auth.signInWithEmailAndPassword(email, password);
         }
 
@@ -38,11 +37,6 @@ class Firebase {
 
 let fireBase = new Firebase();
 fireBase.saveSession('SESSION');
-fireBase.auth.onAuthStateChanged((user) => {
-        if (user) {
-                eventStream.emit('EventRefresh', {session: true});
-        } else eventStream.emit('EventRefresh', {session: false, redirect: true});
-});
 
 export default fireBase;
 

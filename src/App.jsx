@@ -1,11 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import eventStream from './EventEmitter';
-
-import {Provider} from 'react-redux';
-import store from './redux/store';
-
+import withFirebase from './components/firebaseHOC';
 import Loader from './components/loading/Loader';
 
 import Index from './Pages/Index/Index';
@@ -13,40 +10,49 @@ import Cabinet from './Pages/Cabinet/Cabinet';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
 
-function App(props){
 
-    let [session, setSession] = useState(false);
-    let [redirect, setReditect] = useState(false);
+class App extends React.PureComponent {
 
-    const refresh = (event) => {
-        let eo = {...event};
-        setSession(eo.session);
-        setReditect(eo.redirect);
+    static propTypes = {
+        config: PropTypes.object.isRequired,
+        firebase: PropTypes.object.isRequired,
     }
 
-    useEffect(() => {
-        eventStream.on('EventRefresh', refresh);
-        return () => eventStream.off('EventRefresh', refresh);
-    }, []);
+    state = {
+        firebase: this.props.firebase,
+        session: false,
+        firebaseLoadState: false,
+    }
 
+    componentDidMount(){
+        if (this.props.firebase)
+        this.props.firebase.auth.onAuthStateChanged((user) => {
+            if (user) return this.setState({firebaseLoadState: true, session: true});
+            else return this.setState({firebaseLoadState: true, session: false});
+        });
+    }
 
-    if (session || redirect){
-    return (
-
-        <Provider store = {store}>
-        <BrowserRouter>
-                <Switch>
-                    <Route path = "/" exact component = {
-                    () => <Index session = {session} config = {props.config} />
-                    } />
-                    <Route path = '/Cabinet/' exact component = {Cabinet}/>
-                    <Route path = '/Cabinet/About' component = {About}/>
-                    <Route path = '/Cabinet/Build/:param' component = {Build}/>
-                </Switch>
-        </BrowserRouter>
-    </Provider>
-    )
-    } else return <Loader path = '/img/loading.gif' type = 'application' />
+    render(){
+        console.log('app');
+        if (this.state.firebaseLoadState){
+        return (
+            <BrowserRouter>
+                    <Switch>
+                        <Route
+                            path = '/' exact
+                            render = {(props) => <Index {...props} session = {this.state.session} />}
+                        />
+                        <Route path = '/Cabinet/' exact component = {Cabinet}/>
+                        <Route
+                            path = '/Cabinet/About'
+                            render = {(props) => <About {...props} config = {this.props.config} />}
+                        />
+                        <Route path = '/Cabinet/Build/:param' component = {Build}/>
+                    </Switch>
+            </BrowserRouter>
+        )
+        } else return <Loader path = '/img/loading.gif' type = 'application' />
+    }
 }
 
-export default App;
+export default withFirebase(App);

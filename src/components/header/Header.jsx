@@ -17,24 +17,24 @@ class Header extends React.Component {
 
     static propTypes = {
         title: PropTypes.string.isRequired,
-    }
+    };
 
     state = {
         title: this.props.title,
-    }
+    };
 
     logOut = (event) => {
         this.props.dispatch(middlewareLogOutUser(this.props.idUser));
-      }
+    };
 
     redirect = (e) => {
         if (this.props.location.pathname !== '/Cabinet/About')
             this.props.history.push('/Cabinet/About');
-    }
+    };
 
     add = (e) => {
         eventStream.emit('EventChangeWorkMode',{action: 'newProject'});
-    }
+    };
 
     render(){
         return (
