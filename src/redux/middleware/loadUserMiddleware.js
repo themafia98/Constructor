@@ -7,7 +7,6 @@ const middlewareLogin = (email,password) => async dispatch => {
             firebase.db.collection("users").doc(response.user.uid).get()
             .then(docUser => {
                 let user = docUser.data();
-                console.log('dispatch load');
                 dispatch(loadUserAction({uid: docUser.id, projects: [...user.projects]}))
             })
         })
@@ -26,7 +25,6 @@ const middlewareLoadUserData = (uid) => async dispatch => {
 const middlewareLogOutUser = (uid) => async dispatch => {
     await firebase.signOut()
     .then (response => {
-        console.log(response);
         dispatch(logOutAction());
     })
     .catch(error => dispatch(errorAction(error.message)));

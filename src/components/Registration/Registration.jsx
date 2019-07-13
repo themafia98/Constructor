@@ -34,19 +34,9 @@ class Registration extends React.PureComponent {
             firebase.db.collection("users").doc(response.user.uid).set({
                 'projects': [],
                 'email': email,
-            })
-            .then (response => {
-                console.log(response);
-            });
+            }).then(() => eventStream.emit('EventRegistrationCorrect', response))
         })
-        .then (response => {
-            eventStream.emit('EventRegistrationCorrect', response);
-        })
-        .catch((error) => {
-            console.log(error);
-
-            this.setState({error: error.message});
-          });
+        .catch((error) => this.setState({error: error.message}));
     };
 
     render(){

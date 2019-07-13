@@ -46,7 +46,6 @@ class List extends React.PureComponent {
     }
 
     render(){
-        console.log('render list');
         if (this.state.redirect)
             return <Redirect to = '/' />
             else return (
