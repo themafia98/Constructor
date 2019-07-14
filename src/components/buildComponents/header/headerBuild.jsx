@@ -45,31 +45,28 @@ class HeaderBuild extends React.PureComponent {
         )
     }
 
-    // componentDidUpdate = (oldProps, oldState) => {
-
-    //     if (oldProps.children.edit !== this.props.children.edit){
-    //         this.setState({
-    //             ...this.state,
-    //             component: {...this.props.children}
-    //         })
-    //     }
-    // }
-
-
-
     render() {
 
         console.log('headerBuild');
         console.log(this.props.children);
         return (
-            <div onClick = {this.changeMode} className = 'Header'>
-                <h2 className = 'titleCompoentBuild'>Header</h2>
-                {  this.props.children.build.component ?
+            <Fragment>
+                <Fragment>
+                {  this.props.children.build.type === 'background' ?
                     this.props.children.build.component : null
                 }
-                {!this.props.editStart ? <p className = 'warningEdit'>Click for start edit</p> : null}
-                {!this.state.readyBuild ? this.startMode() : null}
-            </div>
+                </Fragment>
+                <Fragment>
+                <div onClick = {this.changeMode} className = 'Header'>
+                    <h2 className = 'titleCompoentBuild'>Header</h2>
+                    {  this.props.children.build.component && this.props.children.build.type === 'text'  ?
+                        this.props.children.build.component : null
+                    }
+                    {!this.props.editStart ? <p className = 'warningEdit'>Click for start edit</p> : null}
+                    {!this.state.readyBuild ? this.startMode() : null}
+                </div>
+                </Fragment>
+            </Fragment>
         )
     }
 }

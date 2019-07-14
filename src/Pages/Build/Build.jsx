@@ -44,16 +44,17 @@ class Build extends React.PureComponent {
         });
 
     }
-    
-    addTextBox = (itemEvent) => {
+
+    addHeaderComponent = (itemEvent) => {
         this.setState({
             ...this.state,
             editComponent: {...this.state.editComponent,
-                build: {type: itemEvent.type, component: [...itemEvent.component]},
+                build: {target: itemEvent.target, type: itemEvent.type, component: [...itemEvent.component]},
             },
             menuActive: false,
         });
     };
+
 
     render(){
         console.log('Build');
@@ -83,12 +84,12 @@ class Build extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        eventEmitter.on('EventTextBox', this.addTextBox);
+        eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
     }
 
     componentWillUnmount = () => {
-        eventEmitter.off('EventTextBox', this.addTextBox);
+        eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
         eventEmitter.off('EventModeEdit', this.workModeEdit);
     }
 }
