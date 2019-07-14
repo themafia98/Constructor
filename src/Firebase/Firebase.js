@@ -33,10 +33,10 @@ class Firebase {
         }
 }
 
-let fireBase = new Firebase();
-fireBase.saveSession('SESSION');
+let interfaceFirebase = new Firebase();
+interfaceFirebase.saveSession('SESSION');
 
-export default fireBase;
+export default interfaceFirebase;
 
 export { auth, firestore };
 
