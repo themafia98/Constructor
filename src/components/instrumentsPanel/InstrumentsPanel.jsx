@@ -6,7 +6,7 @@ import './instrumentsPanel.scss';
 class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
-        id: PropTypes.string,
+        id: PropTypes.number,
         editComponent: PropTypes.object.isRequired
     }
 
@@ -15,7 +15,7 @@ class InstrumentsPanel extends React.PureComponent {
         acceptInstruments: this.props.editComponent.edit,
     }
 
-    makePanelInstruments = () => {
+    makePanelInstruments = (type) => {
 
         return (
             <div  className= 'instuments'>
@@ -24,6 +24,7 @@ class InstrumentsPanel extends React.PureComponent {
     }
 
     render(){
+        console.log(this.props);
         return (
             <div className = 'instumentsPanel'>
                 <h3>Instruments</h3>

@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
-// import {middlewareLoadUserData} from '../../redux/middleware/loadUserMiddleware';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
-
 
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
@@ -16,7 +14,6 @@ import HeaderBuild from '../../components/buildComponents/header/headerBuild';
 
 import './build.scss';
 
-const config = require('../../config.json');
 
 class Build extends React.PureComponent {
 
@@ -30,36 +27,53 @@ class Build extends React.PureComponent {
     }
 
     state = {
-            idProject: this.props.match.params.param,
+            idProject: parseInt(this.props.match.params.param),
             typeProject: null,
-            editComponent: {name: null, edit: false},
-            edit: false
+            editComponent: {name: null, build: {}, edit: false},
+            menuActive: false,
         }
 
     workModeEdit = (event) => {
+        console.log('workMode');
         this.setState({
             ...this.state,
             idProject: event.idProject,
-            editComponent: {...event.component, edit: true}
+            editComponent: {...event.component},
+            menuActive: true,
+            editStart: true
         });
+
     }
+    
+    addTextBox = (itemEvent) => {
+        this.setState({
+            ...this.state,
+            editComponent: {...this.state.editComponent,
+                build: {type: itemEvent.type, component: [...itemEvent.component]},
+            },
+            menuActive: false,
+        });
+    };
 
     render(){
         console.log('Build');
-        console.log(this.props);
+        console.log(this.state);
         if (this.props.active){
             return (
                 <Fragment>
-                    <Header title = {config.title} />
+                    <Header title = "Constructor"  />
                     { this.state.editComponent.edit ?
                         <InstrumentsPanel
-                            editComponent = { this.props.currentEditable ? {...this.props.currentEditable} :
-                            {...this.props.editComponent}}
+                            editComponent =  {{...this.state.editComponent, name: 'Header'}}
                             id = {this.state.idProject}
                         />
                         : null
                     }
-                    <HeaderBuild id = {this.state.idProject}>
+                    <HeaderBuild
+                            editStart = {this.state.editStart}
+                            menuActive = {this.state.menuActive}
+                            id = {this.state.idProject}
+                    >
                         {{...this.state.editComponent, name: 'Header'}}
                     </HeaderBuild>
                 </Fragment>
@@ -69,10 +83,12 @@ class Build extends React.PureComponent {
     }
 
     componentDidMount = () => {
+        eventEmitter.on('EventTextBox', this.addTextBox);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
     }
 
     componentWillUnmount = () => {
+        eventEmitter.off('EventTextBox', this.addTextBox);
         eventEmitter.off('EventModeEdit', this.workModeEdit);
     }
 }
