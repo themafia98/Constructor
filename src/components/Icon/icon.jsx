@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 
+
 function Icon(props){
     const [path] = useState(props.path);
     const [className] = useState(props.className ? props.className : null);
+    const [draggable] = useState(props.draggable ? true : false);
+
     return (
     <img
         onClick = {props.onClick ? props.onClick : null}

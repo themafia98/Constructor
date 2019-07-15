@@ -1,23 +1,51 @@
-import React, {Fragment, useState} from 'react';
+import React from 'react';
+import eventStream from '../../../../EventEmitter';
 import styled from 'styled-components';
 
-const TitleHeader = styled.h1`
+const Title = styled.h1`
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
     font-size: ${props => props.size};
     color: ${props => props.textColor};
     text-align: center;
+    margin: 0;
 `;
 
-const BackgroundHeader = styled.div`
+const Background = styled.div`
+    position: relative;
     width: 100%;
     height: 95vh;
-    background-color: ${props => props.backgroundColor ? props.backgroundColor : null}
-    background-image: ${props => props.backgroundImage ? props.backgroundImage : null}
+    background: ${props => props.background}
 `;
 
+const Media = styled.video`
+    width: 100%;
+`;
 
-const Title = props => <TitleHeader textColor = {props.color} size = {props.size} >{props.title}</TitleHeader>
-const Background = props => <BackgroundHeader backgroundColor = 'red' />
+const openBgInstruments = event => {
+
+    eventStream.emit('EventInstrumentPanel',{target: 'background'});
+    event.stopPropagation();
+}
+
+const openMediaInstruments = event => {
+
+    eventStream.emit('EventInstrumentPanel',{target: 'media'});
+    event.stopPropagation();
+}
+
+const openTitleInstruments = event => {
+
+    eventStream.emit('EventInstrumentPanel',{target: 'text'});
+    event.stopPropagation();
+}
+
+const TitleComponent = props => <Title onClick={openTitleInstruments} textColor = {props.color} size = {props.size}>{props.children}</Title>;
+const BackgroundComponent = props => <Background onClick={openBgInstruments} background = {props.background}>{props.children}</Background>;
+const MediaComponent = props => <Media onClick={openMediaInstruments} width = {props.width} height = {props.height}>{props.children}</Media>;
 
 export {
-    Title, Background
+    TitleComponent, BackgroundComponent,
+    MediaComponent
 }

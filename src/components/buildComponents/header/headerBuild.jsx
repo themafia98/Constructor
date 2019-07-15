@@ -2,6 +2,10 @@ import React, {Fragment} from 'react';
 import eventEmitter from '../../../EventEmitter';
 import PropTypes from 'prop-types';
 
+
+import {BackgroundComponent} from '../../buildComponents/header/components/headerComponents';
+import Controllers from '../../controllers/controllers';
+
 import Icon from '../../Icon/icon';
 import BuildMenu from '../../componentsBuildMenu/BuildMenu';
 import './headerBuild.scss';
@@ -14,58 +18,36 @@ class HeaderBuild extends React.PureComponent {
 
     state = {
         idProject: this.props.id,
-        viewComponentMenu: false,
         component: {...this.props.children}
         }
 
 
     changeMode = (event) => {
-        eventEmitter.emit('EventModeEdit', {...this.state})
-    }
+        if (!this.props.editStart)
+        eventEmitter.emit('EventModeEdit', {...this.state});
 
-    componentMenu = (event) => {
-        this.setState({viewComponentMenu: this.state.viewComponentMenu ? false : true})
-    }
-
-    startMode = () => {
-        return (
-            <Fragment>
-            { this.props.menuActive ?
-                <div className = 'ControllersEditComponent'>
-                    <Icon
-                        onClick = {this.componentMenu}
-                        className = 'addButton'
-                        path = '/img/addButton.png'
-                    />
-                    {this.state.viewComponentMenu ? <BuildMenu component = {{...this.state.component}} /> : null}
-                </div>
-                : null
-            }
-            </Fragment>
-        )
+        console.log(event.target);
     }
 
     render() {
-
-        console.log('headerBuild');
-        console.log(this.props.children);
+        console.log('header');
         return (
             <Fragment>
-                <Fragment>
-                {  this.props.children.build.type === 'background' ?
-                    this.props.children.build.component : null
-                }
-                </Fragment>
-                <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>
-                    <h2 className = 'titleCompoentBuild'>Header</h2>
+                    <BackgroundComponent background = 'grey'>
                     {  this.props.children.build.component && this.props.children.build.type === 'text'  ?
-                        this.props.children.build.component : null
+                            this.props.children.build.component : null
                     }
+                    </BackgroundComponent>
                     {!this.props.editStart ? <p className = 'warningEdit'>Click for start edit</p> : null}
-                    {!this.state.readyBuild ? this.startMode() : null}
+                    {!this.state.readyBuild ? 
+                        <Controllers
+                            menuActive = {this.props.menuActive}
+                            component = {{...this.state.component}}
+
+                        />
+                        : null}
                 </div>
-                </Fragment>
             </Fragment>
         )
     }

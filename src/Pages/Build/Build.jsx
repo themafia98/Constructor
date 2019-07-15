@@ -1,4 +1,5 @@
 import React,{Fragment} from 'react';
+
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
@@ -30,28 +31,39 @@ class Build extends React.PureComponent {
             idProject: parseInt(this.props.match.params.param),
             typeProject: null,
             editComponent: {name: null, build: {}, edit: false},
+            changeEdit: false,
+            instrumentActive: false,
             menuActive: false,
+            editStart: false,
         }
 
-    workModeEdit = (event) => {
-        console.log('workMode');
+    workModeEdit = itemEvent => {
+        
+        if (!this.state.editStart || this.state.changeEdit)
         this.setState({
             ...this.state,
-            idProject: event.idProject,
-            editComponent: {...event.component},
+            idProject: itemEvent.idProject,
+            editComponent: {...itemEvent.component},
             menuActive: true,
             editStart: true
         });
 
     }
 
-    addHeaderComponent = (itemEvent) => {
+    openInstrument = itemEvent => {
+        if (this.state.editStart)
+        this.setState({
+            ...this.state,
+            instrumentActive: true
+        })
+    }
+
+    addHeaderComponent = itemEvent => {
         this.setState({
             ...this.state,
             editComponent: {...this.state.editComponent,
                 build: {target: itemEvent.target, type: itemEvent.type, component: [...itemEvent.component]},
             },
-            menuActive: false,
         });
     };
 
@@ -62,14 +74,14 @@ class Build extends React.PureComponent {
         if (this.props.active){
             return (
                 <Fragment>
+                { this.state.instrumentActive ?
+                    <InstrumentsPanel
+                        editComponent =  {{...this.state.editComponent, name: 'Header'}}
+                        id = {this.state.idProject}
+                    />
+                    : null
+                }
                     <Header title = "Constructor"  />
-                    { this.state.editComponent.edit ?
-                        <InstrumentsPanel
-                            editComponent =  {{...this.state.editComponent, name: 'Header'}}
-                            id = {this.state.idProject}
-                        />
-                        : null
-                    }
                     <HeaderBuild
                             editStart = {this.state.editStart}
                             menuActive = {this.state.menuActive}
@@ -85,11 +97,13 @@ class Build extends React.PureComponent {
 
     componentDidMount = () => {
         eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.on('EventInstrumentPanel', this.openInstrument);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.off('EventInstrumentPanel', this.openInstrument);
         eventEmitter.off('EventModeEdit', this.workModeEdit);
     }
 }

@@ -17,22 +17,23 @@
 }
 
 .addButton {
-    position: absolute;
-    transform: translate(-50%);
     transition: .3s linear;
-    left: 50%;
-    top: 50%;
 }
 
 .addButton:hover {
     filter: sepia(70%);
-    transform: translate(-50%) scale(1.1);
+    transform:  scale(1.1);
 }
 
 .ControllersEditComponent {
     position: absolute;
-    width: 500px;
-    height: 500px;
-    transform: translate(-50%);
     left: 50%;
+    top: 0;
+
+    p {
+        visibility: hidden;
+        box-sizing: border-box;
+        width: 72px;
+        height: 42px;
+    }
 }
