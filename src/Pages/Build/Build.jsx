@@ -32,7 +32,7 @@ class Build extends React.PureComponent {
             typeProject: null,
             editComponent: {name: null, build: {}, edit: false},
             changeEdit: false,
-            instrumentActive: false,
+            instrumentPanel: { instrumentActive: false, target: '' },
             menuActive: false,
             editStart: false,
         }
@@ -54,7 +54,10 @@ class Build extends React.PureComponent {
         if (this.state.editStart)
         this.setState({
             ...this.state,
-            instrumentActive: true
+            instrumentPanel: {
+                ...this.state.instrumentPanel, 
+                instrumentActive: true, 
+                target: itemEvent.target }
         })
     }
 
@@ -71,13 +74,14 @@ class Build extends React.PureComponent {
     render(){
         console.log('Build');
         console.log(this.state);
+        let { instrumentActive } = this.state.instrumentPanel;
         if (this.props.active){
             return (
                 <Fragment>
-                { this.state.instrumentActive ?
+                { instrumentActive ?
                     <InstrumentsPanel
-                        editComponent =  {{...this.state.editComponent, name: 'Header'}}
-                        id = {this.state.idProject}
+                        editComponent =  {{...this.state.editComponent}}
+                        instrumentPanel = {{...this.state.instrumentPanel}}
                     />
                     : null
                 }

@@ -29,7 +29,6 @@ class HeaderBuild extends React.PureComponent {
     }
 
     render() {
-        console.log('header');
         return (
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>

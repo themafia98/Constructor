@@ -6,17 +6,12 @@ import BuildMenu from '../componentsBuildMenu/BuildMenu';
 
 import styled from 'styled-components';
 
-const ControllersBox = styled.div.attrs(props => (
-        {
+const ControllersBox = styled.div.attrs(props => ({
             style: {
                 left: props.coordX,
                 top: props.coordY,
-            },
-        }
-    ))
-    `
-    position: absolute;
-    `;
+    }}))
+    `position: absolute;`;
 
 
 
@@ -41,7 +36,6 @@ class Controllers extends React.PureComponent {
     saveCoords = event => {
         let left = event.target.getBoundingClientRect().left;
         let top = event.target.getBoundingClientRect().top;
-
         this.setState({...this.state, shiftX: event.pageX - left, 
         shiftY: event.pageY - top + 55});
 

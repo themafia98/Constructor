@@ -22,7 +22,7 @@ class ModalWindow extends React.PureComponent {
         },
         warning: {
             lengthMax: 'Max length: 20 symbols',
-            lengthMin: 'Min length: 3 symbol',
+            lengthMin: 'Min length: 4 symbol',
             type: 'Select type of webpage',
         }
     }
@@ -63,7 +63,7 @@ class ModalWindow extends React.PureComponent {
         let inputs = {...this.state[this.state.workMode]};
         inputs.name = event.target.value;
         let lengthInput = inputs.name.length;
-        inputs.validateName = lengthInput > 0 && lengthInput < 20 ? true : false;
+        inputs.validateName = lengthInput >= 4 && lengthInput < 20 ? true : false;
         inputs.disabled = inputs.validateType && inputs.validateName ? false : true;
 
         this.setState({
@@ -87,7 +87,7 @@ class ModalWindow extends React.PureComponent {
                         <div className = 'Modal'>
                             <h3>Create new Project</h3>
                             {
-                                this.state[this.state.workMode].name.length <= 0 ?
+                                this.state[this.state.workMode].name.length <= 3 ?
                                 <span className = 'warning'>{this.state.warning.lengthMin}</span> : null
                             }
                             {

@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 
 import './instrumentsPanel.scss';
 
+import Icon from '../Icon/icon';
+
 class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
-        id: PropTypes.number,
+        instrumentPanel:  PropTypes.object.isRequired,
         editComponent: PropTypes.object.isRequired
     }
 
     state = {
-        idProject: this.props.id,
-        acceptInstruments: this.props.editComponent.edit,
+        instrumentPanel: {...this.props.instrumentPanel}
     }
 
     makePanelInstruments = (type) => {
@@ -24,17 +25,18 @@ class InstrumentsPanel extends React.PureComponent {
     }
 
     render(){
-        console.log(this.props);
+        let { instrumentActive } = this.state.instrumentPanel;
         return (
             <div className = 'instumentsPanel'>
+            <button className = 'closeInstrumentsPanel'><Icon path = '/img/closeInstrument.png' /></button>
                 <h3>Instruments</h3>
                 {
-                    this.state.acceptInstruments ? 
-                    <p className = 'titleComponent important'>{this.props.editComponent.name}</p>
+                    instrumentActive ? 
+                    <p className = 'titleComponent important'>{this.state.instrumentPanel.target}</p>
                     : null
                 }
                 {
-                    this.state.acceptInstruments ? this.makePanelInstruments() :
+                    instrumentActive ? this.makePanelInstruments() :
                     <p className = 'warningInstruments'>Select elements for accses edit instruments</p>
                 }
             </div>
@@ -43,12 +45,12 @@ class InstrumentsPanel extends React.PureComponent {
 
     componentDidUpdate = (oldProps, oldState) => {
 
-        if (oldProps.editComponent.edit !== this.props.editComponent.edit){
-            this.setState({
-                ...this.state,
-                acceptInstruments: this.props.editComponent.edit
-            })
-        }
+      if (oldState.instrumentPanel.target !== this.props.instrumentPanel.target)
+        this.setState({
+            ...this.state,
+            instrumentPanel: {...this.props.instrumentPanel}
+        })
+      return true;
     }
 }
 
