@@ -8,6 +8,7 @@ function Icon(props){
 
     return (
     <img
+        draggable = {draggable}
         onClick = {props.onClick ? props.onClick : null}
         className = {className}
         title = {props.title ? props.title : null}

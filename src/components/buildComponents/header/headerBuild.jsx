@@ -6,8 +6,7 @@ import PropTypes from 'prop-types';
 import {BackgroundComponent} from '../../buildComponents/header/components/headerComponents';
 import Controllers from '../../controllers/controllers';
 
-import Icon from '../../Icon/icon';
-import BuildMenu from '../../componentsBuildMenu/BuildMenu';
+
 import './headerBuild.scss';
 
 class HeaderBuild extends React.PureComponent {

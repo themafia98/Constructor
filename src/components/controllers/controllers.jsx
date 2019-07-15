@@ -6,11 +6,19 @@ import BuildMenu from '../componentsBuildMenu/BuildMenu';
 
 import styled from 'styled-components';
 
-const ControllersBox = styled.div`
+const ControllersBox = styled.div.attrs(props => (
+        {
+            style: {
+                left: props.coordX,
+                top: props.coordY,
+            },
+        }
+    ))
+    `
     position: absolute;
-    left: ${props => props.x};
-    top: ${props => props.y};
-`;
+    `;
+
+
 
 class Controllers extends React.PureComponent {
 
@@ -20,6 +28,8 @@ class Controllers extends React.PureComponent {
 
     state = {
         viewComponentMenu: false,
+        shiftX: 0,
+        shiftY: 0,
         coordsX: '50%',
         coordsY: '0'
     }
@@ -28,15 +38,22 @@ class Controllers extends React.PureComponent {
         this.setState({viewComponentMenu: this.state.viewComponentMenu ? false : true})
     }
 
-    drag = event => {
-        if (!this.state.viewComponentMenu)
-        this.setState({...this.state, coordsX: event.pageX - event.target.offsetWidth+ 'px', 
-                    coordsY: event.pageY - event.target.offsetHeight  + 'px'})
+    saveCoords = event => {
+        let left = event.target.getBoundingClientRect().left;
+        let top = event.target.getBoundingClientRect().top;
+
+        this.setState({...this.state, shiftX: event.pageX - left, 
+        shiftY: event.pageY - top + 55});
+
         event.stopPropagation();
     }
 
-    dragStart = event => {
-        return false;
+    drag = event => {
+        if (!this.state.viewComponentMenu){
+        this.setState({...this.state, coordsX: event.pageX - this.state.shiftX + 'px', 
+                    coordsY: event.pageY - this.state.shiftY + 'px'});
+        }
+        event.stopPropagation();
     }
 
     controlBox = null;
@@ -44,19 +61,18 @@ class Controllers extends React.PureComponent {
 
 
     render(){
-        console.log('controllers');
         return (
             <Fragment>
             { this.props.menuActive ?
                 <ControllersBox
                 ref = {this.refControll}
                 className = 'ControllersEditComponent'
-                x = {this.state.coordsX}
-                y = {this.state.coordsY}
+                coordX = {this.state.coordsX}
+                coordY = {this.state.coordsY}
                 draggable = {!this.state.viewComponentMenu}
+                onMouseDown = {this.saveCoords}
                 onClick = {this.componentMenu}
                 onDrag   = {this.drag}
-                onDragStart = {this.dragStart}
                 onDragEnd = {this.drag}
                 >
                     <Icon
