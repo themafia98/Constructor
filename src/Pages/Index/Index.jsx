@@ -52,8 +52,6 @@ class Index extends React.PureComponent {
     passwordRef = (node) => this.passwordImput = node;
 
     render(){
-        console.log('index render');
-        console.log(this.props);
         if (!this.props.active) {
             let currentSelected = this.state.registrationActive;
             return (

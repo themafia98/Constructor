@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import eventStream from '../../../../EventEmitter';
 import styled from 'styled-components';
 
@@ -42,7 +42,36 @@ const openTitleInstruments = event => {
 }
 
 const TitleComponent = props => <Title onClick={openTitleInstruments} textColor = {props.color} size = {props.size}>{props.children}</Title>;
-const BackgroundComponent = props => <Background onClick={openBgInstruments} background = {props.background}>{props.children}</Background>;
+
+
+const BackgroundComponent = props => {
+
+    let [backgroundColor, setBgColor] = useState(props.background);
+
+    const changeColor = colorHash => {
+        const {rgb} = colorHash;
+        let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
+        setBgColor(colorRGB);
+    }
+
+    const didUpdate = event => {
+        eventStream.on('EventChangeColor', changeColor);
+        return () => {
+            eventStream.off('EventChangeColor', changeColor);
+        }
+    }
+
+    useEffect(didUpdate);
+    return (
+        <Background
+            onClick={openBgInstruments}
+            background = {backgroundColor}
+        >
+            {props.children}
+            </Background>
+    )
+        }
+
 const MediaComponent = props => <Media onClick={openMediaInstruments} width = {props.width} height = {props.height}>{props.children}</Media>;
 
 export {

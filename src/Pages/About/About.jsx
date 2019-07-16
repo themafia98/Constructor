@@ -19,7 +19,6 @@ class About extends React.PureComponent {
     };
 
     render(){
-        console.log('About render');
         if (this.props.firebase.getCurrentUser()) {
             const { config } = this.state;
             return (

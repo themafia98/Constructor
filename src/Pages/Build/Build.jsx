@@ -61,6 +61,13 @@ class Build extends React.PureComponent {
         })
     }
 
+    closePanel = event => {
+        this.setState({
+            ...this.state,
+            instrumentPanel: {...this.state.instrumentPanel, instrumentActive: event.close}
+        })
+    }
+
     addHeaderComponent = itemEvent => {
         this.setState({
             ...this.state,
@@ -101,12 +108,14 @@ class Build extends React.PureComponent {
 
     componentDidMount = () => {
         eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.on('EventClosePanel', this.closePanel);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);
         eventEmitter.off('EventModeEdit', this.workModeEdit);
     }

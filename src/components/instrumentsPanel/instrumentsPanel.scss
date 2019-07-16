@@ -1,3 +1,6 @@
+$bgColor: #35414c;
+$closeSize: 25px;
+
 .instumentsPanel {
     position: fixed;
     z-index: 999;
@@ -6,7 +9,7 @@
     width: 20%;
     height: 100%;
     overflow: hidden;
-    background-color: #35414c;
+    background-color: $bgColor;
 
     h3 {
         font-size: 1.5rem;
@@ -32,20 +35,33 @@
     }
 
     .closeInstrumentsPanel {
-        outline: none;
+        cursor: pointer;
         position: absolute;
         overflow: hidden;
-        width: 50px;
+        width: $closeSize;
+        height: $closeSize;
         box-sizing: content-box;
-        height: 50px;
         padding: 0;
+        border: 1px solod black;
+        outline: none;
+        border: 0;
+        background-color: $bgColor;
         border-radius: 15px;
-        top: 50%;
-        left: 5px;
+        top: 2%;
+        left: 90%;
 
         img {
-            width: 50px;
-            height: 50px;
+            width: $closeSize;
+            height: $closeSize;
         }
+    }
+
+    .closeInstrumentsPanel:active {
+        transform: scale(1.1);
+    }
+
+    .button_switchColor {
+
+        font-weight: bold;
     }
 }

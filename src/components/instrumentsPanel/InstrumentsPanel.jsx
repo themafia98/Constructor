@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import eventStream from '../../EventEmitter';
 import PropTypes from 'prop-types';
-
+import { SketchPicker } from 'react-color';
 import './instrumentsPanel.scss';
 
 import Icon from '../Icon/icon';
@@ -13,22 +14,64 @@ class InstrumentsPanel extends React.PureComponent {
     }
 
     state = {
-        instrumentPanel: {...this.props.instrumentPanel}
+        instrumentPanel: {...this.props.instrumentPanel},
+        colorPickerAvtive: false
+    }
+
+    resetAll = event => {
+        console.log(event.target);
+        event.stopPropagation();
+        if (this.state.colorPickerAvtive)
+        this.setState({...this.state, colorPickerAvtive: false });
+    }
+
+    closePanel = event => {
+        eventStream.emit('EventClosePanel', {close: false});
+    }
+
+    setColor = event => {
+        event.stopPropagation();
+        this.setState({...this.state, colorPickerAvtive: this.state.colorPickerAvtive ? false : true});
+    };
+
+    handleChangeComplete = event => {
+        eventStream.emit('EventChangeColor', event);
     }
 
     makePanelInstruments = (type) => {
+        switch (type){
+            case 'text': {
+            return (
+                <p>{type}</p>
+            )
+            }
+            case 'background': {
+                return (
+                    <Fragment>
+                    <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'setColor' />
+                        { this.state.colorPickerAvtive ?
+                            <SketchPicker
+                            onChangeComplete={this.handleChangeComplete}
+                            />
+                            : null
+                        }
+                    </Fragment>
+                )
 
-        return (
-            <div  className= 'instuments'>
-            </div>
-        )
+            }
+            default:{
+                return (
+                    <p className = 'warningInstruments'>Select elements for accses edit instruments</p>
+                )
+            }
+        }
     }
 
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
         return (
-            <div className = 'instumentsPanel'>
-            <button className = 'closeInstrumentsPanel'><Icon path = '/img/closeInstrument.png' /></button>
+            <div  className = 'instumentsPanel'>
+            <button onClick = {this.closePanel} className = 'closeInstrumentsPanel'><Icon path = '/img/close.svg' /></button>
                 <h3>Instruments</h3>
                 {
                     instrumentActive ? 
@@ -36,8 +79,9 @@ class InstrumentsPanel extends React.PureComponent {
                     : null
                 }
                 {
-                    instrumentActive ? this.makePanelInstruments() :
-                    <p className = 'warningInstruments'>Select elements for accses edit instruments</p>
+                    instrumentActive ?
+                    <div  className= 'instuments'>{this.makePanelInstruments(this.state.instrumentPanel.target)}</div>
+                    : null
                 }
             </div>
         )
