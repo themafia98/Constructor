@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom';
 import withFirebase from '../../components/firebaseHOC';
 
 import {middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
+import middlewareDelete from '../../redux/middleware/middlewareDelete';
 import Loader from '../../components/loading/Loader';
 import {connect} from 'react-redux';
 
@@ -26,11 +27,15 @@ class Cabinet extends React.PureComponent {
     workMode: 'default',
   }
 
-  logOut = (event) => {
+  logOut = event => {
     this.props.dispatch(middlewareLogOutUser(this.props.idUser));
   }
 
-  changeWorkMode = (event) => {
+  deletItem = event => {
+    this.props.dispatch(middlewareDelete({...event, uid: this.props.firebase.getCurrentUser().uid}));
+  }
+
+  changeWorkMode = event => {
     this.setState ({
       ...this.state,
       workMode: event.action,
@@ -52,10 +57,12 @@ class Cabinet extends React.PureComponent {
 
 
   componentDidMount = () => {
+    eventStream.on('EventDeleteItem', this.deletItem);
     eventStream.on('EventChangeWorkMode', this.changeWorkMode);
   }
 
   componentWillUnmount = () => {
+    eventStream.off('EventDeleteItem', this.deletItem);
     eventStream.off('EventChangeWorkMode', this.changeWorkMode);
   }
 }

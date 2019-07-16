@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import eventStream from '../../EventEmitter';
 import {withRouter} from 'react-router-dom';
 
 function Item(props) {
@@ -7,17 +8,23 @@ function Item(props) {
     const [type] = useState(props.type);
 
 
-    const build = (event) => {
+    const build = event => {
         props.history.push(`/Cabinet/Build/${id}`);
         event.stopPropagation();
     };
+
+    const deleteItem = event => {
+        eventStream.emit('EventDeleteItem',{id: props.id, name: props.name, type: props.type});
+        event.stopPropagation();
+    };
+
     return (
-        <div onClick = {build} className = 'item' data-id = {id}>
+        <div className = 'item' data-id = {id}>
             <p className = 'ProjectName'>{name}</p>
             <p className = 'ProjectType'>{type}</p>
             <div className = 'projectController'>
-            <input className = 'projectControllerButton_enter' type = 'button' value = 'enter build' />
-            <input className = 'projectControllerButton_delete' type = 'button' value = 'delete' />
+            <input onClick = {build} className = 'projectControllerButton_enter' type = 'button' value = 'enter build' />
+            <input onClick = {deleteItem} className = 'projectControllerButton_delete' type = 'button' value = 'delete' />
             </div>
         </div>
     )

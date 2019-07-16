@@ -51,6 +51,7 @@ class App extends React.PureComponent {
                             render = {(props) => <About {...props} config = {this.props.config} />}
                         />
                         <Route path = '/Cabinet/Build/:param' component = {Build}/>
+                        <Route path = '*' component = {Index} />;
                     </Switch>
             </BrowserRouter>
         )
