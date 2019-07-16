@@ -14,13 +14,14 @@ class BuildMenu extends React.PureComponent {
     }
 
     state = {
-        component: {...this.props.component}
+        component: {...this.props.component},
+        title: 'Title'
     }
 
     addText = event => {
 
         let componentArrayWrapper = [];
-        componentArrayWrapper.push(<TitleComponent key = 'header' color = 'red' size = '120px'>Header title</TitleComponent>);
+        componentArrayWrapper.push(<TitleComponent key = 'header'>{this.state.title}</TitleComponent>);
         eventStream.emit('EventBuildHeaderComponents',{target: 'Header', type: 'text', component: componentArrayWrapper});
         event.stopPropagation();
     }
@@ -28,7 +29,7 @@ class BuildMenu extends React.PureComponent {
     addBackground = event => {
 
         let componentArrayWrapper = [];
-        componentArrayWrapper.push(<BackgroundComponent key = 'bgHeader' color = 'red' />);
+        componentArrayWrapper.push(<BackgroundComponent key = 'bgHeader'/>);
         eventStream.emit('EventBuildHeaderComponents',{target: 'Header', type: 'background', component: componentArrayWrapper});
 
         event.stopPropagation();

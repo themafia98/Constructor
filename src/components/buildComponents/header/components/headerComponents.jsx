@@ -41,7 +41,51 @@ const openTitleInstruments = event => {
     event.stopPropagation();
 }
 
-const TitleComponent = props => <Title onClick={openTitleInstruments} textColor = {props.color} size = {props.size}>{props.children}</Title>;
+const TitleComponent = props =>  {
+
+    let [colorText, setColorText] = useState(props.color);
+    let [sizeText, setSizeText] = useState(props.size);
+    let [contentText, setText] = useState(props.children);
+
+    const changeColorText = colorHash => {
+        const {rgb} = colorHash;
+        let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
+        setColorText(colorRGB);
+    }
+
+    const changeSizeText = eventSize => {
+        const {size} = eventSize;
+        setSizeText(size);
+    }
+
+    const changeContentText = eventContent => {
+        const {content} = eventContent;
+        setText(content);
+    }
+
+    const didUpdate = event => {
+        eventStream.on('EventChangeColorText', changeColorText);
+        eventStream.on('EventChangeSizeText', changeSizeText);
+        eventStream.on('EventChangeContentText', changeContentText);
+        return () => {
+            eventStream.off('EventChangeColorText', changeColorText);
+            eventStream.off('EventChangeSizeText', changeSizeText);
+            eventStream.off('EventChangeContentText', changeContentText);
+        }
+    }
+
+    useEffect(didUpdate);
+
+    return (
+        <Title
+            onClick={openTitleInstruments}
+            textColor = {colorText ? colorText : 'red'}
+            size = {sizeText ? sizeText : '120px'}
+        >
+            {contentText}
+        </Title>
+    )
+}
 
 
 const BackgroundComponent = props => {
@@ -70,7 +114,7 @@ const BackgroundComponent = props => {
             {props.children}
             </Background>
     )
-        }
+}
 
 const MediaComponent = props => <Media onClick={openMediaInstruments} width = {props.width} height = {props.height}>{props.children}</Media>;
 

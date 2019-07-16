@@ -17,11 +17,25 @@ $closeSize: 25px;
         color: white;
     }
 
+    .titleInstument {
+        color: #fff;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
 
     .warningInstruments, .titleComponent {
-        font-size: 1rem;
-        color: white;
         text-align: center;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    .titleComponent:after {
+        content: '';
+        display: block;
+        padding: 5px;
+        border-bottom: 1px solid whitesmoke;
     }
 
     .instuments {

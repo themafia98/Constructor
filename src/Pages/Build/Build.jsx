@@ -38,7 +38,6 @@ class Build extends React.PureComponent {
         }
 
     workModeEdit = itemEvent => {
-        
         if (!this.state.editStart || this.state.changeEdit)
         this.setState({
             ...this.state,
@@ -62,25 +61,31 @@ class Build extends React.PureComponent {
     }
 
     closePanel = event => {
+
         this.setState({
             ...this.state,
-            instrumentPanel: {...this.state.instrumentPanel, instrumentActive: event.close}
+            instrumentPanel: {
+                ...this.state.instrumentPanel,
+                colorPickerAvtive: false,
+                instrumentActive: event.close}
         })
     }
 
     addHeaderComponent = itemEvent => {
         this.setState({
             ...this.state,
-            editComponent: {...this.state.editComponent,
-                build: {target: itemEvent.target, type: itemEvent.type, component: [...itemEvent.component]},
+            editComponent: {
+                ...this.state.editComponent,
+                build: {
+                    target: itemEvent.target,
+                    type: itemEvent.type,
+                    component: [...itemEvent.component]},
             },
         });
     };
 
 
     render(){
-        console.log('Build');
-        console.log(this.state);
         let { instrumentActive } = this.state.instrumentPanel;
         if (this.props.active){
             return (

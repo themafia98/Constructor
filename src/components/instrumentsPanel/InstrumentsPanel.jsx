@@ -15,6 +15,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     state = {
         instrumentPanel: {...this.props.instrumentPanel},
+        sizeTextValue: 120,
         colorPickerAvtive: false
     }
 
@@ -29,26 +30,63 @@ class InstrumentsPanel extends React.PureComponent {
         eventStream.emit('EventClosePanel', {close: false});
     }
 
+    setSize = event => {
+        let size = event.target.value > 200 ? 200 : event.target.value;
+        event.stopPropagation();
+        this.setState({sizeTextValue: size}, () => {
+            eventStream.emit('EventChangeSizeText', {size: this.state.sizeTextValue + 'px' });
+        });
+    }
+
+    setContent = event => {
+        let contentValue = event.target.value;
+        event.stopPropagation();
+        eventStream.emit("EventChangeContentText",{content: contentValue});
+    }
+
     setColor = event => {
         event.stopPropagation();
         this.setState({...this.state, colorPickerAvtive: this.state.colorPickerAvtive ? false : true});
     };
 
     handleChangeComplete = event => {
-        eventStream.emit('EventChangeColor', event);
+
+        if (this.state.instrumentPanel.target === 'background')
+            eventStream.emit('EventChangeColor', event);
+        else if (this.state.instrumentPanel.target === 'text')
+            eventStream.emit('EventChangeColorText', event);
     }
 
     makePanelInstruments = (type) => {
         switch (type){
             case 'text': {
             return (
-                <p>{type}</p>
+                    <Fragment>
+                    <p className = 'titleInstument'>Color: </p>
+                    <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'color pick' />
+                    <p className = 'titleInstument'>Text size: </p>
+                    <input 
+                        onChange = {this.setSize} 
+                        type="number"
+                        min = '10' max = '200'
+                        value = {this.state.sizeTextValue}
+                    />
+                        { this.state.colorPickerAvtive ?
+                            <SketchPicker
+                            onChangeComplete={this.handleChangeComplete}
+                            />
+                            : null
+                        }
+                    <p className = 'titleInstument'>Content: </p>
+                    <input onChange = {this.setContent} maxLength = '20' type = 'text' defaultValue = 'Title' />
+                    </Fragment>
             )
             }
             case 'background': {
                 return (
                     <Fragment>
-                    <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'setColor' />
+                    <p className = 'titleInstument'>Color: </p>
+                    <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'color pick' />
                         { this.state.colorPickerAvtive ?
                             <SketchPicker
                             onChangeComplete={this.handleChangeComplete}
@@ -92,6 +130,7 @@ class InstrumentsPanel extends React.PureComponent {
       if (oldState.instrumentPanel.target !== this.props.instrumentPanel.target)
         this.setState({
             ...this.state,
+            colorPickerAvtive: false,
             instrumentPanel: {...this.props.instrumentPanel}
         })
       return true;

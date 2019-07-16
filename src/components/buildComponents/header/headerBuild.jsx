@@ -24,8 +24,6 @@ class HeaderBuild extends React.PureComponent {
     changeMode = (event) => {
         if (!this.props.editStart)
         eventEmitter.emit('EventModeEdit', {...this.state});
-
-        console.log(event.target);
     }
 
     render() {
