@@ -15,6 +15,45 @@
         height: 20vh;
         border: 1px solid red;
         margin: 5px;
+        background-color: whitesmoke;
+
+        .projectController {
+            input {
+                margin: 5px;
+            }
+
+            .projectControllerButton_enter {
+
+                border: 1px solid rgb(118, 233, 166);
+                font-weight: bold;
+                color: white;
+                padding: 5px;
+                background-color: rgb(9, 172, 23);
+                border-radius: 10px;
+                transition: .3s linear;
+            }
+
+            .projectControllerButton_enter:hover {
+                border: 1px solid rgb(2, 75, 8);
+                background-color: rgb(56, 121, 47);
+            }
+
+            .projectControllerButton_delete {
+
+                border: 1px solid rgb(73, 1, 11);
+                font-weight: bold;
+                color: white;
+                padding: 5px;
+                background-color: rgb(241, 48, 34);
+                border-radius: 10px;
+                transition: .3s linear;
+            }
+
+            .projectControllerButton_delete:hover {
+                border: 1px solid rgb(2, 75, 8);
+                background-color: rgb(167, 42, 26);
+            }
+        }
 
         .ProjectName {
             font-size: 2rem;

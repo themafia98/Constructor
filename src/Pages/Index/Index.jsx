@@ -52,7 +52,9 @@ class Index extends React.PureComponent {
     passwordRef = (node) => this.passwordImput = node;
 
     render(){
-        if (!this.props.active) {
+
+        if (this.props.active) return <Redirect to = '/Cabinet' />
+        else if (!this.props.active) {
             let currentSelected = this.state.registrationActive;
             return (
                 <div className = 'LoginPage flex-column'>
@@ -90,8 +92,7 @@ class Index extends React.PureComponent {
                         }
                 </div>
             )
-        } else if (this.props.active) return <Redirect to = '/Cabinet' />
-        else  return <Loader path = '/img/loading.gif' type = 'session' />
+        } else  return <Loader path = '/img/loading.gif' type = 'session' />
     }
 
     componentDidMount = (e) => {
