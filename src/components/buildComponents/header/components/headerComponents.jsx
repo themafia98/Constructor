@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import eventStream from '../../../../EventEmitter';
 import styled from 'styled-components';
 
-const Title = styled.h1`
+const Title = styled.h1.attrs(props => ({
+    style: {
+        display: props.shadowDisplay ? 'none' : 'block',
+        left: props.coordX,
+        top: props.coordY,
+}}))`
     position: absolute;
     left: 50%;
     transform: translate(-50%);
@@ -46,6 +51,8 @@ const TitleComponent = props =>  {
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size);
     let [contentText, setText] = useState(props.children);
+    const [shiftCoords, setShiftCoords] = useState(null)
+    const [dragNdrop, setDragNdrop] = useState(null);
 
     const changeColorText = colorHash => {
         const {rgb} = colorHash;
@@ -63,6 +70,7 @@ const TitleComponent = props =>  {
         setText(content);
     }
 
+
     const didUpdate = event => {
         eventStream.on('EventChangeColorText', changeColorText);
         eventStream.on('EventChangeSizeText', changeSizeText);
@@ -74,6 +82,33 @@ const TitleComponent = props =>  {
         }
     }
 
+    const saveCoords = event => {
+
+        let rect = event.target.getBoundingClientRect();
+        let left = rect.left;
+        let top = rect.top;
+        let width = rect.width;
+        let height = rect.height;
+        console.log(rect);
+        setShiftCoords({x: event.pageX - left - width/2, y: event.pageY - top + height/2.8});
+
+        event.stopPropagation();
+    }
+
+    const moveText = event => {
+
+        
+        let coordX = event.pageX - shiftCoords.x;
+        let coordY = event.pageY - shiftCoords.y;
+
+        coordX = coordX <= 130 ? 130 : coordX;
+        coordY = coordY <= 0 ? 0 : coordY;
+
+            setDragNdrop({x: coordX + 'px', y: coordY + 'px', shadowDisplay: event.type === 'drag' ? true : false});
+            // console.log("x:" + (event.pageX - shiftCoords.x));
+            // console.log("y:" + (event.pageY - shiftCoords.y));
+            event.stopPropagation();
+    }
     useEffect(didUpdate);
 
     return (
@@ -81,6 +116,13 @@ const TitleComponent = props =>  {
             onClick={openTitleInstruments}
             textColor = {colorText ? colorText : 'red'}
             size = {sizeText ? sizeText : '120px'}
+            draggable = {true}
+            onMouseDown = {saveCoords}
+            onDrag   = {moveText}
+            onDragEnd = {moveText}
+            coordX = {dragNdrop ? dragNdrop.x : null}
+            coordY = {dragNdrop ? dragNdrop.y : null}
+            shadowDisplay = {dragNdrop ? dragNdrop.shadowDisplay : false}
         >
             {contentText}
         </Title>

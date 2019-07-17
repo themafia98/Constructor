@@ -135,3 +135,10 @@ input[type='text'], input[type='password']{
         width: 60%;
     }
 }
+
+[draggable="true"] { 
+    -moz-user-select:none; 
+    -webkit-user-select: none; 
+    -webkit-user-drag: element; 
+    cursor: move;
+}

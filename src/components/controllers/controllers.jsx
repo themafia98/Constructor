@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 const ControllersBox = styled.div.attrs(props => ({
             style: {
+                display: props.shadowDisplay,
                 left: props.coordX,
                 top: props.coordY,
     }}))
@@ -26,7 +27,8 @@ class Controllers extends React.PureComponent {
         shiftX: 0,
         shiftY: 0,
         coordsX: '50%',
-        coordsY: '0'
+        coordsY: '0',
+        shadowDisplay: 'block'
     }
 
     componentMenu = (event) => {
@@ -45,7 +47,7 @@ class Controllers extends React.PureComponent {
     drag = event => {
         if (!this.state.viewComponentMenu){
         this.setState({...this.state, coordsX: event.pageX - this.state.shiftX + 'px', 
-                    coordsY: event.pageY - this.state.shiftY + 'px'});
+                    coordsY: event.pageY - this.state.shiftY + 'px', shadowDisplay: event.type === 'drag' ? 'none' : 'block'});
         }
         event.stopPropagation();
     }
@@ -68,6 +70,7 @@ class Controllers extends React.PureComponent {
                 onClick = {this.componentMenu}
                 onDrag   = {this.drag}
                 onDragEnd = {this.drag}
+                shadowDisplay = {this.state.shadowDisplay}
                 >
                     <Icon
                         draggable = {true}
