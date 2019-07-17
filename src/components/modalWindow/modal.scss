@@ -61,3 +61,33 @@
         border: 2px solid black;
     }
 }
+
+.Modal-search {
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 50%;
+    height: 60%;
+    padding: 20px;
+
+    input{
+        cursor: pointer;
+    }
+    .searchResultBox {
+        display: grid;
+        width: 80%;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 33%;
+        overflow-y: scroll;
+
+        .ItemBox {
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden;
+            padding: 5px;
+            img {
+                width: 100%;
+            }
+        }
+
+    }
+}

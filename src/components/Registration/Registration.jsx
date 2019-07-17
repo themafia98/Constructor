@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventStream from '../../EventEmitter';
+import eventEmitter from '../../EventEmitter';
 import './registration.scss';
 
 import withFirebase from '../../components/firebaseHOC';
@@ -34,7 +34,7 @@ class Registration extends React.PureComponent {
             firebase.db.collection("users").doc(response.user.uid).set({
                 'projects': [],
                 'email': email,
-            }).then(() => eventStream.emit('EventRegistrationCorrect', response))
+            }).then(() => eventEmitter.emit('EventRegistrationCorrect', response))
         })
         .catch((error) => this.setState({error: error.message}));
     };

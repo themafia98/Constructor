@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
 import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel';
-
+import ModalWindow from '../../components/modalWindow/ModalWindow';
 import HeaderBuild from '../../components/buildComponents/header/headerBuild';
 
 import './build.scss';
@@ -36,6 +36,11 @@ class Build extends React.PureComponent {
             instrumentPanel: { instrumentActive: false, target: '' },
             menuActive: false,
             editStart: false,
+            modalSearch: false,
+        }
+
+        modalSearchOn = event => {
+            this.setState({...this.state, modalSearch: this.state.modalSearch ? false : true});
         }
 
     workModeEdit = itemEvent => {
@@ -95,6 +100,9 @@ class Build extends React.PureComponent {
         if (this.props.active){
             return (
                 <Fragment>
+                {this.state.modalSearch ?
+                    <ModalWindow workMode = 'Search' /> : null
+                }
                 { instrumentActive ?
                     <InstrumentsPanel
                         editComponent =  {{...this.state.editComponent}}
@@ -119,12 +127,14 @@ class Build extends React.PureComponent {
     componentDidMount = () => {
         eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
         eventEmitter.on('EventClosePanel', this.closePanel);
+        eventEmitter.on('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);
         eventEmitter.off('EventModeEdit', this.workModeEdit);

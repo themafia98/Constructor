@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import eventStream from '../../EventEmitter';
+import eventEmitter from '../../EventEmitter';
 import PropTypes from 'prop-types';
 import { SketchPicker } from 'react-color';
 import './instrumentsPanel.scss';
@@ -16,7 +16,8 @@ class InstrumentsPanel extends React.PureComponent {
     state = {
         instrumentPanel: {...this.props.instrumentPanel},
         sizeTextValue: 120,
-        colorPickerAvtive: false
+        colorPickerAvtive: false,
+        images: null,
     }
 
     updateSizeText = event => {
@@ -31,21 +32,21 @@ class InstrumentsPanel extends React.PureComponent {
     }
 
     closePanel = event => {
-        eventStream.emit('EventClosePanel', {close: false});
+        eventEmitter.emit('EventClosePanel', {close: false});
     }
 
     setSize = event => {
         let size = event.target.value > 200 ? 200 : event.target.value;
         event.stopPropagation();
         this.setState({sizeTextValue: size}, () => {
-            eventStream.emit('EventChangeSizeText', {size: this.state.sizeTextValue });
+            eventEmitter.emit('EventChangeSizeText', {size: this.state.sizeTextValue });
         });
     }
 
     setContent = event => {
         let contentValue = event.target.value;
         event.stopPropagation();
-        eventStream.emit("EventChangeContentText",{content: contentValue});
+        eventEmitter.emit("EventChangeContentText",{content: contentValue});
     }
 
     setColor = event => {
@@ -56,10 +57,14 @@ class InstrumentsPanel extends React.PureComponent {
     handleChangeComplete = event => {
 
         if (this.state.instrumentPanel.target === 'background')
-            eventStream.emit('EventChangeColor', event);
+            eventEmitter.emit('EventChangeColor', event);
         else if (this.state.instrumentPanel.target === 'text')
-            eventStream.emit('EventChangeColorText', event);
+            eventEmitter.emit('EventChangeColorText', event);
     }
+
+    searchImage = event => {
+        eventEmitter.emit('EventModalSearchOn');
+    };
 
     makePanelInstruments = (type) => {
         switch (type){
@@ -83,10 +88,12 @@ class InstrumentsPanel extends React.PureComponent {
                         }
                     <p className = 'titleInstument'>Content: </p>
                     <input onChange = {this.setContent} maxLength = '20' type = 'text' defaultValue = 'Title' />
+                    <input className = 'saveButtonInstument' type = 'button' value = 'save changes' />
                     </Fragment>
             )
             }
             case 'background': {
+                console.log('a');
                 return (
                     <Fragment>
                     <p className = 'titleInstument'>Color: </p>
@@ -97,6 +104,8 @@ class InstrumentsPanel extends React.PureComponent {
                             />
                             : null
                         }
+                        <input onClick = {this.searchImage} className = 'ImageSearchButton' type = 'button' value = 'background-image' />
+                        <input className = 'saveButtonInstument' type = 'button' value = 'save changes' />
                     </Fragment>
                 )
 
@@ -109,23 +118,30 @@ class InstrumentsPanel extends React.PureComponent {
         }
     }
 
+          // {this.state.images ?
+            //     <img src = {`${this.state.images[1].urls.thumb}`} alt ='test' /> : null
+            // }
+
     render(){
+        console.log(this.state.images);
         let { instrumentActive } = this.state.instrumentPanel;
         return (
-            <div  className = 'instumentsPanel'>
-            <button onClick = {this.closePanel} className = 'closeInstrumentsPanel'><Icon path = '/img/close.svg' /></button>
-                <h3>Instruments</h3>
-                {
-                    instrumentActive ? 
-                    <p className = 'titleComponent important'>{this.state.instrumentPanel.target}</p>
-                    : null
-                }
-                {
-                    instrumentActive ?
-                    <div  className= 'instuments'>{this.makePanelInstruments(this.state.instrumentPanel.target)}</div>
-                    : null
-                }
-            </div>
+            <Fragment>
+                <div  className = 'instumentsPanel'>
+                <button onClick = {this.closePanel} className = 'closeInstrumentsPanel'><Icon path = '/img/close.svg' /></button>
+                    <h3>Instruments</h3>
+                    {
+                        instrumentActive ? 
+                        <p className = 'titleComponent important'>{this.state.instrumentPanel.target}</p>
+                        : null
+                    }
+                    {
+                        instrumentActive ?
+                        <div  className= 'instuments'>{this.makePanelInstruments(this.state.instrumentPanel.target)}</div>
+                        : null
+                    }
+                </div>
+            </Fragment>
         )
     }
 
@@ -141,11 +157,11 @@ class InstrumentsPanel extends React.PureComponent {
     }
 
     componentDidMount = event => {
-        eventStream.on("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.on("EventUpdateSizeText", this.updateSizeText);
     };
 
     componentWillUnmount = event => {
-        eventStream.off("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.off("EventUpdateSizeText", this.updateSizeText);
     }
 }
 

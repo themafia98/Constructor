@@ -1,6 +1,7 @@
 import React,{Fragment} from 'react';
+import isFetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
-import eventStream from '../../EventEmitter.js';
+import eventEmitter from '../../EventEmitter.js';
 
 import './modal.scss';
 
@@ -12,7 +13,7 @@ class ModalWindow extends React.PureComponent {
 
     state = {
         workMode: this.props.workMode,
-
+        images: {images: null, imageBoxView: false},
         newProject: {
             validateName: false,
             validateType: false,
@@ -29,20 +30,52 @@ class ModalWindow extends React.PureComponent {
 
     inputSelect = null;
 
-    disabledButton = (action) => {
+    searchBackground = event => {
+        const token = "421b12ae729e1f6e4a0cac207496874099ab8a738378ec07a8e2598b11201802";
+        isFetch(`https://api.unsplash.com/photos/?client_id=${token}`)
+        .then(response => response.json())
+        .then(response => {
+            this.setState({
+                ...this.state,
+                images: {
+                    ...this.state.images,
+                    imageBoxView: true,
+                    images: {...response}
+                }
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
 
+    makeImageResultBox = (items) => {
+        if (!items) return null;
+
+        let box = [];
+        let keys = Object.keys(items);
+
+        for (let i = 0; i < keys.length; i++){
+            box.push(
+                <div key = {`item${i}`} className = 'ItemBox'>
+                    <img src = {items[keys[i]].urls.regular} alt = 'item' />
+                </div>
+                )
+        }
+
+        return box;
     }
 
     addNewProject = (event) => {
         let mode = this.state[this.state.workMode];
         if (mode.validateType &&  mode.validateName) {
-            eventStream.emit('EventAddProject',
+            eventEmitter.emit('EventAddProject',
             {
                 title: this.state[this.state.workMode].name,
                 type: this.state[this.state.workMode].type
             });
 
-            eventStream.emit('EventChangeWorkMode',{action: 'default'});
+            eventEmitter.emit('EventChangeWorkMode',{action: 'default'});
         }
     }
 
@@ -73,13 +106,16 @@ class ModalWindow extends React.PureComponent {
     };
 
     cancel = (event) => {
-        eventStream.emit('EventChangeWorkMode',{action: 'default'});
+
+        if (this.state.workMode === 'Search')
+            eventEmitter.emit("EventModalSearchOn");
+        else  eventEmitter.emit('EventChangeWorkMode',{action: 'default'});
     }
 
     refSelect = (node) => this.inputSelect = node;
 
     render(){
-
+        console.log('modal');
         switch (this.state.workMode){
 
             case 'newProject': {
@@ -121,6 +157,34 @@ class ModalWindow extends React.PureComponent {
                         </div>
                 )
             }
+            case 'Search': {
+                return (
+                    <Fragment>
+                    <div className = 'Modal Modal-search'>
+                    <h3>Search background image</h3>
+                    <input
+                        type = 'text'
+                        placeholder = "Photo name"
+                    />
+                    <input 
+                        className = 'acceptButton'
+                        type = 'button'
+                        value = 'Search'
+                        onClick = {this.searchBackground}
+                    />
+                    <input onClick = {this.cancel} type ='button' value = 'Cancel' />
+                    {
+                        this.state.images.imageBoxView ?
+                        <div className = 'searchResultBox'>
+                            {this.makeImageResultBox(this.state.images['images'])}
+                        </div>
+                        : null
+                    }
+
+                </div>
+                    </Fragment>
+                )
+            }
             default: {
                 return (
                     <Fragment></Fragment>
@@ -131,3 +195,4 @@ class ModalWindow extends React.PureComponent {
 }
 
 export default ModalWindow;
+

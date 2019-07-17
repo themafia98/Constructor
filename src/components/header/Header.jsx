@@ -7,7 +7,7 @@ import {middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
 import {connect} from 'react-redux';
 import {withRouter, NavLink} from 'react-router-dom';
 
-import eventStream from '../../EventEmitter.js';
+import eventEmitter from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
 
 
@@ -33,7 +33,7 @@ class Header extends React.Component {
     };
 
     add = (e) => {
-        eventStream.emit('EventChangeWorkMode',{action: 'newProject'});
+        eventEmitter.emit('EventChangeWorkMode',{action: 'newProject'});
     };
 
     render(){

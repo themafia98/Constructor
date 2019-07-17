@@ -1,6 +1,6 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-import eventStream from '../../EventEmitter.js';
+import eventEmitter from '../../EventEmitter.js';
 import {Redirect} from 'react-router-dom';
 import withFirebase from '../../components/firebaseHOC';
 
@@ -57,13 +57,13 @@ class Cabinet extends React.PureComponent {
 
 
   componentDidMount = () => {
-    eventStream.on('EventDeleteItem', this.deletItem);
-    eventStream.on('EventChangeWorkMode', this.changeWorkMode);
+    eventEmitter.on('EventDeleteItem', this.deletItem);
+    eventEmitter.on('EventChangeWorkMode', this.changeWorkMode);
   }
 
   componentWillUnmount = () => {
-    eventStream.off('EventDeleteItem', this.deletItem);
-    eventStream.off('EventChangeWorkMode', this.changeWorkMode);
+    eventEmitter.off('EventDeleteItem', this.deletItem);
+    eventEmitter.off('EventChangeWorkMode', this.changeWorkMode);
   }
 }
 

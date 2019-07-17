@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import eventStream from '../../EventEmitter';
+import eventEmitter from '../../EventEmitter';
 import {withRouter} from 'react-router-dom';
 
 function Item(props) {
@@ -14,7 +14,7 @@ function Item(props) {
     };
 
     const deleteItem = event => {
-        eventStream.emit('EventDeleteItem',{id: props.id, name: props.name, type: props.type});
+        eventEmitter.emit('EventDeleteItem',{id: props.id, name: props.name, type: props.type});
         event.stopPropagation();
     };
 

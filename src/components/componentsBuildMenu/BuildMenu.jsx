@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {TitleComponent, BackgroundComponent} from '../buildComponents/header/components/headerComponents';
 
-import eventStream from '../../EventEmitter';
+import eventEmitter from '../../EventEmitter';
 
 import './buildMenu.scss';
 
@@ -22,7 +22,7 @@ class BuildMenu extends React.PureComponent {
 
         let componentArrayWrapper = [];
         componentArrayWrapper.push(<TitleComponent key = 'header'>{this.state.title}</TitleComponent>);
-        eventStream.emit('EventBuildHeaderComponents',{target: 'Header', type: 'text', component: componentArrayWrapper});
+        eventEmitter.emit('EventBuildHeaderComponents',{target: 'Header', type: 'text', component: componentArrayWrapper});
         event.stopPropagation();
     }
 
@@ -30,7 +30,7 @@ class BuildMenu extends React.PureComponent {
 
         let componentArrayWrapper = [];
         componentArrayWrapper.push(<BackgroundComponent key = 'bgHeader'/>);
-        eventStream.emit('EventBuildHeaderComponents',{target: 'Header', type: 'background', component: componentArrayWrapper});
+        eventEmitter.emit('EventBuildHeaderComponents',{target: 'Header', type: 'background', component: componentArrayWrapper});
 
         event.stopPropagation();
     }

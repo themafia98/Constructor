@@ -12,6 +12,8 @@ import Cabinet from './Pages/Cabinet/Cabinet';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
 
+require('es6-promise').polyfill();
+
 class App extends React.PureComponent {
 
     static propTypes = {

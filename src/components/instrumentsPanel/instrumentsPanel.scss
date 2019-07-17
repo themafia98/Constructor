@@ -46,6 +46,33 @@ $closeSize: 25px;
         .title_bg {
             font-weight:  bold;
         }
+        input{
+            transition: .3s linear;
+        }
+        input[type = 'text'],[type="number"] {
+            border: 1px solid  rgb(0, 241, 121);
+        }
+
+        .saveButtonInstument, .button_switchColor, .ImageSearchButton {
+            border: 1px solid rgb(0, 241, 121);
+            border-radius: 10px;
+            padding: 5px;
+            font-weight: bold;
+            color: white;
+            background-color: rgb(13, 110, 62);
+        }
+
+        .saveButtonInstument {
+            background-color: rgb(52, 90, 69);
+        }
+        .saveButtonInstument, .ImageSearchButton {
+            margin-top: 20px;
+        }
+
+        .saveButtonInstument:hover, .button_switchColor:hover, .ImageSearchButton:hover{
+            background-color: rgb(83, 190, 137);
+            border: 1px solid  rgb(0, 39, 19);
+        }
     }
 
     .closeInstrumentsPanel {

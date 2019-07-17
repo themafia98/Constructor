@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventStream from '../../EventEmitter';
+import eventEmitter from '../../EventEmitter';
 import {Redirect} from 'react-router-dom';
 
 import {middlewareLogin} from '../../redux/middleware/loadUserMiddleware';
@@ -96,10 +96,10 @@ class Index extends React.PureComponent {
     }
 
     componentDidMount = (e) => {
-        eventStream.on('EventRegistrationCorrect', this.statusRegistration);
+        eventEmitter.on('EventRegistrationCorrect', this.statusRegistration);
     }
     componentWillUnmount = (e) => {
-        eventStream.off('EventRegistrationCorrect', this.statusRegistration);
+        eventEmitter.off('EventRegistrationCorrect', this.statusRegistration);
     }
 }
 

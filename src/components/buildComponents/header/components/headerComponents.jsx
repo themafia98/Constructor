@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import eventStream from '../../../../EventEmitter';
+import eventEmitter from '../../../../EventEmitter';
 import styled from 'styled-components';
 
 const Title = styled.h1.attrs(props => ({
@@ -30,19 +30,19 @@ const Media = styled.video`
 
 const openBgInstruments = event => {
 
-    eventStream.emit('EventInstrumentPanel',{target: 'background'});
+    eventEmitter.emit('EventInstrumentPanel',{target: 'background'});
     event.stopPropagation();
 }
 
 const openMediaInstruments = event => {
 
-    eventStream.emit('EventInstrumentPanel',{target: 'media'});
+    eventEmitter.emit('EventInstrumentPanel',{target: 'media'});
     event.stopPropagation();
 }
 
 const openTitleInstruments = event => {
 
-    eventStream.emit('EventInstrumentPanel',{target: 'text'});
+    eventEmitter.emit('EventInstrumentPanel',{target: 'text'});
     event.stopPropagation();
 }
 
@@ -73,13 +73,13 @@ const TitleComponent = props =>  {
 
 
     const didUpdate = event => {
-        eventStream.on('EventChangeColorText', changeColorText);
-        eventStream.on('EventChangeSizeText', changeSizeText);
-        eventStream.on('EventChangeContentText', changeContentText);
+        eventEmitter.on('EventChangeColorText', changeColorText);
+        eventEmitter.on('EventChangeSizeText', changeSizeText);
+        eventEmitter.on('EventChangeContentText', changeContentText);
         return () => {
-            eventStream.off('EventChangeColorText', changeColorText);
-            eventStream.off('EventChangeSizeText', changeSizeText);
-            eventStream.off('EventChangeContentText', changeContentText);
+            eventEmitter.off('EventChangeColorText', changeColorText);
+            eventEmitter.off('EventChangeSizeText', changeSizeText);
+            eventEmitter.off('EventChangeContentText', changeContentText);
         }
     }
 
@@ -115,14 +115,14 @@ const TitleComponent = props =>  {
             let counter = sizeText + 1;
             counter = counter > 200 ? 200 : counter;
             setSizeText(counter);
-            eventStream.emit('EventUpdateSizeText', counter);
+            eventEmitter.emit('EventUpdateSizeText', counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
             let counter = sizeText - 1;
              counter = counter <= 10 ? 10 : counter;
              setSizeText(counter);
-             eventStream.emit('EventUpdateSizeText', counter);
+             eventEmitter.emit('EventUpdateSizeText', counter);
             }
         event.stopPropagation();
     }
@@ -159,9 +159,9 @@ const BackgroundComponent = props => {
     }
 
     const didUpdate = event => {
-        eventStream.on('EventChangeColor', changeColor);
+        eventEmitter.on('EventChangeColor', changeColor);
         return () => {
-            eventStream.off('EventChangeColor', changeColor);
+            eventEmitter.off('EventChangeColor', changeColor);
         }
     }
 
