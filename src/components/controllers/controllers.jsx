@@ -36,19 +36,23 @@ class Controllers extends React.PureComponent {
     }
 
     saveCoords = event => {
-        let left = event.target.getBoundingClientRect().left;
-        let top = event.target.getBoundingClientRect().top;
+        let left = this.controlBox.getBoundingClientRect().left;
+        let top = this.controlBox.getBoundingClientRect().top;
+        console.log(left);
         this.setState({...this.state, shiftX: event.pageX - left, 
-        shiftY: event.pageY - top + 55});
+        shiftY: event.pageY - top + 55 });
 
         event.stopPropagation();
     }
 
     drag = event => {
-        if (!this.state.viewComponentMenu){
-        this.setState({...this.state, coordsX: event.pageX - this.state.shiftX + 'px', 
-                    coordsY: event.pageY - this.state.shiftY + 'px', shadowDisplay: event.type === 'drag' ? 'none' : 'block'});
-        }
+        if (!this.state.viewComponentMenu)
+            this.setState({
+                ...this.state,
+                coordsX: event.pageX - this.state.shiftX + 'px', 
+                coordsY: event.pageY - this.state.shiftY + 'px',
+                shadowDisplay: event.type === 'drag' ? 'none' : 'block'
+            });
         event.stopPropagation();
     }
 

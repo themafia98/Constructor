@@ -49,7 +49,7 @@ const openTitleInstruments = event => {
 const TitleComponent = props =>  {
 
     let [colorText, setColorText] = useState(props.color);
-    let [sizeText, setSizeText] = useState(props.size);
+    let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
     let [contentText, setText] = useState(props.children);
     const [shiftCoords, setShiftCoords] = useState(null)
     const [dragNdrop, setDragNdrop] = useState(null);
@@ -61,6 +61,7 @@ const TitleComponent = props =>  {
     }
 
     const changeSizeText = eventSize => {
+        
         const {size} = eventSize;
         setSizeText(size);
     }
@@ -105,9 +106,25 @@ const TitleComponent = props =>  {
         coordY = coordY <= 0 ? 0 : coordY;
 
             setDragNdrop({x: coordX + 'px', y: coordY + 'px', shadowDisplay: event.type === 'drag' ? true : false});
-            // console.log("x:" + (event.pageX - shiftCoords.x));
-            // console.log("y:" + (event.pageY - shiftCoords.y));
             event.stopPropagation();
+    }
+
+    const weelResizeText = event => {
+
+        if (event.shiftKey && event.deltaY === -100) {
+            let counter = sizeText + 1;
+            counter = counter > 200 ? 200 : counter;
+            setSizeText(counter);
+            eventStream.emit('EventUpdateSizeText', counter);
+        }
+
+        if (event.shiftKey && event.deltaY === 100) {
+            let counter = sizeText - 1;
+             counter = counter <= 10 ? 10 : counter;
+             setSizeText(counter);
+             eventStream.emit('EventUpdateSizeText', counter);
+            }
+        event.stopPropagation();
     }
     useEffect(didUpdate);
 
@@ -115,11 +132,12 @@ const TitleComponent = props =>  {
         <Title
             onClick={openTitleInstruments}
             textColor = {colorText ? colorText : 'red'}
-            size = {sizeText ? sizeText : '120px'}
+            size = {sizeText ? sizeText + 'px' : '120px'}
             draggable = {true}
             onMouseDown = {saveCoords}
             onDrag   = {moveText}
             onDragEnd = {moveText}
+            onWheel = {weelResizeText}
             coordX = {dragNdrop ? dragNdrop.x : null}
             coordY = {dragNdrop ? dragNdrop.y : null}
             shadowDisplay = {dragNdrop ? dragNdrop.shadowDisplay : false}

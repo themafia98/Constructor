@@ -14,6 +14,7 @@ import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel
 import HeaderBuild from '../../components/buildComponents/header/headerBuild';
 
 import './build.scss';
+import Item from '../../components/List/Item';
 
 
 class Build extends React.PureComponent {
@@ -42,7 +43,11 @@ class Build extends React.PureComponent {
         this.setState({
             ...this.state,
             idProject: itemEvent.idProject,
-            editComponent: {...itemEvent.component},
+            editComponent: {
+                ...itemEvent.component,
+                mainBoxWidth: itemEvent.width,
+                mainBoxHeight: itemEvent.height
+            },
             menuActive: true,
             editStart: true
         });

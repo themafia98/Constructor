@@ -22,8 +22,12 @@ class HeaderBuild extends React.PureComponent {
 
 
     changeMode = (event) => {
-        if (!this.props.editStart)
-        eventEmitter.emit('EventModeEdit', {...this.state});
+        if (!this.props.editStart) {
+            let rect = event.currentTarget.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+        eventEmitter.emit('EventModeEdit', {...this.state, width: width, height: height});
+        }
     }
 
     render() {
@@ -40,6 +44,8 @@ class HeaderBuild extends React.PureComponent {
                         <Controllers
                             menuActive = {this.props.menuActive}
                             component = {{...this.state.component}}
+                            mainWidth = {this.props.children.mainBoxWidth}
+                            mainHeight = {this.props.children.mainBoxHeight}
 
                         />
                         : null}

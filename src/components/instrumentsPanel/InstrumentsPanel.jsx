@@ -19,6 +19,10 @@ class InstrumentsPanel extends React.PureComponent {
         colorPickerAvtive: false
     }
 
+    updateSizeText = event => {
+        this.setState({...this.state, sizeTextValue: event});
+    }
+
     resetAll = event => {
         console.log(event.target);
         event.stopPropagation();
@@ -34,7 +38,7 @@ class InstrumentsPanel extends React.PureComponent {
         let size = event.target.value > 200 ? 200 : event.target.value;
         event.stopPropagation();
         this.setState({sizeTextValue: size}, () => {
-            eventStream.emit('EventChangeSizeText', {size: this.state.sizeTextValue + 'px' });
+            eventStream.emit('EventChangeSizeText', {size: this.state.sizeTextValue });
         });
     }
 
@@ -134,6 +138,14 @@ class InstrumentsPanel extends React.PureComponent {
             instrumentPanel: {...this.props.instrumentPanel}
         })
       return true;
+    }
+
+    componentDidMount = event => {
+        eventStream.on("EventUpdateSizeText", this.updateSizeText);
+    };
+
+    componentWillUnmount = event => {
+        eventStream.off("EventUpdateSizeText", this.updateSizeText);
     }
 }
 
