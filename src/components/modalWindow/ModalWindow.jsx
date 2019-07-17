@@ -13,7 +13,7 @@ class ModalWindow extends React.PureComponent {
 
     state = {
         workMode: this.props.workMode,
-        images: {images: null, imageBoxView: false},
+        images: {images: null, imageBoxView: false, error: ''},
         newProject: {
             validateName: false,
             validateType: false,
@@ -28,42 +28,74 @@ class ModalWindow extends React.PureComponent {
         }
     }
 
+    inputSearch = null;
     inputSelect = null;
 
     searchBackground = event => {
+
+        const api = 'https://api.unsplash.com/search/photos/?page=1&per_page=40&query=';
+        const search = this.inputSearch.value;
         const token = "421b12ae729e1f6e4a0cac207496874099ab8a738378ec07a8e2598b11201802";
-        isFetch(`https://api.unsplash.com/photos/?client_id=${token}`)
-        .then(response => response.json())
+
+        isFetch(`${api + search}&client_id=${token}`)
         .then(response => {
+            if (response.ok) return response.json();
+            else throw new Error('request invalid');
+        })
+        .then(response => {
+
+            let {results} = response;
+            if (results.length)
             this.setState({
                 ...this.state,
                 images: {
                     ...this.state.images,
                     imageBoxView: true,
-                    images: {...response}
+                    error: '',
+                    images: [...results]
                 }
             });
+            else throw new Error('Photos not found');
         })
         .catch(error => {
-            console.log(error);
+            this.setState({
+                ...this.state,
+                 images: {...this.state.images, error: error.message},
+                 imageBoxView: false,
+                });
         });
+    }
+
+    showImage = event => {
+        console.log('image event');
+        event.stopPropagation();
     }
 
     makeImageResultBox = (items) => {
         if (!items) return null;
 
-        let box = [];
-        let keys = Object.keys(items);
 
-        for (let i = 0; i < keys.length; i++){
-            box.push(
-                <div key = {`item${i}`} className = 'ItemBox'>
-                    <img src = {items[keys[i]].urls.regular} alt = 'item' />
-                </div>
-                )
-        }
+        return items.map((item,i) =>{
+           return (
+            <div onMouseEnter = {this.showImage} key = {`item${i}`} className = 'ItemBox'>
+                <img src = {item.urls.regular} alt = 'item' />
+            </div>
+           );
+        });
 
-        return box;
+        /* ----For single photo search---- */
+        // let box = [];
+        // let keys = Object.keys(items);
+
+        // for (let i = 0; i < keys.length; i++){
+        //     box.push(
+        //         <div key = {`item${i}`} className = 'ItemBox'>
+        //             <img src = {items[keys[i]].urls.regular} alt = 'item' />
+        //         </div>
+        //         )
+        // }
+        // return box;
+        /* ----------------------------- */
     }
 
     addNewProject = (event) => {
@@ -113,83 +145,68 @@ class ModalWindow extends React.PureComponent {
     }
 
     refSelect = (node) => this.inputSelect = node;
+    refSearch = node => this.inputSearch = node;
 
     render(){
-        console.log('modal');
+
         switch (this.state.workMode){
-
-            case 'newProject': {
+            case 'newProject':
                 return (
-                        <div className = 'Modal'>
-                            <h3>Create new Project</h3>
-                            {
-                                this.state[this.state.workMode].name.length <= 3 ?
-                                <span className = 'warning'>{this.state.warning.lengthMin}</span> : null
-                            }
-                            {
-                                this.state[this.state.workMode].name.length >= 20 ?
-                                <span className = 'warning'>{this.state.warning.lengthMax}</span> : null
-                            }
-                            <input
-                                className = {this.state[this.state.workMode].validateName ? 'ready' : 'wrong'}
-                                value = {this.state[this.state.workMode].name}
-                                onChange = {this.validateName}
-                                type = 'text'
-                                placeholder = "Project name"
-                            />
-                            {
-                                !this.state[this.state.workMode].validateType ?
-                                <span className = 'warning'>{this.state.warning.type}</span> : null
-                            }
-                            <select onChange = {this.selectOption} >
-                                <option value = 'empty'>--------</option>
-                                <option value = 'landing'>Landing</option>
-                                <option value = 'portfolio'>Portfolio</option>
-                            </select>
-                            <input 
-                                onClick = {this.addNewProject}
-                                className = 'acceptButton'
-                                disabled = {this.state[this.state.workMode].disabled}
-                                type = 'button'
-                                value = 'Submit'
-                            />
+                    <div className = 'Modal'>
+                        <h3>Create new Project</h3>
+                        { this.state[this.state.workMode].name.length <= 3 ?
+                            <span className = 'warning'>{this.state.warning.lengthMin}</span> : null
+                        }
+                        { this.state[this.state.workMode].name.length >= 20 ?
+                            <span className = 'warning'>{this.state.warning.lengthMax}</span> : null
+                        }
+                        <input
+                            className = {this.state[this.state.workMode].validateName ? 'ready' : 'wrong'}
+                            value = {this.state[this.state.workMode].name}
+                            onChange = {this.validateName}
+                            type = 'text'
+                            placeholder = "Project name"
+                        />
+                        { !this.state[this.state.workMode].validateType ?
+                            <span className = 'warning'>{this.state.warning.type}</span> : null
+                        }
+                        <select onChange = {this.selectOption} >
+                            <option value = 'empty'>--------</option>
+                            <option value = 'landing'>Landing</option>
+                            <option value = 'portfolio'>Portfolio</option>
+                        </select>
+                        <input 
+                            onClick = {this.addNewProject}
+                            className = 'acceptButton'
+                            disabled = {this.state[this.state.workMode].disabled}
+                            type = 'button'
+                            value = 'Submit'
+                        />
                             <input onClick = {this.cancel} type ='button' value = 'Cancel' />
-                        </div>
+                    </div>
                 )
-            }
-            case 'Search': {
+            case 'Search':
                 return (
-                    <Fragment>
                     <div className = 'Modal Modal-search'>
-                    <h3>Search background image</h3>
-                    <input
-                        type = 'text'
-                        placeholder = "Photo name"
-                    />
-                    <input 
-                        className = 'acceptButton'
-                        type = 'button'
-                        value = 'Search'
-                        onClick = {this.searchBackground}
-                    />
-                    <input onClick = {this.cancel} type ='button' value = 'Cancel' />
-                    {
-                        this.state.images.imageBoxView ?
-                        <div className = 'searchResultBox'>
-                            {this.makeImageResultBox(this.state.images['images'])}
-                        </div>
-                        : null
-                    }
-
-                </div>
-                    </Fragment>
+                        <h3>Search background image</h3>
+                        { this.state.images.error ?
+                            <span className = 'error'>{this.state.images.error}</span> : null
+                        }
+                        <input ref = {this.refSearch} type = 'text' placeholder = "Photo name" />
+                        <input className = 'acceptButton' type = 'button' value = 'Search'
+                            onClick = {this.searchBackground}
+                        />
+                        <input onClick = {this.cancel} type ='button' value = 'Cancel' />
+                        {
+                            this.state.images.imageBoxView ?
+                            <div className = 'searchResultBox'>
+                                {this.makeImageResultBox(this.state.images['images'])}
+                            </div>
+                            : null
+                        }
+                    </div>
                 )
-            }
-            default: {
-                return (
-                    <Fragment></Fragment>
-                )
-            }
+            default: return <Fragment></Fragment>
         }
     }
 }

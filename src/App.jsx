@@ -41,7 +41,7 @@ class App extends React.PureComponent {
     render(){
         if (this.state.firebaseLoadState){
         return (
-            <BrowserRouter>
+            <BrowserRouter basename = '/'>
                     <Switch>
                         <Route
                             path = '/' exact

@@ -72,19 +72,24 @@
     input{
         cursor: pointer;
     }
+    
+    .error {
+        font-weight: bold;
+        color: red;
+    }
     .searchResultBox {
         display: grid;
         width: 80%;
         grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: 33%;
+        grid-auto-rows: 35%;
         overflow-y: scroll;
 
         .ItemBox {
-            cursor: pointer;
             text-align: center;
             overflow: hidden;
             padding: 5px;
             img {
+                cursor: pointer;
                 width: 100%;
             }
         }
