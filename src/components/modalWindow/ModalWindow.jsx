@@ -17,6 +17,7 @@ class ModalWindow extends React.PureComponent {
     state = {
         workMode: this.props.workMode,
         images: {
+            buttonSearchDisabled: false,
             selectedItem: null, 
             showUrl: null, 
             images: null,
@@ -48,6 +49,8 @@ class ModalWindow extends React.PureComponent {
         const search = this.inputSearch.value;
         const token = "421b12ae729e1f6e4a0cac207496874099ab8a738378ec07a8e2598b11201802";
 
+        this.setState({...this.state, images: {...this.state.inages, buttonSearchDisabled: true}})
+
         isFetch(`${api + search}&client_id=${token}`)
         .then(response => {
             if (response.ok) return response.json();
@@ -63,7 +66,8 @@ class ModalWindow extends React.PureComponent {
                     ...this.state.images,
                     imageBoxView: true,
                     error: '',
-                    images: [...results]
+                    images: [...results],
+                    buttonSearchDisabled: false
                 },
             });
             else throw new Error('Photos not found');
@@ -72,8 +76,9 @@ class ModalWindow extends React.PureComponent {
             console.error(error.message);
             this.setState({
                 ...this.state,
-                 images: {...this.state.images, error: error.message},
-                 imageBoxView: false,
+                images: {...this.state.images, error: error.message},
+                imageBoxView: false,
+                buttonSearchDisabled: false
                 });
         });
     }
@@ -217,7 +222,11 @@ class ModalWindow extends React.PureComponent {
                                 <span className = 'error'>{this.state.images.error}</span> : null
                             }
                             <input ref = {this.refSearch} type = 'text' placeholder = "Photo name" />
-                            <input className = 'acceptButton' type = 'button' value = 'Search'
+                            <input 
+                                disabled = {this.state.images.buttonSearchDisabled} 
+                                className = 'acceptButton' 
+                                type = 'button' 
+                                value = 'Search'
                                 onClick = {this.searchBackground}
                             />
                             <input onClick = {this.cancel} type ='button' value = 'Cancel' />
