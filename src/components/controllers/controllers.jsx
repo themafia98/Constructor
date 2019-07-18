@@ -83,7 +83,12 @@ class Controllers extends React.PureComponent {
                         className = 'addButton'
                         path = '/img/addButton.png'
                     />
-                    {this.state.viewComponentMenu ? <BuildMenu component = {{...this.props.component}} /> : null}
+                    {this.state.viewComponentMenu ? 
+                        <BuildMenu
+                            countComponents = {this.props.countComponents}
+                            component = {{...this.props.component}}
+                        /> : null
+                    }
                 </ControllersBox>
                 : null
             }

@@ -31,9 +31,23 @@ class Build extends React.PureComponent {
     state = {
             idProject: parseInt(this.props.match.params.param),
             typeProject: null,
-            editComponent: {name: null, build: {}, edit: false},
+            editComponent: {
+                name: null,
+                build: {
+                    target: null,
+                    type: null,
+                    component: []
+                },
+                edit: false
+            },
             changeEdit: false,
-            instrumentPanel: { instrumentActive: false, target: '' },
+            instrumentPanel: {
+                colorPickerAvtive: false,
+                instrumentActive: false,
+                target: '',
+                sizeTextValue: 120,
+                idComponent: null,
+            },
             menuActive: false,
             editStart: false,
             modalSearch: false,
@@ -47,7 +61,11 @@ class Build extends React.PureComponent {
     imageViewerSwitch = event => {
         this.setState({
             ...this.state,
-            modalImageViewer: {...this.state.modalImageViewer, action: event.action, target: event.target}
+            modalImageViewer: {
+                ...this.state.modalImageViewer, 
+                action: event.action, 
+                target: event.target
+            }
         });
     };
 
@@ -68,13 +86,17 @@ class Build extends React.PureComponent {
     }
 
     openInstrument = itemEvent => {
+        console.log(itemEvent);
         if (this.state.editStart)
         this.setState({
             ...this.state,
             instrumentPanel: {
-                ...this.state.instrumentPanel, 
-                instrumentActive: true, 
-                target: itemEvent.target }
+                ...this.state.instrumentPanel,
+                instrumentActive: true,
+                sizeTextValue: itemEvent.sizeTextValue,
+                idComponent: itemEvent.id,
+                target: itemEvent.target
+            }
         })
     }
 
@@ -90,6 +112,8 @@ class Build extends React.PureComponent {
     };
 
     addHeaderComponent = itemEvent => {
+
+        let {component} = this.state.editComponent.build;
         this.setState({
             ...this.state,
             editComponent: {
@@ -97,7 +121,7 @@ class Build extends React.PureComponent {
                 build: {
                     target: itemEvent.target,
                     type: itemEvent.type,
-                    component: [...itemEvent.component]},
+                    component: [...component, ...itemEvent.component]},
             },
         });
     };
@@ -124,6 +148,7 @@ class Build extends React.PureComponent {
                     <Header title = "Constructor"  />
                     <HeaderBuild
                             editStart = {this.state.editStart}
+                            countComponents = {this.state.editComponent.build.component.length}
                             menuActive = {this.state.menuActive}
                             id = {this.state.idProject}
                     >

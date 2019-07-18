@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TitleComponent from '../buildComponents/components/Text';
+import TextComponent from '../buildComponents/components/Text';
 import BackgroundComponent from '../buildComponents/components/Background';
 
 import eventEmitter from '../../EventEmitter';
@@ -20,18 +20,16 @@ class BuildMenu extends React.PureComponent {
     }
 
     addText = event => {
-
-        let componentArrayWrapper = [];
-        componentArrayWrapper.push(<TitleComponent key = 'header'>{this.state.title}</TitleComponent>);
-        eventEmitter.emit('EventBuildHeaderComponents',{target: 'Header', type: 'text', component: componentArrayWrapper});
+        let id = this.props.countComponents;
+        let component = [<TextComponent id = {id} key = {`text${id}`}>{this.state.title}</TextComponent>];
+        eventEmitter.emit('EventBuildHeaderComponents',{target: 'Header', type: 'text', component: component});
         event.stopPropagation();
     }
 
     addBackground = event => {
-
-        let componentArrayWrapper = [];
-        componentArrayWrapper.push(<BackgroundComponent key = 'bgHeader'/>);
-        eventEmitter.emit('EventBuildHeaderComponents',{target: 'Header', type: 'background', component: componentArrayWrapper});
+        let id = this.props.countComponents;
+        let background = [<BackgroundComponent id = {id} key = {`bg${id}`}/>];
+        eventEmitter.emit('EventBuildHeaderComponents',{target: 'Header', type: 'background', component: background});
 
         event.stopPropagation();
     }

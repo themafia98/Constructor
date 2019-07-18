@@ -20,7 +20,10 @@ const Title = styled.h1.attrs(props => ({
 `;
 
 
-const TitleComponent = props =>  {
+const TextComponent = props =>  {
+
+
+    const [id] = useState(props.id);
 
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
@@ -30,7 +33,7 @@ const TitleComponent = props =>  {
 
     const openTitleInstruments = event => {
 
-        eventEmitter.emit('EventInstrumentPanel',{target: 'text'});
+        eventEmitter.emit(`EventInstrumentPanel`,{target: 'text', id: id, sizeTextValue: sizeText});
         event.stopPropagation();
     }
 
@@ -53,13 +56,13 @@ const TitleComponent = props =>  {
 
 
     const didUpdate = event => {
-        eventEmitter.on('EventChangeColorText', changeColorText);
-        eventEmitter.on('EventChangeSizeText', changeSizeText);
-        eventEmitter.on('EventChangeContentText', changeContentText);
+        eventEmitter.on(`EventChangeColorText${id}`, changeColorText);
+        eventEmitter.on(`EventChangeSizeText${id}`, changeSizeText);
+        eventEmitter.on(`EventChangeContentText${id}`, changeContentText);
         return () => {
-            eventEmitter.off('EventChangeColorText', changeColorText);
-            eventEmitter.off('EventChangeSizeText', changeSizeText);
-            eventEmitter.off('EventChangeContentText', changeContentText);
+            eventEmitter.off(`EventChangeColorText${id}`, changeColorText);
+            eventEmitter.off(`EventChangeSizeText${id}`, changeSizeText);
+            eventEmitter.off(`EventChangeContentText${id}`, changeContentText);
         }
     }
 
@@ -126,4 +129,4 @@ const TitleComponent = props =>  {
     )
 }
 
-export default TitleComponent;
+export default TextComponent;
