@@ -42,7 +42,7 @@ class InstrumentsPanel extends React.PureComponent {
             eventEmitter.emit('EventChangeSizeText', {size: this.state.sizeTextValue });
         });
     }
-
+    // reset
     setContent = event => {
         let contentValue = event.target.value;
         event.stopPropagation();
