@@ -3,6 +3,9 @@ import isFetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 import eventEmitter from '../../EventEmitter.js';
 
+import ImageItem from '../imageViewer/imageItem';
+import Icon from '../Icon/icon';
+
 import './modal.scss';
 
 class ModalWindow extends React.PureComponent {
@@ -13,7 +16,8 @@ class ModalWindow extends React.PureComponent {
 
     state = {
         workMode: this.props.workMode,
-        images: {images: null, imageBoxView: false, error: ''},
+        images: {selectedItem: null, showUrl: null, images: null, imageBoxView: false, error: ''},
+        imageMenuActive: false,
         newProject: {
             validateName: false,
             validateType: false,
@@ -53,7 +57,7 @@ class ModalWindow extends React.PureComponent {
                     imageBoxView: true,
                     error: '',
                     images: [...results]
-                }
+                },
             });
             else throw new Error('Photos not found');
         })
@@ -67,9 +71,19 @@ class ModalWindow extends React.PureComponent {
         });
     }
 
+    showMenuImage = event => {
+        this.setState({
+            ...this.state, 
+            imageMenuActive: true,
+            images: {...this.state.images, selectedItem: event.id, showUrl: event.url}
+        });
+    }
+
     showImage = event => {
+
+        const {showUrl} = this.state.images;
         // if (event.type === 'mouseenter')
-        eventEmitter.emit("EventImageView", {action: true, target: event.target.src});
+        eventEmitter.emit("EventImageView", {action: true, target: showUrl ? showUrl : null});
         // else  eventEmitter.emit("EventImageView", {action: false, target: null});
         event.stopPropagation();
     }
@@ -77,35 +91,15 @@ class ModalWindow extends React.PureComponent {
     makeImageResultBox = (items) => {
         if (!items) return null;
 
-
         return items.map((item,i) =>{
-           return (
-            <div 
+           return <ImageItem 
                 key = {`item${i}`} 
-                className = 'ItemBox'>
-                <img 
-                    // onMouseLeave = {this.showImage}
-                    onClick = {this.showImage}
-                    src = {item.urls.regular} 
-                    alt = 'item' 
-                />
-            </div>
-           );
+                id = {i}
+                selected = {this.state.images.selectedItem === i ? true : false} 
+                isFull = {false}
+                urls = {{...item.urls}} 
+            />
         });
-
-        /* ----For single photo search---- */
-        // let box = [];
-        // let keys = Object.keys(items);
-
-        // for (let i = 0; i < keys.length; i++){
-        //     box.push(
-        //         <div key = {`item${i}`} className = 'ItemBox'>
-        //             <img src = {items[keys[i]].urls.regular} alt = 'item' />
-        //         </div>
-        //         )
-        // }
-        // return box;
-        /* ----------------------------- */
     }
 
     addNewProject = (event) => {
@@ -197,27 +191,50 @@ class ModalWindow extends React.PureComponent {
                 )
             case 'Search':
                 return (
-                    <div className = 'Modal Modal-search'>
-                        <h3>Search background image</h3>
-                        { this.state.images.error ?
-                            <span className = 'error'>{this.state.images.error}</span> : null
-                        }
-                        <input ref = {this.refSearch} type = 'text' placeholder = "Photo name" />
-                        <input className = 'acceptButton' type = 'button' value = 'Search'
-                            onClick = {this.searchBackground}
-                        />
-                        <input onClick = {this.cancel} type ='button' value = 'Cancel' />
-                        {
-                            this.state.images.imageBoxView ?
-                            <div className = 'searchResultBox'>
-                                {this.makeImageResultBox(this.state.images['images'])}
+                    <Fragment>
+                        <div className = 'Modal Modal-search'>
+                            <h3>Search background image</h3>
+                            { this.state.images.error ?
+                                <span className = 'error'>{this.state.images.error}</span> : null
+                            }
+                            <input ref = {this.refSearch} type = 'text' placeholder = "Photo name" />
+                            <input className = 'acceptButton' type = 'button' value = 'Search'
+                                onClick = {this.searchBackground}
+                            />
+                            <input onClick = {this.cancel} type ='button' value = 'Cancel' />
+                            {
+                                this.state.images.imageBoxView ?
+                                <div className = 'searchResultBox'>
+                                    {this.makeImageResultBox(this.state.images['images'])}
+                                </div>
+                                : null
+                            }
+                        </div>
+                        {  this.state.imageMenuActive ?
+                            <div className = 'ActionModalSearch'>
+                            <button onClick = {this.showImage} className = 'actionModalSearch__view'>
+                                <Icon path = '/img/view.png' />
+                            </button>
+                            <button className = 'actionModalSearch__settings'>
+                                <Icon path = '/img/settings.png' />
+                            </button>
                             </div>
                             : null
                         }
-                    </div>
+                    </Fragment>
                 )
             default: return <Fragment></Fragment>
         }
+    }
+
+    componentDidMount = event => {
+        if (this.state.workMode === 'Search')
+            eventEmitter.on('EventShowMenuImage', this.showMenuImage);
+    }
+
+    componentWillUnmount = event => {
+        if (this.state.workMode === 'Search')
+            eventEmitter.off('EventShowMenuImage', this.showMenuImage);
     }
 }
 
