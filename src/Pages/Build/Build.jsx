@@ -7,6 +7,7 @@ import eventEmitter from '../../EventEmitter';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
+import ImageViewer from '../../components/imageViewer/imageViewer';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
 import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel';
@@ -14,7 +15,6 @@ import ModalWindow from '../../components/modalWindow/ModalWindow';
 import HeaderBuild from '../../components/buildComponents/header/headerBuild';
 
 import './build.scss';
-import Item from '../../components/List/Item';
 
 
 class Build extends React.PureComponent {
@@ -37,11 +37,19 @@ class Build extends React.PureComponent {
             menuActive: false,
             editStart: false,
             modalSearch: false,
+            modalImageViewer: {action: false, image: null },
         }
 
-        modalSearchOn = event => {
-            this.setState({...this.state, modalSearch: this.state.modalSearch ? false : true});
-        }
+    modalSearchOn = event => {
+        this.setState({...this.state, modalSearch: this.state.modalSearch ? false : true});
+    }
+
+    imageViewerSwitch = event => {
+        this.setState({
+            ...this.state,
+            modalImageViewer: {...this.state.modalImageViewer, action: event.action, target: event.target}
+        });
+    };
 
     workModeEdit = itemEvent => {
         if (!this.state.editStart || this.state.changeEdit)
@@ -71,15 +79,15 @@ class Build extends React.PureComponent {
     }
 
     closePanel = event => {
-
         this.setState({
             ...this.state,
             instrumentPanel: {
                 ...this.state.instrumentPanel,
                 colorPickerAvtive: false,
-                instrumentActive: event.close}
-        })
-    }
+                instrumentActive: event.close
+            }
+        });
+    };
 
     addHeaderComponent = itemEvent => {
         this.setState({
@@ -100,6 +108,9 @@ class Build extends React.PureComponent {
         if (this.props.active){
             return (
                 <Fragment>
+                {   this.state.modalImageViewer.action ?
+                    <ImageViewer path = {this.state.modalImageViewer.target} /> : null
+                }
                 {this.state.modalSearch ?
                     <ModalWindow workMode = 'Search' /> : null
                 }
@@ -129,6 +140,7 @@ class Build extends React.PureComponent {
         eventEmitter.on('EventClosePanel', this.closePanel);
         eventEmitter.on('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
+        eventEmitter.on('EventImageView', this.imageViewerSwitch);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
     }
 
@@ -137,6 +149,7 @@ class Build extends React.PureComponent {
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);
+        eventEmitter.off('EventImageView', this.imageViewerSwitch);
         eventEmitter.off('EventModeEdit', this.workModeEdit);
     }
 }

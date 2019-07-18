@@ -58,6 +58,7 @@ class ModalWindow extends React.PureComponent {
             else throw new Error('Photos not found');
         })
         .catch(error => {
+            console.error(error.message);
             this.setState({
                 ...this.state,
                  images: {...this.state.images, error: error.message},
@@ -67,7 +68,9 @@ class ModalWindow extends React.PureComponent {
     }
 
     showImage = event => {
-        console.log('image event');
+        // if (event.type === 'mouseenter')
+        eventEmitter.emit("EventImageView", {action: true, target: event.target.src});
+        // else  eventEmitter.emit("EventImageView", {action: false, target: null});
         event.stopPropagation();
     }
 
@@ -77,8 +80,15 @@ class ModalWindow extends React.PureComponent {
 
         return items.map((item,i) =>{
            return (
-            <div onMouseEnter = {this.showImage} key = {`item${i}`} className = 'ItemBox'>
-                <img src = {item.urls.regular} alt = 'item' />
+            <div 
+                key = {`item${i}`} 
+                className = 'ItemBox'>
+                <img 
+                    // onMouseLeave = {this.showImage}
+                    onClick = {this.showImage}
+                    src = {item.urls.regular} 
+                    alt = 'item' 
+                />
             </div>
            );
         });

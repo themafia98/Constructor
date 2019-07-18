@@ -36,7 +36,10 @@ class Registration extends React.PureComponent {
                 'email': email,
             }).then(() => eventEmitter.emit('EventRegistrationCorrect', response))
         })
-        .catch((error) => this.setState({error: error.message}));
+        .catch((error) => {
+        console.error(error.message);
+        this.setState({error: error.message});
+        });
     };
 
     render(){

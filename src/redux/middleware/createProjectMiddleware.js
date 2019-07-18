@@ -11,7 +11,10 @@ const middlewareCreateProject = (uid, list, title, type) => async dispatch => {
         'projects': lastProject,
     })
     .then (() => dispatch(createProjectAction(lastProject)))
-    .catch(error => dispatch(errorAction(error.message)));
+    .catch(error => {
+        console.error(error.message);
+        dispatch(errorAction(error.message));
+    })
 };
 
 export {

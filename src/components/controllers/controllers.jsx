@@ -1,19 +1,21 @@
 import React,{Fragment} from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import Icon from '../Icon/icon';
 import BuildMenu from '../componentsBuildMenu/BuildMenu';
 
-import styled from 'styled-components';
 
-const ControllersBox = styled.div.attrs(props => ({
-            style: {
-                display: props.shadowDisplay,
+const ControllersBox = styled.div
+    .attrs(props =>({
+        style: {
                 left: props.coordX,
                 top: props.coordY,
-    }}))
-    `position: absolute;`;
-
+        }
+    }))
+    `position: absolute;
+    display: ${props => props.shadowDisplay}
+    `;
 
 
 class Controllers extends React.PureComponent {
@@ -38,7 +40,6 @@ class Controllers extends React.PureComponent {
     saveCoords = event => {
         let left = this.controlBox.getBoundingClientRect().left;
         let top = this.controlBox.getBoundingClientRect().top;
-        console.log(left);
         this.setState({...this.state, shiftX: event.pageX - left, 
         shiftY: event.pageY - top + 55 });
 

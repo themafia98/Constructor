@@ -10,7 +10,10 @@ const middlewareLogin = (email,password) => async dispatch => {
                 dispatch(loadUserAction({uid: docUser.id, projects: [...user.projects]}))
             })
         })
-        .catch((error) => dispatch(errorAction(error.message)));
+        .catch((error) => {
+            console.error(error.message);
+            dispatch(errorAction(error.message));
+        });
     }
 
 const middlewareLoadUserData = (uid) => async dispatch => {
@@ -19,7 +22,10 @@ const middlewareLoadUserData = (uid) => async dispatch => {
             let user = docUser.data();
             dispatch(loadUserAction({uid: uid, projects: [...user.projects]}))
         })
-        .catch(error => dispatch(errorAction(error.message)));
+        .catch((error) => {
+            console.error(error.message);
+            dispatch(errorAction(error.message));
+        });
     }
 
 const middlewareLogOutUser = (uid) => async dispatch => {
@@ -27,7 +33,10 @@ const middlewareLogOutUser = (uid) => async dispatch => {
     .then (response => {
         dispatch(logOutAction());
     })
-    .catch(error => dispatch(errorAction(error.message)));
+    .catch((error) => {
+        console.error(error.message);
+        dispatch(errorAction(error.message));
+    });
 }
 export {
     middlewareLogin,middlewareLoadUserData, middlewareLogOutUser

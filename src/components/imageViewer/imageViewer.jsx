@@ -1,18 +1,19 @@
 import React,{useState, useEffect} from 'react';
+import eventEmitter from '../../EventEmitter';
 
+import './imageViewer.scss';
 
 function ImageViewer(props){
 
-    const effect = event => {
-        return () => {};
-    };
-
-    useEffect(effect);
+    const closeViewer = event => {
+        eventEmitter.emit("EventImageView", { action: false, target: null});
+        event.stopPropagation();
+    }
 
     let [path] = useState(props.path);
-
+    console.log(props.path);
     return (
-        <div className = 'ImageViewer'>
+        <div onClick = {closeViewer} className = 'ImageViewer'>
             <img src = {path} alt = 'fullImage' />
         </div>
     )

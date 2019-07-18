@@ -93,7 +93,6 @@ class InstrumentsPanel extends React.PureComponent {
             )
             }
             case 'background': {
-                console.log('a');
                 return (
                     <Fragment>
                     <p className = 'titleInstument'>Color: </p>
@@ -118,12 +117,7 @@ class InstrumentsPanel extends React.PureComponent {
         }
     }
 
-          // {this.state.images ?
-            //     <img src = {`${this.state.images[1].urls.thumb}`} alt ='test' /> : null
-            // }
-
     render(){
-        console.log(this.state.images);
         let { instrumentActive } = this.state.instrumentPanel;
         return (
             <Fragment>
@@ -132,7 +126,7 @@ class InstrumentsPanel extends React.PureComponent {
                     <h3>Instruments</h3>
                     {
                         instrumentActive ? 
-                        <p className = 'titleComponent important'>{this.state.instrumentPanel.target}</p>
+                        <p className = 'titleComponent'>{this.state.instrumentPanel.target}</p>
                         : null
                     }
                     {

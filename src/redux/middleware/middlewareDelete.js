@@ -16,7 +16,8 @@ const middlewareDelete = item => async dispatch => {
             dispatch(loadUserAction({uid: data.id, projects: data.projects}));
         });
     })
-    .catch(error => {
+    .catch((error) => {
+        console.error(error.message);
         dispatch(errorAction(error.message));
     });
 }
