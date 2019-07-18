@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import eventEmitter from '../../EventEmitter';
 
-function ImageItem (props){
+const ImageItem = props => {
 
     const [id] = useState(props.id);
     const [urlRegular] = useState(props.urls.regular);
@@ -9,8 +9,9 @@ function ImageItem (props){
     const [isFull] = useState(props.isFull);
 
     const showImageMenu = event => {
-       eventEmitter.emit("EventShowMenuImage", {id: id, url: urlRegular});
+       eventEmitter.emit("EventShowMenuImage", {id: id, url: urlRegular, urlFull: urlFull});
     }
+
 
     return (
         <div className = {props.selected ? 'ItemBox selected' : 'ItemBox'}>

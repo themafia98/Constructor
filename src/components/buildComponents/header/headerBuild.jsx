@@ -3,7 +3,7 @@ import eventEmitter from '../../../EventEmitter';
 import PropTypes from 'prop-types';
 
 
-import {BackgroundComponent} from '../../buildComponents/header/components/headerComponents';
+import BackgroundComponent from '../../buildComponents/components/Background';
 import Controllers from '../../controllers/controllers';
 
 

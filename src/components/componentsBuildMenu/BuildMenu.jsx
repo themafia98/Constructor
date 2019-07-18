@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {TitleComponent, BackgroundComponent} from '../buildComponents/header/components/headerComponents';
+import TitleComponent from '../buildComponents/components/Text';
+import BackgroundComponent from '../buildComponents/components/Background';
 
 import eventEmitter from '../../EventEmitter';
 

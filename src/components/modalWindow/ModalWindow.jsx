@@ -16,8 +16,14 @@ class ModalWindow extends React.PureComponent {
 
     state = {
         workMode: this.props.workMode,
-        images: {selectedItem: null, showUrl: null, images: null, imageBoxView: false, error: ''},
-        imageMenuActive: false,
+        images: {
+            selectedItem: null, 
+            showUrl: null, 
+            images: null,
+            urlFull: null,
+            imageBoxView: false, 
+            error: ''
+        },
         newProject: {
             validateName: false,
             validateType: false,
@@ -25,6 +31,7 @@ class ModalWindow extends React.PureComponent {
             name: '',
             type: 'empty'
         },
+        imageMenuActive: false,
         warning: {
             lengthMax: 'Max length: 20 symbols',
             lengthMin: 'Min length: 4 symbol',
@@ -75,7 +82,13 @@ class ModalWindow extends React.PureComponent {
         this.setState({
             ...this.state, 
             imageMenuActive: true,
-            images: {...this.state.images, selectedItem: event.id, showUrl: event.url}
+            images: {
+                ...this.state.images,
+                selectedItem: event.id, 
+                showUrl: event.url,
+                urlFull: event.urlFull
+
+            }
         });
     }
 
@@ -88,9 +101,14 @@ class ModalWindow extends React.PureComponent {
         event.stopPropagation();
     }
 
+    setSelectedImage = event => {
+
+        eventEmitter.emit('EventSetBackgroundImage',{...this.state.images});
+    };
+
     makeImageResultBox = (items) => {
         if (!items) return null;
-
+        console.log('item');
         return items.map((item,i) =>{
            return <ImageItem 
                 key = {`item${i}`} 
@@ -190,6 +208,7 @@ class ModalWindow extends React.PureComponent {
                     </div>
                 )
             case 'Search':
+                console.log('Search render');
                 return (
                     <Fragment>
                         <div className = 'Modal Modal-search'>
@@ -205,7 +224,7 @@ class ModalWindow extends React.PureComponent {
                             {
                                 this.state.images.imageBoxView ?
                                 <div className = 'searchResultBox'>
-                                    {this.makeImageResultBox(this.state.images['images'])}
+                                    {this.makeImageResultBox([...this.state.images['images']])}
                                 </div>
                                 : null
                             }
@@ -215,7 +234,7 @@ class ModalWindow extends React.PureComponent {
                             <button onClick = {this.showImage} className = 'actionModalSearch__view'>
                                 <Icon path = '/img/view.png' />
                             </button>
-                            <button className = 'actionModalSearch__settings'>
+                            <button onClick = {this.setSelectedImage} className = 'actionModalSearch__settings'>
                                 <Icon path = '/img/settings.png' />
                             </button>
                             </div>

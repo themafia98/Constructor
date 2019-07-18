@@ -1,6 +1,8 @@
+
 import React, {useEffect, useState} from 'react';
-import eventEmitter from '../../../../EventEmitter';
+import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
+
 
 const Title = styled.h1.attrs(props => ({
     style: {
@@ -17,34 +19,6 @@ const Title = styled.h1.attrs(props => ({
     margin: 0;
 `;
 
-const Background = styled.div`
-    position: relative;
-    width: 100%;
-    height: 95vh;
-    background: ${props => props.background}
-`;
-
-const Media = styled.video`
-    width: 100%;
-`;
-
-const openBgInstruments = event => {
-
-    eventEmitter.emit('EventInstrumentPanel',{target: 'background'});
-    event.stopPropagation();
-}
-
-const openMediaInstruments = event => {
-
-    eventEmitter.emit('EventInstrumentPanel',{target: 'media'});
-    event.stopPropagation();
-}
-
-const openTitleInstruments = event => {
-
-    eventEmitter.emit('EventInstrumentPanel',{target: 'text'});
-    event.stopPropagation();
-}
 
 const TitleComponent = props =>  {
 
@@ -53,6 +27,12 @@ const TitleComponent = props =>  {
     let [contentText, setText] = useState(props.children);
     const [shiftCoords, setShiftCoords] = useState(null)
     const [dragNdrop, setDragNdrop] = useState(null);
+
+    const openTitleInstruments = event => {
+
+        eventEmitter.emit('EventInstrumentPanel',{target: 'text'});
+        event.stopPropagation();
+    }
 
     const changeColorText = colorHash => {
         const {rgb} = colorHash;
@@ -90,7 +70,6 @@ const TitleComponent = props =>  {
         let top = rect.top;
         let width = rect.width;
         let height = rect.height;
-        console.log(rect);
         setShiftCoords({x: event.pageX - left - width/2, y: event.pageY - top + height/2.8});
 
         event.stopPropagation();
@@ -147,38 +126,4 @@ const TitleComponent = props =>  {
     )
 }
 
-
-const BackgroundComponent = props => {
-
-    let [backgroundColor, setBgColor] = useState(props.background);
-
-    const changeColor = colorHash => {
-        const {rgb} = colorHash;
-        let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
-        setBgColor(colorRGB);
-    }
-
-    const didUpdate = event => {
-        eventEmitter.on('EventChangeColor', changeColor);
-        return () => {
-            eventEmitter.off('EventChangeColor', changeColor);
-        }
-    }
-
-    useEffect(didUpdate);
-    return (
-        <Background
-            onClick={openBgInstruments}
-            background = {backgroundColor}
-        >
-            {props.children}
-            </Background>
-    )
-}
-
-const MediaComponent = props => <Media onClick={openMediaInstruments} width = {props.width} height = {props.height}>{props.children}</Media>;
-
-export {
-    TitleComponent, BackgroundComponent,
-    MediaComponent
-}
+export default TitleComponent;
