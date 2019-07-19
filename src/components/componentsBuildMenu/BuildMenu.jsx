@@ -16,12 +16,13 @@ class BuildMenu extends React.PureComponent {
 
     state = {
         component: {...this.props.component},
+        sizeParenBox: {...this.props.sizeParenBox},
         title: 'Title'
     }
 
     addText = event => {
         let id = this.props.countComponents;
-        let component = [<TextComponent id = {id} key = {`text${id}`}>{this.state.title}</TextComponent>];
+        let component = [<TextComponent sizeParenBox = {{...this.props.sizeParenBox}} id = {id} key = {`text${id}`}>{this.state.title}</TextComponent>];
         eventEmitter.emit('EventBuildHeaderComponents',{target: 'Header', type: 'text', component: component});
         event.stopPropagation();
     }
@@ -35,7 +36,7 @@ class BuildMenu extends React.PureComponent {
     }
 
     render(){
-
+        console.log('menuBuild');
         return (
             <div className = 'ComponentsMenu'>
                 <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>

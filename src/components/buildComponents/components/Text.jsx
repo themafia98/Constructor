@@ -7,11 +7,10 @@ import styled from 'styled-components';
 const Title = styled.h1.attrs(props => ({
     style: {
         display: props.shadowDisplay ? 'none' : 'block',
-        left: props.coordX,
-        top: props.coordY,
+        left: props.coordX ? props.coordX : '50%',
+        top:  props.coordY,
 }}))`
     position: absolute;
-    left: 50%;
     transform: translate(-50%);
     font-size: ${props => props.size};
     color: ${props => props.textColor};
@@ -19,9 +18,15 @@ const Title = styled.h1.attrs(props => ({
     margin: 0;
 `;
 
+// left: ${props => props.coordX ? props.coordX : '50%'};
+// top:  ${props => props.coordY};
+
 const TextComponent = props =>  {
 
     const [id] = useState(props.id);
+
+    console.log ('text');
+    const [sizeParenBox] = useState({...props.sizeParenBox});
 
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
@@ -82,8 +87,11 @@ const TextComponent = props =>  {
 
         coordX = coordX <= 130 ? 130 : coordX;
         coordY = coordY <= 0 ? 0 : coordY;
+        console.log(sizeParenBox);
+        let convertToPercentX = (coordX * 100) / sizeParenBox.width;
+        let convertToPercentY = (coordY * 100) / sizeParenBox.height;
 
-            setDragNdrop({x: coordX + 'px', y: coordY + 'px', shadowDisplay: event.type === 'drag' ? true : false});
+            setDragNdrop({x: convertToPercentX + '%', y: convertToPercentY + '%', shadowDisplay: event.type === 'drag' ? true : false});
             event.stopPropagation();
     }
 

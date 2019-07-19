@@ -62,6 +62,7 @@ class Controllers extends React.PureComponent {
 
 
     render(){
+
         return (
             <Fragment>
             { this.props.menuActive ?
@@ -85,6 +86,7 @@ class Controllers extends React.PureComponent {
                     />
                     {this.state.viewComponentMenu ? 
                         <BuildMenu
+                            sizeParenBox = {this.props.sizeParenBox}
                             countComponents = {this.props.countComponents}
                             component = {{...this.props.component}}
                         /> : null

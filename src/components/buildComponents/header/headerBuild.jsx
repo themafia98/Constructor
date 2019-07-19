@@ -17,8 +17,13 @@ class HeaderBuild extends React.PureComponent {
 
     state = {
         idProject: this.props.id,
-        component: {...this.props.children}
-        }
+        component: {...this.props.children},
+        sizeParenBox: null,
+    }
+
+    saveWidth = eventItem => {
+        this.setState({sizeParenBox: {...eventItem}});
+    };
 
 
     changeMode = (event) => {
@@ -30,7 +35,12 @@ class HeaderBuild extends React.PureComponent {
         }
     }
 
+    refBox = null;
+    refBackground = node => this.refBox = node;
+
     render() {
+
+        console.log('header');
         return (
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>
@@ -45,6 +55,7 @@ class HeaderBuild extends React.PureComponent {
                             countComponents = {this.props.countComponents}
                             menuActive = {this.props.menuActive}
                             component = {{...this.state.component}}
+                            sizeParenBox = {this.state.sizeParenBox}
                             mainWidth = {this.props.children.mainBoxWidth}
                             mainHeight = {this.props.children.mainBoxHeight}
 
@@ -53,6 +64,14 @@ class HeaderBuild extends React.PureComponent {
                 </div>
             </Fragment>
         )
+    }
+
+    componentDidMount = event => {
+        eventEmitter.on('EventSaveWidth', this.saveWidth);
+    }
+
+    componentWillUnmount = event => {
+        eventEmitter.off('EventSaveWidth', this.saveWidth);
     }
 }
 export default HeaderBuild;
