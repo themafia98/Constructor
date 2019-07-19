@@ -3,7 +3,6 @@
 import React from 'react';
 import eventEmitter from '../../EventEmitter';
 import ErrorPage from './ErrorPage';
-import {Redirect} from 'react-router-dom';
 class ErrorBoundary extends React.PureComponent {
 
       state = { 

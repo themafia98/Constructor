@@ -33,7 +33,7 @@ class Index extends React.PureComponent {
                         registrationActive: false,
                         error: 'Account create!'
                     })
-        : console.log('error registration');
+        : console.error('error registration');
     }
 
     showBox = (event) => {
@@ -104,7 +104,6 @@ class Index extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    console.log('state index');
     return {
         active: state.cabinet.active, 
         wrongEnter: state.cabinet.error

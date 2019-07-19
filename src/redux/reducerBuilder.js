@@ -8,7 +8,6 @@ const initialState = {
     component: []
 };
 export default (state = initialState, action) => {
-    console.log('reducer');
     switch (action.type){
 
         case LOAD_CURRENT: {

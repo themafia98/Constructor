@@ -12,10 +12,11 @@ const ControllersBox = styled.div
                 left: props.coordX,
                 top: props.coordY,
         }
-    }))
-    `position: absolute;
+    })) `
+    position: absolute;
     display: ${props => props.shadowDisplay}
     `;
+  
 
 
 class Controllers extends React.PureComponent {

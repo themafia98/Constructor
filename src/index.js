@@ -11,13 +11,12 @@ import 'normalize.css';
 
 const config = require('./config.json');
 
-
 ReactDOM.render(
     <BrowserRouter basename = '/'>
         <ErrorBoundary>
-        <Provider store = {store}>
-            <App config = {config} />
-        </Provider>
+            <Provider store = {store}>
+                <App config = {config} />
+            </Provider>
         </ErrorBoundary>
     </BrowserRouter>,
         document.getElementById('root')

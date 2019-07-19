@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const BackgroundComponent = props => {
 
     const [count, setCount] = useState(0);
     let boxComponent = React.createRef();
-    let linkRefBox = null;
+
     let [backgroundColor, setBgColor] = useState(props.background);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
 

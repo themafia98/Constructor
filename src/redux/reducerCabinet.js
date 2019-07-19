@@ -9,7 +9,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    console.log("Cabinet");
     switch(action.type) {
         case LOAD_USER_CABINET: {
 
