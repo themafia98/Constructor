@@ -143,30 +143,30 @@ class Build extends React.PureComponent {
         let { instrumentActive } = this.state.instrumentPanel;
         if (this.props.active && this.props.loadProject){
             return (
-                <Fragment>
-                {   this.state.modalImageViewer.action ?
-                    <ImageViewer path = {this.state.modalImageViewer.target} /> : null
-                }
-                {this.state.modalSearch ?
-                    <ModalWindow workMode = 'Search' /> : null
-                }
-                { instrumentActive ?
-                    <InstrumentsPanel
-                        editComponent =  {{...this.state.editComponent}}
-                        instrumentPanel = {{...this.state.instrumentPanel}}
-                    />
-                    : null
-                }
-                    <Header title = "Constructor"  />
-                    <HeaderBuild
-                            editStart = {this.state.editStart}
-                            countComponents = {this.state.editComponent.build.component.length}
-                            menuActive = {this.state.menuActive}
-                            id = {this.state.idProject}
-                    >
-                        {{...this.state.editComponent, name: 'Header'}}
-                    </HeaderBuild>
-                </Fragment>
+                    <Fragment>
+                    {   this.state.modalImageViewer.action ?
+                        <ImageViewer path = {this.state.modalImageViewer.target} /> : null
+                    }
+                    {this.state.modalSearch ?
+                        <ModalWindow workMode = 'Search' /> : null
+                    }
+                    { instrumentActive ?
+                        <InstrumentsPanel
+                            editComponent =  {{...this.state.editComponent}}
+                            instrumentPanel = {{...this.state.instrumentPanel}}
+                        />
+                        : null
+                    }
+                        <Header title = "Constructor"  />
+                        <HeaderBuild
+                                editStart = {this.state.editStart}
+                                countComponents = {this.state.editComponent.build.component.length}
+                                menuActive = {this.state.menuActive}
+                                id = {this.state.idProject}
+                        >
+                            {{...this.state.editComponent, name: 'Header'}}
+                        </HeaderBuild>
+                    </Fragment>
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader path = '/img/loading.gif' type = 'build' />

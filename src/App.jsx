@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+
+import {Route, Switch} from 'react-router-dom';
 
 import {middlewareLoadUserData} from './redux/middleware/loadUserMiddleware';
 import {connect} from 'react-redux';
@@ -11,6 +12,7 @@ import Index from './Pages/Index/Index';
 import Cabinet from './Pages/Cabinet/Cabinet';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
+import ErrorPage from './components/ErrorCatch/ErrorPage';
 
 require('es6-promise').polyfill();
 
@@ -41,21 +43,21 @@ class App extends React.PureComponent {
     render(){
         if (this.state.firebaseLoadState){
         return (
-            <BrowserRouter basename = '/'>
-                    <Switch>
-                        <Route
-                            path = '/' exact
-                            render = {(props) => <Index {...props} />}
-                        />
-                        <Route path = '/Cabinet/' exact component = {Cabinet}/>
-                        <Route
-                            path = '/Cabinet/About'
-                            render = {(props) => <About {...props} config = {this.props.config} />}
-                        />
-                        <Route path = '/Cabinet/Build/:param' component = {Build}/>
-                        <Route path = '*' component = {Index} />;
-                    </Switch>
-            </BrowserRouter>
+                <Switch>
+                    <Route
+                        path = '/' exact
+                        render = {(props) => <Index {...props} />}
+                    />
+                    <Route path = '/Cabinet/' exact component = {Cabinet}/>
+                    <Route
+                        path = '/Cabinet/About'
+                        render = {(props) => <About {...props} config = {this.props.config} />}
+                    />
+                    <Route path = '/Cabinet/Build/:param' component = {Build}/>
+                    <Route path = '*' component = {Index} />
+                    <Route path = '/crashPage' component = {ErrorPage} />
+                </Switch>
+
         )
         } else return <Loader path = '/img/loading.gif' type = 'application' />
     }
