@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
-import {loadCurrentProjectAction, loadUpdateCurrentProject, exitProjectAction} from '../../redux/actions';
+import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
+import updateMiddleware from '../../redux/middleware/updateMiddleware';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
@@ -128,9 +129,13 @@ class Build extends React.PureComponent {
     };
 
     saveChangesComponent = itemEvent => {
-
+        console.log(this.props.currentProject);
         let {component} = this.state.editComponent.build;
-        this.props.dispatch(loadUpdateCurrentProject({component, idProject: this.state.idProject}));
+        this.props.dispatch(updateMiddleware({
+            uid: this.props.idUser,
+            projects: [...this.props.currentProject],
+            component: component, 
+            idProject: this.state.idProject}));
     };
 
 
