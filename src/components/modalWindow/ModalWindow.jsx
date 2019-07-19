@@ -47,11 +47,10 @@ class ModalWindow extends React.PureComponent {
 
         const api = 'https://api.unsplash.com/search/photos/?page=1&per_page=40&query=';
         const search = this.inputSearch.value;
-        const token = "421b12ae729e1f6e4a0cac207496874099ab8a738378ec07a8e2598b11201802";
 
         this.setState({...this.state, images: {...this.state.inages, buttonSearchDisabled: true}})
 
-        isFetch(`${api + search}&client_id=${token}`)
+        isFetch(`${api + search}&client_id=${process.env.REACT_APP_UNSPLASH_TOKEN}`)
         .then(response => {
             if (response.ok) return response.json();
             else throw new Error('request invalid');
