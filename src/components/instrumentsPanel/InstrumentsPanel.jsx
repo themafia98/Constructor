@@ -57,6 +57,10 @@ class InstrumentsPanel extends React.PureComponent {
             eventEmitter.emit(`EventChangeColorText${idComponent}`, event);
     };
 
+    saveChanges = event => {
+        eventEmitter.emit("EventSaveChangesComponent");
+    }
+
     searchImage = event => {
         eventEmitter.emit('EventModalSearchOn');
     };
@@ -85,7 +89,7 @@ class InstrumentsPanel extends React.PureComponent {
                             }
                         <p className = 'titleInstument'>Content: </p>
                         <input onChange = {this.setContent} maxLength = '20' type = 'text' defaultValue = 'Title' />
-                        <input className = 'saveButtonInstument' type = 'button' value = 'save changes' />
+                        <input onClick = {this.saveChanges} className = 'saveButtonInstument' type = 'button' value = 'save changes' />
                         </Fragment>
                 )
                 case 'background': 

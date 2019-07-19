@@ -104,7 +104,11 @@ class Index extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-    return {active: state.cabinet.active, wrongEnter: state.cabinet.error}
+    console.log('state index');
+    return {
+        active: state.cabinet.active, 
+        wrongEnter: state.cabinet.error
+    }
   }
 
 export default connect(mapStateToProps)(Index);

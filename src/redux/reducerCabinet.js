@@ -1,4 +1,4 @@
-import {LOAD_USER_CABINET, LOG_OUT_CABINET, ERROR_CABINET, CREATE_PROJECT} from './actions';
+import {LOAD_USER_CABINET, LOG_OUT_CABINET, ERROR_CABINET, CREATE_PROJECT, LOAD_UPDATE_PROJECT} from './actions';
 
 const initialState = {
     active: false,
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-
+    console.log("Cabinet");
     switch(action.type) {
         case LOAD_USER_CABINET: {
 
@@ -25,6 +25,17 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 projects: action.projects
+            }
+        }
+
+        case LOAD_UPDATE_PROJECT: {
+            return {
+                ...state,
+                projects: state.projects.map(item => {
+                    if (item.id === action.idProject)
+                        item.component = [...action.component]
+                return item;
+                })
             }
         }
 

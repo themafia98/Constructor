@@ -19,9 +19,7 @@ const Title = styled.h1.attrs(props => ({
     margin: 0;
 `;
 
-
 const TextComponent = props =>  {
-
 
     const [id] = useState(props.id);
 
@@ -44,7 +42,6 @@ const TextComponent = props =>  {
     }
 
     const changeSizeText = eventSize => {
-        
         const {size} = eventSize;
         setSizeText(size);
     }
@@ -80,7 +77,6 @@ const TextComponent = props =>  {
 
     const moveText = event => {
 
-        
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
 

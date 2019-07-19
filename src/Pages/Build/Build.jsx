@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
+import {loadCurrentProjectAction, loadUpdateCurrentProject, exitProjectAction} from '../../redux/actions';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
@@ -126,10 +127,16 @@ class Build extends React.PureComponent {
         });
     };
 
+    saveChangesComponent = itemEvent => {
+
+        let {component} = this.state.editComponent.build;
+        this.props.dispatch(loadUpdateCurrentProject({component, idProject: this.state.idProject}));
+    };
+
 
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
-        if (this.props.active){
+        if (this.props.active && this.props.loadProject){
             return (
                 <Fragment>
                 {   this.state.modalImageViewer.action ?
@@ -160,8 +167,30 @@ class Build extends React.PureComponent {
         else return <Loader path = '/img/loading.gif' type = 'build' />
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.loadProject === this.props.loadProject && this.props.haveUpdateLoading) {
+            let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
+            this.props.dispatch(loadCurrentProjectAction({
+                id: current.id,
+                typeProject: current.type,
+                component: [...current.component]
+            }))
+        }
+    }
+    
+
     componentDidMount = () => {
+
+        if (this.props.active && !this.props.loadProject && this.props.haveUpdateLoading) {
+            let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
+            this.props.dispatch(loadCurrentProjectAction({
+                id: current.id,
+                typeProject: current.type,
+                component: [...current.component]
+            }))
+        };
         eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.on('EventClosePanel', this.closePanel);
         eventEmitter.on('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
@@ -170,7 +199,10 @@ class Build extends React.PureComponent {
     }
 
     componentWillUnmount = () => {
+        console.log('componentWillUnmount');
+        if (this.props.active)  this.props.dispatch(exitProjectAction(true));
         eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);
@@ -181,11 +213,12 @@ class Build extends React.PureComponent {
 
 const mapStateToProps = (state) => {
 
+    console.log(state);
     return {
         ...state.builder,
         active: state.cabinet.active,
         idUser: state.cabinet.idUser,
-        currentEditable: {}
+        currentProject: state.cabinet.projects
     }
 }
 
