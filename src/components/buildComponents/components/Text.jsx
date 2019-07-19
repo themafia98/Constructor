@@ -36,14 +36,16 @@ const TextComponent = props =>  {
 
     const openTitleInstruments = event => {
 
-        eventEmitter.emit(`EventInstrumentPanel`,{target: 'text', id: id, sizeTextValue: sizeText});
+        eventEmitter.emit(`EventInstrumentPanel`,{
+            target: 'text',
+            id: id,
+            sizeTextValue: sizeText
+        });
         event.stopPropagation();
     }
 
-    const changeColorText = colorHash => {
-        const {rgb} = colorHash;
-        let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
-        setColorText(colorRGB);
+    const changeColorText = color => {
+        setColorText(color);
     }
 
     const changeSizeText = eventSize => {
@@ -84,15 +86,23 @@ const TextComponent = props =>  {
 
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
-
+        console.log(Title);
         coordX = coordX <= 130 ? 130 : coordX;
         coordY = coordY <= 0 ? 0 : coordY;
         console.log(sizeParenBox);
         let convertToPercentX = (coordX * 100) / sizeParenBox.width;
         let convertToPercentY = (coordY * 100) / sizeParenBox.height;
 
-            setDragNdrop({x: convertToPercentX + '%', y: convertToPercentY + '%', shadowDisplay: event.type === 'drag' ? true : false});
-            event.stopPropagation();
+        const position = {
+            x: convertToPercentX + '%', 
+            y: convertToPercentY + '%', 
+            shadowDisplay: event.type === 'drag' ? true : false
+        };
+        setDragNdrop(position);
+        
+        if (event.type === 'dragend') 
+            eventEmitter.emit('EventUpdatePosition', position);
+        event.stopPropagation();
     }
 
     const weelResizeText = event => {

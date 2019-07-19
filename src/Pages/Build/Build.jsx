@@ -47,7 +47,6 @@ class Build extends React.PureComponent {
                 colorPickerAvtive: false,
                 instrumentActive: false,
                 target: '',
-                sizeTextValue: 120,
                 idComponent: null,
             },
             menuActive: false,
@@ -129,12 +128,13 @@ class Build extends React.PureComponent {
     };
 
     saveChangesComponent = itemEvent => {
-        console.log(this.props.currentProject);
-        let {component} = this.state.editComponent.build;
+        
+        let componentArray = {...itemEvent, name: this.state.editComponent.name};
+
         this.props.dispatch(updateMiddleware({
             uid: this.props.idUser,
             projects: [...this.props.currentProject],
-            component: component, 
+            component: [componentArray], 
             idProject: this.state.idProject}));
     };
 

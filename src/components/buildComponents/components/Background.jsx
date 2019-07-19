@@ -31,14 +31,13 @@ const BackgroundComponent = props => {
     }
 
     const openBgInstruments = event => {
+        console.log(Background);
         eventEmitter.emit('EventInstrumentPanel',{target: 'background'});
         event.stopPropagation();
     }
 
-    const changeColor = event => {
-        const {rgb} = event;
-        let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
-        setBgColor(colorRGB);
+    const changeColor = color => {
+        setBgColor(color);
     }
 
     const setBackgroundImage = event => {

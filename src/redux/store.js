@@ -1,4 +1,5 @@
 import {createStore, applyMiddleware, compose} from 'redux';
+import firebase from  '../Firebase/Firebase';
 import thunk from 'redux-thunk';
 import combineReducers from './reducers';
 
@@ -9,7 +10,7 @@ const composeEnhancers =
     }) : compose;
 
 const middleware = composeEnhancers(
-  applyMiddleware(thunk)
+  applyMiddleware(thunk.withExtraArgument({firebase}))
 );
 const store = createStore(combineReducers, middleware);
 

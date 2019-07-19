@@ -1,7 +1,6 @@
-import firebase from '../../Firebase/Firebase';
 import {loadUserAction, errorAction, logOutAction} from '../actions';
 
-const middlewareLogin = (email,password) => async dispatch => {
+const middlewareLogin = (email,password) => async (dispatch,getState, {firebase}) => {
         await firebase.login(email,password)
         .then(response =>{
             firebase.db.collection("users").doc(response.user.uid).get()
@@ -16,7 +15,7 @@ const middlewareLogin = (email,password) => async dispatch => {
         });
     }
 
-const middlewareLoadUserData = (uid) => async dispatch => {
+const middlewareLoadUserData = (uid) => async (dispatch,getState, {firebase}) => {
         await firebase.db.collection("users").doc(uid).get()
         .then(docUser => {
             let user = docUser.data();
@@ -28,7 +27,7 @@ const middlewareLoadUserData = (uid) => async dispatch => {
         });
     }
 
-const middlewareLogOutUser = (uid) => async dispatch => {
+const middlewareLogOutUser = (uid) => async (dispatch,getState, {firebase}) => {
     await firebase.signOut()
     .then (response => {
         dispatch(logOutAction());

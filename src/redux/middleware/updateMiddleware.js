@@ -1,7 +1,6 @@
-import firebase from '../../Firebase/Firebase';
 import {errorAction, loadUpdateCurrentProject} from '../actions';
 
-const updateMiddleware = (item) => async dispatch => {
+const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
     console.log('update');
 
     let newProjects = item.projects.map(project => {
@@ -9,7 +8,7 @@ const updateMiddleware = (item) => async dispatch => {
         return project;
     });
     await firebase.db.collection("users").doc(item.uid).update({
-        'projects': JSON.parse(JSON.stringify(newProjects))
+        'projects': newProjects
     })
     .then(response => {
         let project = item.projects.find(itemdb => itemdb.id === item.idProject);

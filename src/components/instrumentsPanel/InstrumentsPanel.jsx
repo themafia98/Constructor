@@ -15,12 +15,24 @@ class InstrumentsPanel extends React.PureComponent {
 
     state = {
         instrumentPanel: {...this.props.instrumentPanel},
+        componentsStats: {
+            content: null,
+            fontSize: null,
+            color: null,
+            backgroundImage: null,
+            image: null,
+            coords: {left: null, top: null} // x, y
+        },
         colorPickerAvtive: false,
         images: null,
     };
 
-    updateSizeText = event => {
-        this.setState({...this.state, instrumentPanel: {...this.state.instrumentPanel,sizeTextValue: event}});
+    updateSizeText = eventSize => {
+        this.setState({
+            ...this.state, 
+            instrumentPanel: {...this.state.instrumentPanel},
+            componentsStats: {...this.state.componentsStats, fontSize: eventSize}
+        });
     };
 
     closePanel = event => {
@@ -28,20 +40,44 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     setSize = event => {
-        let {sizeTextValue} = this.state.instrumentPanel;
+        // let {fontSize} = this.state.componentsStats;
         let {idComponent} = this.state.instrumentPanel;
         let size = event.target.value > 200 ? 200 : event.target.value;
         event.stopPropagation();
-        this.setState({...this.state, instrumentPanel: {...this.state.instrumentPanel,sizeTextValue: size}},
-            () => eventEmitter.emit(`EventChangeSizeText${idComponent}`, {size: sizeTextValue })
+        this.setState({
+            ...this.state, 
+            instrumentPanel: {...this.state.instrumentPanel},
+            componentsStats: {...this.state.componentsStats,fontSize: size}
+        },
+            () => eventEmitter.emit(`EventChangeSizeText${idComponent}`, {size: size })
         );
     };
 
     setContent = event => {
         let {idComponent} = this.state.instrumentPanel;
         let contentValue = event.target.value;
+        this.setState({
+            ...this.state, 
+            instrumentPanel: {...this.state.instrumentPanel},
+            componentsStats: {...this.state.componentsStats,content: contentValue}
+        },
+        () => eventEmitter.emit(`EventChangeContentText${idComponent}`,{content: contentValue}));
         event.stopPropagation();
-        eventEmitter.emit(`EventChangeContentText${idComponent}`,{content: contentValue});
+    };
+
+    updatePosition = eventItem => {
+
+        this.setState({
+            ...this.state, 
+            componentsStats: {
+                ...this.state.componentsStats,
+                coords: {
+                    ...this.state.componentsStats.coords,
+                    left: eventItem.x,
+                    top: eventItem.y
+                }
+            }
+        });
     };
 
     setColor = event => {
@@ -50,15 +86,28 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     handleChangeComplete = event => {
+
+        const {rgb} = event;
+        let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
+
         let {idComponent} = this.state.instrumentPanel;
         if (this.state.instrumentPanel.target === 'background')
-            eventEmitter.emit('EventChangeColor', event);
-        else if (this.state.instrumentPanel.target === 'text')
-            eventEmitter.emit(`EventChangeColorText${idComponent}`, event);
+            eventEmitter.emit('EventChangeColor', colorRGB);
+
+        else if (this.state.instrumentPanel.target === 'text') {
+            this.setState({
+                ...this.state,
+                componentsStats: {...this.state.componentsStats,color: colorRGB}
+            },
+            () => eventEmitter.emit(`EventChangeColorText${idComponent}`, colorRGB));
+        }
     };
 
     saveChanges = event => {
-        eventEmitter.emit("EventSaveChangesComponent");
+        eventEmitter.emit("EventSaveChangesComponent", {
+            ...this.state.componentsStats,
+            type: this.state.instrumentPanel.target
+        });
     }
 
     searchImage = event => {
@@ -67,7 +116,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     makePanelInstruments = (type) => {
 
-        let {sizeTextValue} = this.state.instrumentPanel;
+        let {fontSize} = this.state.componentsStats;
             switch (type){
                 case 'text':
                     return (
@@ -79,7 +128,7 @@ class InstrumentsPanel extends React.PureComponent {
                             onChange = {this.setSize} 
                             type="number"
                             min = '10' max = '200'
-                            value = {sizeTextValue ? sizeTextValue : 120 }
+                            value = {fontSize ? fontSize : 120 }
                         />
                             { this.state.colorPickerAvtive ?
                                 <SketchPicker
@@ -126,6 +175,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     componentDidMount = event => {
         eventEmitter.on("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.on("EventUpdatePosition", this.updatePosition);
     };
 
     componentWillUnmount = event => {
