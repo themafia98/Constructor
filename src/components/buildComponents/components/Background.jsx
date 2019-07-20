@@ -21,7 +21,7 @@ const BackgroundComponent = props => {
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
 
 
-
+    console.log('Background component');
 
     const saveWidth = event => {
         setCount(count + 1);
@@ -45,7 +45,7 @@ const BackgroundComponent = props => {
         setImage(urlFull);
     };
 
-    const didUpdate = event => {
+    const didUpdate = () => {
         console.log('didUpdate');
         if (count === 0 ) saveWidth();
         eventEmitter.on('EventChangeColor', changeColor);

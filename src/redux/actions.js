@@ -9,7 +9,7 @@ const EXIT_PROJECT = 'EXIT_PROJECT';
 const createProjectAction = (state) => {
     return {
         type: CREATE_PROJECT,
-        projects: [...state],
+        projects: state,
     }
 }
 
@@ -21,12 +21,11 @@ const exitProjectAction = (state) => {
 }
 
 const loadCurrentProjectAction = (state) => {
-    console.log(state);
     return {
         type: LOAD_CURRENT,
         id: state.id,
         typeProject: state.typeProject,
-        component: [...state.component]
+        component: state.component
     }
 }
 
@@ -34,7 +33,7 @@ const loadUpdateCurrentProject = (state) => {
     return {
         type: LOAD_UPDATE_PROJECT,
         idProject: state.idProject,
-        component: [...state.component]
+        component: state.component
     }
 }
 
@@ -44,7 +43,7 @@ const loadUserAction = (state) => {
         active: true,
         idUser: state.uid,
         error: '',
-        projects: [...state.projects]
+        projects: state.projects
     }
 }
 

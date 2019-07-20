@@ -44,6 +44,7 @@ class Cabinet extends React.PureComponent {
 
   render(){
     if (this.props.active){
+      console.log('CAbinet');
       return (
         <Fragment>
           <Header title = {title} idUser = {this.props.idUser} />

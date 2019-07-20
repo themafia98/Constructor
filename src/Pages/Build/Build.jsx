@@ -87,8 +87,9 @@ class Build extends React.PureComponent {
     }
 
     openInstrument = itemEvent => {
-        console.log(itemEvent);
-        if (this.state.editStart)
+        let targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
+        let {instumentActive} = this.state.instrumentPanel;
+        if (targetEqual && this.state.editStart && !instumentActive)
         this.setState({
             ...this.state,
             instrumentPanel: {
@@ -130,7 +131,6 @@ class Build extends React.PureComponent {
     saveChangesComponent = itemEvent => {
         
         let componentArray = {...itemEvent, name: this.state.editComponent.name};
-
         this.props.dispatch(updateMiddleware({
             uid: this.props.idUser,
             projects: [...this.props.currentProject],
@@ -140,25 +140,29 @@ class Build extends React.PureComponent {
 
 
     render(){
-        let { instrumentActive } = this.state.instrumentPanel;
+        console.log('render build');
+        let instrumentActive = this.state.instrumentPanel.instrumentActive;
         if (this.props.active && this.props.loadProject){
+            console.log('build');
             return (
-                    <Fragment>
+                    <Fragment key = 'build'>
                     {   this.state.modalImageViewer.action ?
-                        <ImageViewer path = {this.state.modalImageViewer.target} /> : null
+                        <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} /> : null
                     }
                     {this.state.modalSearch ?
-                        <ModalWindow workMode = 'Search' /> : null
+                        <ModalWindow key = 'ModalWindow' workMode = 'Search' /> : null
                     }
                     { instrumentActive ?
                         <InstrumentsPanel
+                            key = 'InstrumentsPanel'
                             editComponent =  {{...this.state.editComponent}}
                             instrumentPanel = {{...this.state.instrumentPanel}}
                         />
                         : null
                     }
-                        <Header title = "Constructor"  />
+                        <Header key = 'Header' title = "Constructor"  />
                         <HeaderBuild
+                                key = 'HeaderBuild'
                                 editStart = {this.state.editStart}
                                 countComponents = {this.state.editComponent.build.component.length}
                                 menuActive = {this.state.menuActive}
@@ -168,12 +172,14 @@ class Build extends React.PureComponent {
                         </HeaderBuild>
                     </Fragment>
             )
-        } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
-        else return <Loader path = '/img/loading.gif' type = 'build' />
+        } else if (!this.props.firebase.getCurrentUser()) { console.log('redirect'); return <Redirect to = '/' /> }
+        else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
     }
 
     componentDidUpdate(prevProps, prevState) {
+        console.log('componentDidUpdate');
         if (prevProps.loadProject === this.props.loadProject && this.props.haveUpdateLoading) {
+            console.log('componentDidUpdate build dispatch');
             let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
@@ -185,8 +191,9 @@ class Build extends React.PureComponent {
     
 
     componentDidMount = () => {
-
+        console.log('componentDidMount build');
         if (this.props.active && !this.props.loadProject && this.props.haveUpdateLoading) {
+            console.log('componentDidMount build dispatch');
             let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
@@ -218,7 +225,7 @@ class Build extends React.PureComponent {
 
 const mapStateToProps = (state) => {
 
-    console.log(state);
+    console.log("mapStateToProps" + state);
     return {
         ...state.builder,
         active: state.cabinet.active,

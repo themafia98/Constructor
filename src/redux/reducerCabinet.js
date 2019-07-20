@@ -5,7 +5,7 @@ const initialState = {
     idUser: null,
     projects: [],
     error: null,
-    dateConnect: new Date(Date.now()).toLocaleString().replace(/\s/ig,'').split(','),
+    //dateConnect: new Date(Date.now()).toLocaleString().replace(/\s/ig,'').split(','),
 };
 
 export default (state = initialState, action) => {
@@ -16,14 +16,14 @@ export default (state = initialState, action) => {
                 ...state,
                 active: action.active,
                 idUser: action.idUser,
-                projects: action.projects
+                projects: [...action.projects]
             }
         }
 
         case CREATE_PROJECT: {
             return {
                 ...state,
-                projects: action.projects
+                projects: [...action.projects]
             }
         }
 

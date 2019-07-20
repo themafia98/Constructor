@@ -52,7 +52,7 @@ class Index extends React.PureComponent {
     passwordRef = (node) => this.passwordImput = node;
 
     render(){
-
+        console.log('index render');
         if (this.props.active) return <Redirect to = '/Cabinet' />
         else if (!this.props.active) {
             let currentSelected = this.state.registrationActive;

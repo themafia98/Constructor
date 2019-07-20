@@ -16,8 +16,6 @@ const ControllersBox = styled.div
     position: absolute;
     display: ${props => props.shadowDisplay}
     `;
-  
-
 
 class Controllers extends React.PureComponent {
 
@@ -35,7 +33,8 @@ class Controllers extends React.PureComponent {
     }
 
     componentMenu = (event) => {
-        this.setState({viewComponentMenu: this.state.viewComponentMenu ? false : true})
+        this.setState({viewComponentMenu: this.state.viewComponentMenu ? false : true});
+        event.stopPropagation();
     }
 
     saveCoords = event => {
@@ -63,7 +62,7 @@ class Controllers extends React.PureComponent {
 
 
     render(){
-
+        console.log('controllers');
         return (
             <Fragment>
             { this.props.menuActive ?
@@ -98,6 +97,15 @@ class Controllers extends React.PureComponent {
             </Fragment>
         )
     }
+
+    componentDidUpdate = () => {
+        console.log('componentDidUpdate controllers');
+    }
+    
+    componentDidMount = () => {
+        console.log('componentDidMount controllers');
+    }
+    
 }
 
 export default Controllers;

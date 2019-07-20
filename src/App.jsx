@@ -14,7 +14,7 @@ import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
 import ErrorPage from './components/ErrorCatch/ErrorPage';
 
-require('es6-promise').polyfill();
+// require('es6-promise').polyfill();
 
 class App extends React.PureComponent {
 
@@ -31,10 +31,10 @@ class App extends React.PureComponent {
     componentDidMount(){
 
         this.props.firebase.auth.onAuthStateChanged((user) => {
-
+            
             if (!this.state.firebaseLoadState){
-                if (user) this.props.dispatch(middlewareLoadUserData(user.uid));
-                this.setState({firebaseLoadState: true});
+                if (user){console.log('load'); this.props.dispatch(middlewareLoadUserData(user.uid)); }
+                this.setState({...this.state, firebaseLoadState: true});
             }
         });
 
@@ -42,6 +42,7 @@ class App extends React.PureComponent {
 
     render(){
         if (this.state.firebaseLoadState){
+            console.log('app');
         return (
                 <Switch>
                     <Route
@@ -63,10 +64,10 @@ class App extends React.PureComponent {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-      active: state.cabinet.active
-    }
-  }
+// const mapStateToProps = (state) => {
+//     return {
+//       active: state.cabinet.active
+//     }
+//   }
 
-export default connect(mapStateToProps)(withFirebase(App));
+export default connect()(withFirebase(App));

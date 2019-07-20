@@ -6,6 +6,14 @@ header {
     height: 60px;
     border-bottom: 1px solid grey;
 
+    .tilteApp {
+        cursor: pointer;
+    }
+
+    .tilteApp:hover {
+        transform: scale(1.02);
+    }
+
     .header__CabinetInfo{
 
         h3 {

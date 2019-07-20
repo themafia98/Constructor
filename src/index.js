@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
@@ -12,13 +13,13 @@ import 'normalize.css';
 const config = require('./config.json');
 
 ReactDOM.render(
-    <BrowserRouter basename = '/'>
-        <ErrorBoundary>
-            <Provider store = {store}>
-                <App config = {config} />
-            </Provider>
-        </ErrorBoundary>
-    </BrowserRouter>,
+        <BrowserRouter>
+            <ErrorBoundary>
+                <Provider store = {store}>
+                    <App config = {config} />
+                </Provider>
+            </ErrorBoundary>
+        </BrowserRouter>,
         document.getElementById('root')
 );
 

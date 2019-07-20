@@ -5,7 +5,7 @@ import './header.scss';
 
 import {middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
 import {connect} from 'react-redux';
-import {withRouter, NavLink} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 import eventEmitter from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
@@ -13,7 +13,7 @@ import Icon from '../Icon/icon';
 
 const iconPath = require('../../config.json').CabinetIcon;
 
-class Header extends React.Component {
+class Header extends React.PureComponent {
 
     static propTypes = {
         title: PropTypes.string.isRequired,
@@ -23,14 +23,22 @@ class Header extends React.Component {
         title: this.props.title,
     };
 
-    logOut = (event) => {
+    logOut = event => {
         this.props.dispatch(middlewareLogOutUser(this.props.idUser));
+        event.stopPropagation();
     };
 
-    redirect = (e) => {
+    redirect = event => {
         if (this.props.location.pathname !== '/Cabinet/About')
             this.props.history.push('/Cabinet/About');
+        event.stopPropagation()
     };
+
+    redirectCabinet = event => {
+        if (this.props.location.pathname !== '/Cabinet')
+                this.props.history.push('/Cabinet');
+        event.stopPropagation()
+    }
 
     add = (e) => {
         eventEmitter.emit('EventChangeWorkMode',{action: 'newProject'});
@@ -43,7 +51,7 @@ class Header extends React.Component {
                     <div className = 'flex-row'>
                             <div className = 'header__CabinetInfo'>
                                 <Icon path = {iconPath} />
-                                <NavLink to = '/Cabinet'><h3>{this.state.title}</h3></NavLink>
+                                <h3 className = 'tilteApp' onClick = {this.redirectCabinet}>{this.state.title}</h3>
                             </div>
                             {this.props.location.pathname === '/Cabinet' ?
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>

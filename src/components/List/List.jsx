@@ -55,11 +55,13 @@ class List extends React.PureComponent {
                 )
     }
 
-    componentWillMount = () =>
+    componentDidMount = () => {
         eventEmitter.on('EventAddProject',this.addNewProject);
+    }
 
-      componentWillUnmount = () =>
+      componentWillUnmount = () => {
         eventEmitter.off('EventAddProject',this.addNewProject);
+      }
 
 }
 
