@@ -15,7 +15,7 @@ header {
     }
 
     .header__CabinetInfo{
-
+        cursor: pointer;
         h3 {
             display: inline-block;
             color: grey;
@@ -30,6 +30,7 @@ header {
     .Navigator {
         display: flex;
         position: absolute;
+        height: 100%;
         top: 0;
         left: 100%;
         transform: translate(-50%);
@@ -71,4 +72,22 @@ header {
         transform: translate(-50%) scale(1.1);
         background: greenyellow;
     }
+}
+
+@media screen and (max-width: 780px){
+    header .Navigator {
+    transform: translate(-80%);
+    }
+}
+
+
+@media screen and (max-width: 500px){
+
+        header .header__CabinetInfo h3 {
+            display: none;
+        }
+        header .Navigator {
+            top: 0;
+            left: 100%;
+        }
 }

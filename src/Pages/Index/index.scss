@@ -141,3 +141,14 @@ input[type='text'], input[type='password']{
     -webkit-user-drag: element; 
     cursor: move;
 }
+
+
+
+
+
+@media screen and(max-width: 760px){
+.LoginPage .LoginBox {
+    width: 90%;
+    height: 100%;
+}
+}

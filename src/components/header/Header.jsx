@@ -74,9 +74,9 @@ class Header extends React.Component {
             <header>
                 <div className = 'container'>
                     <div className = 'flex-row'>
-                            <div className = 'header__CabinetInfo'>
+                            <div onClick = {this.redirectCabinet} className = 'header__CabinetInfo'>
                                 <Icon path = {iconPath} />
-                                <h3 className = 'tilteApp' onClick = {this.redirectCabinet}>{this.state.title}</h3>
+                                <h3 className = 'tilteApp'>{this.state.title}</h3>
                             </div>
                             {this.props.location.pathname === '/Cabinet' ?
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>

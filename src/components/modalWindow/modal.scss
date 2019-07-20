@@ -17,7 +17,7 @@
     input, select {
         outline: none;
         margin: 5px;
-        width: 30%;
+        width: 50%;
     }
 
     ::placeholder, select {
@@ -121,4 +121,27 @@
     .selected {
         border: 2px solid red;
     }
+}
+
+@media screen and (max-width: 1050px) {
+    .Modal {
+        width: 50%;
+
+        input, select {
+            width: 65%;
+        }
+    }
+}
+
+
+@media screen and (max-width: 650px) {
+    .Modal {
+        width: 90%;
+
+        input, select {
+            width: 65%;
+        }
+    }
+
+
 }
