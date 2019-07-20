@@ -2,7 +2,7 @@
   "name": "constructor",
   "version": "0.1.0",
   "private": true,
-  "homepage": "",
+  "homepage": "https://themafia98.github.io/constructor/",
   "dependencies": {
     "es6-promise": "^4.2.8",
     "firebase": "^5.9.1",

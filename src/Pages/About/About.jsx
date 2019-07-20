@@ -37,7 +37,7 @@ class About extends React.PureComponent {
                     </section>
                 </Fragment>
             )
-        } else return <Redirect to = {process.env.PUBLIC_URL + '/'} />
+        } else return <Redirect to = { '/'} />
 
     }
 

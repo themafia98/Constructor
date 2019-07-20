@@ -52,7 +52,7 @@ class Cabinet extends React.PureComponent {
             <ProjectsSection />
         </Fragment>
       )
-    } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = {process.env.PUBLIC_URL + '/'} />
+    } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
     else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
     }
 

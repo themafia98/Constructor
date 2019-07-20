@@ -10,10 +10,12 @@ import store from './redux/store';
 import App from './App.jsx';
 import 'normalize.css';
 
+
 const config = require('./config.json');
 
+console.log('test production');
 ReactDOM.render(
-        <HashRouter basename = {process.env.PUBLIC_URL} >
+        <HashRouter>
             <ErrorBoundary>
                 <Provider store = {store}>
                     <App config = {config} />

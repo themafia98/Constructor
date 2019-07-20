@@ -190,7 +190,7 @@ class Build extends React.PureComponent {
                         </HeaderBuild>
                     </Fragment>
             )
-        } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = {process.env.PUBLIC_URL + '/'} />
+        } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
     }
 

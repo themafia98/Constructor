@@ -22,11 +22,11 @@ class Header extends React.Component {
     state = {
         title: this.props.title,
         redirectAbout: {
-            path: process.env.PUBLIC_URL + '/Cabinet/About',
+            path:  '/Cabinet/About',
             redirectA: false,
         },
         redirectCabinet: {
-            path: process.env.PUBLIC_URL + '/Cabinet',
+            path:  '/Cabinet',
             redirectC: false,
         }
     };

@@ -4,7 +4,7 @@ import {withRouter, Redirect} from 'react-router-dom';
 
 function Item(props) {
 
-    const [path] = useState(process.env.PUBLIC_URL + `/Cabinet/Build/${props.id}`);
+    const [path] = useState( `/Cabinet/Build/${props.id}`);
 
     let [canBuild,setCanBuild] = useState(false);
 

@@ -47,7 +47,7 @@ class List extends React.PureComponent {
 
     render(){
         if (this.state.redirect)
-            return <Redirect to = {process.env.PUBLIC_URL + '/'} />
+            return <Redirect to = { '/'} />
             else return (
                     <div className = 'projectsList__list'>
                         {this.makeList([...this.props.list])}

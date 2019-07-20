@@ -5,7 +5,7 @@ function Icon(props){
     const [path] = useState(props.path);
     const [className] = useState(props.className ? props.className : null);
     const [draggable] = useState(props.draggable ? true : false);
-
+    console.log('Icon');
     return (
     <img
         draggable = {draggable}
