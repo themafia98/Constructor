@@ -1,15 +1,21 @@
 import React, {useState} from 'react';
 import eventEmitter from '../../EventEmitter';
-import {withRouter} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 
 function Item(props) {
+
+    const [path] = useState(process.env.PUBLIC_URL + `/Cabinet/Build/${props.id}`);
+
+    let [canBuild,setCanBuild] = useState(false);
+
     const [id] = useState(props.id);
     const [name] = useState(props.name);
     const [type] = useState(props.type);
 
 
     const build = event => {
-        props.history.push(`/Cabinet/Build/${id}`);
+        if(props.location.pathname !== path)
+            setCanBuild(true);
         event.stopPropagation();
     };
 
@@ -18,16 +24,17 @@ function Item(props) {
         event.stopPropagation();
     };
 
-    return (
-        <div className = 'item' data-id = {id}>
-            <p className = 'ProjectName'>{name}</p>
-            <p className = 'ProjectType'>{type}</p>
-            <div className = 'projectController'>
-            <input onClick = {build} className = 'projectControllerButton_enter' type = 'button' value = 'enter build' />
-            <input onClick = {deleteItem} className = 'projectControllerButton_delete' type = 'button' value = 'delete' />
+    if (canBuild) return <Redirect to = {path} />
+    else return (
+            <div className = 'item' data-id = {id}>
+                <p className = 'ProjectName'>{name}</p>
+                <p className = 'ProjectType'>{type}</p>
+                <div className = 'projectController'>
+                <input onClick = {build} className = 'projectControllerButton_enter' type = 'button' value = 'enter build' />
+                <input onClick = {deleteItem} className = 'projectControllerButton_delete' type = 'button' value = 'delete' />
+                </div>
             </div>
-        </div>
-    )
+        )
 }
 
 export default withRouter(Item);

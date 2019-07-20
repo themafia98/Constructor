@@ -8,7 +8,7 @@ const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
         return project;
     });
     await firebase.db.collection("users").doc(item.uid).update({
-        'projects': newProjects
+        'projects': JSON.parse(JSON.stringify(newProjects))
     })
     .then(response => {
         let project = item.projects.find(itemdb => itemdb.id === item.idProject);

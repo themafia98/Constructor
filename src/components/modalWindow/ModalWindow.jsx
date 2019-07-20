@@ -11,7 +11,8 @@ import './modal.scss';
 class ModalWindow extends React.PureComponent {
 
     static propTypes = {
-        mode: PropTypes.string
+        workMode: PropTypes.string.isRequired,
+        idComponent: PropTypes.string || PropTypes.number
     }
 
     state = {
@@ -78,7 +79,7 @@ class ModalWindow extends React.PureComponent {
                 images: {...this.state.images, error: error.message},
                 imageBoxView: false,
                 buttonSearchDisabled: false
-                });
+            });
         });
     }
 
@@ -99,15 +100,16 @@ class ModalWindow extends React.PureComponent {
     showImage = event => {
 
         const {showUrl} = this.state.images;
-        // if (event.type === 'mouseenter')
         eventEmitter.emit("EventImageView", {action: true, target: showUrl ? showUrl : null});
-        // else  eventEmitter.emit("EventImageView", {action: false, target: null});
         event.stopPropagation();
     }
 
     setSelectedImage = event => {
 
-        eventEmitter.emit('EventSetBackgroundImage',{...this.state.images});
+        let images = {...this.state.images};
+        eventEmitter.emit(`EventSetBackgroundImage${this.props.idComponent}`,images);
+        eventEmitter.emit(`EventSetBImageInstumentPanel`,images);
+        event.stopPropagation();
     };
 
     makeImageResultBox = (items) => {

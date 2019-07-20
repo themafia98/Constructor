@@ -45,9 +45,9 @@ class HeaderBuild extends React.PureComponent {
         return (
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>
-                    <BackgroundComponent background = 'grey'>
-                    {  this.props.children.build.component && this.props.children.build.type === 'text'  ?
-                            this.props.children.build.component : null
+                    <BackgroundComponent id = 'MainBackgroundHeader' background = 'grey'>
+                    {  this.props.children.build.componentJSX && this.props.children.build.type === 'text'  ?
+                            this.props.children.build.componentJSX : null
                     }
                     </BackgroundComponent>
                     {!this.props.editStart ? <p className = 'warningEdit'>Click for start edit</p> : null}

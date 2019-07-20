@@ -12,7 +12,7 @@ function Icon(props){
         onClick = {props.onClick ? props.onClick : null}
         className = {className}
         title = {props.title ? props.title : null}
-        src = {path} alt = 'icon'>
+        src = {process.env.PUBLIC_URL + path } alt = 'icon'>
     </img>
     )
 }

@@ -53,7 +53,7 @@ class Index extends React.PureComponent {
 
     render(){
         console.log('index render');
-        if (this.props.active) return <Redirect to = '/Cabinet' />
+        if (this.props.active) return <Redirect to = {process.env.PUBLIC_URL + '/Cabinet'} />
         else if (!this.props.active) {
             let currentSelected = this.state.registrationActive;
             return (

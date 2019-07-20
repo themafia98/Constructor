@@ -1,19 +1,24 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
 import './errorPage.scss';
 
 
-class ErrorPage extends React.PureComponent {
+class ErrorPage extends React.Component {
+
+    state = {
+        redirect: false,
+    }
 
     update = event => {
-        this.props.history.push('/');
-        eventEmitter.emit('EventErrorCatchUpdate');
+       this.setState({redirect: true},
+        () => eventEmitter.emit('EventErrorCatchUpdate'));
     }
 
     render(){
         console.log('error');
+        if (this.state.redirect) return <Redirect to = '/' />
         return (
         <div class = 'container'>
             <div class = 'flex-column'>
@@ -25,4 +30,4 @@ class ErrorPage extends React.PureComponent {
     }
 }
 
-export default withRouter(ErrorPage);
+export default ErrorPage;

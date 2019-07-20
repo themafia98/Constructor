@@ -32,19 +32,22 @@ class Build extends React.PureComponent {
 
     state = {
             idProject: parseInt(this.props.match.params.param),
-            typeProject: null,
             editComponent: {
                 name: null,
                 build: {
+                    name: null,
                     target: null,
                     type: null,
-                    component: []
+                    mainBoxWidth: null,
+                    mainBoxHeight: null,
+                    component: [],
+                    componentJSX: []
                 },
                 edit: false
             },
             changeEdit: false,
             instrumentPanel: {
-                colorPickerAvtive: false,
+                colorPickerActive: false,
                 instrumentActive: false,
                 target: '',
                 idComponent: null,
@@ -107,7 +110,7 @@ class Build extends React.PureComponent {
             ...this.state,
             instrumentPanel: {
                 ...this.state.instrumentPanel,
-                colorPickerAvtive: false,
+                colorPickerActive: false,
                 instrumentActive: event.close
             }
         });
@@ -115,27 +118,40 @@ class Build extends React.PureComponent {
 
     addHeaderComponent = itemEvent => {
 
-        let {component} = this.state.editComponent.build;
+        let {componentJSX} = this.state.editComponent.build;
         this.setState({
             ...this.state,
             editComponent: {
                 ...this.state.editComponent,
                 build: {
+                    ...this.state.editComponent.build,
                     target: itemEvent.target,
                     type: itemEvent.type,
-                    component: [...component, ...itemEvent.component]},
+                    componentJSX: [...componentJSX, ...itemEvent.component]},
             },
         });
     };
 
     saveChangesComponent = itemEvent => {
-        
-        let componentArray = {...itemEvent, name: this.state.editComponent.name};
+        console.log(itemEvent);
+        let componentSaveInBase = {...itemEvent, name: this.state.editComponent.name};
+
+        this.setState({
+            ...this.state,
+            editComponent: {
+                ...this.state.editComponent,
+                build: {
+                    ...this.state.editComponent.build,
+                    component: [...this.state.editComponent.build.component, componentSaveInBase]
+                }
+            }
+        }, () => (
         this.props.dispatch(updateMiddleware({
             uid: this.props.idUser,
             projects: [...this.props.currentProject],
-            component: [componentArray], 
-            idProject: this.state.idProject}));
+            component: [...this.state.editComponent.build.component],
+            idProject: this.state.idProject}))
+        ));
     };
 
 
@@ -150,7 +166,9 @@ class Build extends React.PureComponent {
                         <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} /> : null
                     }
                     {this.state.modalSearch ?
-                        <ModalWindow key = 'ModalWindow' workMode = 'Search' /> : null
+                        <ModalWindow
+                            idComponent = {this.state.instrumentPanel.idComponent}
+                            key = 'ModalWindow' workMode = 'Search' /> : null
                     }
                     { instrumentActive ?
                         <InstrumentsPanel
@@ -164,7 +182,7 @@ class Build extends React.PureComponent {
                         <HeaderBuild
                                 key = 'HeaderBuild'
                                 editStart = {this.state.editStart}
-                                countComponents = {this.state.editComponent.build.component.length}
+                                countComponents = {this.state.editComponent.build.componentJSX.length}
                                 menuActive = {this.state.menuActive}
                                 id = {this.state.idProject}
                         >
@@ -172,7 +190,7 @@ class Build extends React.PureComponent {
                         </HeaderBuild>
                     </Fragment>
             )
-        } else if (!this.props.firebase.getCurrentUser()) { console.log('redirect'); return <Redirect to = '/' /> }
+        } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = {process.env.PUBLIC_URL + '/'} />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
     }
 

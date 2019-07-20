@@ -23,7 +23,6 @@ class InstrumentsPanel extends React.PureComponent {
             image: null,
             coords: {left: null, top: null} // x, y
         },
-        colorPickerAvtive: false,
         images: null,
     };
 
@@ -43,7 +42,6 @@ class InstrumentsPanel extends React.PureComponent {
         // let {fontSize} = this.state.componentsStats;
         let {idComponent} = this.state.instrumentPanel;
         let size = event.target.value > 200 ? 200 : event.target.value;
-        event.stopPropagation();
         this.setState({
             ...this.state, 
             instrumentPanel: {...this.state.instrumentPanel},
@@ -51,6 +49,8 @@ class InstrumentsPanel extends React.PureComponent {
         },
             () => eventEmitter.emit(`EventChangeSizeText${idComponent}`, {size: size })
         );
+
+        event.stopPropagation();
     };
 
     setContent = event => {
@@ -81,8 +81,24 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     setColor = event => {
+        this.setState({...this.state,
+            instrumentPanel:{
+                ...this.state.instrumentPanel,
+                colorPickerActive: this.state.instrumentPanel.colorPickerActive ? false : true
+            }
+        });
         event.stopPropagation();
-        this.setState({...this.state, colorPickerAvtive: this.state.colorPickerAvtive ? false : true});
+    };
+
+    updateBimageStats = eventItem => {
+        const {urlFull} = eventItem;
+        this.setState({
+            ...this.state,
+            componentsStats:{
+                ...this.state.componentsStats,
+                backgroundImage: urlFull
+            }
+        });
     };
 
     handleChangeComplete = event => {
@@ -91,8 +107,12 @@ class InstrumentsPanel extends React.PureComponent {
         let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
 
         let {idComponent} = this.state.instrumentPanel;
-        if (this.state.instrumentPanel.target === 'background')
-            eventEmitter.emit('EventChangeColor', colorRGB);
+        if (this.state.instrumentPanel.target === 'background'){
+            this.setState({
+                ...this.state,
+                componentsStats: {...this.state.componentsStats,color: colorRGB}
+            }, () => eventEmitter.emit(`EventChangeColorBackground${idComponent}`, colorRGB));
+        }
 
         else if (this.state.instrumentPanel.target === 'text') {
             this.setState({
@@ -101,6 +121,7 @@ class InstrumentsPanel extends React.PureComponent {
             },
             () => eventEmitter.emit(`EventChangeColorText${idComponent}`, colorRGB));
         }
+
     };
 
     saveChanges = event => {
@@ -108,14 +129,21 @@ class InstrumentsPanel extends React.PureComponent {
             ...this.state.componentsStats,
             type: this.state.instrumentPanel.target
         });
+
+        event.stopPropagation();
     }
 
     searchImage = event => {
-        eventEmitter.emit('EventModalSearchOn');
+
+        let {idComponent} = this.state.instrumentPanel;
+        eventEmitter.emit('EventModalSearchOn', {idComponent: idComponent});
+
+        event.stopPropagation();
     };
 
     makePanelInstruments = (type) => {
 
+        let {colorPickerActive} = this.state.instrumentPanel;
         let {fontSize} = this.state.componentsStats;
             switch (type){
                 case 'text':
@@ -130,7 +158,7 @@ class InstrumentsPanel extends React.PureComponent {
                             min = '10' max = '200'
                             value = {fontSize ? fontSize : 120 }
                         />
-                            { this.state.colorPickerAvtive ?
+                            { colorPickerActive ?
                                 <SketchPicker
                                 onChangeComplete={this.handleChangeComplete}
                                 />
@@ -146,14 +174,14 @@ class InstrumentsPanel extends React.PureComponent {
                         <Fragment>
                         <p className = 'titleInstument'>Color: </p>
                         <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'color pick' />
-                            { this.state.colorPickerAvtive ?
+                            { colorPickerActive ?
                                 <SketchPicker
                                 onChangeComplete={this.handleChangeComplete}
                                 />
                                 : null
                             }
                             <input onClick = {this.searchImage} className = 'ImageSearchButton' type = 'button' value = 'background-image' />
-                            <input className = 'saveButtonInstument' type = 'button' value = 'save changes' />
+                            <input onClick = {this.saveChanges} className = 'saveButtonInstument' type = 'button' value = 'save changes' />
                         </Fragment>
                     )
                 default: return <p className = 'warningInstruments'>Select elements for accses edit instruments</p>
@@ -167,19 +195,24 @@ class InstrumentsPanel extends React.PureComponent {
         if (idBool || targetBool)
             this.setState({
                 ...this.state,
-                colorPickerAvtive: false,
-                instrumentPanel: {...this.props.instrumentPanel}
+                instrumentPanel: {...this.props.instrumentPanel, colorPickerActive: false},
+                componentsStats: {
+                    content: null, fontSize: null, color: null,
+                    backgroundImage: null, image: null,
+                    coords: {left: null, top: null} // x, y
+                },
             })
-        return true;
     };
 
     componentDidMount = event => {
         eventEmitter.on("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on("EventUpdatePosition", this.updatePosition);
     };
 
     componentWillUnmount = event => {
         eventEmitter.off("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.off("EventUpdatePosition", this.updatePosition);
     };
 
     render(){

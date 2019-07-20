@@ -14,14 +14,13 @@ const Background = styled.div`
 
 const BackgroundComponent = props => {
 
+    const [id] = useState(props.id);
+
     const [count, setCount] = useState(0);
     let boxComponent = React.createRef();
 
     let [backgroundColor, setBgColor] = useState(props.background);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
-
-
-    console.log('Background component');
 
     const saveWidth = event => {
         setCount(count + 1);
@@ -32,7 +31,10 @@ const BackgroundComponent = props => {
 
     const openBgInstruments = event => {
         console.log(Background);
-        eventEmitter.emit('EventInstrumentPanel',{target: 'background'});
+        eventEmitter.emit('EventInstrumentPanel',{
+            target: 'background',
+            id: id,
+        });
         event.stopPropagation();
     }
 
@@ -48,11 +50,11 @@ const BackgroundComponent = props => {
     const didUpdate = () => {
         console.log('didUpdate');
         if (count === 0 ) saveWidth();
-        eventEmitter.on('EventChangeColor', changeColor);
-        eventEmitter.on('EventSetBackgroundImage', setBackgroundImage);
+        eventEmitter.on(`EventChangeColorBackground${id}`, changeColor);
+        eventEmitter.on(`EventSetBackgroundImage${id}`, setBackgroundImage);
         return () => {
-            eventEmitter.off('EventChangeColor', changeColor);
-            eventEmitter.off('EventSetBackgroundImage', setBackgroundImage);
+            eventEmitter.off(`EventChangeColorBackground${id}`, changeColor);
+            eventEmitter.off(`EventSetBackgroundImage${id}`, setBackgroundImage);
         }
     }
 

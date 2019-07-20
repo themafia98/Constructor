@@ -46,21 +46,21 @@ class App extends React.PureComponent {
         return (
                 <Switch>
                     <Route
-                        path = '/' exact
+                        path = {process.env.PUBLIC_URL + '/'} exact
                         render = {(props) => <Index {...props} />}
                     />
                     <Route path = '/Cabinet/' exact component = {Cabinet}/>
                     <Route
-                        path = '/Cabinet/About'
+                        path = {process.env.PUBLIC_URL + '/Cabinet/About'}
                         render = {(props) => <About {...props} config = {this.props.config} />}
                     />
-                    <Route path = '/Cabinet/Build/:param' component = {Build}/>
-                    <Route path = '*' component = {Index} />
-                    <Route path = '/crashPage' component = {ErrorPage} />
+                    <Route path = {process.env.PUBLIC_URL + '/Cabinet/Build/:param'} component = {Build}/>
+                    <Route path = {process.env.PUBLIC_URL + '*'} component = {Index} />
+                    <Route path = {process.env.PUBLIC_URL + '/crashPage'} component = {ErrorPage} />
                 </Switch>
 
         )
-        } else return <Loader path = '/img/loading.gif' type = 'application' />
+        } else return <Loader path = {process.env.PUBLIC_URL + '/img/loading.gif'} type = 'application' />
     }
 }
 
