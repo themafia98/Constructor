@@ -19,8 +19,9 @@ import ErrorPage from './components/ErrorCatch/ErrorPage';
 class App extends React.PureComponent {
 
     static propTypes = {
-        config: PropTypes.object.isRequired,
-        firebase: PropTypes.object.isRequired,
+        config: PropTypes.object.isRequired, /** @Config app */
+        firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
+        dispatch: PropTypes.func.isRequired, /** @dispatch - redux */
     }
 
     state = {
@@ -31,7 +32,7 @@ class App extends React.PureComponent {
     componentDidMount(){
 
         this.props.firebase.auth.onAuthStateChanged((user) => {
-            
+
             if (!this.state.firebaseLoadState){
                 if (user){console.log('load'); this.props.dispatch(middlewareLoadUserData(user.uid)); }
                 this.setState({...this.state, firebaseLoadState: true});

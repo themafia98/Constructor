@@ -5,17 +5,18 @@ import TextComponent from '../buildComponents/components/Text';
 import BackgroundComponent from '../buildComponents/components/Background';
 
 import eventEmitter from '../../EventEmitter';
-
 import './buildMenu.scss';
 
 class BuildMenu extends React.PureComponent {
 
     static propTypes = {
-        component: PropTypes.object
+        components: PropTypes.object.isRequired, /** @Object with components data */
+        countComponents: PropTypes.number.isRequired, /** @Number last project */
+        sizeParenBox: PropTypes.object.isRequired /** @Object with width and height parent(bg) */
     }
 
     state = {
-        component: {...this.props.component},
+        components: {...this.props.components},
         sizeParenBox: {...this.props.sizeParenBox},
         title: 'Title'
     }
@@ -36,13 +37,12 @@ class BuildMenu extends React.PureComponent {
     }
 
     render(){
-
         return (
             <div className = 'ComponentsMenu'>
                 <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>
                 <button onClick = {this.addText} className = 'TextTool CompoentnsMenu_button' ><span>Text</span></button>
                 <button 
-                    disabled = {this.state.component.name !== 'Header' ? false : true}
+                    disabled = {this.state.components.name !== 'Header' ? false : true}
                     className = 'ButtonTool CompoentnsMenu_button' >
                     <span>Button</span>
                 </button>

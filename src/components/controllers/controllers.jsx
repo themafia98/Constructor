@@ -20,7 +20,10 @@ const ControllersBox = styled.div
 class Controllers extends React.PureComponent {
 
     static propTypes = {
-        menuActive: PropTypes.bool,
+        countComponents: PropTypes.number.isRequired, /** @number last project id */
+        sizeParenBox: PropTypes.object, /** @Object with width and height parent(bg) */
+        components: PropTypes.object.isRequired, /** @Object with componnents data */
+        menuActive: PropTypes.bool, /** @Bool value active menu or unactive */
     }
 
     state = {
@@ -32,7 +35,7 @@ class Controllers extends React.PureComponent {
         shadowDisplay: 'block'
     }
 
-    componentMenu = (event) => {
+    componentMenu = event => {
         this.setState({viewComponentMenu: this.state.viewComponentMenu ? false : true});
         event.stopPropagation();
     }
@@ -62,7 +65,6 @@ class Controllers extends React.PureComponent {
 
 
     render(){
-
         return (
             <Fragment>
             { this.props.menuActive ?
@@ -88,7 +90,7 @@ class Controllers extends React.PureComponent {
                         <BuildMenu
                             sizeParenBox = {this.props.sizeParenBox}
                             countComponents = {this.props.countComponents}
-                            component = {{...this.props.component}}
+                            components = {{...this.props.components}}
                         /> : null
                     }
                 </ControllersBox>

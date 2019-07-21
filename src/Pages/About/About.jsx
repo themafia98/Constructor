@@ -10,8 +10,11 @@ import './about.scss';
 class About extends React.PureComponent {
 
     static propTypes = {
-        config: PropTypes.object.isRequired,
-        firebase: PropTypes.object.isRequired,
+        config: PropTypes.object.isRequired, /** @Config app */
+        firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
+        history: PropTypes.object.isRequired, /** @Router HTML5 history */
+        location: PropTypes.object.isRequired, /** @Router */
+        match: PropTypes.object.isRequired, /** @Router */
     }
 
     state = {

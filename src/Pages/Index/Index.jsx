@@ -97,7 +97,7 @@ class Index extends React.PureComponent {
                         </div>
                         {
                             this.state.registrationActive ?
-                            <Registration auth = {this.props.auth} />
+                            <Registration />
                             : null
                         }
                 </div>

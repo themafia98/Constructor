@@ -2,7 +2,7 @@ import {errorAction, loadUpdateCurrentProject} from '../actions';
 
 const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
     let newProjects = item.projects.map(project => {
-        if (project.id === item.idProject) { project.component = [...item.component] }
+        if (project.id === item.idProject) { project.components = [...item.components] }
         return project;
     });
     await firebase.db.collection("users").doc(item.uid).update({
@@ -10,7 +10,7 @@ const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
     })
     .then(response => {
         let project = item.projects.find(itemdb => itemdb.id === item.idProject);
-        dispatch(loadUpdateCurrentProject({component: [...project.component], idProject: item.idProject}))
+        dispatch(loadUpdateCurrentProject({components: [...project.components], idProject: item.idProject}))
     })
     .catch(error => dispatch(errorAction(error.message)));
 };

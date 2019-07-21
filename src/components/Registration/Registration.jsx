@@ -9,7 +9,7 @@ import withFirebase from '../../components/firebaseHOC';
 class Registration extends React.PureComponent {
 
     static propTypes = {
-        firebase: PropTypes.object.isRequired,
+        firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
     }
 
     state = {
@@ -23,7 +23,7 @@ class Registration extends React.PureComponent {
     setRefEmail = (node) => this.emailRef = node;
     setRefPassword = (node) => this.passwordRef = node;
 
-    createUser = (event) => {
+    createUser = event => {
 
         const email = this.emailRef.value;
         const password = this.passwordRef.value;
@@ -44,7 +44,6 @@ class Registration extends React.PureComponent {
 
     render(){
         let  { error } = this.state;
-
         return (
             <div className = 'RegistrationBox'>
                 <div  className = 'RegistrationForm'>

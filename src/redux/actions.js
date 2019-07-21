@@ -25,7 +25,7 @@ const loadCurrentProjectAction = (state) => {
         type: LOAD_CURRENT,
         id: state.id,
         typeProject: state.typeProject,
-        component: state.component
+        components: state.components
     }
 }
 
@@ -33,7 +33,7 @@ const loadUpdateCurrentProject = (state) => {
     return {
         type: LOAD_UPDATE_PROJECT,
         idProject: state.idProject,
-        component: state.component
+        components: state.components
     }
 }
 

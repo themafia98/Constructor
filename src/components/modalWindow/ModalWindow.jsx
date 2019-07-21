@@ -11,8 +11,8 @@ import './modal.scss';
 class ModalWindow extends React.PureComponent {
 
     static propTypes = {
-        workMode: PropTypes.string.isRequired,
-        idComponent: PropTypes.string || PropTypes.number
+        workMode: PropTypes.string.isRequired, /** @Mode for modal */
+        idComponent: PropTypes.string || PropTypes.number /** @Id current user project */
     }
 
     state = {
@@ -126,7 +126,7 @@ class ModalWindow extends React.PureComponent {
         });
     }
 
-    addNewProject = (event) => {
+    addNewProject = event => {
         let mode = this.state[this.state.workMode];
         if (mode.validateType &&  mode.validateName) {
             eventEmitter.emit('EventAddProject',
@@ -139,7 +139,7 @@ class ModalWindow extends React.PureComponent {
         }
     }
 
-    selectOption = (event) => {
+    selectOption = event => {
 
         let inputs = {...this.state[this.state.workMode]};
         inputs.type = event.target.value;
@@ -151,7 +151,7 @@ class ModalWindow extends React.PureComponent {
         });
     }
 
-    validateName = (event) => {
+    validateName = event => {
 
         let inputs = {...this.state[this.state.workMode]};
         inputs.name = event.target.value;
@@ -165,7 +165,7 @@ class ModalWindow extends React.PureComponent {
         })
     };
 
-    cancel = (event) => {
+    cancel = event => {
 
         if (this.state.workMode === 'Search')
             eventEmitter.emit("EventModalSearchOn");
@@ -176,7 +176,6 @@ class ModalWindow extends React.PureComponent {
     refSearch = node => this.inputSearch = node;
 
     render(){
-
         switch (this.state.workMode){
             case 'newProject':
                 return (

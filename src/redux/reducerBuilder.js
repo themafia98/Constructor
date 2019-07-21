@@ -5,7 +5,7 @@ const initialState = {
     haveUpdateLoading: true,
     idProject: null,
     typeProject: null,
-    component: []
+    components: []
 };
 export default (state = initialState, action) => {
     switch (action.type){
@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
                 loadProject: true,
                 idProject: action.id,
                 typeProject: action.typeProject,
-                component: [...action.component]
+                components: [...action.components]
             }
         }
 
@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 haveUpdateLoading: false,
-                component: [...action.component]
+                components: [...action.components]
             }
         }
 
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
                 loadProject: false,
                 idProject: null,
                 typeProject: null,
-                component: []
+                components: []
             }
             else return state;
         }

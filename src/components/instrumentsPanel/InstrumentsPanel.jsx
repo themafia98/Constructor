@@ -9,8 +9,8 @@ import Icon from '../Icon/icon';
 class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
-        instrumentPanel:  PropTypes.object.isRequired,
-        editComponent: PropTypes.object.isRequired
+        instrumentPanel:  PropTypes.object.isRequired, /** @Settings for panel and data about component */
+        editComponent: PropTypes.object.isRequired /** @Settings component */
     };
 
     state = {
@@ -39,7 +39,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     setSize = event => {
-        // let {fontSize} = this.state.componentsStats;
         let {idComponent} = this.state.instrumentPanel;
         let size = event.target.value > 200 ? 200 : event.target.value;
         this.setState({

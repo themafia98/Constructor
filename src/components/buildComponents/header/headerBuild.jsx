@@ -5,19 +5,21 @@ import PropTypes from 'prop-types';
 
 import BackgroundComponent from '../../buildComponents/components/Background';
 import Controllers from '../../controllers/controllers';
-
-
 import './headerBuild.scss';
 
 class HeaderBuild extends React.PureComponent {
 
     static propTypes = {
-        id: PropTypes.number.isRequired,
+        children: PropTypes.object.isRequired, /** @Object with data about components */
+        countComponents: PropTypes.number.isRequired, /** @Number last project */
+        editStart: PropTypes.bool.isRequired, /** @Bool start edit mode */
+        menuActive: PropTypes.bool.isRequired, /** @Bool active menu or unactive */
+        id: PropTypes.number.isRequired, /** @id current project */
     }
 
     state = {
         idProject: this.props.id,
-        component: {...this.props.children},
+        components: {...this.props.children},
         sizeParenBox: null,
     }
 
@@ -26,7 +28,7 @@ class HeaderBuild extends React.PureComponent {
     };
 
 
-    changeMode = (event) => {
+    changeMode = event => {
         if (!this.props.editStart) {
             let rect = event.currentTarget.getBoundingClientRect();
             const width = rect.width;
@@ -39,7 +41,6 @@ class HeaderBuild extends React.PureComponent {
     refBackground = node => this.refBox = node;
 
     render() {
-
         return (
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>
@@ -53,10 +54,8 @@ class HeaderBuild extends React.PureComponent {
                         <Controllers
                             countComponents = {this.props.countComponents}
                             menuActive = {this.props.menuActive}
-                            component = {{...this.state.component}}
+                            components = {{...this.state.components}}
                             sizeParenBox = {this.state.sizeParenBox}
-                            mainWidth = {this.props.children.mainBoxWidth}
-                            mainHeight = {this.props.children.mainBoxHeight}
 
                         />
                         : null}

@@ -22,12 +22,19 @@ import './build.scss';
 class Build extends React.PureComponent {
 
     static propTypes = {
-        param: PropTypes.string,
-        match: PropTypes.shape({
-            params: PropTypes.shape({
-                param: PropTypes.string.isRequired
-            }).isRequired
-        }).isRequired
+        firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
+        active: PropTypes.bool, /** @active - status firebase auth */
+        dispatch: PropTypes.func.isRequired, /** @dispatch - redux */
+        history: PropTypes.object.isRequired, /** @Router HTML5 history */
+        location: PropTypes.object.isRequired, /** @Router */
+        match: PropTypes.object.isRequired, /** @Router */
+        idProject: PropTypes.number, /** @ID current user project from redux */
+        typeProject: PropTypes.string, /** @Type current project */
+        loadProject: PropTypes.bool.isRequired, /** @Status load project from redux */
+        idUser: PropTypes.string, /** @Session user id from redux */
+        projects: PropTypes.arrayOf(PropTypes.object).isRequired, /** @currentProject array with user projects */
+        components: PropTypes.arrayOf(PropTypes.object).isRequired, /** @Components for current project */
+        haveUpdateLoading: PropTypes.bool.isRequired /** @Status status for update state redux and render */
     }
 
     state = {
@@ -40,7 +47,7 @@ class Build extends React.PureComponent {
                     type: null,
                     mainBoxWidth: null,
                     mainBoxHeight: null,
-                    component: [],
+                    components: [],
                     componentJSX: []
                 },
                 edit: false
@@ -79,7 +86,8 @@ class Build extends React.PureComponent {
             ...this.state,
             idProject: itemEvent.idProject,
             editComponent: {
-                ...itemEvent.component,
+                ...this.state.editComponent,
+                ...itemEvent.components,
                 mainBoxWidth: itemEvent.width,
                 mainBoxHeight: itemEvent.height
             },
@@ -141,21 +149,21 @@ class Build extends React.PureComponent {
                 ...this.state.editComponent,
                 build: {
                     ...this.state.editComponent.build,
-                    component: [...this.state.editComponent.build.component, componentSaveInBase]
+                    components: [...this.state.editComponent.build.components, componentSaveInBase]
                 }
             }
         }, () => (
         this.props.dispatch(updateMiddleware({
             uid: this.props.idUser,
-            projects: [...this.props.currentProject],
-            component: [...this.state.editComponent.build.component],
+            projects: [...this.props.projects],
+            components: [...this.state.editComponent.build.components],
             idProject: this.state.idProject}))
         ));
     };
 
 
     render(){
-        console.log(this.props);
+
         let instrumentActive = this.state.instrumentPanel.instrumentActive;
         if (this.props.active && this.props.loadProject){
             return (
@@ -194,11 +202,11 @@ class Build extends React.PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.loadProject === this.props.loadProject && this.props.haveUpdateLoading) {
-            let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
+            let current =  this.props.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 typeProject: current.type,
-                component: [...current.component]
+                components: [...current.components]
             }))
         }
     }
@@ -206,11 +214,11 @@ class Build extends React.PureComponent {
 
     componentDidMount = () => {
         if (this.props.active && !this.props.loadProject && this.props.haveUpdateLoading) {
-            let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
+            let current =  this.props.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 typeProject: current.type,
-                component: [...current.component]
+                components: [...current.components]
             }))
         };
         eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
@@ -239,7 +247,7 @@ const mapStateToProps = (state) => {
         ...state.builder,
         active: state.cabinet.active,
         idUser: state.cabinet.idUser,
-        currentProject: state.cabinet.projects
+        projects: state.cabinet.projects
     }
 }
 

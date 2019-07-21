@@ -16,7 +16,11 @@ const iconPath = require('../../config.json').CabinetIcon;
 class Header extends React.Component {
 
     static propTypes = {
-        title: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired, /** @Config title app */
+        dispatch: PropTypes.func.isRequired, /** @dispatch redux */
+        history: PropTypes.object.isRequired, /** @Router HTML5 history */
+        location: PropTypes.object.isRequired, /** @Router */
+        match: PropTypes.object.isRequired, /** @Router */
     };
 
     state = {
@@ -63,7 +67,6 @@ class Header extends React.Component {
     };
 
     render(){
-
         let {redirectA} = this.state.redirectAbout;
         let {redirectC} = this.state.redirectCabinet;
 

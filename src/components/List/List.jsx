@@ -12,11 +12,9 @@ import eventEmitter from '../../EventEmitter.js';
 class List extends React.PureComponent {
 
     static propTypes = {
-        children: PropTypes.shape({
-            projects: PropTypes.array.isRequired,
-           count: PropTypes.number.isRequired,
-        }),
-        list: PropTypes.array.isRequired,
+        dispatch: PropTypes.func.isRequired, /** @dispatch redux */
+        idUser: PropTypes.string.isRequired, /** @UID current user */
+        list: PropTypes.array.isRequired, /** @List user projects */
     }
 
     state = {

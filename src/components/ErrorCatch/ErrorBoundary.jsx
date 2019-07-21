@@ -1,8 +1,8 @@
 
-
 import React from 'react';
 import eventEmitter from '../../EventEmitter';
 import ErrorPage from './ErrorPage';
+
 class ErrorBoundary extends React.PureComponent {
 
       state = { 
