@@ -133,7 +133,6 @@ class Build extends React.PureComponent {
     };
 
     saveChangesComponent = itemEvent => {
-        console.log(itemEvent);
         let componentSaveInBase = {...itemEvent, name: this.state.editComponent.name};
 
         this.setState({
@@ -156,10 +155,9 @@ class Build extends React.PureComponent {
 
 
     render(){
-        console.log('render build');
+        console.log(this.props);
         let instrumentActive = this.state.instrumentPanel.instrumentActive;
         if (this.props.active && this.props.loadProject){
-            console.log('build');
             return (
                     <Fragment key = 'build'>
                     {   this.state.modalImageViewer.action ?
@@ -195,9 +193,7 @@ class Build extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('componentDidUpdate');
         if (prevProps.loadProject === this.props.loadProject && this.props.haveUpdateLoading) {
-            console.log('componentDidUpdate build dispatch');
             let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
@@ -209,9 +205,7 @@ class Build extends React.PureComponent {
     
 
     componentDidMount = () => {
-        console.log('componentDidMount build');
         if (this.props.active && !this.props.loadProject && this.props.haveUpdateLoading) {
-            console.log('componentDidMount build dispatch');
             let current =  this.props.currentProject.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
@@ -229,7 +223,6 @@ class Build extends React.PureComponent {
     }
 
     componentWillUnmount = () => {
-        console.log('componentWillUnmount');
         if (this.props.active)  this.props.dispatch(exitProjectAction(true));
         eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
         eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
@@ -242,8 +235,6 @@ class Build extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
-
-    console.log("mapStateToProps" + state);
     return {
         ...state.builder,
         active: state.cabinet.active,

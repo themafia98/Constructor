@@ -114,7 +114,7 @@ class ModalWindow extends React.PureComponent {
 
     makeImageResultBox = (items) => {
         if (!items) return null;
-        console.log('item');
+
         return items.map((item,i) =>{
            return <ImageItem 
                 key = {`item${i}`} 
@@ -214,7 +214,6 @@ class ModalWindow extends React.PureComponent {
                     </div>
                 )
             case 'Search':
-                console.log('Search render');
                 return (
                     <Fragment>
                         <div className = 'Modal Modal-search'>

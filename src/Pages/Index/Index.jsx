@@ -15,7 +15,13 @@ import './index.scss';
 class Index extends React.PureComponent {
 
     static propTypes = {
-        config: PropTypes.object,
+        active: PropTypes.bool, /** @active - status firebase auth */
+        dispatch: PropTypes.func.isRequired, /** @dispatch - redux */
+        history: PropTypes.object.isRequired, /** @Router HTML5 history */
+        location: PropTypes.object.isRequired, /** @Router */
+        match: PropTypes.object.isRequired, /** @Router */
+        wrongEnter: PropTypes.string, /** @Error about invalid enter */
+        config: PropTypes.object, /** @config - app settings */
     }
 
     state = {
@@ -26,36 +32,40 @@ class Index extends React.PureComponent {
         error: ''
     }
 
-    statusRegistration = (event) => {
+    emailImput = null;
+    passwordImput = null;
+
+    statusRegistration = event => {
         event.additionalUserInfo.isNewUser ?
-        this.setState({...this.state,
-                        regStatus: true,
-                        registrationActive: false,
-                        error: 'Account create!'
-                    })
+            this.setState({
+                ...this.state,
+                regStatus: true,
+                registrationActive: false,
+                error: 'Account create!'
+            })
         : console.error('error registration');
+        event.stopPropagation();
     }
 
-    showBox = (event) => {
+    showBox = event => {
         this.setState ({
             ...this.state,
         registrationActive: this.state.registrationActive ? false : true
-        })
+        });
+        event.stopPropagation();
     }
 
-    authTo = (event) => {
+    authTo = event => {
             this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value));
-}
-    emailImput = null;
-    passwordImput = null;
-    emailRef = (node) => this.emailImput = node;
-    passwordRef = (node) => this.passwordImput = node;
+            event.stopPropagation();
+    }
+
+    emailRef = node => this.emailImput = node;
+    passwordRef = node => this.passwordImput = node;
 
     render(){
-        console.log('index render');
         if (this.props.active) return <Redirect to = { '/Cabinet'} />
         else if (!this.props.active) {
-            let currentSelected = this.state.registrationActive;
             return (
                 <div className = 'LoginPage flex-column'>
                         <h1>{this.state.title}</h1>
@@ -78,8 +88,8 @@ class Index extends React.PureComponent {
                                     value = 'enter' />
                                 <input
                                     onClick = {this.showBox}
-                                    className = {currentSelected ? `loginButton selected`
-                                        : 'loginButton'}
+                                    className = {this.state.registrationActive ?
+                                        `loginButton selected` : 'loginButton'}
                                     type = 'button'
                                     value = 'registration'
                                     />

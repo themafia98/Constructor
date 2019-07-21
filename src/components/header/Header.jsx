@@ -69,7 +69,7 @@ class Header extends React.Component {
 
         if (redirectA) return <Redirect to = {this.state.redirectAbout.path} />
         if(redirectC) return <Redirect to = {this.state.redirectCabinet.path} />
-        console.log('heade');
+
         return (
             <header>
                 <div className = 'container'>

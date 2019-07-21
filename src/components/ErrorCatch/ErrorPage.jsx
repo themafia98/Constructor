@@ -17,13 +17,12 @@ class ErrorPage extends React.Component {
     }
 
     render(){
-        console.log('error');
         if (this.state.redirect) return <Redirect to = '/' />
         return (
         <div class = 'container'>
             <div class = 'flex-column'>
                 <h1>Application crash</h1>
-                <button onClick = {this.update}>Update</button>
+                <button className = 'button_updateApp' onClick = {this.update}>Update</button>
             </div>
         </div>
         )

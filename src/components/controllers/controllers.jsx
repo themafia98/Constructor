@@ -62,7 +62,7 @@ class Controllers extends React.PureComponent {
 
 
     render(){
-        console.log('controllers');
+
         return (
             <Fragment>
             { this.props.menuActive ?
@@ -97,15 +97,6 @@ class Controllers extends React.PureComponent {
             </Fragment>
         )
     }
-
-    componentDidUpdate = () => {
-        console.log('componentDidUpdate controllers');
-    }
-    
-    componentDidMount = () => {
-        console.log('componentDidMount controllers');
-    }
-    
 }
 
 export default Controllers;

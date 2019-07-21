@@ -20,7 +20,14 @@ const title = require('../../config.json').title;
 class Cabinet extends React.PureComponent {
 
   static propTypes = {
-    firebase: PropTypes.object.isRequired
+    firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
+    active: PropTypes.bool, /** @active - status firebase auth */
+    dispatch: PropTypes.func.isRequired, /** @dispatch - redux */
+    history: PropTypes.object.isRequired, /** @Router HTML5 history */
+    location: PropTypes.object.isRequired, /** @Router */
+    match: PropTypes.object.isRequired, /** @Router */
+    idUser: PropTypes.string, /** @Session user id from redux */
+    projects: PropTypes.arrayOf(PropTypes.object).isRequired /** @Projects array with user projects from redux */
   }
 
   state = {
@@ -43,8 +50,8 @@ class Cabinet extends React.PureComponent {
   }
 
   render(){
+
     if (this.props.active){
-      console.log('CAbinet');
       return (
         <Fragment>
           <Header title = {title} idUser = {this.props.idUser} />
@@ -54,7 +61,7 @@ class Cabinet extends React.PureComponent {
       )
     } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
     else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
-    }
+  }
 
 
   componentDidMount = () => {
@@ -75,7 +82,5 @@ const mapStateToProps = (state) => {
     active: state.cabinet.active
   }
 }
-
-
 
 export default connect(mapStateToProps)(withFirebase(Cabinet));

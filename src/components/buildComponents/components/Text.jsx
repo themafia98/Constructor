@@ -25,7 +25,6 @@ const TextComponent = props =>  {
 
     const [id] = useState(props.id);
 
-    console.log ('text');
     const [sizeParenBox] = useState({...props.sizeParenBox});
 
     let [colorText, setColorText] = useState(props.color);
@@ -86,10 +85,10 @@ const TextComponent = props =>  {
 
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
-        console.log(Title);
+
         coordX = coordX <= 130 ? 130 : coordX;
         coordY = coordY <= 0 ? 0 : coordY;
-        console.log(sizeParenBox);
+
         let convertToPercentX = (coordX * 100) / sizeParenBox.width;
         let convertToPercentY = (coordY * 100) / sizeParenBox.height;
 

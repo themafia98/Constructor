@@ -191,7 +191,6 @@ class InstrumentsPanel extends React.PureComponent {
     componentDidUpdate = (oldProps, oldState) => {
         let targetBool = oldState.instrumentPanel.target !== this.props.instrumentPanel.target;
         let idBool = oldState.instrumentPanel.idComponent !== this.props.instrumentPanel.idComponent;
-        console.log(this.props.instrumentPanel);
         if (idBool || targetBool)
             this.setState({
                 ...this.state,

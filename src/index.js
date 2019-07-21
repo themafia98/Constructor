@@ -13,7 +13,6 @@ import 'normalize.css';
 
 const config = require('./config.json');
 
-console.log('test production');
 ReactDOM.render(
         <HashRouter>
             <ErrorBoundary>

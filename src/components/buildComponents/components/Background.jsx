@@ -30,7 +30,6 @@ const BackgroundComponent = props => {
     }
 
     const openBgInstruments = event => {
-        console.log(Background);
         eventEmitter.emit('EventInstrumentPanel',{
             target: 'background',
             id: id,
@@ -48,7 +47,6 @@ const BackgroundComponent = props => {
     };
 
     const didUpdate = () => {
-        console.log('didUpdate');
         if (count === 0 ) saveWidth();
         eventEmitter.on(`EventChangeColorBackground${id}`, changeColor);
         eventEmitter.on(`EventSetBackgroundImage${id}`, setBackgroundImage);

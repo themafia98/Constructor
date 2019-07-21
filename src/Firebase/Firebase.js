@@ -1,12 +1,12 @@
 import * as firebase from 'firebase/app';
-import {firebaseConfig} from './firebaseConfig';
+import firebaseConfig from './firebaseConfig';
 
 const auth = require('firebase/auth');
 const firestore = require('firebase/firestore');
 
 class Firebase {
 
-        constructor(){
+        constructor(firebaseConfig){
                 firebase.initializeApp(firebaseConfig);
                 this.auth = firebase.auth();
                 this.db = firebase.firestore();
@@ -33,7 +33,7 @@ class Firebase {
         }
 }
 
-let interfaceFirebase = new Firebase();
+let interfaceFirebase = new Firebase(firebaseConfig);
 interfaceFirebase.saveSession('SESSION');
 
 export default interfaceFirebase;
