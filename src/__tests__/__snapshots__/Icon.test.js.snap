@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Icon.js test  1`] = `
+<img
+  alt="icon"
+  className="testIcon"
+  draggable={false}
+  onClick={[Function]}
+  src="/img/plus.png"
+  title="icon"
+/>
+`;
+
+exports[`Icon.js test  2`] = `
+<img
+  alt="icon"
+  className="testIcon"
+  draggable={false}
+  onClick={[Function]}
+  src="/img/plus.png"
+  title="icon"
+/>
+`;

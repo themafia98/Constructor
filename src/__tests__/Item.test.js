@@ -1,5 +1,5 @@
 import React from 'react';
-import { MemoryRouter, Route} from 'react-router-dom';
+import { MemoryRouter} from 'react-router-dom';
 import renderer from 'react-test-renderer';
 
 import Item from '../components/List/Item';

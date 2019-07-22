@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header.js test 1`] = `
+<header>
+  <div
+    className="container"
+  >
+    <div
+      className="flex-row"
+    >
+      <div
+        className="header__CabinetInfo"
+        onClick={[Function]}
+      >
+        <img
+          alt="icon"
+          className={null}
+          draggable={false}
+          onClick={null}
+          src="/img/logo.svg"
+          title={null}
+        />
+        <h3
+          className="tilteApp"
+        />
+      </div>
+      <div
+        className="Navigator"
+      >
+        <img
+          alt="icon"
+          className={null}
+          draggable={false}
+          onClick={[Function]}
+          src="/img/about_logo.svg"
+          title="about"
+        />
+        <img
+          alt="icon"
+          className={null}
+          draggable={false}
+          onClick={[Function]}
+          src="/img/logOut.svg"
+          title="logOut"
+        />
+      </div>
+    </div>
+  </div>
+</header>
+`;
