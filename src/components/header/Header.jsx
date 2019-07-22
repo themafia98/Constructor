@@ -36,7 +36,8 @@ class Header extends React.Component {
     };
 
     logOut = event => {
-        this.props.dispatch(middlewareLogOutUser(this.props.idUser));
+        if (this.props.idUser)
+            this.props.dispatch(middlewareLogOutUser(this.props.idUser));
         event.stopPropagation();
     };
 
@@ -78,18 +79,18 @@ class Header extends React.Component {
                 <div className = 'container'>
                     <div className = 'flex-row'>
                             <div onClick = {this.redirectCabinet} className = 'header__CabinetInfo'>
-                                <Icon path = {iconPath} />
+                                <Icon className ='mainIcon' path = {iconPath} />
                                 <h3 className = 'tilteApp'>{this.state.title}</h3>
                             </div>
                             {this.props.location.pathname === '/Cabinet' ?
                                 <div onClick = {this.add} className = 'header__newProject__AddButton'>
-                                    <Icon path = '/img/plus.png' />
+                                    <Icon className = 'Cabinet' path = '/img/plus.png' />
                                 </div>
                                 : null
                             }
                                 <div  className = 'Navigator'>
-                                    <Icon onClick = {this.redirectAbout} title = 'about' path = '/img/about_logo.svg' />
-                                    <Icon onClick = {this.logOut} title = 'logOut' path = '/img/logOut.svg' />
+                                    <Icon className = 'about' onClick = {this.redirectAbout} title = 'about' path = '/img/about_logo.svg' />
+                                    <Icon className = 'logoutButton' onClick = {this.logOut} title = 'logOut' path = '/img/logOut.svg' />
                                 </div>
                     </div>
                </div>

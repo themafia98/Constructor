@@ -14,7 +14,7 @@ exports[`Header.js test 1`] = `
       >
         <img
           alt="icon"
-          className={null}
+          className="mainIcon"
           draggable={false}
           onClick={null}
           src="/img/logo.svg"
@@ -22,14 +22,16 @@ exports[`Header.js test 1`] = `
         />
         <h3
           className="tilteApp"
-        />
+        >
+          Constructor
+        </h3>
       </div>
       <div
         className="Navigator"
       >
         <img
           alt="icon"
-          className={null}
+          className="about"
           draggable={false}
           onClick={[Function]}
           src="/img/about_logo.svg"
@@ -37,7 +39,7 @@ exports[`Header.js test 1`] = `
         />
         <img
           alt="icon"
-          className={null}
+          className="logoutButton"
           draggable={false}
           onClick={[Function]}
           src="/img/logOut.svg"
@@ -48,3 +50,56 @@ exports[`Header.js test 1`] = `
   </div>
 </header>
 `;
+
+exports[`Header.js test 2`] = `
+<header>
+  <div
+    className="container"
+  >
+    <div
+      className="flex-row"
+    >
+      <div
+        className="header__CabinetInfo"
+        onClick={[Function]}
+      >
+        <img
+          alt="icon"
+          className="mainIcon"
+          draggable={false}
+          onClick={null}
+          src="/img/logo.svg"
+          title={null}
+        />
+        <h3
+          className="tilteApp"
+        >
+          Constructor
+        </h3>
+      </div>
+      <div
+        className="Navigator"
+      >
+        <img
+          alt="icon"
+          className="about"
+          draggable={false}
+          onClick={[Function]}
+          src="/img/about_logo.svg"
+          title="about"
+        />
+        <img
+          alt="icon"
+          className="logoutButton"
+          draggable={false}
+          onClick={[Function]}
+          src="/img/logOut.svg"
+          title="logOut"
+        />
+      </div>
+    </div>
+  </div>
+</header>
+`;
+
+exports[`Header.js test 3`] = `null`;
