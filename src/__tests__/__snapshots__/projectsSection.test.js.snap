@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectsSection.jsx test  1`] = `
+<section
+  className="projectsList"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="flex-column"
+    >
+      <div
+        className="projectsList__about"
+      >
+        <h3>
+          Your Projects
+        </h3>
+      </div>
+      <div
+        className="projectsList__list"
+      />
+    </div>
+  </div>
+</section>
+`;

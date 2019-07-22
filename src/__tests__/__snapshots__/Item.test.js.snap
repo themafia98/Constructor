@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Item.js test  1`] = `
+<div
+  className="item"
+  data-id={0}
+>
+  <p
+    className="ProjectName"
+  />
+  <p
+    className="ProjectType"
+  >
+    portfolio
+  </p>
+  <div
+    className="projectController"
+  >
+    <input
+      className="projectControllerButton_enter"
+      onClick={[Function]}
+      type="button"
+      value="enter build"
+    />
+    <input
+      className="projectControllerButton_delete"
+      onClick={[Function]}
+      type="button"
+      value="delete"
+    />
+  </div>
+</div>
+`;
+
+exports[`Item.js test  2`] = `
+<div
+  className="item"
+  data-id={0}
+>
+  <p
+    className="ProjectName"
+  />
+  <p
+    className="ProjectType"
+  >
+    portfolio
+  </p>
+  <div
+    className="projectController"
+  >
+    <input
+      className="projectControllerButton_enter"
+      onClick={[Function]}
+      type="button"
+      value="enter build"
+    />
+    <input
+      className="projectControllerButton_delete"
+      onClick={[Function]}
+      type="button"
+      value="delete"
+    />
+  </div>
+</div>
+`;
+
+exports[`Item.js test  3`] = `
+<div
+  className="item"
+  data-id={0}
+>
+  <p
+    className="ProjectName"
+  />
+  <p
+    className="ProjectType"
+  >
+    portfolio
+  </p>
+  <div
+    className="projectController"
+  >
+    <input
+      className="projectControllerButton_enter"
+      onClick={[Function]}
+      type="button"
+      value="enter build"
+    />
+    <input
+      className="projectControllerButton_delete"
+      onClick={[Function]}
+      type="button"
+      value="delete"
+    />
+  </div>
+</div>
+`;

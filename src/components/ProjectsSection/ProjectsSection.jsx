@@ -13,7 +13,7 @@ const ProjectsSection = props => {
                             <div className = 'projectsList__about'>
                                 <h3>Your Projects</h3>
                             </div>
-                            <List />
+                            {List ? <List /> : null}
                         </div>
                     </div>
                 </section>

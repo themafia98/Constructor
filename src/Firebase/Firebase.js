@@ -17,7 +17,12 @@ class Firebase {
         }
 
         login(email, password){
+                try {
                 return this.auth.signInWithEmailAndPassword(email, password);
+                } catch (error) {
+                console.error(error);
+                return null;
+                }
         }
 
         registration(email, password){
@@ -34,7 +39,7 @@ class Firebase {
 }
 
 let interfaceFirebase = new Firebase(firebaseConfig);
-interfaceFirebase.saveSession('SESSION');
+interfaceFirebase.saveSession('NONE');
 
 export default interfaceFirebase;
 

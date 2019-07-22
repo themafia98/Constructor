@@ -25,12 +25,14 @@ class Registration extends React.PureComponent {
 
     createUser = event => {
 
-        const email = this.emailRef.value;
-        const password = this.passwordRef.value;
+        const email = this.emailRef ? this.emailRef.value : null;
+        const password = this.passwordRef ? this.passwordRef.value : null;
         const { firebase } = this.props;
 
+        if (password && email)
         firebase.registration(email, password)
         .then(response => {
+            if (!response) throw new Error('Ivaid registration')
             firebase.db.collection("users").doc(response.user.uid).set({
                 'projects': [],
                 'email': email,
@@ -40,6 +42,7 @@ class Registration extends React.PureComponent {
         console.error(error.message);
         this.setState({error: error.message});
         });
+        else  return this.setState({error: 'invalid user data'});
     };
 
     render(){
@@ -56,7 +59,7 @@ class Registration extends React.PureComponent {
                         <span>E-mail</span>
                         <input ref = {this.setRefEmail} type = 'text' />
                         <span>Password</span>
-                        <input  autoComplete = "off" ref = {this.setRefPassword} type = 'password' />
+                        <input className = 'password' autoComplete = "off" ref = {this.setRefPassword} type = 'password' />
                         <input onClick = {this.createUser}
                                 className = 'loginButton'
                                 type = 'button'

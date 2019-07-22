@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`registration.js test 1`] = `
+<div
+  className="RegistrationBox"
+>
+  <div
+    className="RegistrationForm"
+  >
+    <h3>
+      Registration
+    </h3>
+    <form
+      autoComplete="off"
+      className="RegForm"
+    >
+      <span>
+        E-mail
+      </span>
+      <input
+        type="text"
+      />
+      <span>
+        Password
+      </span>
+      <input
+        autoComplete="off"
+        className="password"
+        type="password"
+      />
+      <input
+        className="loginButton"
+        onClick={[Function]}
+        type="button"
+        value="registration"
+      />
+    </form>
+  </div>
+</div>
+`;
+
+exports[`registration.js test 2`] = `
+<div
+  className="RegistrationBox"
+>
+  <div
+    className="RegistrationForm"
+  >
+    <h3>
+      Registration
+    </h3>
+    <form
+      autoComplete="off"
+      className="RegForm"
+    >
+      <p
+        className="error"
+      >
+        invalid user data
+      </p>
+      <span>
+        E-mail
+      </span>
+      <input
+        type="text"
+      />
+      <span>
+        Password
+      </span>
+      <input
+        autoComplete="off"
+        className="password"
+        type="password"
+      />
+      <input
+        className="loginButton"
+        onClick={[Function]}
+        type="button"
+        value="registration"
+      />
+    </form>
+  </div>
+</div>
+`;
