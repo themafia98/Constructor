@@ -45,8 +45,8 @@ class ModalWindow extends React.PureComponent {
     inputSelect = null;
 
     searchBackground = event => {
-
-        const api = 'https://api.unsplash.com/search/photos/?page=1&per_page=40&query=';
+        const mode = 'search/photos/?page=1&per_page=40&query=';
+        const api = `https://api.unsplash.com/${mode}`;
         const search = this.inputSearch.value;
 
         this.setState({...this.state, images: {...this.state.inages, buttonSearchDisabled: true}})
