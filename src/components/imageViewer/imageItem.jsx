@@ -16,6 +16,7 @@ const ImageItem = props => {
     return (
         <div className = {props.selected ? 'ItemBox selected' : 'ItemBox'}>
             <img
+                className = 'ImageItem'
                 onClick = {showImageMenu}
                 src = {isFull ? urlFull : urlRegular}
                 alt = 'item'

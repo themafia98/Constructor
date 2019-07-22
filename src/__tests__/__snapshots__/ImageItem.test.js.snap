@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageItem.js test 1`] = `
+<div
+  className="ItemBox"
+>
+  <img
+    alt="item"
+    className="ImageItem"
+    onClick={[Function]}
+    src="https://images.unsplash.com/photo-1504215680853-026ed2a45def?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjgwNjg0fQ"
+  />
+</div>
+`;
+
+exports[`ImageItem.js test 2`] = `
+<div
+  className="ItemBox"
+>
+  <img
+    alt="item"
+    className="ImageItem"
+    onClick={[Function]}
+    src="https://images.unsplash.com/photo-1504215680853-026ed2a45def?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjgwNjg0fQ"
+  />
+</div>
+`;
