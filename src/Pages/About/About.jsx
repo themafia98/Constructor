@@ -12,9 +12,9 @@ class About extends React.PureComponent {
     static propTypes = {
         config: PropTypes.object.isRequired, /** @Config app */
         firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
-        history: PropTypes.object.isRequired, /** @Router HTML5 history */
-        location: PropTypes.object.isRequired, /** @Router */
-        match: PropTypes.object.isRequired, /** @Router */
+        history: PropTypes.object, /** @Router HTML5 history */
+        location: PropTypes.object, /** @Router */
+        match: PropTypes.object, /** @Router */
     }
 
     state = {
