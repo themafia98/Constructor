@@ -6,7 +6,7 @@ import Item from '../components/List/Item';
 
 let ItemComponents = renderer.create(
     <MemoryRouter initialEntries = {['/Cabinet/Build/0']}>
-        <Item id = {0} title = {'test1'} type = {"portfolio"}  />
+            <Item id = {0} title = {'test1'} type = {"portfolio"}  />
     </MemoryRouter>
 )
 

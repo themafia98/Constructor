@@ -19,7 +19,39 @@ exports[`ProjectsSection.jsx test  1`] = `
       </div>
       <div
         className="projectsList__list"
-      />
+      >
+        <div
+          className="item"
+          data-id={0}
+        >
+          <p
+            className="ProjectName"
+          >
+            Test1
+          </p>
+          <p
+            className="ProjectType"
+          >
+            landing
+          </p>
+          <div
+            className="projectController"
+          >
+            <input
+              className="projectControllerButton_enter"
+              onClick={[Function]}
+              type="button"
+              value="enter build"
+            />
+            <input
+              className="projectControllerButton_delete"
+              onClick={[Function]}
+              type="button"
+              value="delete"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

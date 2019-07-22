@@ -25,16 +25,10 @@ class Build extends React.PureComponent {
         firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
         active: PropTypes.bool, /** @active - status firebase auth */
         dispatch: PropTypes.func.isRequired, /** @dispatch - redux */
-        history: PropTypes.object.isRequired, /** @Router HTML5 history */
-        location: PropTypes.object.isRequired, /** @Router */
+        history: PropTypes.object, /** @Router HTML5 history */
+        location: PropTypes.object, /** @Router */
         match: PropTypes.object.isRequired, /** @Router */
-        idProject: PropTypes.number, /** @ID current user project from redux */
-        typeProject: PropTypes.string, /** @Type current project */
-        loadProject: PropTypes.bool.isRequired, /** @Status load project from redux */
-        idUser: PropTypes.string, /** @Session user id from redux */
-        projects: PropTypes.arrayOf(PropTypes.object).isRequired, /** @currentProject array with user projects */
-        components: PropTypes.arrayOf(PropTypes.object).isRequired, /** @Components for current project */
-        haveUpdateLoading: PropTypes.bool.isRequired /** @Status status for update state redux and render */
+        userData: PropTypes.object.isRequired, /** @UserData data about projects,user and current edit prject */
     }
 
     state = {
@@ -50,9 +44,7 @@ class Build extends React.PureComponent {
                     components: [],
                     componentJSX: []
                 },
-                edit: false
             },
-            changeEdit: false,
             instrumentPanel: {
                 colorPickerActive: false,
                 instrumentActive: false,
@@ -65,23 +57,23 @@ class Build extends React.PureComponent {
             modalImageViewer: {action: false, image: null },
         }
 
-    modalSearchOn = event => {
+    modalSearchOn = itemEvent => {
         this.setState({...this.state, modalSearch: this.state.modalSearch ? false : true});
     }
 
-    imageViewerSwitch = event => {
+    imageViewerSwitch = itemEvent => {
         this.setState({
             ...this.state,
             modalImageViewer: {
                 ...this.state.modalImageViewer, 
-                action: event.action, 
-                target: event.target
+                action: itemEvent.action, 
+                target: itemEvent.target
             }
         });
     };
 
     workModeEdit = itemEvent => {
-        if (!this.state.editStart || this.state.changeEdit)
+        if (!this.state.editStart)
         this.setState({
             ...this.state,
             idProject: itemEvent.idProject,
@@ -98,8 +90,8 @@ class Build extends React.PureComponent {
     }
 
     openInstrument = itemEvent => {
-        let targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
-        let {instumentActive} = this.state.instrumentPanel;
+        const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
+        const {instumentActive} = this.state.instrumentPanel;
         if (targetEqual && this.state.editStart && !instumentActive)
         this.setState({
             ...this.state,
@@ -113,13 +105,13 @@ class Build extends React.PureComponent {
         })
     }
 
-    closePanel = event => {
+    closePanel = itemEvent => {
         this.setState({
             ...this.state,
             instrumentPanel: {
                 ...this.state.instrumentPanel,
                 colorPickerActive: false,
-                instrumentActive: event.close
+                instrumentActive: itemEvent.close
             }
         });
     };
@@ -141,7 +133,9 @@ class Build extends React.PureComponent {
     };
 
     saveChangesComponent = itemEvent => {
-        let componentSaveInBase = {...itemEvent, name: this.state.editComponent.name};
+
+        const {userData} = this.props;
+        const componentSaveInBase = {...itemEvent, name: this.state.editComponent.name};
 
         this.setState({
             ...this.state,
@@ -154,8 +148,8 @@ class Build extends React.PureComponent {
             }
         }, () => (
         this.props.dispatch(updateMiddleware({
-            uid: this.props.idUser,
-            projects: [...this.props.projects],
+            uid: userData.idUser,
+            projects: [...userData.projects],
             components: [...this.state.editComponent.build.components],
             idProject: this.state.idProject}))
         ));
@@ -164,8 +158,11 @@ class Build extends React.PureComponent {
 
     render(){
 
-        let instrumentActive = this.state.instrumentPanel.instrumentActive;
-        if (this.props.active && this.props.loadProject){
+        const {userData} = this.props;
+        const {currentProjectsData} = userData;
+        const {instrumentActive} = this.state.instrumentPanel;
+
+        if (userData.active && currentProjectsData.loadProject){
             return (
                     <Fragment key = 'build'>
                     {   this.state.modalImageViewer.action ?
@@ -190,7 +187,7 @@ class Build extends React.PureComponent {
                                 editStart = {this.state.editStart}
                                 countComponents = {this.state.editComponent.build.componentJSX.length}
                                 menuActive = {this.state.menuActive}
-                                id = {this.state.idProject}
+                                id = {currentProjectsData.idProject}
                         >
                             {{...this.state.editComponent, name: 'Header'}}
                         </HeaderBuild>
@@ -200,25 +197,34 @@ class Build extends React.PureComponent {
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.loadProject === this.props.loadProject && this.props.haveUpdateLoading) {
-            let current =  this.props.projects.find(item => item.id === this.state.idProject)
+    componentDidUpdate(prevProps) {
+
+        let {userData} = this.props;
+        let {currentProjectsData} = userData;
+
+        const isLOAD = prevProps.userData.currentProjectsData.loadProject === currentProjectsData.loadProject;
+
+        if (isLOAD && currentProjectsData.haveUpdateLoading) {
+            const current =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 typeProject: current.type,
                 components: [...current.components]
-            }))
+            }));
         }
     }
-    
 
     componentDidMount = () => {
-        if (this.props.active && !this.props.loadProject && this.props.haveUpdateLoading) {
-            let current =  this.props.projects.find(item => item.id === this.state.idProject)
+
+        let {userData} = this.props;
+        let {currentProjectsData} = userData;
+
+        if (userData.active && !currentProjectsData.loadProject && currentProjectsData.haveUpdateLoading) {
+            const currentProject =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
-                id: current.id,
-                typeProject: current.type,
-                components: [...current.components]
+                id: currentProject.id,
+                typeProject: currentProject.type,
+                components: [...currentProject.components]
             }))
         };
         eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
@@ -231,7 +237,10 @@ class Build extends React.PureComponent {
     }
 
     componentWillUnmount = () => {
-        if (this.props.active)  this.props.dispatch(exitProjectAction(true));
+
+        let {userData} = this.props;
+
+        if (userData.active)  this.props.dispatch(exitProjectAction(true));
         eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
         eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
@@ -242,12 +251,15 @@ class Build extends React.PureComponent {
     }
 }
 
+
 const mapStateToProps = (state) => {
     return {
-        ...state.builder,
-        active: state.cabinet.active,
-        idUser: state.cabinet.idUser,
-        projects: state.cabinet.projects
+        userData: {
+            active: state.cabinet.active,
+            idUser: state.cabinet.idUser,
+            projects: [...state.cabinet.projects],
+            currentProjectsData: {...state.builder}
+        },
     }
 }
 
