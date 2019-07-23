@@ -6,6 +6,7 @@ const initialState = {
     typeProject: null,
     components: []
 };
+
 export default (state = initialState, action) => {
     switch (action.type){
 
@@ -22,7 +23,7 @@ export default (state = initialState, action) => {
         case LOAD_UPDATE_PROJECT: {
             return {
                 ...state,
-                haveUpdateLoading: action.haveUpdateLoading,
+                components: [...action.components],
             }
         }
 

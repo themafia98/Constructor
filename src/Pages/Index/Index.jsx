@@ -56,7 +56,7 @@ class Index extends React.PureComponent {
     }
 
     authTo = event => {
-            if (this.emailImput, this.passwordImput)
+            if (this.emailImput && this.passwordImput)
             this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value));
             event.stopPropagation();
     }

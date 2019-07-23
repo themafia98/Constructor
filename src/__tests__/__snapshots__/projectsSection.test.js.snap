@@ -50,6 +50,12 @@ exports[`ProjectsSection.jsx test  1`] = `
               value="delete"
             />
           </div>
+          <input
+            className="productionButton"
+            onClick={[Function]}
+            type="button"
+            value="Show demo"
+          />
         </div>
       </div>
     </div>

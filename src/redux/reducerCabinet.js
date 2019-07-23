@@ -7,7 +7,7 @@ const initialState = {
     error: null,
     //dateConnect: new Date(Date.now()).toLocaleString().replace(/\s/ig,'').split(','),
 };
-
+console.log('reduer');
 export default (state = initialState, action) => {
     switch(action.type) {
         case LOAD_USER_CABINET: {

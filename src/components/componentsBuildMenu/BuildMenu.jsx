@@ -71,7 +71,6 @@ class BuildMenu extends React.PureComponent {
     }
 
     render(){
-        console.log('menu');
         return (
             <div className = 'ComponentsMenu'>
                 <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>

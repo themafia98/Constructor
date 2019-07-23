@@ -41,8 +41,8 @@ class HeaderBuild extends React.PureComponent {
     refBackground = node => this.refBox = node;
 
     render() {
-
-        let bg = this.props.mainBuilderData.components[1] ? this.props.mainBuilderData.components[1] : null;
+        let bg = this.props.mainBuilderData.components.find(item => item.id === "MainBackgroundHeader");
+        if (bg === undefined) bg = {};
         return (
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>

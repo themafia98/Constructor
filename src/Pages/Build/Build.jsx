@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
-import {loadCurrentProjectAction, exitProjectAction, loadUpdateCurrentProject} from '../../redux/actions';
+import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
 import updateMiddleware from '../../redux/middleware/updateMiddleware';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
@@ -89,8 +89,9 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
         const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
+        const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
         const instumentActive = this.state.instrumentPanel.instrumentActive;
-        if ((targetEqual || !instumentActive) && this.state.editStart)
+        if ((targetEqual || !instumentActive || idEqual) && this.state.editStart)
         this.setState({
             ...this.state,
             instrumentPanel: {
@@ -120,16 +121,15 @@ class Build extends React.PureComponent {
         let components = [...this.state.mainBuilderData.components];
         array.forEach(item => {
             if (item.type !== 'background'){
-                let id = this.state.mainBuilderData.componentJSX.length;
                 let component =
                     <BuilderComponents
                         sizeParenBox = {{...this.state.sizeParenBox}}
                         coords = {{...item.coords}}
                         size = {item.fontSize}
                         color = {item.color}
-                        id = {id}
+                        id = {item.id}
                         type = {item.type}
-                        key = {`${item.type}${id}`}
+                        key = {`${item.type}${item.id}`}
                         content = {item.content ? item.content : 'Title'}
                     />
                 componentsFromDB.push(component);
@@ -198,7 +198,6 @@ class Build extends React.PureComponent {
 
 
     render(){
-        console.log('build comp render');
         const {userData} = this.props;
         const {currentProjectsData} = userData;
         const {instrumentActive} = this.state.instrumentPanel;
@@ -207,7 +206,8 @@ class Build extends React.PureComponent {
             return (
                     <Fragment key = 'build'>
                     {   this.state.modalImageViewer.action ?
-                        <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} /> : null
+                        <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} />
+                        : null
                     }
                     {this.state.modalSearch ?
                         <ModalWindow

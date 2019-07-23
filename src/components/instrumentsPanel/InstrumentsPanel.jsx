@@ -59,7 +59,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     updatePosition = eventItem => {
-        console.log('update');
         this.setState({
             ...this.state, 
             componentsStats: {

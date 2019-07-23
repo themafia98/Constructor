@@ -20,9 +20,17 @@ function Item(props) {
     };
 
     const deleteItem = event => {
-        eventEmitter.emit('EventDeleteItem',{id: props.id, name: props.name, type: props.type});
+        eventEmitter.emit('EventDeleteItem',{
+            id: props.id,
+            name: props.name,
+            type: props.type
+        });
         event.stopPropagation();
     };
+
+    const showProduction =event => {
+        event.stopPropagation();
+    }
 
     if (canBuild) return <Redirect to = {path} />
     else return (
@@ -30,9 +38,20 @@ function Item(props) {
                 <p className = 'ProjectName'>{name}</p>
                 <p className = 'ProjectType'>{type}</p>
                 <div className = 'projectController'>
-                <input onClick = {build} className = 'projectControllerButton_enter' type = 'button' value = 'enter build' />
-                <input onClick = {deleteItem} className = 'projectControllerButton_delete' type = 'button' value = 'delete' />
+                    <input 
+                        onClick = {build} 
+                        className = 'projectControllerButton_enter' 
+                        type = 'button' 
+                        value = 'enter build' />
+                    <input onClick = {deleteItem} 
+                        className = 'projectControllerButton_delete' 
+                        type = 'button' 
+                        value = 'delete' />
                 </div>
+                <input onClick = {showProduction} 
+                    className = 'productionButton' 
+                    type = 'button' 
+                    value = 'Show demo' />
             </div>
         )
 }
