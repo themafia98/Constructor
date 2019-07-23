@@ -14,6 +14,7 @@ const Background = styled.div`
 
 const BackgroundComponent = props => {
 
+    console.log('BG');
     const [id] = useState(props.id);
 
     const [count, setCount] = useState(0);

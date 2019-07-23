@@ -9,8 +9,7 @@ import updateMiddleware from '../../redux/middleware/updateMiddleware';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
-import TextComponent from '../../components/buildComponents/components/Text';
-import BackgroundComponent from '../../components/buildComponents/components/Background';
+import BuilderComponents from '../../components/componentsBuilder/BuilderComponents';
 
 import ImageViewer from '../../components/imageViewer/imageViewer';
 import Loader from '../../components/loading/Loader';
@@ -121,7 +120,6 @@ class Build extends React.PureComponent {
     };
 
     addComponentsFromBD = array => {
-        let {buildGetComponents} = this.state.editComponent.build;
         let componentsFromDb = [];
         this.setState({
             ...this.state,
@@ -133,32 +131,26 @@ class Build extends React.PureComponent {
                 }
             }
         }, () => {
-            array.forEach(item => {
-
-                let id = this.state.editComponent.build.componentJSX.length;
-                if (item.type === 'text'){
-                    let component = 
-                        <TextComponent
-                            sizeParenBox = {{...this.state.sizeParenBox}} 
+                array.forEach(item => {
+                    let id = this.state.editComponent.build.componentJSX.length;
+                    let component =
+                        <BuilderComponents
+                            sizeParenBox = {{...this.state.sizeParenBox}}
+                            coords = {{...item.coords}}
                             id = {id}
-                            key = {`text${id}`}>{item.content ? item.content : 'Title'}
-                        </TextComponent>;
-                        let inform = {type: 'text', component: component};
-                        componentsFromDb.push({component: component, inform: inform});
-                }
+                            type = {item.type}
+                            key = {`${item.type}${id}`}
+                            content = {item.content ? item.content : 'Title'}
+                        />
 
-                if (item.type === 'background'){
-                    let background = <BackgroundComponent id = {id} key = {`bg${id}`}/>;
-                    let inform = {type: 'background', component: background};
-                    componentsFromDb.push({component: background, inform: inform});
-                }
-
+                    let inform = {type: item.type, component: component};
+                    componentsFromDb.push({component: component, inform: inform});
+                });
+                this.addComponent({target: 'Header', dataBaseData: componentsFromDb, mode: "DB"});
             });
-            this.addHeaderComponent({target: 'Header', dataBaseData: componentsFromDb, mode: "DB"});
-        });
     }
 
-    addHeaderComponent = itemEvent => {
+    addComponent = itemEvent => {
 
         let {componentJSX} = this.state.editComponent.build;
         if (itemEvent.mode !== 'DB')
@@ -170,7 +162,7 @@ class Build extends React.PureComponent {
                     ...this.state.editComponent.build,
                     target: itemEvent.target,
                     type: itemEvent.type,
-                    componentJSX: [...componentJSX, ...itemEvent.component]},
+                    componentJSX: [...componentJSX, {...itemEvent.component}]},
             },
         });
         else {
@@ -283,7 +275,7 @@ class Build extends React.PureComponent {
             }));
         }
 
-        if (currentProjectsData.loadProject && length && !buildGetComponents)
+        if (currentProjectsData.loadProject && this.state.editStart && !buildGetComponents)
             this.addComponentsFromBD([...currentProjectsData.components]);
     }
 
@@ -301,7 +293,7 @@ class Build extends React.PureComponent {
             }));
         };
 
-        eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.on('EventBuildComponents', this.addComponent);
         eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.on('EventSaveWidth', this.saveWidth);
         eventEmitter.on('EventClosePanel', this.closePanel);
@@ -316,7 +308,7 @@ class Build extends React.PureComponent {
         let {userData} = this.props;
 
         if (userData.active)  this.props.dispatch(exitProjectAction(true));
-        eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
+        eventEmitter.off('EventBuildComponents', this.addComponent);
         eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.off('EventSaveWidth', this.saveWidth);
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);

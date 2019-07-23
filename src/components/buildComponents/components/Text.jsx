@@ -22,16 +22,14 @@ const Title = styled.h1.attrs(props => ({
 // top:  ${props => props.coordY};
 
 const TextComponent = props =>  {
-
     const [id] = useState(props.id);
-
     const [sizeParenBox] = useState({...props.sizeParenBox});
 
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
     let [contentText, setText] = useState(props.children);
     const [shiftCoords, setShiftCoords] = useState(null)
-    const [dragNdrop, setDragNdrop] = useState(null);
+    const [dragNdrop, setDragNdrop] = useState(props.coords.left ? {x: props.coords.left, y: props.coords.top} : null);
 
     const openTitleInstruments = event => {
 
@@ -82,7 +80,6 @@ const TextComponent = props =>  {
     }
 
     const moveText = event => {
-
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
 
@@ -98,9 +95,9 @@ const TextComponent = props =>  {
             shadowDisplay: event.type === 'drag' ? true : false
         };
         setDragNdrop(position);
-        
-        if (event.type === 'dragend') 
+        if (event.type === 'dragend') {
             eventEmitter.emit('EventUpdatePosition', position);
+        }
         event.stopPropagation();
     }
 
@@ -130,6 +127,7 @@ const TextComponent = props =>  {
             size = {sizeText ? sizeText + 'px' : '120px'}
             draggable = {true}
             onMouseDown = {saveCoords}
+            onDragStart = {openTitleInstruments}
             onDrag   = {moveText}
             onDragEnd = {moveText}
             onWheel = {weelResizeText}
