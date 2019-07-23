@@ -20,13 +20,7 @@ class HeaderBuild extends React.PureComponent {
     state = {
         idProject: this.props.id,
         components: {...this.props.children},
-        sizeParenBox: null,
     }
-
-    saveWidth = eventItem => {
-        this.setState({sizeParenBox: {...eventItem}});
-    };
-
 
     changeMode = event => {
         if (!this.props.editStart) {
@@ -55,21 +49,13 @@ class HeaderBuild extends React.PureComponent {
                             countComponents = {this.props.countComponents}
                             menuActive = {this.props.menuActive}
                             components = {{...this.state.components}}
-                            sizeParenBox = {this.state.sizeParenBox}
+                            sizeParenBox = {this.props.sizeParenBox}
 
                         />
                         : null}
                 </div>
             </Fragment>
         )
-    }
-
-    componentDidMount = event => {
-        eventEmitter.on('EventSaveWidth', this.saveWidth);
-    }
-
-    componentWillUnmount = event => {
-        eventEmitter.off('EventSaveWidth', this.saveWidth);
     }
 }
 export default HeaderBuild;

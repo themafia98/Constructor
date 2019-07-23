@@ -9,6 +9,9 @@ import updateMiddleware from '../../redux/middleware/updateMiddleware';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
+import TextComponent from '../../components/buildComponents/components/Text';
+import BackgroundComponent from '../../components/buildComponents/components/Background';
+
 import ImageViewer from '../../components/imageViewer/imageViewer';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
@@ -41,6 +44,7 @@ class Build extends React.PureComponent {
                     type: null,
                     mainBoxWidth: null,
                     mainBoxHeight: null,
+                    buildGetComponents: false,
                     components: [],
                     componentJSX: []
                 },
@@ -116,9 +120,48 @@ class Build extends React.PureComponent {
         });
     };
 
+    addComponentsFromBD = array => {
+        let {buildGetComponents} = this.state.editComponent.build;
+        let componentsFromDb = [];
+        this.setState({
+            ...this.state,
+            editComponent: {
+                ...this.state.editComponent,
+                build:{
+                    ...this.state.editComponent.build,
+                    buildGetComponents: true,
+                }
+            }
+        }, () => {
+            array.forEach(item => {
+
+                let id = this.state.editComponent.build.componentJSX.length;
+                if (item.type === 'text'){
+                    let component = 
+                        <TextComponent
+                            sizeParenBox = {{...this.state.sizeParenBox}} 
+                            id = {id}
+                            key = {`text${id}`}>{item.content ? item.content : 'Title'}
+                        </TextComponent>;
+                        let inform = {type: 'text', component: component};
+                        componentsFromDb.push({component: component, inform: inform});
+                }
+
+                if (item.type === 'background'){
+                    let background = <BackgroundComponent id = {id} key = {`bg${id}`}/>;
+                    let inform = {type: 'background', component: background};
+                    componentsFromDb.push({component: background, inform: inform});
+                }
+
+            });
+            this.addHeaderComponent({target: 'Header', dataBaseData: componentsFromDb, mode: "DB"});
+        });
+    }
+
     addHeaderComponent = itemEvent => {
 
         let {componentJSX} = this.state.editComponent.build;
+        if (itemEvent.mode !== 'DB')
         this.setState({
             ...this.state,
             editComponent: {
@@ -130,6 +173,25 @@ class Build extends React.PureComponent {
                     componentJSX: [...componentJSX, ...itemEvent.component]},
             },
         });
+        else {
+            let _bufferComponents = [];
+            itemEvent.dataBaseData.forEach(item => {
+                _bufferComponents.push(item.component);
+
+            });
+
+            this.setState({
+                ...this.state,
+                editComponent: {
+                    ...this.state.editComponent,
+                    build: {
+                        ...this.state.editComponent.build,
+                        target: itemEvent.target,
+                        type: 'text',
+                        componentJSX: [...componentJSX, ..._bufferComponents]},
+                },
+            });
+        }
     };
 
     saveChangesComponent = itemEvent => {
@@ -155,9 +217,13 @@ class Build extends React.PureComponent {
         ));
     };
 
+    saveWidth = eventItem => {
+        this.setState({sizeParenBox: {...eventItem}});
+    };
+
 
     render(){
-
+        console.log('build comp render');
         const {userData} = this.props;
         const {currentProjectsData} = userData;
         const {instrumentActive} = this.state.instrumentPanel;
@@ -184,9 +250,11 @@ class Build extends React.PureComponent {
                         <Header key = 'Header' title = "Constructor"  />
                         <HeaderBuild
                                 key = 'HeaderBuild'
+                                currentProjectsData = {{...this.props.userData.currentProjectsData}}
                                 editStart = {this.state.editStart}
                                 countComponents = {this.state.editComponent.build.componentJSX.length}
                                 menuActive = {this.state.menuActive}
+                                sizeParenBox = {this.state.sizeParenBox}
                                 id = {currentProjectsData.idProject}
                         >
                             {{...this.state.editComponent, name: 'Header'}}
@@ -201,6 +269,8 @@ class Build extends React.PureComponent {
 
         let {userData} = this.props;
         let {currentProjectsData} = userData;
+        let length = currentProjectsData.components.length;
+        let {buildGetComponents} = this.state.editComponent.build;
 
         const isLOAD = prevProps.userData.currentProjectsData.loadProject === currentProjectsData.loadProject;
 
@@ -212,6 +282,9 @@ class Build extends React.PureComponent {
                 components: [...current.components]
             }));
         }
+
+        if (currentProjectsData.loadProject && length && !buildGetComponents)
+            this.addComponentsFromBD([...currentProjectsData.components]);
     }
 
     componentDidMount = () => {
@@ -225,10 +298,12 @@ class Build extends React.PureComponent {
                 id: currentProject.id,
                 typeProject: currentProject.type,
                 components: [...currentProject.components]
-            }))
+            }));
         };
+
         eventEmitter.on('EventBuildHeaderComponents', this.addHeaderComponent);
         eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);
+        eventEmitter.on('EventSaveWidth', this.saveWidth);
         eventEmitter.on('EventClosePanel', this.closePanel);
         eventEmitter.on('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
@@ -243,6 +318,7 @@ class Build extends React.PureComponent {
         if (userData.active)  this.props.dispatch(exitProjectAction(true));
         eventEmitter.off('EventBuildHeaderComponents', this.addHeaderComponent);
         eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
+        eventEmitter.off('EventSaveWidth', this.saveWidth);
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);

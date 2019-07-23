@@ -6,7 +6,6 @@ import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 import {initialStateOffline} from '../redux/testReduxStore';
 import Index from '../Pages/Index/Index';
-import { CustomConsole } from '@jest/console';
 
 const config = require('../config.json');
 const props = {

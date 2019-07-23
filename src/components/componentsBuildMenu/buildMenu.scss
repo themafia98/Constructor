@@ -64,22 +64,22 @@
     }
 
     .ButtonTool:before{
-        background-image: url('./ButtonTool.png');
+        background-image: url('/img/ButtonTool.png');
         content: '';
     }
 
     .VideoTool:before{
-        background-image: url('./VideoTool.png');
+        background-image: url('/img/VideoTool.png');
         content: '';
     }
 
     .TextTool:before{
-        background-image: url('./TextTool.png');
+        background-image: url('/img/TextTool.png');
         content: '';
     }
 
     .ImageTool:before{
-        background-image: url('./ImageTool.png');
+        background-image: url('/img/ImageTool.png');
         content:"";
     }
 }
