@@ -1,5 +1,22 @@
 import configureStore from 'redux-mock-store';
 
+
+const initialStateOffline = {
+    cabinet: {
+    active: false,
+    idUser: null,
+    projects: [
+        {
+            components: [],
+            id:null,
+            title: null,
+            type: null,
+        }
+    ],
+    },
+    builder: {}
+};
+
 const initialState = {
     cabinet: {
     active: true,
@@ -37,3 +54,4 @@ const mockStore = configureStore();
 const store = mockStore(initialState);
 
 export default store;
+export {initialStateOffline};

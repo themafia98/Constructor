@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Index test 1`] = `
+<div
+  className="LoginPage flex-column"
+>
+  <h1>
+    Constructor
+  </h1>
+  <div
+    className="LoginBox"
+  >
+    <div
+      className="LoginForm"
+    >
+      <h3>
+        Connect form
+      </h3>
+      <p>
+        E-mail
+      </p>
+      <input
+        type="text"
+      />
+      <p>
+        Password
+      </p>
+      <input
+        type="password"
+      />
+      <input
+        className="loginButton enterInput"
+        onClick={[Function]}
+        type="button"
+        value="enter"
+      />
+      <input
+        className="loginButton registration"
+        onClick={[Function]}
+        type="button"
+        value="registration"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Index test 2`] = `
+<div
+  className="LoginPage flex-column"
+>
+  <h1>
+    Constructor
+  </h1>
+  <div
+    className="LoginBox"
+  >
+    <div
+      className="LoginForm"
+    >
+      <h3>
+        Connect form
+      </h3>
+      <p>
+        E-mail
+      </p>
+      <input
+        type="text"
+      />
+      <p>
+        Password
+      </p>
+      <input
+        type="password"
+      />
+      <input
+        className="loginButton enterInput"
+        onClick={[Function]}
+        type="button"
+        value="enter"
+      />
+      <input
+        className="loginButton registration"
+        onClick={[Function]}
+        type="button"
+        value="registration"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Index test 3`] = `
+<div
+  className="LoginPage flex-column"
+>
+  <h1>
+    Constructor
+  </h1>
+  <div
+    className="LoginBox"
+  >
+    <div
+      className="LoginForm"
+    >
+      <h3>
+        Connect form
+      </h3>
+      <p>
+        E-mail
+      </p>
+      <input
+        type="text"
+      />
+      <p>
+        Password
+      </p>
+      <input
+        type="password"
+      />
+      <input
+        className="loginButton enterInput"
+        onClick={[Function]}
+        type="button"
+        value="enter"
+      />
+      <input
+        className="loginButton registration selected"
+        onClick={[Function]}
+        type="button"
+        value="registration"
+      />
+    </div>
+  </div>
+  <div
+    className="RegistrationBox"
+  >
+    <div
+      className="RegistrationForm"
+    >
+      <h3>
+        Registration
+      </h3>
+      <form
+        autoComplete="off"
+        className="RegForm"
+      >
+        <span>
+          E-mail
+        </span>
+        <input
+          type="text"
+        />
+        <span>
+          Password
+        </span>
+        <input
+          autoComplete="off"
+          className="password"
+          type="password"
+        />
+        <input
+          className="loginButton"
+          onClick={[Function]}
+          type="button"
+          value="registration"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+`;

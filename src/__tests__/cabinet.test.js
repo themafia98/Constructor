@@ -8,13 +8,19 @@ import store from '../redux/testReduxStore';
 
 const config = require('../config.json');
 
+const props = {
+    history: {},
+    match: {},
+    location: {}
+}
+
 const CabinetComponent = renderer.create(
     <MemoryRouter initialEntries = {['/Cabinet']}>
-    <Route path = "/Cabinet" exact >
-        <Provider store = {store}>
-            <Cabinet config = {config} firebase = {firebase} />
-        </Provider>
-    </Route>
+        <Route path = "/Cabinet" exact >
+            <Provider store = {store}>
+                <Cabinet {...props} config = {config} firebase = {firebase} />
+            </Provider>
+        </Route>
     </MemoryRouter>
 );
 

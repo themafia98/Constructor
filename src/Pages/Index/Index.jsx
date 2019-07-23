@@ -56,6 +56,7 @@ class Index extends React.PureComponent {
     }
 
     authTo = event => {
+            if (this.emailImput, this.passwordImput)
             this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value));
             event.stopPropagation();
     }
@@ -64,6 +65,7 @@ class Index extends React.PureComponent {
     passwordRef = node => this.passwordImput = node;
 
     render(){
+
         if (this.props.active) return <Redirect to = { '/Cabinet'} />
         else if (!this.props.active) {
             return (
@@ -83,13 +85,13 @@ class Index extends React.PureComponent {
                                 <input ref = {this.passwordRef} type = 'password' />
                                 <input 
                                     onClick = {this.authTo} 
-                                    className = 'loginButton'
+                                    className = 'loginButton enterInput'
                                     type = 'button'
                                     value = 'enter' />
                                 <input
                                     onClick = {this.showBox}
                                     className = {this.state.registrationActive ?
-                                        `loginButton selected` : 'loginButton'}
+                                        `loginButton registration selected` : 'loginButton registration'}
                                     type = 'button'
                                     value = 'registration'
                                     />
