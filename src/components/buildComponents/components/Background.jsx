@@ -62,8 +62,8 @@ const BackgroundComponent = props => {
         <Background
             ref  = {boxComponent}
             onClick={openBgInstruments}
-            backgroundColor = {backgroundColor}
-            backgroundImage = {backgroundImage}
+            backgroundColor = {backgroundColor ? backgroundColor : props.background}
+            backgroundImage = {backgroundImage ? backgroundImage : props.backgroundImage}
         >
             {props.children}
         </Background>

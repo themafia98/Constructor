@@ -6,8 +6,11 @@ import BackgroundComponent from '../buildComponents/components/Background';
 
 const BuilderComponents = props => {
 
+    console.log('builder');
     const [target] = useState(props.target);
     let [id] = useState(props.id);
+    let [size] = useState(props.size);
+    let [color] = useState(props.color ? props.color : 'red');
     let [content] = useState(props.content ? props.content : null);
     let [type] = useState(props.type);
 
@@ -15,6 +18,8 @@ const BuilderComponents = props => {
         return <TextComponent
                     sizeParenBox = {{...props.sizeParenBox}}
                     id = {id}
+                    size = {size}
+                    color = {color}
                     coords = {{...props.coords}}
                     key = {`text${id}`}
                     target = {target}
@@ -24,7 +29,12 @@ const BuilderComponents = props => {
     }
 
     if (type === 'background'){
-        return <BackgroundComponent target = {target}  id = {id} key = {`bg${id}`}/>;
+        return <BackgroundComponent 
+                target = {target}
+                color = {color}
+                size = {size}
+                id = {id} 
+                key = {`bg${id}`}/>;
     }
 };
 

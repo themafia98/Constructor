@@ -115,6 +115,7 @@ class Build extends React.PureComponent {
     };
 
     addComponentsFromBD = array => {
+        
         let componentsFromDb = [];
         this.setState({
             ...this.state,
@@ -123,12 +124,16 @@ class Build extends React.PureComponent {
                 buildGetComponents: true,
             }
         }, () => {
+                let components = [...this.state.mainBuilderData.components];
                 array.forEach(item => {
+                    if (item.type !== 'background'){
                     let id = this.state.mainBuilderData.componentJSX.length;
                     let component =
                         <BuilderComponents
                             sizeParenBox = {{...this.state.sizeParenBox}}
                             coords = {{...item.coords}}
+                            size = {item.fontSize}
+                            color = {item.color}
                             id = {id}
                             type = {item.type}
                             key = {`${item.type}${id}`}
@@ -137,8 +142,10 @@ class Build extends React.PureComponent {
 
                     let inform = {type: item.type, component: component};
                     componentsFromDb.push({component: component, inform: inform});
+                    }
+                    else components.push(item);
                 });
-                this.addComponent({target: 'Header', dataBaseData: componentsFromDb, mode: "DB"});
+                this.addComponent({components: components, target: 'Header', dataBaseData: componentsFromDb, mode: "DB"});
             });
     }
 
@@ -150,6 +157,7 @@ class Build extends React.PureComponent {
                 ...this.state,
                 mainBuilderData: {
                     ...this.state.mainBuilderData,
+                    components: [...itemEvent.components],
                     componentJSX: [...componentJSX, {...itemEvent.component}]
                 },
             });
@@ -164,6 +172,7 @@ class Build extends React.PureComponent {
                 ...this.state,
                 mainBuilderData: {
                     ...this.state.mainBuilderData,
+                    components: [...itemEvent.components],
                     componentJSX: [...componentJSX, ..._bufferComponents]
                 },
             });

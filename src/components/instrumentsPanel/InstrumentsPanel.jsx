@@ -126,6 +126,7 @@ class InstrumentsPanel extends React.PureComponent {
     saveChanges = event => {
         eventEmitter.emit("EventSaveChangesComponent", {
             ...this.state.componentsStats,
+            id: this.state.instrumentPanel.idComponent,
             type: this.state.instrumentPanel.target
         });
 
