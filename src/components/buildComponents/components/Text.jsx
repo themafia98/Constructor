@@ -27,7 +27,7 @@ const TextComponent = props =>  {
 
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
-    let [contentText, setText] = useState(props.children);
+    let [contentText, setText] = useState(props.content ? props.content : props.children);
     const [shiftCoords, setShiftCoords] = useState(null)
     const [dragNdrop, setDragNdrop] = useState(props.coords.left ? {x: props.coords.left, y: props.coords.top} : null);
 
@@ -90,8 +90,8 @@ const TextComponent = props =>  {
         let convertToPercentY = (coordY * 100) / sizeParenBox.height;
 
         const position = {
-            x: convertToPercentX + '%', 
-            y: convertToPercentY + '%', 
+            x: convertToPercentX.toFixed(1) + '%', 
+            y: convertToPercentY.toFixed(1) + '%', 
             shadowDisplay: event.type === 'drag' ? true : false
         };
         setDragNdrop(position);

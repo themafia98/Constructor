@@ -22,20 +22,31 @@ class BuildMenu extends React.PureComponent {
 
     addText = event => {
         let id = this.props.countComponents;
-        let component = <BuilderComponents 
-            sizeParenBox = {this.props.sizeParenBox} 
-            key = {`text${id}`} 
-            content = "Title" 
-            id = {id} 
-            target = 'Header' type = 'text' />
-        eventEmitter.emit('EventBuildComponents',{target: 'Header', type: 'text', component: component});
+        eventEmitter.emit('EventBuildComponents',{
+            target: this.state.components.name,
+            type: 'text',
+            component: <BuilderComponents
+                            target = {this.state.components.name}
+                            key = {`text${id}`}
+                            sizeParenBox = {this.props.sizeParenBox}
+                            content = "Title"
+                            id = {id}
+                            type = 'text' />
+        });
         event.stopPropagation();
     }
 
     addBackground = event => {
         let id = this.props.countComponents;
-        let background = <BuilderComponents key = {`bg${id}`} id = {id} target = 'Header' type = 'background' />
-        eventEmitter.emit('EventBuildComponents',{target: 'Header', type: 'background', component: background});
+        eventEmitter.emit('EventBuildComponents',{
+            target: this.state.components.name,
+            type: 'background',
+            component: <BuilderComponents
+                            target = {this.state.components.name}
+                            key = {`bg${id}`}
+                            id = {id}
+                            type = 'background' />
+        });
 
         event.stopPropagation();
     }

@@ -10,7 +10,7 @@ import './headerBuild.scss';
 class HeaderBuild extends React.PureComponent {
 
     static propTypes = {
-        children: PropTypes.object.isRequired, /** @Object with data about components */
+        children: PropTypes.object.isRequired, /** @Object with name */
         countComponents: PropTypes.number.isRequired, /** @Number last project */
         editStart: PropTypes.bool.isRequired, /** @Bool start edit mode */
         menuActive: PropTypes.bool.isRequired, /** @Bool active menu or unactive */
@@ -23,11 +23,17 @@ class HeaderBuild extends React.PureComponent {
     }
 
     changeMode = event => {
+        console.log(event);
         if (!this.props.editStart) {
             let rect = event.currentTarget.getBoundingClientRect();
             const width = rect.width;
             const height = rect.height;
-        eventEmitter.emit('EventModeEdit', {...this.state, width: width, height: height});
+            eventEmitter.emit('EventModeEdit', {
+                ...this.state,
+                target: 'Header',
+                width: width,
+                height: height
+            });
         }
     }
 
@@ -39,8 +45,8 @@ class HeaderBuild extends React.PureComponent {
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>
                     <BackgroundComponent id = 'MainBackgroundHeader' background = 'grey'>
-                    {  this.props.children.build.componentJSX && this.props.children.build.type === 'text'  ?
-                            this.props.children.build.componentJSX : null
+                    {  this.props.mainBuilderData.componentJSX ?
+                            this.props.mainBuilderData.componentJSX : null
                     }
                     </BackgroundComponent>
                     {!this.props.editStart ? <p className = 'warningEdit'>Click for start edit</p> : null}

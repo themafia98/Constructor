@@ -11,6 +11,7 @@ $closeSize: 25px;
     overflow: hidden;
     background-color: $bgColor;
 
+
     h3 {
         font-size: 1.5rem;
         text-align: center;
@@ -105,4 +106,8 @@ $closeSize: 25px;
 
         font-weight: bold;
     }
+}
+
+span.textCoordsPanel {
+    color: rgb(235, 32, 32);
 }

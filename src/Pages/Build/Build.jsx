@@ -35,18 +35,12 @@ class Build extends React.PureComponent {
 
     state = {
             idProject: parseInt(this.props.match.params.param),
-            editComponent: {
-                name: null,
-                build: {
-                    name: null,
-                    target: null,
-                    type: null,
-                    mainBoxWidth: null,
-                    mainBoxHeight: null,
-                    buildGetComponents: false,
-                    components: [],
-                    componentJSX: []
-                },
+            mainBuilderData: {
+                mainBoxWidth: null,
+                mainBoxHeight: null,
+                buildGetComponents: false,
+                components: [],
+                componentJSX: []
             },
             instrumentPanel: {
                 colorPickerActive: false,
@@ -54,6 +48,7 @@ class Build extends React.PureComponent {
                 target: '',
                 idComponent: null,
             },
+            editComponentName:  null,
             menuActive: false,
             editStart: false,
             modalSearch: false,
@@ -80,11 +75,11 @@ class Build extends React.PureComponent {
         this.setState({
             ...this.state,
             idProject: itemEvent.idProject,
-            editComponent: {
-                ...this.state.editComponent,
-                ...itemEvent.components,
+            editComponentName: itemEvent.target,
+            mainBuilderData: {
+                ...this.state.mainBuilderData,
                 mainBoxWidth: itemEvent.width,
-                mainBoxHeight: itemEvent.height
+                mainBoxHeight: itemEvent.height,
             },
             menuActive: true,
             editStart: true
@@ -94,8 +89,8 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
         const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
-        const {instumentActive} = this.state.instrumentPanel;
-        if (targetEqual && this.state.editStart && !instumentActive)
+        const instumentActive = this.state.instrumentPanel.instrumentActive;
+        if ((targetEqual || !instumentActive) && this.state.editStart)
         this.setState({
             ...this.state,
             instrumentPanel: {
@@ -123,16 +118,13 @@ class Build extends React.PureComponent {
         let componentsFromDb = [];
         this.setState({
             ...this.state,
-            editComponent: {
-                ...this.state.editComponent,
-                build:{
-                    ...this.state.editComponent.build,
-                    buildGetComponents: true,
-                }
+            mainBuilderData: {
+                ...this.state.mainBuilderData,
+                buildGetComponents: true,
             }
         }, () => {
                 array.forEach(item => {
-                    let id = this.state.editComponent.build.componentJSX.length;
+                    let id = this.state.mainBuilderData.componentJSX.length;
                     let component =
                         <BuilderComponents
                             sizeParenBox = {{...this.state.sizeParenBox}}
@@ -152,19 +144,15 @@ class Build extends React.PureComponent {
 
     addComponent = itemEvent => {
 
-        let {componentJSX} = this.state.editComponent.build;
+        let {componentJSX} = this.state.mainBuilderData;
         if (itemEvent.mode !== 'DB')
-        this.setState({
-            ...this.state,
-            editComponent: {
-                ...this.state.editComponent,
-                build: {
-                    ...this.state.editComponent.build,
-                    target: itemEvent.target,
-                    type: itemEvent.type,
-                    componentJSX: [...componentJSX, {...itemEvent.component}]},
-            },
-        });
+            this.setState({
+                ...this.state,
+                mainBuilderData: {
+                    ...this.state.mainBuilderData,
+                    componentJSX: [...componentJSX, {...itemEvent.component}]
+                },
+            });
         else {
             let _bufferComponents = [];
             itemEvent.dataBaseData.forEach(item => {
@@ -174,13 +162,9 @@ class Build extends React.PureComponent {
 
             this.setState({
                 ...this.state,
-                editComponent: {
-                    ...this.state.editComponent,
-                    build: {
-                        ...this.state.editComponent.build,
-                        target: itemEvent.target,
-                        type: 'text',
-                        componentJSX: [...componentJSX, ..._bufferComponents]},
+                mainBuilderData: {
+                    ...this.state.mainBuilderData,
+                    componentJSX: [...componentJSX, ..._bufferComponents]
                 },
             });
         }
@@ -189,22 +173,19 @@ class Build extends React.PureComponent {
     saveChangesComponent = itemEvent => {
 
         const {userData} = this.props;
-        const componentSaveInBase = {...itemEvent, name: this.state.editComponent.name};
+        const componentSaveInBase = {...itemEvent, name: this.state.editComponentName};
 
         this.setState({
             ...this.state,
-            editComponent: {
-                ...this.state.editComponent,
-                build: {
-                    ...this.state.editComponent.build,
-                    components: [...this.state.editComponent.build.components, componentSaveInBase]
-                }
+            mainBuilderData: {
+                ...this.state.mainBuilderData,
+                components: [...this.state.mainBuilderData.components, componentSaveInBase]
             }
         }, () => (
         this.props.dispatch(updateMiddleware({
             uid: userData.idUser,
             projects: [...userData.projects],
-            components: [...this.state.editComponent.build.components],
+            components: [...this.state.mainBuilderData.components],
             idProject: this.state.idProject}))
         ));
     };
@@ -234,7 +215,8 @@ class Build extends React.PureComponent {
                     { instrumentActive ?
                         <InstrumentsPanel
                             key = 'InstrumentsPanel'
-                            editComponent =  {{...this.state.editComponent}}
+                            editComponentName = {this.state.editComponentName}
+                            mainBuilderData =  {{...this.state.mainBuilderData}}
                             instrumentPanel = {{...this.state.instrumentPanel}}
                         />
                         : null
@@ -242,14 +224,15 @@ class Build extends React.PureComponent {
                         <Header key = 'Header' title = "Constructor"  />
                         <HeaderBuild
                                 key = 'HeaderBuild'
+                                mainBuilderData = {{...this.state.mainBuilderData}}
                                 currentProjectsData = {{...this.props.userData.currentProjectsData}}
                                 editStart = {this.state.editStart}
-                                countComponents = {this.state.editComponent.build.componentJSX.length}
+                                countComponents = {this.state.mainBuilderData.componentJSX.length}
                                 menuActive = {this.state.menuActive}
                                 sizeParenBox = {this.state.sizeParenBox}
                                 id = {currentProjectsData.idProject}
                         >
-                            {{...this.state.editComponent, name: 'Header'}}
+                            {{name: this.state.editComponentName}}
                         </HeaderBuild>
                     </Fragment>
             )
@@ -261,8 +244,7 @@ class Build extends React.PureComponent {
 
         let {userData} = this.props;
         let {currentProjectsData} = userData;
-        let length = currentProjectsData.components.length;
-        let {buildGetComponents} = this.state.editComponent.build;
+        let {buildGetComponents} = this.state.mainBuilderData;
 
         const isLOAD = prevProps.userData.currentProjectsData.loadProject === currentProjectsData.loadProject;
 

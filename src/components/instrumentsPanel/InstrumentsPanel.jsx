@@ -10,7 +10,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
         instrumentPanel:  PropTypes.object.isRequired, /** @Settings for panel and data about component */
-        editComponent: PropTypes.object.isRequired /** @Settings component */
+        editComponentName: PropTypes.string.isRequired /** @Name editable component */
     };
 
     state = {
@@ -144,10 +144,16 @@ class InstrumentsPanel extends React.PureComponent {
 
         let {colorPickerActive} = this.state.instrumentPanel;
         let {fontSize} = this.state.componentsStats;
+        let {coords} = this.state.componentsStats;
             switch (type){
                 case 'text':
                     return (
                         <Fragment>
+                        <p className = 'titleInstument'>Position: </p>
+                        <span className = 'textCoordsPanel'>
+                        {coords.left ?
+                            coords.left + ' / ' + coords.top : ' drop for active'}
+                        </span>
                         <p className = 'titleInstument'>Color: </p>
                         <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'color pick' />
                         <p className = 'titleInstument'>Text size: </p>
