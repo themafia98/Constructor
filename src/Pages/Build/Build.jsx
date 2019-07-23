@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
-import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
+import {loadCurrentProjectAction, exitProjectAction, loadUpdateCurrentProject} from '../../redux/actions';
 import updateMiddleware from '../../redux/middleware/updateMiddleware';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
@@ -115,65 +115,55 @@ class Build extends React.PureComponent {
     };
 
     addComponentsFromBD = array => {
-        
-        let componentsFromDb = [];
-        this.setState({
-            ...this.state,
-            mainBuilderData: {
-                ...this.state.mainBuilderData,
-                buildGetComponents: true,
-            }
-        }, () => {
-                let components = [...this.state.mainBuilderData.components];
-                array.forEach(item => {
-                    if (item.type !== 'background'){
-                    let id = this.state.mainBuilderData.componentJSX.length;
-                    let component =
-                        <BuilderComponents
-                            sizeParenBox = {{...this.state.sizeParenBox}}
-                            coords = {{...item.coords}}
-                            size = {item.fontSize}
-                            color = {item.color}
-                            id = {id}
-                            type = {item.type}
-                            key = {`${item.type}${id}`}
-                            content = {item.content ? item.content : 'Title'}
-                        />
 
-                    let inform = {type: item.type, component: component};
-                    componentsFromDb.push({component: component, inform: inform});
-                    }
-                    else components.push(item);
-                });
-                this.addComponent({components: components, target: 'Header', dataBaseData: componentsFromDb, mode: "DB"});
-            });
+        let componentsFromDB = [];
+        let components = [...this.state.mainBuilderData.components];
+        array.forEach(item => {
+            if (item.type !== 'background'){
+                let id = this.state.mainBuilderData.componentJSX.length;
+                let component =
+                    <BuilderComponents
+                        sizeParenBox = {{...this.state.sizeParenBox}}
+                        coords = {{...item.coords}}
+                        size = {item.fontSize}
+                        color = {item.color}
+                        id = {id}
+                        type = {item.type}
+                        key = {`${item.type}${id}`}
+                        content = {item.content ? item.content : 'Title'}
+                    />
+                componentsFromDB.push(component);
+                components.push(item);
+            }
+            else components.push(item);
+        });
+        this.addComponent({
+            components: components,
+            target: this.state.editComponentName,
+            dataBaseData: componentsFromDB, mode: 'DB'});
     }
 
     addComponent = itemEvent => {
-
+        console.log('add');
         let {componentJSX} = this.state.mainBuilderData;
         if (itemEvent.mode !== 'DB')
             this.setState({
                 ...this.state,
                 mainBuilderData: {
                     ...this.state.mainBuilderData,
-                    components: [...itemEvent.components],
+                    components: [...this.state.mainBuilderData.components,
+                                itemEvent.componentsPatternStatus],
                     componentJSX: [...componentJSX, {...itemEvent.component}]
                 },
             });
         else {
-            let _bufferComponents = [];
-            itemEvent.dataBaseData.forEach(item => {
-                _bufferComponents.push(item.component);
-
-            });
-
             this.setState({
                 ...this.state,
                 mainBuilderData: {
                     ...this.state.mainBuilderData,
-                    components: [...itemEvent.components],
-                    componentJSX: [...componentJSX, ..._bufferComponents]
+                    components: [...this.state.mainBuilderData.components,
+                                ...itemEvent.components],
+                    componentJSX: [...componentJSX, ...itemEvent.dataBaseData]
                 },
             });
         }
@@ -182,13 +172,16 @@ class Build extends React.PureComponent {
     saveChangesComponent = itemEvent => {
 
         const {userData} = this.props;
-        const componentSaveInBase = {...itemEvent, name: this.state.editComponentName};
+        const _components = this.state.mainBuilderData.components.map(item => {
+            if (item.id === itemEvent.id) return {...itemEvent};
+            return item;
+        });
 
         this.setState({
             ...this.state,
             mainBuilderData: {
                 ...this.state.mainBuilderData,
-                components: [...this.state.mainBuilderData.components, componentSaveInBase]
+                components: _components
             }
         }, () => (
         this.props.dispatch(updateMiddleware({
@@ -236,6 +229,7 @@ class Build extends React.PureComponent {
                                 mainBuilderData = {{...this.state.mainBuilderData}}
                                 currentProjectsData = {{...this.props.userData.currentProjectsData}}
                                 editStart = {this.state.editStart}
+                                editComponentName = {this.state.editComponentName}
                                 countComponents = {this.state.mainBuilderData.componentJSX.length}
                                 menuActive = {this.state.menuActive}
                                 sizeParenBox = {this.state.sizeParenBox}
@@ -253,11 +247,11 @@ class Build extends React.PureComponent {
 
         let {userData} = this.props;
         let {currentProjectsData} = userData;
-        let {buildGetComponents} = this.state.mainBuilderData;
+        const isIncludeComponent = currentProjectsData.components.length;
+        const isIncludeComponentJSX = this.state.mainBuilderData.componentJSX.length;
+        const isIclude = isIncludeComponent && !isIncludeComponentJSX;
 
-        const isLOAD = prevProps.userData.currentProjectsData.loadProject === currentProjectsData.loadProject;
-
-        if (isLOAD && currentProjectsData.haveUpdateLoading) {
+        if (userData.active && !currentProjectsData.loadProject) {
             const current =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
@@ -265,8 +259,7 @@ class Build extends React.PureComponent {
                 components: [...current.components]
             }));
         }
-
-        if (currentProjectsData.loadProject && this.state.editStart && !buildGetComponents)
+        if (currentProjectsData.loadProject && isIclude && this.state.editStart)
             this.addComponentsFromBD([...currentProjectsData.components]);
     }
 
@@ -275,7 +268,7 @@ class Build extends React.PureComponent {
         let {userData} = this.props;
         let {currentProjectsData} = userData;
 
-        if (userData.active && !currentProjectsData.loadProject && currentProjectsData.haveUpdateLoading) {
+        if (userData.active && !currentProjectsData.loadProject) {
             const currentProject =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: currentProject.id,

@@ -54,6 +54,7 @@ class HeaderBuild extends React.PureComponent {
                     {!this.props.editStart ? <p className = 'warningEdit'>Click for start edit</p> : null}
                     {!this.state.readyBuild ? 
                         <Controllers
+                            editComponentName = {this.props.editComponentName}
                             countComponents = {this.props.countComponents}
                             menuActive = {this.props.menuActive}
                             components = {{...this.state.components}}

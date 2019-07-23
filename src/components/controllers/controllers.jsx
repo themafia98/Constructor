@@ -88,6 +88,7 @@ class Controllers extends React.PureComponent {
                     />
                     {this.state.viewComponentMenu ? 
                         <BuildMenu
+                            editComponentName = {this.props.editComponentName}
                             sizeParenBox = {this.props.sizeParenBox}
                             countComponents = {this.props.countComponents}
                             components = {{...this.props.components}}

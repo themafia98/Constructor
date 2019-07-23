@@ -15,14 +15,8 @@ class InstrumentsPanel extends React.PureComponent {
 
     state = {
         instrumentPanel: {...this.props.instrumentPanel},
-        componentsStats: {
-            content: null,
-            fontSize: null,
-            color: null,
-            backgroundImage: null,
-            image: null,
-            coords: {left: null, top: null} // x, y
-        },
+        componentsStats: this.props.mainBuilderData.components.find(item =>
+                    {return item.id === this.props.instrumentPanel.idComponent }),
         images: null,
     };
 
@@ -144,10 +138,11 @@ class InstrumentsPanel extends React.PureComponent {
     makePanelInstruments = (type) => {
 
         let {colorPickerActive} = this.state.instrumentPanel;
-        let {fontSize} = this.state.componentsStats;
-        let {coords} = this.state.componentsStats;
             switch (type){
                 case 'text':
+                    let {content} = this.state.componentsStats;
+                    let {fontSize} = this.state.componentsStats;
+                    let {coords} = this.state.componentsStats;
                     return (
                         <Fragment>
                         <p className = 'titleInstument'>Position: </p>
@@ -171,7 +166,7 @@ class InstrumentsPanel extends React.PureComponent {
                                 : null
                             }
                         <p className = 'titleInstument'>Content: </p>
-                        <input onChange = {this.setContent} maxLength = '20' type = 'text' defaultValue = 'Title' />
+                        <input onChange = {this.setContent} maxLength = '20' type = 'text' defaultValue = {content} />
                         <input onClick = {this.saveChanges} className = 'saveButtonInstument' type = 'button' value = 'save changes' />
                         </Fragment>
                 )
@@ -201,11 +196,8 @@ class InstrumentsPanel extends React.PureComponent {
             this.setState({
                 ...this.state,
                 instrumentPanel: {...this.props.instrumentPanel, colorPickerActive: false},
-                componentsStats: {
-                    content: null, fontSize: null, color: null,
-                    backgroundImage: null, image: null,
-                    coords: {left: null, top: null} // x, y
-                },
+                componentsStats: this.props.mainBuilderData.components.find(item =>
+                    {return item.id === this.props.instrumentPanel.idComponent }),
             })
     };
 
@@ -222,6 +214,8 @@ class InstrumentsPanel extends React.PureComponent {
 
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
+        console.log(this.props);
+        console.log(this.state);
         return (
             <Fragment>
                 <div  className = 'instumentsPanel'>

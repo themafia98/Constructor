@@ -32,8 +32,7 @@ const loadCurrentProjectAction = (state) => {
 const loadUpdateCurrentProject = (state) => {
     return {
         type: LOAD_UPDATE_PROJECT,
-        idProject: state.idProject,
-        components: state.components
+        haveUpdateLoading: state,
     }
 }
 

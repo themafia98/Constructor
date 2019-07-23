@@ -15,18 +15,34 @@ class BuildMenu extends React.PureComponent {
     }
 
     state = {
-        components: {...this.props.components},
+        editComponentName: this.props.editComponentName,
+        componentsPatternStatus: {
+            id: null,
+            name: null,
+            type: null,
+            content: null,
+            fontSize: null,
+            color: null,
+            backgroundImage: null,
+            image: null,
+            coords: {left: null, top: null}, // x, y
+        },
         sizeParenBox: {...this.props.sizeParenBox},
         title: 'Title'
     }
 
     addText = event => {
+        console.log('add');
         let id = this.props.countComponents;
         eventEmitter.emit('EventBuildComponents',{
-            target: this.state.components.name,
-            type: 'text',
+            componentsPatternStatus: {
+                ...this.state.componentsPatternStatus,
+                id: id,
+                name: this.state.editComponentName,
+                type: 'text',
+            },
             component: <BuilderComponents
-                            target = {this.state.components.name}
+                            target = {this.state.editComponentName}
                             key = {`text${id}`}
                             sizeParenBox = {this.props.sizeParenBox}
                             content = "Title"
@@ -39,10 +55,13 @@ class BuildMenu extends React.PureComponent {
     addBackground = event => {
         let id = this.props.countComponents;
         eventEmitter.emit('EventBuildComponents',{
-            target: this.state.components.name,
-            type: 'background',
+            componentsPatternStatus: {
+                ...this.state.componentsPatternStatus,
+                name: this.state.editComponentName,
+                type: 'background',
+            },
             component: <BuilderComponents
-                            target = {this.state.components.name}
+                            target = {this.state.editComponentName}
                             key = {`bg${id}`}
                             id = {id}
                             type = 'background' />
@@ -58,7 +77,7 @@ class BuildMenu extends React.PureComponent {
                 <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>
                 <button onClick = {this.addText} className = 'TextTool CompoentnsMenu_button' ><span>Text</span></button>
                 <button 
-                    disabled = {this.state.components.name !== 'Header' ? false : true}
+                    disabled = {this.state.editComponentName !== 'Header' ? false : true}
                     className = 'ButtonTool CompoentnsMenu_button' >
                     <span>Button</span>
                 </button>

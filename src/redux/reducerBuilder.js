@@ -2,7 +2,6 @@ import {LOAD_CURRENT,LOAD_UPDATE_PROJECT, EXIT_PROJECT} from './actions';
 
 const initialState = {
     loadProject: false,
-    haveUpdateLoading: true,
     idProject: null,
     typeProject: null,
     components: []
@@ -13,7 +12,6 @@ export default (state = initialState, action) => {
         case LOAD_CURRENT: {
             return {
                 ...state,
-                haveUpdateLoading: state.haveUpdateLoading ? false : true,
                 loadProject: true,
                 idProject: action.id,
                 typeProject: action.typeProject,
@@ -24,8 +22,7 @@ export default (state = initialState, action) => {
         case LOAD_UPDATE_PROJECT: {
             return {
                 ...state,
-                haveUpdateLoading: false,
-                components: [...action.components]
+                haveUpdateLoading: action.haveUpdateLoading,
             }
         }
 
@@ -33,7 +30,6 @@ export default (state = initialState, action) => {
             if (action.exit)
             return {
                 ...state,
-                haveUpdateLoading: true,
                 loadProject: false,
                 idProject: null,
                 typeProject: null,
