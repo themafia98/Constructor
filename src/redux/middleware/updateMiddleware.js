@@ -11,7 +11,11 @@ const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
     })
     .then(response => {
         let project = item.projects.find(itemdb => itemdb.id === item.idProject);
-        dispatch(loadUpdateCurrentProject({components: [...project.components], idProject: item.idProject}))
+        dispatch(loadUpdateCurrentProject({
+            components: [...project.components],
+            idProject: item.idProject,
+            sectionTitleProject: item.sectionTitleProject,
+        }))
     })
     .catch(error => dispatch(errorAction(error.message)));
 };

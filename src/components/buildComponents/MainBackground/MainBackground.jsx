@@ -3,9 +3,9 @@ import eventEmitter from '../../../EventEmitter';
 import PropTypes from 'prop-types';
 
 
-import BackgroundComponent from '../../buildComponents/components/Background';
+import BackgroundComponent from '../components/Background';
 import Controllers from '../../controllers/controllers';
-import './headerBuild.scss';
+import './MainBackground.scss';
 
 class HeaderBuild extends React.PureComponent {
 

@@ -42,44 +42,88 @@
         height: 30px;
         border: 1px solid black;
     }
+}
 
-    .ImageTool {
-        top: 20%;
-        left: 20%;
+
+.sectionMode {
+    position: fixed;
+    transform: translate(-50%,-50%);
+    opacity: .6;
+    top: 93%;
+    left: 50%;
+    background: lightslategrey;
+    width: 15vw;
+    height: 10vh;
+    z-index: 999999;
+    span {
+        display: block;
+        font-weight: bold;
     }
 
-    .TextTool {
-        top: 20%;
-        left: 40%;
+    .CompoentnsMenu_button:active:not([disabled]) {
+        border: 2px solid black;
     }
 
-    .ButtonTool {
-        top: 20%;
-        left: 60%;
-    }
-
-    .VideoTool {
-        top: 20%;
-        left: 80%;
-    }
-
-    .ButtonTool:before{
-        background-image: url('/img/ButtonTool.png');
+    .CompoentnsMenu_button:before{
         content: '';
+        background-size: 30px;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 1px solid black;
     }
 
-    .VideoTool:before{
-        background-image: url('/img/VideoTool.png');
-        content: '';
+    .CompoentnsMenu_button {
+        position: absolute;
+        cursor: pointer;
+        box-shadow: 0 0 3px;
+        transform: translate(-50%);
+        width: 60px;
+        background-color: #FFFF;
+        border: 1px solid black;
+        border-radius: 5px;
+        transition: 0.2s linear;
+        outline: none;
+        box-sizing: content-box;
     }
+}
 
-    .TextTool:before{
-        background-image: url('/img/TextTool.png');
-        content: '';
-    }
+.ImageTool {
+    top: 20%;
+    left: 20%;
+}
 
-    .ImageTool:before{
-        background-image: url('/img/ImageTool.png');
-        content:"";
-    }
+.TextTool {
+    top: 20%;
+    left: 40%;
+}
+
+.ButtonTool {
+    top: 20%;
+    left: 60%;
+}
+
+.VideoTool {
+    top: 20%;
+    left: 80%;
+}
+
+.ButtonTool:before{
+    background-image: url('/img/ButtonTool.png');
+    content: '';
+}
+
+.VideoTool:before{
+    background-image: url('/img/VideoTool.png');
+    content: '';
+}
+
+.TextTool:before{
+    background-image: url('/img/TextTool.png');
+    content: '';
+}
+
+.ImageTool:before{
+    background-image: url('/img/ImageTool.png');
+    content:"";
 }

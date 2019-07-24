@@ -71,18 +71,28 @@ class BuildMenu extends React.PureComponent {
     }
 
     render(){
-        return (
-            <div className = 'ComponentsMenu'>
-                <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>
-                <button onClick = {this.addText} className = 'TextTool CompoentnsMenu_button' ><span>Text</span></button>
-                <button 
-                    disabled = {this.state.editComponentName !== 'Header' ? false : true}
-                    className = 'ButtonTool CompoentnsMenu_button' >
-                    <span>Button</span>
-                </button>
-                <button className = 'VideoTool CompoentnsMenu_button' ><span>Video</span></button>
-            </div>
-        )
+
+        if (this.props.mode !== 'section'){
+            return (
+                <div className = 'ComponentsMenu'>
+                    <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>
+                    <button onClick = {this.addText} className = 'TextTool CompoentnsMenu_button' ><span>Text</span></button>
+                    <button 
+                        disabled = {this.state.editComponentName !== 'Header' ? false : true}
+                        className = 'ButtonTool CompoentnsMenu_button' >
+                        <span>Button</span>
+                    </button>
+                    <button className = 'VideoTool CompoentnsMenu_button' ><span>Video</span></button>
+                </div>
+            )
+        } else {
+            return (
+                <div className = 'sectionMode'>
+                    <button  className = 'ImageTool CompoentnsMenu_button' ><span>Section</span></button>
+                    <button className = 'VideoTool CompoentnsMenu_button' ><span>Sestion</span></button>
+                </div>
+            )
+        }
     }
 }
 

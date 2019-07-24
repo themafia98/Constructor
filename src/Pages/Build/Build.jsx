@@ -16,7 +16,9 @@ import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
 import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel';
 import ModalWindow from '../../components/modalWindow/ModalWindow';
-import HeaderBuild from '../../components/buildComponents/header/headerBuild';
+import MainBackground from '../../components/buildComponents/MainBackground/MainBackground';
+
+import BuildMenu from '../../components/componentsBuildMenu/BuildMenu';
 
 import './build.scss';
 
@@ -35,11 +37,14 @@ class Build extends React.PureComponent {
 
     state = {
             idProject: parseInt(this.props.match.params.param),
+            sectionTitleProjectAction: true,
+            showSectionAddMenu: false,
             mainBuilderData: {
                 mainBoxWidth: null,
                 mainBoxHeight: null,
                 buildGetComponents: false,
                 components: [],
+                sectionsJSX: [],
                 componentJSX: []
             },
             instrumentPanel: {
@@ -172,10 +177,13 @@ class Build extends React.PureComponent {
     saveChangesComponent = itemEvent => {
 
         const {userData} = this.props;
+        let findCurrentItem = false;
         const _components = this.state.mainBuilderData.components.map(item => {
-            if (item.id === itemEvent.id) return {...itemEvent};
+            if (item.id === itemEvent.id) { findCurrentItem = true; return {...itemEvent}; }
             return item;
         });
+
+        if (!findCurrentItem) _components.push(itemEvent);
 
         this.setState({
             ...this.state,
@@ -196,48 +204,90 @@ class Build extends React.PureComponent {
         this.setState({sizeParenBox: {...eventItem}});
     };
 
+    sectionTitleProject = section => {
+        const {userData} = this.props;
+        const {currentProjectsData} = userData;
+        return section.map(item => {
+            if (item === 'Header')
+            return (
+                <MainBackground
+                    key = 'HeaderBuild'
+                    mainBuilderData = {{...this.state.mainBuilderData}}
+                    currentProjectsData = {{...this.props.userData.currentProjectsData}}
+                    editStart = {this.state.editStart}
+                    editComponentName = {this.state.editComponentName}
+                    countComponents = {this.state.mainBuilderData.componentJSX.length}
+                    menuActive = {this.state.menuActive}
+                    sizeParenBox = {this.state.sizeParenBox}
+                    id = {currentProjectsData.idProject}
+                >
+                {{name: this.state.editComponentName}}
+            </MainBackground>
+            );
+            else return item;
+        })
+    }
+
+    buildAdditional = () => {
+        const {instrumentActive} = this.state.instrumentPanel;
+        return (
+            <Fragment key = 'AdditionalBuild'>
+                {   this.state.modalImageViewer.action ?
+                    <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} />
+                    : null
+                }
+                {this.state.modalSearch ?
+                    <ModalWindow
+                        idComponent = {this.state.instrumentPanel.idComponent}
+                        key = 'ModalWindow' workMode = 'Search' /> : null
+                }
+                { instrumentActive ?
+                    <InstrumentsPanel
+                        key = 'InstrumentsPanel'
+                        editComponentName = {this.state.editComponentName}
+                        mainBuilderData =  {{...this.state.mainBuilderData}}
+                        instrumentPanel = {{...this.state.instrumentPanel}}
+                    />
+                    : null
+                }
+                {this.state.showSectionAddMenu ?
+                    <BuildMenu mode = "section" className = 'menu' />
+                    : null
+                }
+            </Fragment>
+        )
+    }
+
+    showAddSection = event => {
+        console.log(this.mainComponent.getBoundingClientRect().height);
+        console.log(event.pageY);
+        if (event.pageY > 800 && !this.state.showSectionAddMenu){
+            this.setState({
+                ...this.state,
+                showSectionAddMenu: true,
+            });
+        } else if (event.pageY < 850 && this.state.showSectionAddMenu){
+            this.setState({
+                ...this.state,
+                showSectionAddMenu: false,
+            });
+        }
+        event.stopPropagation();
+    }
+    mainComponent = null;
+    mainRefComponent = node => this.mainComponent = node;
 
     render(){
         const {userData} = this.props;
         const {currentProjectsData} = userData;
-        const {instrumentActive} = this.state.instrumentPanel;
 
         if (userData.active && currentProjectsData.loadProject){
             return (
-                    <Fragment key = 'build'>
-                    {   this.state.modalImageViewer.action ?
-                        <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} />
-                        : null
-                    }
-                    {this.state.modalSearch ?
-                        <ModalWindow
-                            idComponent = {this.state.instrumentPanel.idComponent}
-                            key = 'ModalWindow' workMode = 'Search' /> : null
-                    }
-                    { instrumentActive ?
-                        <InstrumentsPanel
-                            key = 'InstrumentsPanel'
-                            editComponentName = {this.state.editComponentName}
-                            mainBuilderData =  {{...this.state.mainBuilderData}}
-                            instrumentPanel = {{...this.state.instrumentPanel}}
-                        />
-                        : null
-                    }
+                    <div ref = {this.mainRefComponent} onMouseMove = {this.showAddSection} className = 'Build' key = 'Build'>
                         <Header key = 'Header' title = "Constructor"  />
-                        <HeaderBuild
-                                key = 'HeaderBuild'
-                                mainBuilderData = {{...this.state.mainBuilderData}}
-                                currentProjectsData = {{...this.props.userData.currentProjectsData}}
-                                editStart = {this.state.editStart}
-                                editComponentName = {this.state.editComponentName}
-                                countComponents = {this.state.mainBuilderData.componentJSX.length}
-                                menuActive = {this.state.menuActive}
-                                sizeParenBox = {this.state.sizeParenBox}
-                                id = {currentProjectsData.idProject}
-                        >
-                            {{name: this.state.editComponentName}}
-                        </HeaderBuild>
-                    </Fragment>
+                        {this.buildAdditional()}
+                        {this.sectionTitleProject(currentProjectsData.sectionTitleProject)}
+                    </div>
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
@@ -256,6 +306,7 @@ class Build extends React.PureComponent {
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 typeProject: current.type,
+                sectionTitleProject: [...current.sectionTitleProject],
                 components: [...current.components]
             }));
         }
@@ -269,11 +320,13 @@ class Build extends React.PureComponent {
         let {currentProjectsData} = userData;
 
         if (userData.active && !currentProjectsData.loadProject) {
-            const currentProject =  userData.projects.find(item => item.id === this.state.idProject)
+            console.log('load prjoect');
+            const current =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
-                id: currentProject.id,
-                typeProject: currentProject.type,
-                components: [...currentProject.components]
+                id: current.id,
+                sectionTitleProject: [...current.sectionTitleProject],
+                typeProject: current.type,
+                components: [...current.components]
             }));
         };
 

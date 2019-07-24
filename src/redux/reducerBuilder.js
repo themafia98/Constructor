@@ -4,7 +4,8 @@ const initialState = {
     loadProject: false,
     idProject: null,
     typeProject: null,
-    components: []
+    components: [],
+    sectionTitleProject: [],
 };
 
 export default (state = initialState, action) => {
@@ -16,7 +17,8 @@ export default (state = initialState, action) => {
                 loadProject: true,
                 idProject: action.id,
                 typeProject: action.typeProject,
-                components: [...action.components]
+                components: [...action.components],
+                sectionTitleProject: [...action.sectionTitleProject]
             }
         }
 

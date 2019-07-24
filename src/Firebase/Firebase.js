@@ -6,36 +6,36 @@ const firestore = require('firebase/firestore');
 
 class Firebase {
 
-        constructor(firebaseConfig){
-                firebase.initializeApp(firebaseConfig);
-                this.auth = firebase.auth();
-                this.db = firebase.firestore();
-        }
+    constructor(firebaseConfig){
+        firebase.initializeApp(firebaseConfig);
+        this.auth = firebase.auth();
+        this.db = firebase.firestore();
+    }
 
-        saveSession(rules){
-                return this.auth.setPersistence(firebase.auth.Auth.Persistence[rules]);
-        }
+    saveSession(rules){
+        return this.auth.setPersistence(firebase.auth.Auth.Persistence[rules]);
+    }
 
-        login(email, password){
-                try {
-                return this.auth.signInWithEmailAndPassword(email, password);
-                } catch (error) {
-                console.error(error);
-                return null;
-                }
+    login(email, password){
+        try {
+            return this.auth.signInWithEmailAndPassword(email, password);
+        } catch (error) {
+            console.error(error);
+            return null;
         }
+    }
 
-        registration(email, password){
-                return this.auth.createUserWithEmailAndPassword(email, password)
-        }
+    registration(email, password){
+        return this.auth.createUserWithEmailAndPassword(email, password)
+    }
 
-        signOut(){
-                return this.auth.signOut()
-        }
+    signOut(){
+        return this.auth.signOut()
+    }
 
-        getCurrentUser() {
-                return this.auth.currentUser
-        }
+    getCurrentUser() {
+        return this.auth.currentUser
+    }
 }
 
 let firebaseInterface = new Firebase(firebaseConfig);

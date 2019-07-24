@@ -25,15 +25,17 @@ const loadCurrentProjectAction = (state) => {
         type: LOAD_CURRENT,
         id: state.id,
         typeProject: state.typeProject,
+        sectionTitleProject: state.sectionTitleProject,
         components: state.components
     }
 }
-console.log('redux');
+
 const loadUpdateCurrentProject = (state) => {
     console.log(state);
     return {
         type: LOAD_UPDATE_PROJECT,
         idProject: state.idProject,
+        sectionTitleProject: state.sectionTitleProject,
         components: state.components
     }
 }
