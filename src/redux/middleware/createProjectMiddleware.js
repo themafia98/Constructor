@@ -7,11 +7,20 @@ const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getS
     const sectionTitleProject = [];
     if (type === 'portfolio') sectionTitleProject.push("Header");
     else sectionTitleProject.push("Header");
+
+    const header = {
+        backgroundImage: null,
+        color: null,
+        id: "MainBackgroundHeader",
+        name: "Header",
+        type: "background"
+    }
+
     lastProject.push({
         id: lastIndex,
         title: title,
         type: type,
-        components: [],
+        components: [header],
         sectionTitleProject: [...sectionTitleProject],
     });
 

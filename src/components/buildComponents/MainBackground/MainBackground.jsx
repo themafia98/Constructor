@@ -49,7 +49,10 @@ class MainBackground extends React.PureComponent {
         return (
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>
-                    <BackgroundComponent target = {this.state.idProject} id = 'MainBackgroundHeader' background = {bg.color}  {...bg}>
+                    <BackgroundComponent 
+                        name = {this.state.idProject}
+                        id = {`MainBackgroundHeader`}
+                        background = {bg.color}  {...bg}>
                     {  this.props.mainBuilderData.componentJSX ?
                             this.props.mainBuilderData.componentJSX : null
                     }

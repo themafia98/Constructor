@@ -16,7 +16,7 @@ const BackgroundComponent = props => {
 
     const [id] = useState(props.id);
 
-    const [thatTarget] = useState(props.target);
+    const [name] = useState(props.name);
 
     const [count, setCount] = useState(0);
     let boxComponent = React.createRef();
@@ -33,6 +33,7 @@ const BackgroundComponent = props => {
 
     const openBgInstruments = event => {
         eventEmitter.emit('EventInstrumentPanel',{
+            name: name,
             target: 'background',
             id: id,
         });
@@ -40,7 +41,7 @@ const BackgroundComponent = props => {
     }
 
     const changeColor = eventItem => {
-        if (eventItem.idSection === thatTarget)
+        if (eventItem.idSection === name)
         setBgColor(eventItem.colorRGB);
     }
 

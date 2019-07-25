@@ -38,6 +38,7 @@ class Build extends React.PureComponent {
     state = {
             idProject: parseInt(this.props.match.params.param),
             isLoadComponents: true,
+            projectEmpty: false,
             sectionTitleProjectAction: true,
             showSectionAddMenu: false,
             mainBuilderData: {
@@ -80,7 +81,6 @@ class Build extends React.PureComponent {
         if (!this.state.editStart)
         this.setState({
             ...this.state,
-            idProject: itemEvent.idProject,
             editComponentName: itemEvent.target,
             mainBuilderData: {
                 ...this.state.mainBuilderData,
@@ -194,13 +194,16 @@ class Build extends React.PureComponent {
                 isChange: false,
                 components: _components
             }
-        }, () => (
+        }, () => {
+            let {currentProjectsData} =this.props.userData;
+        return    (
         this.props.dispatch(updateMiddleware({
             uid: userData.idUser,
             projects: [...userData.projects],
             components: [...this.state.mainBuilderData.components],
+            sectionTitleProject: [...currentProjectsData.sectionTitleProject],
             idProject: this.state.idProject}))
-        ));
+        )});
     };
 
     saveWidth = eventItem => {
@@ -208,8 +211,6 @@ class Build extends React.PureComponent {
     };
 
     sectionTitleProject = section => {
-        const {userData} = this.props;
-        const {currentProjectsData} = userData;
         return section.map(item => {
             return (
                 <MainBackground
@@ -281,8 +282,11 @@ class Build extends React.PureComponent {
     mainRefComponent = node => this.mainComponent = node;
 
     render(){
+
+        if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
         const {userData} = this.props;
         const {currentProjectsData} = userData;
+        console.log(currentProjectsData);
 
         if (userData.active && currentProjectsData.loadProject){
             return (
@@ -292,7 +296,7 @@ class Build extends React.PureComponent {
                         {this.sectionTitleProject(currentProjectsData.sectionTitleProject)}
                     </div>
             )
-        } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
+        } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
     }
 
@@ -336,12 +340,13 @@ class Build extends React.PureComponent {
 
         if (userData.active && !currentProjectsData.loadProject) {
             const current =  userData.projects.find(item => item.id === this.state.idProject)
+            current ?
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 typeProject: current.type,
                 sectionTitleProject: [...current.sectionTitleProject],
                 components: [...current.components]
-            }));
+            })) : this.setState({...this.state, projectEmpty: true});
         }
         if (currentProjectsData.loadProject && isLoadComponents && this.state.editStart)
             this.addComponentsFromBD([...currentProjectsData.components]);

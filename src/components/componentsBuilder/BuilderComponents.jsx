@@ -30,11 +30,12 @@ const BuilderComponents = props => {
 
     if (type === 'background'){
         return <BackgroundComponent 
-                target = {target}
-                color = {color}
-                size = {size}
-                id = {id} 
-                key = {`bg${id}`}/>;
+                    target = {target}
+                    color = {color}
+                    size = {size}
+                    id = {id}
+                    key = {`bg${id}`}
+                />;
     }
 };
 
