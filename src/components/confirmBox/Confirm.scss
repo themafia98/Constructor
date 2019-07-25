@@ -1,0 +1,45 @@
+.wrapperConfirm {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+}
+
+.confirmSave {
+    position: fixed;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    width: 200px;
+    height: 110px;
+    z-index: 9999;
+    border: 1px solid black;
+    background-color: #FFFF;
+    border-radius: 10px;
+    box-shadow: 0 0 5px;
+    display: flex;
+    flex-direction: column;
+    span {
+        text-align: center;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    .saveCofirm {
+        border: 2px solid rgb(33, 44, 35);
+        background: rgb(85, 236, 37);
+        padding: 5px;
+        margin:  0 10px;
+        font-weight: bold;
+    }
+    .cancelCofirm {
+        border: 2px solid rgb(33, 44, 35);
+        background: rgb(228, 41, 8);
+        padding: 5px;
+        margin: 10px;
+        font-weight: bold;
+    }
+}

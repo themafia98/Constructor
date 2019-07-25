@@ -1,9 +1,12 @@
 import React, {Fragment} from 'react';
 import eventEmitter from '../../EventEmitter';
 import PropTypes from 'prop-types';
-import { SketchPicker } from 'react-color';
 import './instrumentsPanel.scss';
 
+import BackgroundInstruments from './BackgroundTools/BackgroundInstruments';
+import TextInstruments from './TextTools/TextInstruments';
+
+import Confirm from '../confirmBox/Confirm';
 import Icon from '../Icon/icon';
 
 class InstrumentsPanel extends React.PureComponent {
@@ -14,6 +17,8 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     state = {
+        isChange: false,
+        confirmActive: false,
         instrumentPanel: {...this.props.instrumentPanel},
         componentsStats: this.props.mainBuilderData.components.find(item =>
                     {return item.id === this.props.instrumentPanel.idComponent }),
@@ -22,14 +27,19 @@ class InstrumentsPanel extends React.PureComponent {
 
     updateSizeText = eventSize => {
         this.setState({
-            ...this.state, 
+            ...this.state,
             instrumentPanel: {...this.state.instrumentPanel},
-            componentsStats: {...this.state.componentsStats, fontSize: eventSize}
+            componentsStats: {
+                ...this.state.componentsStats,
+                fontSize: eventSize
+            }
         });
     };
 
     closePanel = event => {
+        if (!this.state.isChange)
         eventEmitter.emit('EventClosePanel', {close: false});
+        else this.setState({...this.state, confirmActive: true});
     };
 
     setSize = event => {
@@ -42,8 +52,6 @@ class InstrumentsPanel extends React.PureComponent {
         },
             () => eventEmitter.emit(`EventChangeSizeText${idComponent}`, {size: size })
         );
-
-        event.stopPropagation();
     };
 
     setContent = event => {
@@ -55,7 +63,6 @@ class InstrumentsPanel extends React.PureComponent {
             componentsStats: {...this.state.componentsStats,content: contentValue}
         },
         () => eventEmitter.emit(`EventChangeContentText${idComponent}`,{content: contentValue}));
-        event.stopPropagation();
     };
 
     updatePosition = eventItem => {
@@ -79,7 +86,6 @@ class InstrumentsPanel extends React.PureComponent {
                 colorPickerActive: this.state.instrumentPanel.colorPickerActive ? false : true
             }
         });
-        event.stopPropagation();
     };
 
     updateBimageStats = eventItem => {
@@ -117,11 +123,13 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     saveChanges = event => {
+
+        this.setState({...this.state, isChange: false, confirmActive: false}, () =>
         eventEmitter.emit("EventSaveChangesComponent", {
             ...this.state.componentsStats,
             id: this.state.instrumentPanel.idComponent,
             type: this.state.instrumentPanel.target
-        });
+        }));
 
         event.stopPropagation();
     }
@@ -135,69 +143,90 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     makePanelInstruments = (type) => {
-
-        let {colorPickerActive} = this.state.instrumentPanel;
             switch (type){
                 case 'text':
-                    let {content} = this.state.componentsStats;
-                    let {fontSize} = this.state.componentsStats;
-                    let {coords} = this.state.componentsStats;
+                   return(
+                    <TextInstruments
+                        instrumentPanel = {{...this.state.instrumentPanel}}
+                        componentsStats = {{...this.state.componentsStats}}
+                        cbSetColor = {this.setColor}
+                        cbSetSize = {this.setSize}
+                        cbHandleChangeComplete = {this.handleChangeComplete}
+                        cbSetContent = {this.setContent}
+                        cbSaveChanges = {this.saveChanges}
+                    />
+                   )
+                case 'background':
                     return (
-                        <Fragment>
-                        <p className = 'titleInstument'>Position: </p>
-                        <span className = 'textCoordsPanel'>
-                        {coords.left ?
-                            coords.left + ' / ' + coords.top : ' drop for active'}
-                        </span>
-                        <p className = 'titleInstument'>Color: </p>
-                        <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'color pick' />
-                        <p className = 'titleInstument'>Text size: </p>
-                        <input 
-                            onChange = {this.setSize} 
-                            type="number"
-                            min = '10' max = '200'
-                            value = {fontSize ? fontSize : 120 }
+                        <BackgroundInstruments
+                            instrumentPanel = {{...this.state.instrumentPanel}}
+                            componentsStats = {{...this.state.componentsStats}}
+                            cbSetColor = {this.setColor}
+                            cbHandleChangeComplete = {this.handleChangeComplete}
+                            cbSearchImage = {this.searchImage}
+                            cbSaveChanges = {this.saveChanges}
                         />
-                            { colorPickerActive ?
-                                <SketchPicker
-                                onChangeComplete={this.handleChangeComplete}
-                                />
-                                : null
-                            }
-                        <p className = 'titleInstument'>Content: </p>
-                        <input onChange = {this.setContent} maxLength = '20' type = 'text' defaultValue = {content} />
-                        <input onClick = {this.saveChanges} className = 'saveButtonInstument' type = 'button' value = 'save changes' />
-                        </Fragment>
-                )
-                case 'background': 
-                    return (
-                        <Fragment>
-                        <p className = 'titleInstument'>Color: </p>
-                        <input onClick = {this.setColor} className = 'button_switchColor' type = 'button' value = 'color pick' />
-                            { colorPickerActive ?
-                                <SketchPicker
-                                onChangeComplete={this.handleChangeComplete}
-                                />
-                                : null
-                            }
-                            <input onClick = {this.searchImage} className = 'ImageSearchButton' type = 'button' value = 'background-image' />
-                            <input onClick = {this.saveChanges} className = 'saveButtonInstument' type = 'button' value = 'save changes' />
-                        </Fragment>
                     )
-                default: return <p className = 'warningInstruments'>Select elements for accses edit instruments</p>
+                default: return <p className = 'warningInstruments'>
+                                    Select elements for accses edit instruments
+                                </p>
             }
     };
 
+
+    cancelSave = event => {
+        this.setState({isChanges: false, confirmActive: false});
+        event.stopPropagation();
+    }
+
+
+    render(){
+        let { instrumentActive } = this.state.instrumentPanel;
+
+        return (
+            <Fragment>
+                { this.state.confirmActive ?
+                    <Confirm cbSaveChanges = {this.saveChanges} cbCancelSave = {this.cancelSave} /> : null
+                }
+                <div  className = 'instumentsPanel'>
+                    <button
+                        onClick = {this.closePanel}
+                        className = 'closeInstrumentsPanel'
+                    >
+                        <Icon path = '/img/close.svg' />
+                    </button>
+                    <h3>Instruments</h3>
+                    {
+                        instrumentActive ? 
+                        <p className = 'TextComponent'>{this.state.instrumentPanel.target}</p>
+                        : null
+                    }
+                    {
+                        instrumentActive ?
+                        <div className = 'instuments'>
+                            {this.makePanelInstruments(this.state.instrumentPanel.target)}
+                        </div>
+                        : null
+                    }
+                </div>
+            </Fragment>
+        )
+    };
+
     componentDidUpdate = (oldProps, oldState) => {
+
         let targetBool = oldState.instrumentPanel.target !== this.props.instrumentPanel.target;
         let idBool = oldState.instrumentPanel.idComponent !== this.props.instrumentPanel.idComponent;
-        if (idBool || targetBool)
+        if ((idBool || targetBool) && !this.state.isChange){
             this.setState({
                 ...this.state,
-                instrumentPanel: {...this.props.instrumentPanel, colorPickerActive: false},
+                instrumentPanel: {...this.props.instrumentPanel, colorPickerActive: false, isChange: false},
                 componentsStats: this.props.mainBuilderData.components.find(item =>
                     {return item.id === this.props.instrumentPanel.idComponent }),
-            })
+            });
+        } else if (this.state.componentsStats !== oldState.componentsStats &&
+                !this.state.isChange) this.setState({...this.state, isChange: true});
+        else if (targetBool && this.state.isChange) this.setState({...this.state, confirmActive: true});
     };
 
     componentDidMount = event => {
@@ -207,32 +236,10 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentWillUnmount = event => {
+        console.log('componentWillUnmount');
         eventEmitter.off("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.off("EventUpdatePosition", this.updatePosition);
-    };
-
-    render(){
-        let { instrumentActive } = this.state.instrumentPanel;
-        console.log(this.props);
-        console.log(this.state);
-        return (
-            <Fragment>
-                <div  className = 'instumentsPanel'>
-                <button onClick = {this.closePanel} className = 'closeInstrumentsPanel'><Icon path = '/img/close.svg' /></button>
-                    <h3>Instruments</h3>
-                    {
-                        instrumentActive ? 
-                        <p className = 'TextComponent'>{this.state.instrumentPanel.target}</p>
-                        : null
-                    }
-                    {
-                        instrumentActive ?
-                        <div  className= 'instuments'>{this.makePanelInstruments(this.state.instrumentPanel.target)}</div>
-                        : null
-                    }
-                </div>
-            </Fragment>
-        )
     };
 };
 

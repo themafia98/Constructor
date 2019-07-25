@@ -189,6 +189,7 @@ class Build extends React.PureComponent {
             ...this.state,
             mainBuilderData: {
                 ...this.state.mainBuilderData,
+                isChange: false,
                 components: _components
             }
         }, () => (
@@ -259,14 +260,12 @@ class Build extends React.PureComponent {
     }
 
     showAddSection = event => {
-        console.log(this.mainComponent.getBoundingClientRect().height);
-        console.log(event.pageY);
-        if (event.pageY > 800 && !this.state.showSectionAddMenu){
+        if (event.pageY > 780 && !this.state.showSectionAddMenu){
             this.setState({
                 ...this.state,
                 showSectionAddMenu: true,
             });
-        } else if (event.pageY < 850 && this.state.showSectionAddMenu){
+        } else if (event.pageY < 780 && this.state.showSectionAddMenu){
             this.setState({
                 ...this.state,
                 showSectionAddMenu: false,

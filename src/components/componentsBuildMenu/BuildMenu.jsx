@@ -9,13 +9,15 @@ import './buildMenu.scss';
 class BuildMenu extends React.PureComponent {
 
     static propTypes = {
-        components: PropTypes.object.isRequired, /** @Object with components data */
-        countComponents: PropTypes.number.isRequired, /** @Number last project */
-        sizeParenBox: PropTypes.object.isRequired /** @Object with width and height parent(bg) */
+        mode: PropTypes.string.isRequired, /** @String work mode component */
+        components: PropTypes.object, /** @Object with components data */
+        countComponents: PropTypes.number, /** @Number last project */
+        sizeParenBox: PropTypes.object /** @Object with width and height parent(bg) */
     }
 
     state = {
         editComponentName: this.props.editComponentName,
+        mode: this.props.mode,
         componentsPatternStatus: {
             id: null,
             name: null,
@@ -72,7 +74,7 @@ class BuildMenu extends React.PureComponent {
 
     render(){
 
-        if (this.props.mode !== 'section'){
+        if (this.state.mode === 'build'){
             return (
                 <div className = 'ComponentsMenu'>
                     <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>
@@ -85,11 +87,10 @@ class BuildMenu extends React.PureComponent {
                     <button className = 'VideoTool CompoentnsMenu_button' ><span>Video</span></button>
                 </div>
             )
-        } else {
+        } else if (this.state.mode === 'section') {
             return (
                 <div className = 'sectionMode'>
-                    <button  className = 'ImageTool CompoentnsMenu_button' ><span>Section</span></button>
-                    <button className = 'VideoTool CompoentnsMenu_button' ><span>Sestion</span></button>
+                    <button  className = 'newSectionTool CompoentnsMenu_button' ><span>New section</span></button>
                 </div>
             )
         }
