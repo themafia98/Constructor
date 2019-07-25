@@ -37,6 +37,7 @@ class Build extends React.PureComponent {
 
     state = {
             idProject: parseInt(this.props.match.params.param),
+            isLoadComponents: true,
             sectionTitleProjectAction: true,
             showSectionAddMenu: false,
             mainBuilderData: {
@@ -44,7 +45,7 @@ class Build extends React.PureComponent {
                 mainBoxHeight: null,
                 buildGetComponents: false,
                 components: [],
-                sectionsJSX: [],
+                sectionTitleProject: this.props.currentProjectsData ? this.props.currentProjectsData.sectionTitleProject : [],
                 componentJSX: []
             },
             instrumentPanel: {
@@ -158,17 +159,18 @@ class Build extends React.PureComponent {
                     ...this.state.mainBuilderData,
                     components: [...this.state.mainBuilderData.components,
                                 itemEvent.componentsPatternStatus],
-                    componentJSX: [...componentJSX, {...itemEvent.component}]
+                    componentJSX: [...componentJSX, {...itemEvent.component}],
                 },
             });
         else {
             this.setState({
                 ...this.state,
+                isLoadComponents: false,
                 mainBuilderData: {
                     ...this.state.mainBuilderData,
                     components: [...this.state.mainBuilderData.components,
                                 ...itemEvent.components],
-                    componentJSX: [...componentJSX, ...itemEvent.dataBaseData]
+                    componentJSX: [...componentJSX, ...itemEvent.dataBaseData],
                 },
             });
         }
@@ -209,10 +211,9 @@ class Build extends React.PureComponent {
         const {userData} = this.props;
         const {currentProjectsData} = userData;
         return section.map(item => {
-            if (item === 'Header')
             return (
                 <MainBackground
-                    key = 'HeaderBuild'
+                    key = {item}
                     mainBuilderData = {{...this.state.mainBuilderData}}
                     currentProjectsData = {{...this.props.userData.currentProjectsData}}
                     editStart = {this.state.editStart}
@@ -220,13 +221,12 @@ class Build extends React.PureComponent {
                     countComponents = {this.state.mainBuilderData.componentJSX.length}
                     menuActive = {this.state.menuActive}
                     sizeParenBox = {this.state.sizeParenBox}
-                    id = {currentProjectsData.idProject}
+                    id = {item}
                 >
                     {{name: this.state.editComponentName}}
                 </MainBackground>
             );
-            else return item;
-        })
+        });
     }
 
     buildAdditional = () => {
@@ -253,7 +253,7 @@ class Build extends React.PureComponent {
                 }
                 {this.state.showSectionAddMenu ?
                     <BuildMenu 
-                        countSection = {this.state.mainBuilderData.sectionsJSX.length}
+                        countSection = {this.state.mainBuilderData.sectionTitleProject.length}
                         mode = "section"
                         className = 'menu'
                     />
@@ -297,13 +297,16 @@ class Build extends React.PureComponent {
     }
 
     addNewSection = eventItem => {
-        console.log(eventItem);
+
+                const {userData} = this.props;
+        const {currentProjectsData} = userData;
         this.setState({
             ...this.state,
             mainBuilderData:{
                 ...this.state.mainBuilderData,
-                sectionsJSX: [
-                    ...this.state.mainBuilderData.sectionsJSX,
+                sectionTitleProject: [
+                    ...this.state.mainBuilderData.sectionTitleProject,
+                    ...currentProjectsData.sectionTitleProject,
                     eventItem.componentsPatternStatus.id
                 ],
                 components:[
@@ -315,16 +318,21 @@ class Build extends React.PureComponent {
                     eventItem.component
                 ]
             }
-        })
+        },  () => (
+            this.props.dispatch(updateMiddleware({
+                uid: userData.idUser,
+                projects: [...userData.projects],
+                components: [...this.state.mainBuilderData.components],
+                sectionTitleProject: [...this.state.mainBuilderData.sectionTitleProject],
+                idProject: this.state.idProject}))
+            ));
     }
 
     componentDidUpdate(prevProps) {
 
         let {userData} = this.props;
         let {currentProjectsData} = userData;
-        const isIncludeComponent = currentProjectsData.components.length;
-        const isIncludeComponentJSX = this.state.mainBuilderData.componentJSX.length;
-        const isIclude = isIncludeComponent && !isIncludeComponentJSX;
+        const isLoadComponents = this.state.isLoadComponents;
 
         if (userData.active && !currentProjectsData.loadProject) {
             const current =  userData.projects.find(item => item.id === this.state.idProject)
@@ -335,7 +343,7 @@ class Build extends React.PureComponent {
                 components: [...current.components]
             }));
         }
-        if (currentProjectsData.loadProject && isIclude && this.state.editStart)
+        if (currentProjectsData.loadProject && isLoadComponents && this.state.editStart)
             this.addComponentsFromBD([...currentProjectsData.components]);
     }
 
@@ -385,6 +393,7 @@ class Build extends React.PureComponent {
 
 
 const mapStateToProps = (state) => {
+    console.log(state.builder);
     return {
         userData: {
             active: state.cabinet.active,

@@ -16,9 +16,11 @@ const BackgroundComponent = props => {
 
     const [id] = useState(props.id);
 
+    const [thatTarget] = useState(props.target);
+
     const [count, setCount] = useState(0);
     let boxComponent = React.createRef();
-
+    console.log(props.background);
     let [backgroundColor, setBgColor] = useState(props.background);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
 
@@ -37,8 +39,9 @@ const BackgroundComponent = props => {
         event.stopPropagation();
     }
 
-    const changeColor = color => {
-        setBgColor(color);
+    const changeColor = eventItem => {
+        if (eventItem.idSection === thatTarget)
+        setBgColor(eventItem.colorRGB);
     }
 
     const setBackgroundImage = event => {

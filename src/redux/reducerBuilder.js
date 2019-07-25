@@ -26,6 +26,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 components: [...action.components],
+                sectionTitleProject: [...action.sectionTitleProject]
             }
         }
 

@@ -41,8 +41,8 @@ const TextComponent = props =>  {
         event.stopPropagation();
     }
 
-    const changeColorText = color => {
-        setColorText(color);
+    const changeColorText = eventItem => {
+        setColorText(eventItem.colorRGB);
     }
 
     const changeSizeText = eventSize => {

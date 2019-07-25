@@ -50,7 +50,7 @@ class InstrumentsPanel extends React.PureComponent {
             instrumentPanel: {...this.state.instrumentPanel},
             componentsStats: {...this.state.componentsStats,fontSize: size}
         },
-            () => eventEmitter.emit(`EventChangeSizeText${idComponent}`, {size: size })
+            () => eventEmitter.emit(`EventChangeSizeText${idComponent}`, {idSection: this.props.editComponentName, size: size })
         );
     };
 
@@ -62,7 +62,7 @@ class InstrumentsPanel extends React.PureComponent {
             instrumentPanel: {...this.state.instrumentPanel},
             componentsStats: {...this.state.componentsStats,content: contentValue}
         },
-        () => eventEmitter.emit(`EventChangeContentText${idComponent}`,{content: contentValue}));
+        () => eventEmitter.emit(`EventChangeContentText${idComponent}`,{idSection: this.props.editComponentName, content: contentValue}));
     };
 
     updatePosition = eventItem => {
@@ -109,7 +109,7 @@ class InstrumentsPanel extends React.PureComponent {
             this.setState({
                 ...this.state,
                 componentsStats: {...this.state.componentsStats,color: colorRGB}
-            }, () => eventEmitter.emit(`EventChangeColorBackground${idComponent}`, colorRGB));
+            }, () => eventEmitter.emit(`EventChangeColorBackground${idComponent}`,{idSection: this.props.editComponentName,  colorRGB}));
         }
 
         else if (this.state.instrumentPanel.target === 'text') {

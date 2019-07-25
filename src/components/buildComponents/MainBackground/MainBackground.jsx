@@ -7,14 +7,14 @@ import BackgroundComponent from '../components/Background';
 import Controllers from '../../controllers/controllers';
 import './MainBackground.scss';
 
-class HeaderBuild extends React.PureComponent {
+class MainBackground extends React.PureComponent {
 
     static propTypes = {
         children: PropTypes.object.isRequired, /** @Object with name */
         countComponents: PropTypes.number.isRequired, /** @Number last project */
         editStart: PropTypes.bool.isRequired, /** @Bool start edit mode */
         menuActive: PropTypes.bool.isRequired, /** @Bool active menu or unactive */
-        id: PropTypes.number.isRequired, /** @id current project */
+        id: PropTypes.string.isRequired, /** @id current project */
     }
 
     state = {
@@ -30,6 +30,7 @@ class HeaderBuild extends React.PureComponent {
             const height = rect.height;
             eventEmitter.emit('EventModeEdit', {
                 ...this.state,
+                idProject: this.state.idProject,
                 target: 'Header',
                 width: width,
                 height: height
@@ -41,12 +42,14 @@ class HeaderBuild extends React.PureComponent {
     refBackground = node => this.refBox = node;
 
     render() {
+
+        let that = this.props.editComponentName === this.state.idProject;
         let bg = this.props.mainBuilderData.components.find(item => item.id === "MainBackgroundHeader");
         if (bg === undefined) bg = {};
         return (
             <Fragment>
                 <div onClick = {this.changeMode} className = 'Header'>
-                    <BackgroundComponent id = 'MainBackgroundHeader' {...bg}>
+                    <BackgroundComponent target = {this.state.idProject} id = 'MainBackgroundHeader' background = {bg.color}  {...bg}>
                     {  this.props.mainBuilderData.componentJSX ?
                             this.props.mainBuilderData.componentJSX : null
                     }
@@ -67,4 +70,4 @@ class HeaderBuild extends React.PureComponent {
         )
     }
 }
-export default HeaderBuild;
+export default MainBackground;

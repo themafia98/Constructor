@@ -3,7 +3,10 @@ import {errorAction, loadUpdateCurrentProject} from '../actions';
 const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
     console.log('updatae');
     let newProjects = item.projects.map(project => {
-        if (project.id === item.idProject) { project.components = [...item.components] }
+        if (project.id === item.idProject) {
+            project.components = [...item.components]
+            project.sectionTitleProject = [...item.sectionTitleProject]
+        }
         return project;
     });
     await firebase.db.collection("users").doc(item.uid).update({
