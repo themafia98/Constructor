@@ -128,7 +128,7 @@ class InstrumentsPanel extends React.PureComponent {
         eventEmitter.emit("EventSaveChangesComponent", {
             ...this.state.componentsStats,
             id: this.state.instrumentPanel.idComponent,
-            type: this.state.instrumentPanel.target
+            type: this.state.instrumentPanel.target,
         }));
 
         event.stopPropagation();
@@ -175,7 +175,7 @@ class InstrumentsPanel extends React.PureComponent {
 
 
     cancelSave = event => {
-        this.setState({isChanges: false, confirmActive: false});
+        this.setState({...this.state, isChange: false, confirmActive: false});
         event.stopPropagation();
     }
 

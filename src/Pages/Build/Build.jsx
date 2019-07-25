@@ -222,8 +222,8 @@ class Build extends React.PureComponent {
                     sizeParenBox = {this.state.sizeParenBox}
                     id = {currentProjectsData.idProject}
                 >
-                {{name: this.state.editComponentName}}
-            </MainBackground>
+                    {{name: this.state.editComponentName}}
+                </MainBackground>
             );
             else return item;
         })
@@ -252,7 +252,11 @@ class Build extends React.PureComponent {
                     : null
                 }
                 {this.state.showSectionAddMenu ?
-                    <BuildMenu mode = "section" className = 'menu' />
+                    <BuildMenu 
+                        countSection = {this.state.mainBuilderData.sectionsJSX.length}
+                        mode = "section"
+                        className = 'menu'
+                    />
                     : null
                 }
             </Fragment>
@@ -290,6 +294,28 @@ class Build extends React.PureComponent {
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
+    }
+
+    addNewSection = eventItem => {
+        console.log(eventItem);
+        this.setState({
+            ...this.state,
+            mainBuilderData:{
+                ...this.state.mainBuilderData,
+                sectionsJSX: [
+                    ...this.state.mainBuilderData.sectionsJSX,
+                    eventItem.componentsPatternStatus.id
+                ],
+                components:[
+                    ...this.state.mainBuilderData.components,
+                    eventItem.componentsPatternStatus
+                ],
+                componentJSX:[
+                    ...this.state.mainBuilderData.componentJSX,
+                    eventItem.component
+                ]
+            }
+        })
     }
 
     componentDidUpdate(prevProps) {
@@ -330,6 +356,7 @@ class Build extends React.PureComponent {
         };
 
         eventEmitter.on('EventBuildComponents', this.addComponent);
+        eventEmitter.on('EventNewSection', this.addNewSection);
         eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.on('EventSaveWidth', this.saveWidth);
         eventEmitter.on('EventClosePanel', this.closePanel);
@@ -342,9 +369,10 @@ class Build extends React.PureComponent {
     componentWillUnmount = () => {
 
         let {userData} = this.props;
-
         if (userData.active)  this.props.dispatch(exitProjectAction(true));
+
         eventEmitter.off('EventBuildComponents', this.addComponent);
+        eventEmitter.off('EventNewSection', this.addNewSection);
         eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.off('EventSaveWidth', this.saveWidth);
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);

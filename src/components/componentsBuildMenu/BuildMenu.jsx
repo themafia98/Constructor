@@ -10,6 +10,7 @@ class BuildMenu extends React.PureComponent {
 
     static propTypes = {
         mode: PropTypes.string.isRequired, /** @String work mode component */
+        countSection: PropTypes.number, /** @Number for new section id */
         components: PropTypes.object, /** @Object with components data */
         countComponents: PropTypes.number, /** @Number last project */
         sizeParenBox: PropTypes.object /** @Object with width and height parent(bg) */
@@ -66,9 +67,31 @@ class BuildMenu extends React.PureComponent {
                             target = {this.state.editComponentName}
                             key = {`bg${id}`}
                             id = {id}
-                            type = 'background' />
+                            type = 'background'
+                        />
         });
 
+        event.stopPropagation();
+    }
+
+    addSection = event => {
+        let id = this.props.countSection + 1;
+        eventEmitter.emit('EventNewSection', {
+            componentsPatternStatus: {
+                ...this.state.componentsPatternStatus,
+                name:  `Section${id}`,
+                id: `Section${id}`,
+                type: 'background',
+            },
+           
+            type:'section',
+            component: <BuilderComponents
+            target = {this.state.editComponentName}
+            key = {`bg${id}`}
+            id = {id}
+            type = 'background'
+        />
+        });
         event.stopPropagation();
     }
 
@@ -77,20 +100,38 @@ class BuildMenu extends React.PureComponent {
         if (this.state.mode === 'build'){
             return (
                 <div className = 'ComponentsMenu'>
-                    <button onClick = {this.addBackground} className = 'ImageTool CompoentnsMenu_button' ><span>Image</span></button>
-                    <button onClick = {this.addText} className = 'TextTool CompoentnsMenu_button' ><span>Text</span></button>
                     <button 
+                        onClick = {this.addBackground} 
+                        className = 'ImageTool CompoentnsMenu_button' 
+                    >
+                        <span>Image</span>
+                    </button>
+                    <button 
+                        onClick = {this.addText} 
+                        className = 'TextTool CompoentnsMenu_button' >
+                        <span>Text</span>
+                    </button>
+                    <button
                         disabled = {this.state.editComponentName !== 'Header' ? false : true}
                         className = 'ButtonTool CompoentnsMenu_button' >
                         <span>Button</span>
                     </button>
-                    <button className = 'VideoTool CompoentnsMenu_button' ><span>Video</span></button>
+                    <button
+                        className = 'VideoTool CompoentnsMenu_button'
+                    >
+                        <span>Video</span>
+                    </button>
                 </div>
             )
         } else if (this.state.mode === 'section') {
             return (
                 <div className = 'sectionMode'>
-                    <button  className = 'newSectionTool CompoentnsMenu_button' ><span>New section</span></button>
+                    <button
+                        onClick = {this.addSection}
+                        className = 'newSectionTool CompoentnsMenu_button'
+                    >
+                        <span>New section</span>
+                    </button>
                 </div>
             )
         }
