@@ -217,7 +217,9 @@ class InstrumentsPanel extends React.PureComponent {
 
         let targetBool = oldState.instrumentPanel.target !== this.props.instrumentPanel.target;
         let idBool = oldState.instrumentPanel.idComponent !== this.props.instrumentPanel.idComponent;
-        if ((idBool || targetBool) && !this.state.isChange){
+
+        const compare = idBool || targetBool;
+        if (compare && !this.state.isChange){
             this.setState({
                 ...this.state,
                 instrumentPanel: {...this.props.instrumentPanel, colorPickerActive: false, isChange: false},
@@ -226,7 +228,7 @@ class InstrumentsPanel extends React.PureComponent {
             });
         } else if (this.state.componentsStats !== oldState.componentsStats &&
                 !this.state.isChange) this.setState({...this.state, isChange: true});
-        else if (targetBool && this.state.isChange) this.setState({...this.state, confirmActive: true});
+        else if (compare && this.state.isChange) this.setState({...this.state, confirmActive: true});
     };
 
     componentDidMount = event => {
