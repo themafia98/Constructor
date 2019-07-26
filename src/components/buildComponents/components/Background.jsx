@@ -15,20 +15,16 @@ const Background = styled.div`
 const BackgroundComponent = props => {
 
     const [id] = useState(props.id);
-
     const [name] = useState(props.name);
-
-    const [count, setCount] = useState(0);
     let boxComponent = React.createRef();
 
     let [backgroundColor, setBgColor] = useState(props.background);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
 
     const saveWidth = event => {
-        setCount(count + 1);
         boxComponent.current.focus();
         let boxInform =  boxComponent.current.getBoundingClientRect();
-        eventEmitter.emit('EventSaveWidth', {width: boxInform.width, height: boxInform.height});
+        eventEmitter.emit(`EventSaveWidth${name}`, {width: boxInform.width, height: boxInform.height});
     }
 
     const openBgInstruments = event => {
@@ -51,7 +47,7 @@ const BackgroundComponent = props => {
     };
 
     const didUpdate = () => {
-        if (count === 0 ) saveWidth();
+        saveWidth();
         eventEmitter.on(`EventChangeColorBackground${id}`, changeColor);
         eventEmitter.on(`EventSetBackgroundImage${id}`, setBackgroundImage);
         return () => {

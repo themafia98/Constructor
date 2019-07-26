@@ -126,6 +126,7 @@ class Build extends React.PureComponent {
 
     addComponentsFromBD = array => {
 
+        let _sizeParenBox = {...this.state.sizeParenBox};
         let componentsFromDB = [];
         let components = [...this.state.mainBuilderData.components];
         array.forEach(item => {
@@ -133,7 +134,8 @@ class Build extends React.PureComponent {
 
                 let component =
                     <BuilderComponents
-                        sizeParenBox = {{...this.state.sizeParenBox}}
+                        target = {item.name}
+                        sizeParenBox = {{..._sizeParenBox}}
                         coords = {{...item.coords}}
                         size = {item.fontSize}
                         color = {item.color}
@@ -221,10 +223,6 @@ class Build extends React.PureComponent {
         )});
     };
 
-    saveWidth = eventItem => {
-        this.setState({sizeParenBox: {...eventItem}});
-    };
-
     sectionTitleProject = section => {
         return section.map(item => {
             return (
@@ -308,7 +306,7 @@ class Build extends React.PureComponent {
                         }
                         {   this.state.showSectionAddMenu ?
                             <BuildMenu
-                                countSection = {this.state.mainBuilderData.sectionTitleProject.length}
+                                countSection = {this.state.mainBuilderData.sectionTitleProject.length + 1}
                                 mode = "section"
                                 className = 'menu'
                             />
@@ -396,7 +394,6 @@ class Build extends React.PureComponent {
         eventEmitter.on('EventBuildComponents', this.addComponent);
         eventEmitter.on('EventNewSection', this.addNewSection);
         eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);
-        eventEmitter.on('EventSaveWidth', this.saveWidth);
         eventEmitter.on('EventClosePanel', this.closePanel);
         eventEmitter.on('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
@@ -412,7 +409,6 @@ class Build extends React.PureComponent {
         eventEmitter.off('EventBuildComponents', this.addComponent);
         eventEmitter.off('EventNewSection', this.addNewSection);
         eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
-        eventEmitter.off('EventSaveWidth', this.saveWidth);
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);

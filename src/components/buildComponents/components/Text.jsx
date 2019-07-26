@@ -23,9 +23,10 @@ const Title = styled.h1.attrs(props => ({
 
 const TextComponent = props =>  {
     const [id] = useState(props.id);
-    const [sizeParenBox] = useState({...props.sizeParenBox});
+    const [sizeParenBox, setSizeParenBox] = useState({...props.sizeParenBox});
 
     const [name] = useState(props.target);
+    let [count,setCount] = useState(0);
 
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
@@ -42,7 +43,7 @@ const TextComponent = props =>  {
         });
         event.stopPropagation();
     }
-console.log('text');
+
     const changeColorText = eventItem => {
         setColorText(eventItem.colorRGB);
     }
@@ -50,6 +51,14 @@ console.log('text');
     const changeSizeText = eventSize => {
         const {size} = eventSize;
         setSizeText(size);
+    }
+
+    const saveSize = event => {
+
+        if (count === 0){
+        setSizeParenBox({width: event.width, height: event.height});
+        setCount(count + 1);
+        } else  eventEmitter.off(`EventSaveWidth`,saveSize);
     }
 
     const changeContentText = eventContent => {
@@ -64,8 +73,10 @@ console.log('text');
         eventEmitter.on(`EventChangeColorText${id}`, changeColorText);
         eventEmitter.on(`EventChangeSizeText${id}`, changeSizeText);
         eventEmitter.on(`EventChangeContentText${id}`, changeContentText);
+        eventEmitter.on(`EventSaveWidth${name}`,saveSize);
         return () => {
             eventEmitter.off(`EventChangeColorText${id}`, changeColorText);
+            eventEmitter.off(`EventSaveWidth${name}`,saveSize);
             eventEmitter.off(`EventChangeSizeText${id}`, changeSizeText);
             eventEmitter.off(`EventChangeContentText${id}`, changeContentText);
         }
@@ -78,7 +89,7 @@ console.log('text');
         let top = rect.top;
         let width = rect.width;
         let height = rect.height;
-        setShiftCoords({x: event.pageX - left - width/2, y: event.pageY - top + height/2.8});
+        setShiftCoords({x: event.pageX - left - width/2, y: event.pageY - top + height/2});
 
         event.stopPropagation();
     }
@@ -87,7 +98,7 @@ console.log('text');
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
 
-        coordX = coordX <= 130 ? 130 : coordX;
+        coordX = coordX <= 20 ? 200 : coordX;
         coordY = coordY <= 0 ? 0 : coordY;
 
         let convertToPercentX = (coordX * 100) / sizeParenBox.width;
