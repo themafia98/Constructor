@@ -22,7 +22,6 @@ class Controllers extends React.PureComponent {
     static propTypes = {
         countComponents: PropTypes.number.isRequired, /** @number last project id */
         sizeParenBox: PropTypes.object, /** @Object with width and height parent(bg) */
-        components: PropTypes.object.isRequired, /** @Object with componnents data */
         menuActive: PropTypes.bool, /** @Bool value active menu or unactive */
     }
 
@@ -44,7 +43,7 @@ class Controllers extends React.PureComponent {
         let left = this.controlBox.getBoundingClientRect().left;
         let top = this.controlBox.getBoundingClientRect().top;
         this.setState({...this.state, shiftX: event.pageX - left, 
-        shiftY: event.pageY - top + 55 });
+        shiftY: event.pageY - top });
 
         event.stopPropagation();
     }
@@ -65,9 +64,10 @@ class Controllers extends React.PureComponent {
 
 
     render(){
+        console.log('controllers');
         return (
             <Fragment>
-            { this.props.menuActive ?
+            {
                 <ControllersBox
                 ref = {this.refControll}
                 className = 'ControllersEditComponent'
@@ -86,17 +86,16 @@ class Controllers extends React.PureComponent {
                         className = 'addButton'
                         path = '/img/addButton.png'
                     />
-                    {this.state.viewComponentMenu ? 
+                    { this.state.viewComponentMenu ?
                         <BuildMenu
+                            key = {`buildMenu ${this.props.mode}`}
                             mode = 'build'
                             editComponentName = {this.props.editComponentName}
                             sizeParenBox = {this.props.sizeParenBox}
                             countComponents = {this.props.countComponents}
-                            components = {{...this.props.components}}
                         /> : null
                     }
                 </ControllersBox>
-                : null
             }
             </Fragment>
         )

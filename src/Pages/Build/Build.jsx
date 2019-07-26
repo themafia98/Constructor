@@ -10,7 +10,7 @@ import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
 import BuilderComponents from '../../components/componentsBuilder/BuilderComponents';
-
+import Controllers from '../../components/controllers/controllers';
 import ImageViewer from '../../components/imageViewer/imageViewer';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
@@ -37,6 +37,7 @@ class Build extends React.PureComponent {
 
     state = {
             idProject: parseInt(this.props.match.params.param),
+            editStart: false,
             isLoadComponents: true,
             projectEmpty: false,
             sectionTitleProjectAction: true,
@@ -57,7 +58,6 @@ class Build extends React.PureComponent {
             },
             editComponentName:  null,
             menuActive: false,
-            editStart: false,
             modalSearch: false,
             modalImageViewer: {action: false, image: null },
         }
@@ -78,36 +78,39 @@ class Build extends React.PureComponent {
     };
 
     workModeEdit = itemEvent => {
-        if (!this.state.editStart)
+        if (itemEvent.editStart)
         this.setState({
             ...this.state,
-            editComponentName: itemEvent.target,
+            editStart: itemEvent.editStart,
+            editComponentName: itemEvent.idProject,
             mainBuilderData: {
                 ...this.state.mainBuilderData,
                 mainBoxWidth: itemEvent.width,
                 mainBoxHeight: itemEvent.height,
             },
             menuActive: true,
-            editStart: true
         });
 
     }
 
     openInstrument = itemEvent => {
-        const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
-        const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
-        const instumentActive = this.state.instrumentPanel.instrumentActive;
-        if ((targetEqual || !instumentActive || idEqual) && this.state.editStart)
-        this.setState({
-            ...this.state,
-            instrumentPanel: {
-                ...this.state.instrumentPanel,
-                instrumentActive: true,
-                sizeTextValue: itemEvent.sizeTextValue,
-                idComponent: itemEvent.id,
-                target: itemEvent.target
-            }
-        })
+
+        if (this.state.editComponentName){
+            const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
+            const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
+            const instumentActive = this.state.instrumentPanel.instrumentActive;
+            if (targetEqual || !instumentActive || idEqual)
+            this.setState({
+                ...this.state,
+                instrumentPanel: {
+                    ...this.state.instrumentPanel,
+                    instrumentActive: true,
+                    sizeTextValue: itemEvent.sizeTextValue,
+                    idComponent: itemEvent.id,
+                    target: itemEvent.target
+                }
+            })
+        }
     }
 
     closePanel = itemEvent => {
@@ -127,6 +130,7 @@ class Build extends React.PureComponent {
         let components = [...this.state.mainBuilderData.components];
         array.forEach(item => {
             if (item.type !== 'background'){
+
                 let component =
                     <BuilderComponents
                         sizeParenBox = {{...this.state.sizeParenBox}}
@@ -138,7 +142,13 @@ class Build extends React.PureComponent {
                         key = {`${item.type}${item.id}`}
                         content = {item.content ? item.content : 'Title'}
                     />
-                componentsFromDB.push(component);
+
+                const patternJSX = {
+                    id: item.id,
+                    name: item.name,
+                    component: component
+                }
+                componentsFromDB.push(patternJSX);
                 components.push(item);
             }
             else components.push(item);
@@ -150,19 +160,24 @@ class Build extends React.PureComponent {
     }
 
     addComponent = itemEvent => {
-        console.log('add');
         let {componentJSX} = this.state.mainBuilderData;
-        if (itemEvent.mode !== 'DB')
+
+        if (itemEvent.mode !== 'DB'){
+        const patternJSX = {
+            id: itemEvent.componentsPatternStatus.id,
+            name: itemEvent.componentsPatternStatus.name,
+            component: itemEvent.component
+        }
             this.setState({
                 ...this.state,
                 mainBuilderData: {
                     ...this.state.mainBuilderData,
                     components: [...this.state.mainBuilderData.components,
                                 itemEvent.componentsPatternStatus],
-                    componentJSX: [...componentJSX, {...itemEvent.component}],
+                    componentJSX: [...componentJSX, patternJSX],
                 },
             });
-        else {
+        } else {
             this.setState({
                 ...this.state,
                 isLoadComponents: false,
@@ -217,7 +232,6 @@ class Build extends React.PureComponent {
                     key = {item}
                     mainBuilderData = {{...this.state.mainBuilderData}}
                     currentProjectsData = {{...this.props.userData.currentProjectsData}}
-                    editStart = {this.state.editStart}
                     editComponentName = {this.state.editComponentName}
                     countComponents = {this.state.mainBuilderData.componentJSX.length}
                     menuActive = {this.state.menuActive}
@@ -231,35 +245,25 @@ class Build extends React.PureComponent {
     }
 
     buildAdditional = () => {
-        const {instrumentActive} = this.state.instrumentPanel;
         return (
             <Fragment key = 'AdditionalBuild'>
                 {   this.state.modalImageViewer.action ?
-                    <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} />
+                        <ImageViewer key = 'ImageViewer' path = {this.state.modalImageViewer.target} />
                     : null
                 }
-                {this.state.modalSearch ?
-                    <ModalWindow
-                        idComponent = {this.state.instrumentPanel.idComponent}
-                        key = 'ModalWindow' workMode = 'Search' /> : null
+                {   this.state.modalSearch ?
+                        <ModalWindow
+                            idComponent = {this.state.instrumentPanel.idComponent}
+                            key = 'ModalWindow' workMode = 'Search' 
+                        /> 
+                    : null
                 }
-                { instrumentActive ?
                     <InstrumentsPanel
                         key = 'InstrumentsPanel'
                         editComponentName = {this.state.editComponentName}
                         mainBuilderData =  {{...this.state.mainBuilderData}}
                         instrumentPanel = {{...this.state.instrumentPanel}}
                     />
-                    : null
-                }
-                {this.state.showSectionAddMenu ?
-                    <BuildMenu 
-                        countSection = {this.state.mainBuilderData.sectionTitleProject.length}
-                        mode = "section"
-                        className = 'menu'
-                    />
-                    : null
-                }
             </Fragment>
         )
     }
@@ -284,15 +288,36 @@ class Build extends React.PureComponent {
     render(){
 
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
+
+        const {instrumentActive} = this.state.instrumentPanel;
         const {userData} = this.props;
         const {currentProjectsData} = userData;
-        console.log(currentProjectsData);
 
         if (userData.active && currentProjectsData.loadProject){
             return (
                     <div ref = {this.mainRefComponent} onMouseMove = {this.showAddSection} className = 'Build' key = 'Build'>
                         <Header key = 'Header' title = "Constructor"  />
-                        {this.buildAdditional()}
+                        { this.state.editStart ?
+                        <Controllers
+                            key = {`controllers`}
+                            editComponentName = {this.state.editComponentName}
+                            countComponents = {this.state.mainBuilderData.components.length}
+                            menuActive = {this.state.menuActive}
+                            sizeParenBox = {this.state.sizeParenBox}
+                        /> : null
+                        }
+                        {   this.state.showSectionAddMenu ?
+                            <BuildMenu
+                                countSection = {this.state.mainBuilderData.sectionTitleProject.length}
+                                mode = "section"
+                                className = 'menu'
+                            />
+                        : null
+                        }
+                        {   instrumentActive ?
+                                this.buildAdditional()
+                            : null
+                        }
                         {this.sectionTitleProject(currentProjectsData.sectionTitleProject)}
                     </div>
             )
@@ -348,7 +373,7 @@ class Build extends React.PureComponent {
                 components: [...current.components]
             })) : this.setState({...this.state, projectEmpty: true});
         }
-        if (currentProjectsData.loadProject && isLoadComponents && this.state.editStart)
+        if (currentProjectsData.loadProject && isLoadComponents)
             this.addComponentsFromBD([...currentProjectsData.components]);
     }
 
@@ -398,7 +423,6 @@ class Build extends React.PureComponent {
 
 
 const mapStateToProps = (state) => {
-    console.log(state.builder);
     return {
         userData: {
             active: state.cabinet.active,

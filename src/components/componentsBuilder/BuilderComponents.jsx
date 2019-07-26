@@ -16,12 +16,12 @@ const BuilderComponents = props => {
 
     if (type === 'text'){
         return <TextComponent
+                    key = {`text${id}`}
                     sizeParenBox = {{...props.sizeParenBox}}
                     id = {id}
                     size = {size}
                     color = {color}
                     coords = {{...props.coords}}
-                    key = {`text${id}`}
                     target = {target}
                 >
                     {content}

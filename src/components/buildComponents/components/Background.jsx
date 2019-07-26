@@ -20,7 +20,7 @@ const BackgroundComponent = props => {
 
     const [count, setCount] = useState(0);
     let boxComponent = React.createRef();
-    console.log(props.background);
+
     let [backgroundColor, setBgColor] = useState(props.background);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
 

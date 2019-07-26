@@ -25,6 +25,8 @@ const TextComponent = props =>  {
     const [id] = useState(props.id);
     const [sizeParenBox] = useState({...props.sizeParenBox});
 
+    const [name] = useState(props.target);
+
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
     let [contentText, setText] = useState(props.content ? props.content : props.children);
@@ -40,7 +42,7 @@ const TextComponent = props =>  {
         });
         event.stopPropagation();
     }
-
+console.log('text');
     const changeColorText = eventItem => {
         setColorText(eventItem.colorRGB);
     }
@@ -51,8 +53,10 @@ const TextComponent = props =>  {
     }
 
     const changeContentText = eventContent => {
-        const {content} = eventContent;
-        setText(content);
+        if (name === eventContent.idSection){
+            const {content} = eventContent;
+            setText(content);
+        }
     }
 
 

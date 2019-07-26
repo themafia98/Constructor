@@ -34,7 +34,7 @@ class App extends React.PureComponent {
         this.props.firebase.auth.onAuthStateChanged((user) => {
 
             if (!this.state.firebaseLoadState){
-                if (user){console.log('load'); this.props.dispatch(middlewareLoadUserData(user.uid)); }
+                if (user) this.props.dispatch(middlewareLoadUserData(user.uid));
                 this.setState({...this.state, firebaseLoadState: true});
             }
         });
@@ -43,7 +43,6 @@ class App extends React.PureComponent {
 
     render(){
         if (this.state.firebaseLoadState){
-            console.log('app');
         return (
                 <Switch>
                     <Route
@@ -64,11 +63,5 @@ class App extends React.PureComponent {
         } else return <Loader path = { '/img/loading.gif'} type = 'application' />
     }
 }
-
-// const mapStateToProps = (state) => {
-//     return {
-//       active: state.cabinet.active
-//     }
-//   }
 
 export default connect()(withFirebase(App));

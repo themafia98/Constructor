@@ -11,7 +11,6 @@ class BuildMenu extends React.PureComponent {
     static propTypes = {
         mode: PropTypes.string.isRequired, /** @String work mode component */
         countSection: PropTypes.number, /** @Number for new section id */
-        components: PropTypes.object, /** @Object with components data */
         countComponents: PropTypes.number, /** @Number last project */
         sizeParenBox: PropTypes.object /** @Object with width and height parent(bg) */
     }
@@ -35,7 +34,6 @@ class BuildMenu extends React.PureComponent {
     }
 
     addText = event => {
-        console.log('add');
         let id = this.props.countComponents;
         eventEmitter.emit('EventBuildComponents',{
             componentsPatternStatus: {
@@ -96,7 +94,7 @@ class BuildMenu extends React.PureComponent {
     }
 
     render(){
-
+        console.log('buildMenu');
         if (this.state.mode === 'build'){
             return (
                 <div className = 'ComponentsMenu'>

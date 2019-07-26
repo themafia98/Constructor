@@ -4,12 +4,15 @@
 }
 
 .warningEdit {
+    cursor: pointer;
     position: absolute;
     transform: translate(-50%);
+    background: gray;
     left: 50%;
     top: 50%;
     font-size: 3rem;
     margin: 0;
+    opacity: .9;
 }
 
 .important {
@@ -28,8 +31,9 @@
 
 .ControllersEditComponent {
     position: absolute;
+    z-index: 99;
     left: 50%;
-    top: 0;
+    top: 20%;
 
     p {
         visibility: hidden;
