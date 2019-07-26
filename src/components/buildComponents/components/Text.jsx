@@ -4,9 +4,9 @@ import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
 
-const Title = styled.h1.attrs(props => ({
+const TextStyle = styled.h1.attrs(props => ({
     style: {
-        display: props.shadowDisplay ? 'none' : 'block',
+        // display: props.shadowDisplay ? 'none' : 'block',
         left: props.coordX ? props.coordX : '50%',
         top:  props.coordY,
 }}))`
@@ -85,24 +85,24 @@ const TextComponent = props =>  {
     const saveCoords = event => {
 
         let rect = event.target.getBoundingClientRect();
-        let left = rect.left;
+        let left = rect.left + window.pageXOffset;
         let top = rect.top;
         let width = rect.width;
         let height = rect.height;
+
         setShiftCoords({x: event.pageX - left - width/2, y: event.pageY - top + height/2});
 
         event.stopPropagation();
     }
 
     const moveText = event => {
+
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
 
-        coordX = coordX <= 20 ? 200 : coordX;
-        coordY = coordY <= 0 ? 0 : coordY;
 
-        let convertToPercentX = (coordX * 100) / sizeParenBox.width;
-        let convertToPercentY = (coordY * 100) / sizeParenBox.height;
+        let convertToPercentX = ((coordX) * 100) / sizeParenBox.width;
+        let convertToPercentY = ((coordY) * 100) / (sizeParenBox.height);
 
         const position = {
             x: convertToPercentX.toFixed(1) + '%', 
@@ -136,7 +136,7 @@ const TextComponent = props =>  {
     useEffect(didUpdate);
 
     return (
-        <Title
+        <TextStyle
             onClick={openTitleInstruments}
             textColor = {colorText ? colorText : 'red'}
             size = {sizeText ? sizeText + 'px' : '120px'}
@@ -151,7 +151,7 @@ const TextComponent = props =>  {
             shadowDisplay = {dragNdrop ? dragNdrop.shadowDisplay : false}
         >
             {contentText}
-        </Title>
+        </TextStyle>
     )
 }
 

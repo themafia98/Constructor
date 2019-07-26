@@ -95,13 +95,14 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
 
-        if (this.state.editComponentName){
+
             const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
             const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
             const instumentActive = this.state.instrumentPanel.instrumentActive;
             if (targetEqual || !instumentActive || idEqual)
             this.setState({
                 ...this.state,
+                editComponentName: itemEvent.name,
                 instrumentPanel: {
                     ...this.state.instrumentPanel,
                     instrumentActive: true,
@@ -110,7 +111,6 @@ class Build extends React.PureComponent {
                     target: itemEvent.target
                 }
             })
-        }
     }
 
     closePanel = itemEvent => {
@@ -283,6 +283,41 @@ class Build extends React.PureComponent {
     mainComponent = null;
     mainRefComponent = node => this.mainComponent = node;
 
+    
+    addNewSection = eventItem => {
+
+        const {userData} = this.props;
+        const {currentProjectsData} = userData;
+    this.setState({
+        ...this.state,
+        mainBuilderData:{
+            ...this.state.mainBuilderData,
+            sectionTitleProject: [
+                ...this.state.mainBuilderData.sectionTitleProject,
+                ...currentProjectsData.sectionTitleProject,
+                eventItem.componentsPatternStatus.id
+            ],
+            components:[
+                ...this.state.mainBuilderData.components,
+                eventItem.componentsPatternStatus
+            ],
+            componentJSX:[
+                ...this.state.mainBuilderData.componentJSX,
+                eventItem.component
+            ]
+        }
+    },  () => (
+    this.props.dispatch(updateMiddleware({
+        uid: userData.idUser,
+        projects: [...userData.projects],
+        components: [...this.state.mainBuilderData.components],
+        sectionTitleProject: [...this.state.mainBuilderData.sectionTitleProject],
+        idProject: this.state.idProject}))
+    ));
+}
+
+    showEv = event => {}
+
     render(){
 
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
@@ -293,7 +328,12 @@ class Build extends React.PureComponent {
 
         if (userData.active && currentProjectsData.loadProject){
             return (
-                    <div ref = {this.mainRefComponent} onMouseMove = {this.showAddSection} className = 'Build' key = 'Build'>
+                    <div
+                        ref = {this.mainRefComponent} 
+                        onWheel = {this.showEv}
+                        onMouseMove = {this.showAddSection} 
+                        className = 'Build' 
+                        key = 'Build'>
                         <Header key = 'Header' title = "Constructor"  />
                         { this.state.editStart ?
                         <Controllers
@@ -306,7 +346,7 @@ class Build extends React.PureComponent {
                         }
                         {   this.state.showSectionAddMenu ?
                             <BuildMenu
-                                countSection = {this.state.mainBuilderData.sectionTitleProject.length + 1}
+                                countSection = {this.state.mainBuilderData.componentJSX.length * 5}
                                 mode = "section"
                                 className = 'menu'
                             />
@@ -321,38 +361,6 @@ class Build extends React.PureComponent {
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
-    }
-
-    addNewSection = eventItem => {
-
-                const {userData} = this.props;
-        const {currentProjectsData} = userData;
-        this.setState({
-            ...this.state,
-            mainBuilderData:{
-                ...this.state.mainBuilderData,
-                sectionTitleProject: [
-                    ...this.state.mainBuilderData.sectionTitleProject,
-                    ...currentProjectsData.sectionTitleProject,
-                    eventItem.componentsPatternStatus.id
-                ],
-                components:[
-                    ...this.state.mainBuilderData.components,
-                    eventItem.componentsPatternStatus
-                ],
-                componentJSX:[
-                    ...this.state.mainBuilderData.componentJSX,
-                    eventItem.component
-                ]
-            }
-        },  () => (
-            this.props.dispatch(updateMiddleware({
-                uid: userData.idUser,
-                projects: [...userData.projects],
-                components: [...this.state.mainBuilderData.components],
-                sectionTitleProject: [...this.state.mainBuilderData.sectionTitleProject],
-                idProject: this.state.idProject}))
-            ));
     }
 
     componentDidUpdate(prevProps) {
@@ -381,7 +389,7 @@ class Build extends React.PureComponent {
         let {currentProjectsData} = userData;
 
         if (userData.active && !currentProjectsData.loadProject) {
-            console.log('load prjoect');
+
             const current =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,

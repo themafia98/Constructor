@@ -10,13 +10,13 @@ class BuildMenu extends React.PureComponent {
 
     static propTypes = {
         mode: PropTypes.string.isRequired, /** @String work mode component */
+        editComponentName: PropTypes.string,
         countSection: PropTypes.number, /** @Number for new section id */
         countComponents: PropTypes.number, /** @Number last project */
         sizeParenBox: PropTypes.object /** @Object with width and height parent(bg) */
     }
 
     state = {
-        editComponentName: this.props.editComponentName,
         mode: this.props.mode,
         componentsPatternStatus: {
             id: null,
@@ -39,11 +39,11 @@ class BuildMenu extends React.PureComponent {
             componentsPatternStatus: {
                 ...this.state.componentsPatternStatus,
                 id: id,
-                name: this.state.editComponentName,
+                name: this.props.editComponentName,
                 type: 'text',
             },
             component: <BuilderComponents
-                            target = {this.state.editComponentName}
+                            target = {this.props.editComponentName}
                             key = {`text${id}`}
                             sizeParenBox = {this.props.sizeParenBox}
                             content = "Title"
@@ -62,13 +62,34 @@ class BuildMenu extends React.PureComponent {
                 type: 'background',
             },
             component: <BuilderComponents
-                            target = {this.state.editComponentName}
+                            target = {this.props.editComponentName}
                             key = {`bg${id}`}
                             id = {id}
                             type = 'background'
                         />
         });
 
+        event.stopPropagation();
+    }
+
+    addImage = event => {
+        let id = this.props.countComponents;
+        eventEmitter.emit('EventBuildComponents',{
+            componentsPatternStatus: {
+                ...this.state.componentsPatternStatus,
+                id: id,
+                name: this.props.editComponentName,
+                type: 'image',
+            },
+            component: <BuilderComponents
+                            target = {this.props.editComponentName}
+                            key = {`text${id}`}
+                            sizeParenBox = {this.props.sizeParenBox}
+                            id = {id}
+                            coords = {{...this.state.componentsPatternStatus.coords}}
+                            path = {'/img/test.jpg'}
+                            type = 'image' />
+        });
         event.stopPropagation();
     }
 
@@ -84,7 +105,7 @@ class BuildMenu extends React.PureComponent {
            
             type:'section',
             component: <BuilderComponents
-            target = {this.state.editComponentName}
+            target = {this.props.editComponentName}
             key = {`bg${id}`}
             id = {id}
             type = 'background'
@@ -99,7 +120,7 @@ class BuildMenu extends React.PureComponent {
             return (
                 <div className = 'ComponentsMenu'>
                     <button 
-                        onClick = {this.addBackground} 
+                        onClick = {this.addImage} 
                         className = 'ImageTool CompoentnsMenu_button' 
                     >
                         <span>Image</span>
@@ -110,7 +131,7 @@ class BuildMenu extends React.PureComponent {
                         <span>Text</span>
                     </button>
                     <button
-                        disabled = {this.state.editComponentName !== 'Header' ? false : true}
+                        disabled = {this.props.editComponentName !== 'Header' ? false : true}
                         className = 'ButtonTool CompoentnsMenu_button' >
                         <span>Button</span>
                     </button>

@@ -23,11 +23,9 @@ class MainBackground extends React.PureComponent {
     }
 
     changeMode = event => {
-        if (!this.state.editStart) {
-            let rect = event.currentTarget.getBoundingClientRect();
-            const width = rect.width;
-            const height = rect.height;
-
+        console.log('cgange');
+        if (!this.state.editStart || this.state.idProject !== this.props.editComponentName) {
+            console.log(this.state.idProject);
             this.setState({
                 ...this.state,
                 editStart: true
@@ -37,8 +35,6 @@ class MainBackground extends React.PureComponent {
                 editStart: true,
                 idProject: this.state.idProject,
                 target: 'Header',
-                width: width,
-                height: height
             }));
         }
     }
@@ -47,6 +43,7 @@ class MainBackground extends React.PureComponent {
     refBackground = node => this.refBox = node;
 
     render() {
+        console.log('main');
         let bg = this.props.currentProjectsData.components.find(item => item.name === this.props.id) || {};
         let childrens = this.props.mainBuilderData.componentJSX.filter(item => item.name === this.props.id)
         .map(item => item.component);

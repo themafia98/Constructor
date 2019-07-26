@@ -38,12 +38,12 @@ class App extends React.PureComponent {
                 this.setState({...this.state, firebaseLoadState: true});
             }
         });
-
     }
 
     render(){
         if (this.state.firebaseLoadState){
         return (
+            <div>
                 <Switch>
                     <Route
                         path = {'/'} exact
@@ -58,6 +58,7 @@ class App extends React.PureComponent {
                     <Route path = {'*'} component = {Index} />
                     <Route path = {'/crashPage'} component = {ErrorPage} />
                 </Switch>
+                </div>
 
         )
         } else return <Loader path = { '/img/loading.gif'} type = 'application' />

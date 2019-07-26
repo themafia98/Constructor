@@ -13,7 +13,7 @@ const ControllersBox = styled.div
                 top: props.coordY,
         }
     })) `
-    position: absolute;
+    position: 'absolute',
     display: ${props => props.shadowDisplay}
     `;
 
@@ -73,12 +73,12 @@ class Controllers extends React.PureComponent {
                 className = 'ControllersEditComponent'
                 coordX = {this.state.coordsX}
                 coordY = {this.state.coordsY}
-                draggable = {!this.state.viewComponentMenu}
-                onMouseDown = {this.saveCoords}
+                // draggable = {!this.state.viewComponentMenu}
+                // onMouseDown = {this.saveCoords}
                 onClick = {this.componentMenu}
-                onDrag   = {this.drag}
-                onDragEnd = {this.drag}
-                shadowDisplay = {this.state.shadowDisplay}
+                // onDrag   = {this.drag}
+                // onDragEnd = {this.drag}
+                // shadowDisplay = {this.state.shadowDisplay}
                 >
                     <Icon
                         draggable = {true}
@@ -100,6 +100,7 @@ class Controllers extends React.PureComponent {
             </Fragment>
         )
     }
+
 }
 
 export default Controllers;

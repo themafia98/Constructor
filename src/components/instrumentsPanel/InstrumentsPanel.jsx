@@ -13,7 +13,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
         instrumentPanel:  PropTypes.object.isRequired, /** @Settings for panel and data about component */
-        editComponentName: PropTypes.string.isRequired /** @Name editable component */
+        editComponentName: PropTypes.string /** @Name editable component */
     };
 
     state = {
