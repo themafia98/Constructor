@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import eventEmitter from '../../EventEmitter';
 import PropTypes from 'prop-types';
 import './instrumentsPanel.scss';
-
+import ImageInstruments from './ImageTools/ImageInstruments';
 import BackgroundInstruments from './BackgroundTools/BackgroundInstruments';
 import TextInstruments from './TextTools/TextInstruments';
 
@@ -167,9 +167,16 @@ class InstrumentsPanel extends React.PureComponent {
                             cbSaveChanges = {this.saveChanges}
                         />
                     )
-                default: return <p className = 'warningInstruments'>
-                                    Select elements for accses edit instruments
-                                </p>
+                case 'image':
+                        return (
+                            <ImageInstruments
+                                instrumentPanel = {{...this.state.instrumentPanel}}
+                                componentsStats = {{...this.state.componentsStats}}
+                                cbSearchImage = {this.searchImage}
+                                cbSaveChanges = {this.saveChanges}
+                            />
+                        )
+                default: return <p className = 'warningInstruments'>No found element</p>
             }
     };
 

@@ -55,7 +55,7 @@ $closeSize: 25px;
             border: 1px solid  rgb(0, 241, 121);
         }
 
-        .saveButtonInstument, .button_switchColor, .ImageSearchButton {
+        .saveButtonInstument, .button_switch, .ImageSearchButton {
             border: 1px solid rgb(0, 241, 121);
             border-radius: 10px;
             padding: 5px;
@@ -63,6 +63,7 @@ $closeSize: 25px;
             color: white;
             background-color: rgb(13, 110, 62);
         }
+
 
         .saveButtonInstument {
             background-color: rgb(52, 90, 69);

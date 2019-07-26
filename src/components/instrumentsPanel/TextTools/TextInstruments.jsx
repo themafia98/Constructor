@@ -19,7 +19,7 @@ const TextInstruments = props => {
             <p className = 'titleInstument'>Color: </p>
             <input 
                 onClick = {props.cbSetColor}
-                className = 'button_switchColor'
+                className = 'button_switch'
                 type = 'button'
                 value = 'color pick'
             />

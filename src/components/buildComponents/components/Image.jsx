@@ -6,12 +6,12 @@ import styled from 'styled-components';
 const ImageStyle = styled.img.attrs(props => ({
     style: {
         // display: props.shadowDisplay ? 'none' : 'block',
-        left: props.coordX ? props.coordX : '50%',
+        left: props.coordX ? props.coordX : '30%',
         top:  props.coordY,
 }}))`
     position: absolute;
-    width: ${props => props.size};
-    transform: translate(-50%);
+    width: ${props => props.size}%;
+    transform: translate(-50%,50%);
 `;
 
 const Image = props => {
@@ -21,7 +21,7 @@ const Image = props => {
 
     const [id] = useState(props.id);
     const [path] = useState(props.path);
-    const [size,setSize] = useState(props.size ? props.size : '50%');
+    const [size,setSize] = useState(props.size ? props.size : 30);
     const [name] = useState(props.target);
 
     let [count,setCount] = useState(0);
@@ -31,10 +31,10 @@ const Image = props => {
 
 
 
-    const openTitleInstruments = event => {
+    const openImageInstruments = event => {
 
         eventEmitter.emit(`EventInstrumentPanel`,{
-            target: 'text',
+            target: 'image',
             id: id,
             sizeTextValue: size
         });
@@ -108,36 +108,38 @@ const Image = props => {
             eventEmitter.off(`EventSaveWidth${name}`,saveSize);
         }
     }
-    console.log('asdsa');
-    const searchTest = e => {
+    // console.log('asdsa');
+    // const searchTest = e => {
 
-        const api = 'https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=';
+    //     const api = 'https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=';
 
-        isFetch(`${api}${process.env.REACT_APP_CHANNEL_ID}&maxResults=20&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`)
-        .then(res => {
-            if (res.ok)
-            return res.json();
-            else throw new Error (`Error ${res.status}`);
-        })
-        .then(res => {
-            console.log(res);
-        })
-        .catch(error => console.error(error));
-    }
+    //     isFetch(`${api}${process.env.REACT_APP_CHANNEL_ID}&maxResults=20&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`)
+    //     .then(res => {
+    //         if (res.ok)
+    //         return res.json();
+    //         else throw new Error (`Error ${res.status}`);
+    //     })
+    //     .then(res => {
+    //         console.log(res);
+    //     })
+    //     .catch(error => console.error(error));
+    // }
 
     useEffect(didUpdate);
 
     return (
         <ImageStyle  
             size = {size}
-            src = {path} 
+            src = {process.env.PUBLIC_URL + path}
             alt = 'img' 
-            onClick = {searchTest}
+            onClick = {openImageInstruments}
             draggable = {true}
             onMouseDown = {saveCoords}
-            onDragStart = {openTitleInstruments}
+            onDragStart = {openImageInstruments}
             onDrag   = {moveText}
             onDragEnd = {moveText}
+            coordX = {dragNdrop ? dragNdrop.x : null}
+            coordY = {dragNdrop ? dragNdrop.y : null}
             onWheel = {weelResizeText}
         />
     )

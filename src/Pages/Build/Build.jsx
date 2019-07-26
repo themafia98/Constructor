@@ -95,7 +95,7 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
 
-
+            console.log(itemEvent);
             const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
             const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
             const instumentActive = this.state.instrumentPanel.instrumentActive;
