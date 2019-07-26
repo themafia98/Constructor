@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import eventEmitter from '../../../EventEmitter';
+import isFetch from 'isomorphic-fetch';
 import styled from 'styled-components';
 
 const ImageStyle = styled.img.attrs(props => ({
@@ -107,6 +108,22 @@ const Image = props => {
             eventEmitter.off(`EventSaveWidth${name}`,saveSize);
         }
     }
+    console.log('asdsa');
+    const searchTest = e => {
+
+        const api = 'https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=';
+
+        isFetch(`${api}${process.env.REACT_APP_CHANNEL_ID}&maxResults=20&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`)
+        .then(res => {
+            if (res.ok)
+            return res.json();
+            else throw new Error (`Error ${res.status}`);
+        })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(error => console.error(error));
+    }
 
     useEffect(didUpdate);
 
@@ -115,6 +132,7 @@ const Image = props => {
             size = {size}
             src = {path} 
             alt = 'img' 
+            onClick = {searchTest}
             draggable = {true}
             onMouseDown = {saveCoords}
             onDragStart = {openTitleInstruments}
