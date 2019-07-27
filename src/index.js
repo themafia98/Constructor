@@ -11,6 +11,7 @@ import store from './redux/store';
 import App from './App.jsx';
 import 'normalize.css';
 
+import firebaseContext from './Firebase/firebaseContext';
 
 firebase.saveSession('SESSION');
 const config = require('./config.json');
@@ -18,11 +19,13 @@ const config = require('./config.json');
 ReactDOM.render(
         <HashRouter>
             <ErrorBoundary>
-                <Provider store = {store}>
-                    <App config = {config} />
-                </Provider>
+                <firebaseContext.Provider value = {firebase}>
+                    <Provider store = {store}>
+                        <App config = {config} />
+                    </Provider>
+                </firebaseContext.Provider>
             </ErrorBoundary>
-        </HashRouter >,
+        </HashRouter>,
         document.getElementById('root')
 );
 

@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 
 const ImageInstruments = props => {
 
-    const stats = props.componentsStats;
 
     return (
         <Fragment>

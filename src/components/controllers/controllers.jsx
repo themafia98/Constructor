@@ -1,23 +1,9 @@
 import React,{Fragment} from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import Icon from '../Icon/icon';
 import BuildMenu from '../componentsBuildMenu/BuildMenu';
 
-
-// const ControllersBox = styled.div
-//     .attrs(props =>({
-//         style: {
-//                 left: props.coordX,
-//                 top: props.coordY,
-//         }
-//     })) `
-//     position: 'fixed',
-//     left: 50%;
-//     top: 10%;
-//     display: ${props => props.shadowDisplay}
-//     `;
 
 class Controllers extends React.PureComponent {
 

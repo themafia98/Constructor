@@ -62,7 +62,7 @@
 }
 
 .ActionModalSearch {
-
+    position: fixed;
     align-items: center;
     justify-content: space-evenly;
     display: flex;
@@ -73,7 +73,6 @@
     transform: translate(-50%, -50%);
     width: 10%;
     height: 10%;
-    position: absolute;
     z-index: 99999;
 
     .actionModalSearch__view,
@@ -87,6 +86,7 @@
 }
 
 .Modal-search {
+    position: fixed;
     top: 50%;
     transform: translate(-50%,-50%);
     width: 50%;

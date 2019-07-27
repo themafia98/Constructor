@@ -115,7 +115,7 @@ const TextComponent = props =>  {
 
         const MARGIN = 150;
         const borderBottom = sizeParenBox.height - MARGIN;
-        const borderLeft = sizeParenBox.width - MARGIN;
+        // const borderLeft = sizeParenBox.width - MARGIN;
 
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;

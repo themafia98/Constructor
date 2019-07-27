@@ -94,7 +94,7 @@ class BuildMenu extends React.PureComponent {
     }
 
     addSection = event => {
-        let id = this.props.countSection + 1;
+        let id = Math.random().toFixed(3);
         eventEmitter.emit('EventNewSection', {
             componentsPatternStatus: {
                 ...this.state.componentsPatternStatus,

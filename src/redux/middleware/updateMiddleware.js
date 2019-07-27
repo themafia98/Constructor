@@ -1,5 +1,5 @@
 import {errorAction, loadUpdateCurrentProject} from '../actions';
-
+console.log('upd');
 const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
     console.log('updatae');
     let newProjects = item.projects.map(project => {
