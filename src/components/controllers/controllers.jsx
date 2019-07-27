@@ -6,16 +6,18 @@ import Icon from '../Icon/icon';
 import BuildMenu from '../componentsBuildMenu/BuildMenu';
 
 
-const ControllersBox = styled.div
-    .attrs(props =>({
-        style: {
-                left: props.coordX,
-                top: props.coordY,
-        }
-    })) `
-    position: 'absolute',
-    display: ${props => props.shadowDisplay}
-    `;
+// const ControllersBox = styled.div
+//     .attrs(props =>({
+//         style: {
+//                 left: props.coordX,
+//                 top: props.coordY,
+//         }
+//     })) `
+//     position: 'fixed',
+//     left: 50%;
+//     top: 10%;
+//     display: ${props => props.shadowDisplay}
+//     `;
 
 class Controllers extends React.PureComponent {
 
@@ -68,17 +70,10 @@ class Controllers extends React.PureComponent {
         return (
             <Fragment>
             {
-                <ControllersBox
+                <div
                 ref = {this.refControll}
                 className = 'ControllersEditComponent'
-                coordX = {this.state.coordsX}
-                coordY = {this.state.coordsY}
-                // draggable = {!this.state.viewComponentMenu}
-                // onMouseDown = {this.saveCoords}
                 onClick = {this.componentMenu}
-                // onDrag   = {this.drag}
-                // onDragEnd = {this.drag}
-                // shadowDisplay = {this.state.shadowDisplay}
                 >
                     <Icon
                         draggable = {true}
@@ -95,7 +90,7 @@ class Controllers extends React.PureComponent {
                             countComponents = {this.props.countComponents}
                         /> : null
                     }
-                </ControllersBox>
+                </div>
             }
             </Fragment>
         )

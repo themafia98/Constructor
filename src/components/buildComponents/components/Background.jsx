@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const Background = styled.div`
     position: relative;
     width: 100%;
-    height: 95vh;
+    height: 800px;
     background-size: cover;
     background-color: ${props => props.backgroundColor};
     background-image: url(${props => props.backgroundImage});

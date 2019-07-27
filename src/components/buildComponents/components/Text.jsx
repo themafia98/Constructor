@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const TextStyle = styled.h1.attrs(props => ({
     style: {
-        // display: props.shadowDisplay ? 'none' : 'block',
+        display: props.shadowDisplay ? 'none' : 'block',
         left: props.coordX ? props.coordX : '50%',
         top:  props.coordY,
 }}))`
@@ -22,8 +22,13 @@ const TextStyle = styled.h1.attrs(props => ({
 // top:  ${props => props.coordY};
 
 const TextComponent = props =>  {
+
+
     const [id] = useState(props.id);
     const [sizeParenBox, setSizeParenBox] = useState({...props.sizeParenBox});
+
+    let [_ScrollY, setScrollY] = useState(0);
+
 
     const [name] = useState(props.target);
     let [count,setCount] = useState(0);
@@ -33,6 +38,8 @@ const TextComponent = props =>  {
     let [contentText, setText] = useState(props.content ? props.content : props.children);
     const [shiftCoords, setShiftCoords] = useState(null)
     const [dragNdrop, setDragNdrop] = useState(props.coords.left ? {x: props.coords.left, y: props.coords.top} : null);
+
+    let textComponent = React.createRef();
 
     const openTitleInstruments = event => {
 
@@ -68,13 +75,19 @@ const TextComponent = props =>  {
         }
     }
 
+    const scrollCordsSet = eventItem => {
+        setScrollY(eventItem);
+    }
+
 
     const didUpdate = event => {
+        eventEmitter.on('ScrollRecalcPosition', scrollCordsSet);
         eventEmitter.on(`EventChangeColorText${id}`, changeColorText);
         eventEmitter.on(`EventChangeSizeText${id}`, changeSizeText);
         eventEmitter.on(`EventChangeContentText${id}`, changeContentText);
         eventEmitter.on(`EventSaveWidth${name}`,saveSize);
         return () => {
+            eventEmitter.off('ScrollRecalcPosition', scrollCordsSet);
             eventEmitter.off(`EventChangeColorText${id}`, changeColorText);
             eventEmitter.off(`EventSaveWidth${name}`,saveSize);
             eventEmitter.off(`EventChangeSizeText${id}`, changeSizeText);
@@ -85,8 +98,8 @@ const TextComponent = props =>  {
     const saveCoords = event => {
 
         let rect = event.target.getBoundingClientRect();
-        let left = rect.left + window.pageXOffset;
-        let top = rect.top;
+        let left = rect.left;
+        let top = rect.top + _ScrollY;
         let width = rect.width;
         let height = rect.height;
 
@@ -97,8 +110,22 @@ const TextComponent = props =>  {
 
     const moveText = event => {
 
+        let {current} = textComponent;
+        current.focus();
+
+        const MARGIN = 150;
+        const borderBottom = sizeParenBox.height - MARGIN;
+        const borderLeft = sizeParenBox.width - MARGIN;
+
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
+        
+        console.log("X:" + coordX);
+        console.log("Y:" + coordY);
+
+        if (coordY < 0) coordY =  0;
+        if (coordY > borderBottom) coordY = borderBottom;
+
 
 
         let convertToPercentX = ((coordX) * 100) / sizeParenBox.width;
@@ -133,10 +160,12 @@ const TextComponent = props =>  {
             }
         event.stopPropagation();
     }
+
     useEffect(didUpdate);
 
     return (
         <TextStyle
+            ref  = {textComponent}
             onClick={openTitleInstruments}
             textColor = {colorText ? colorText : 'red'}
             size = {sizeText ? sizeText + 'px' : '120px'}

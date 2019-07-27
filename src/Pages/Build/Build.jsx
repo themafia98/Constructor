@@ -316,7 +316,9 @@ class Build extends React.PureComponent {
     ));
 }
 
-    showEv = event => {}
+    updateCoordsComponents = event => {
+        eventEmitter.emit("ScrollRecalcPosition", this.mainComponent.scrollTop);
+    }
 
     render(){
 
@@ -328,13 +330,14 @@ class Build extends React.PureComponent {
 
         if (userData.active && currentProjectsData.loadProject){
             return (
+                <Fragment>
+                    <Header key = 'Header' title = "Constructor"  />
                     <div
                         ref = {this.mainRefComponent} 
-                        onWheel = {this.showEv}
+                        onScroll = {this.updateCoordsComponents}
                         onMouseMove = {this.showAddSection} 
                         className = 'Build' 
                         key = 'Build'>
-                        <Header key = 'Header' title = "Constructor"  />
                         { this.state.editStart ?
                         <Controllers
                             key = {`controllers`}
@@ -358,6 +361,7 @@ class Build extends React.PureComponent {
                         }
                         {this.sectionTitleProject(currentProjectsData.sectionTitleProject)}
                     </div>
+                </Fragment>
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />

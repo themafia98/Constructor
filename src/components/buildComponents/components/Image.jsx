@@ -1,11 +1,10 @@
 import React,{useState,useEffect} from 'react';
 import eventEmitter from '../../../EventEmitter';
-import isFetch from 'isomorphic-fetch';
 import styled from 'styled-components';
 
 const ImageStyle = styled.img.attrs(props => ({
     style: {
-        // display: props.shadowDisplay ? 'none' : 'block',
+        display: props.shadowDisplay ? 'none' : 'block',
         left: props.coordX ? props.coordX : '30%',
         top:  props.coordY,
 }}))`
@@ -108,7 +107,7 @@ const Image = props => {
             eventEmitter.off(`EventSaveWidth${name}`,saveSize);
         }
     }
-    // console.log('asdsa');
+
     // const searchTest = e => {
 
     //     const api = 'https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=';
@@ -141,6 +140,7 @@ const Image = props => {
             coordX = {dragNdrop ? dragNdrop.x : null}
             coordY = {dragNdrop ? dragNdrop.y : null}
             onWheel = {weelResizeText}
+            shadowDisplay = {dragNdrop ? dragNdrop.shadowDisplay : false}
         />
     )
 };

@@ -1,62 +1,75 @@
-.titleCompoentBuild {
-    text-align: center;
-    margin: 0;
-}
-
-.warningEdit {
-    cursor: pointer;
-    position: absolute;
-    transform: translate(-50%);
-    background: gray;
-    left: 50%;
-    top: 50%;
-    font-size: 3rem;
-    margin: 0;
-    opacity: .9;
-}
-
-.important {
-    color: rgb(255, 73, 41);
-}
-
-.addButton {
-    width: 72px;
-    transition: .3s linear;
-}
-
-.addButton:hover {
-    filter: sepia(70%);
-    transform:  scale(1.1);
-}
-
-.ControllersEditComponent {
-    position: absolute;
-    z-index: 99;
-    left: 50%;
-    top: 20%;
-
-    p {
-        visibility: hidden;
-        box-sizing: border-box;
-        width: 72px;
-        height: 42px;
-    }
-}
-
-@media screen and (max-width: 700px){
-
-    .warningEdit {
-        text-align: center;
+.Build{
+        position: absolute;
+        overflow-y: auto;
         width: 100%;
-    }
+        height: 100%;
+
+        .titleCompoentBuild {
+            text-align: center;
+            margin: 0;
+        }
+        
+        .warningEdit {
+            cursor: pointer;
+            position: absolute;
+            transform: translate(-50%);
+            background: gray;
+            left: 50%;
+            top: 50%;
+            font-size: 3rem;
+            margin: 0;
+            opacity: .9;
+        }
+        
+        .important {
+            color: rgb(255, 73, 41);
+        }
+        
+        .addButton {
+            width: 72px;
+            transition: .3s linear;
+        }
+        
+        .addButton:hover {
+            filter: sepia(70%);
+            transform:  scale(1.1);
+        }
+        
+        .ControllersEditComponent {
+            position: fixed;
+            z-index: 99;
+            left: 50%;
+            top: 0;
+        
+            p {
+                visibility: hidden;
+                box-sizing: border-box;
+                width: 72px;
+                height: 42px;
+            }
+        }
+        
+        @media screen and (max-width: 700px){
+        
+            .warningEdit {
+                text-align: center;
+                width: 100%;
+            }
+        }
+        
+        @media screen and (max-width: 600px){
+        
+            .warningEdit {
+                text-align: center;
+                width: 100%;
+                top: 45%;
+                font-size: 1.8rem;
+            }
+        }
 }
 
-@media screen and (max-width: 600px){
-
-    .warningEdit {
-        text-align: center;
-        width: 100%;
-        top: 45%;
-        font-size: 1.8rem;
-    }
+.Build:hover {
+    
+    overflow-y: scroll;
 }
+
