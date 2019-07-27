@@ -123,25 +123,4 @@
     }
 }
 
-@media screen and (max-width: 1050px) {
-    .Modal {
-        width: 50%;
-
-        input, select {
-            width: 65%;
-        }
-    }
-}
-
-
-@media screen and (max-width: 650px) {
-    .Modal {
-        width: 90%;
-
-        input, select {
-            width: 65%;
-        }
-    }
-
-
-}
+@import './media.scss';

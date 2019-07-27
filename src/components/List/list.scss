@@ -85,43 +85,4 @@
     }
 }
 
-
-@media screen and (max-width: 850px){
-
-    .projectsList__list {
-
-        grid-template-columns: repeat(3, 25vw);
-    }
-    .item {
-        flex: 0 0 25vw;
-    }
-}
-
-@media screen and (max-width: 650px){
-
-    .projectsList__list {
-        width: 100%;
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .item {
-        flex: 0 0 50%;
-    }
-}
-
-
-@media screen and (max-width: 450px){
-
-    .projectsList__list .item {
-        height: 30vh;
-    }
-
-    .projectsList__list {
-        width: 100%;
-        grid-template-columns: 1fr;
-    }
-
-    .item {
-        flex: 0 0 100%;
-    }
-}
+@import './media.scss';

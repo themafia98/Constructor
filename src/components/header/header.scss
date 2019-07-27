@@ -1,6 +1,4 @@
 
-
-
 header {
     width: 100%;
     height: 60px;
@@ -74,20 +72,5 @@ header {
     }
 }
 
-@media screen and (max-width: 780px){
-    header .Navigator {
-    transform: translate(-80%);
-    }
-}
 
-
-@media screen and (max-width: 500px){
-
-        header .header__CabinetInfo h3 {
-            display: none;
-        }
-        header .Navigator {
-            top: 0;
-            left: 100%;
-        }
-}
+@import './media.scss';

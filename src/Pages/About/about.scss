@@ -14,21 +14,4 @@
     }
 }
 
-@media screen and (max-width: 1100px){
-    .information{
-        .logoAbout {
-            width: 70%;
-        }
-    }
-
-
-}
-
-@media screen and (max-width: 650px){
-
-    .information{
-        .logoAbout {
-            width: 100%;
-        }
-    }
-}
+@import './media.scss';
