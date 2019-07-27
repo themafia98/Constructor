@@ -43,6 +43,7 @@ class Build extends React.PureComponent {
                 componentJSX: []
             },
             instrumentPanel: {
+                imageConig: {},
                 colorPickerActive: false,
                 instrumentActive: false,
                 target: '',
@@ -88,13 +89,14 @@ class Build extends React.PureComponent {
             console.log(itemEvent);
             const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
             const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
-            const instumentActive = this.state.instrumentPanel.instrumentActive;
-            if (targetEqual || !instumentActive || idEqual)
+            // const instumentActive = this.state.instrumentPanel.instrumentActive;
+            if (targetEqual || idEqual)
             this.setState({
                 ...this.state,
                 editComponentName: itemEvent.name,
                 instrumentPanel: {
                     ...this.state.instrumentPanel,
+                    imageConig: {...itemEvent.imageConig},
                     instrumentActive: true,
                     sizeTextValue: itemEvent.sizeTextValue,
                     idComponent: itemEvent.id,
@@ -124,6 +126,7 @@ class Build extends React.PureComponent {
 
                 let component =
                     <BuilderComponents
+                        all = {{...item}}
                         target = {item.name}
                         sizeParenBox = {{..._sizeParenBox}}
                         coords = {{...item.coords}}
@@ -184,7 +187,7 @@ class Build extends React.PureComponent {
     };
 
     saveChangesComponent = itemEvent => {
-
+        console.log(itemEvent);
         const {userData} = this.props;
         let findCurrentItem = false;
         const _components = this.state.mainBuilderData.components.map(item => {
@@ -381,7 +384,7 @@ const mapStateToProps = (state) => {
             active: state.cabinet.active,
             idUser: state.cabinet.idUser,
             projects: [...state.cabinet.projects],
-            currentProjectsData: {...state.builder}
+           currentProjectsData: {...state.builder}
         },
     }
 }

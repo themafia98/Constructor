@@ -35,12 +35,12 @@ const BuilderComponents = props => {
                     key = {`bg${id}`}
                 />;
 
-
+    console.log('builder');
     if (type === 'image')
         return <Image
                     target = {target}
                     size = {size}
-                    path = {props.path}
+                    path = {props.path ? props.path : props.all.imageConig.image}
                     coords = {{...props.coords}}
                     id = {id}
                     key = {`image${id}`}

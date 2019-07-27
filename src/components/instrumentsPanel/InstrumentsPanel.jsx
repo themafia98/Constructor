@@ -123,10 +123,10 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     saveChanges = event => {
-
         this.setState({...this.state, isChange: false, confirmActive: false}, () =>
         eventEmitter.emit("EventSaveChangesComponent", {
             ...this.state.componentsStats,
+            imageConig: {...this.state.instrumentPanel.imageConig},
             id: this.state.instrumentPanel.idComponent,
             type: this.state.instrumentPanel.target,
         }));

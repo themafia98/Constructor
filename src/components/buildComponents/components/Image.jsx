@@ -33,6 +33,10 @@ const Image = props => {
     const openImageInstruments = event => {
 
         eventEmitter.emit(`EventInstrumentPanel`,{
+            imageConig:{
+                image: path,
+                backgroundImage: path,
+            },
             target: 'image',
             id: id,
             sizeTextValue: size
@@ -125,7 +129,7 @@ const Image = props => {
     // }
 
     useEffect(didUpdate);
-
+    console.log(props);
     return (
         <ImageStyle  
             size = {size}

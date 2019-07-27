@@ -25,6 +25,7 @@ class MainBackground extends React.PureComponent {
     }
 
     changeMode = event => {
+        console.log('cgange');
         if (!this.state.editStart || this.state.idProject !== this.props.editComponentName) {
             console.log(this.state.idProject);
             this.setState({
@@ -45,50 +46,26 @@ class MainBackground extends React.PureComponent {
 
     render() {
 
-        if (this.state.component)
+        let bg = this.props.currentProjectsData.components.find(item => item.name === this.props.id) || null;
+        let childrens = this.props.mainBuilderData.componentJSX.filter(item => item.name === this.props.id)
+        .map(item => item.component);
+
+        if (bg)
         return (
             <Fragment>
                 <section data-class = 'editable' onClick = {this.changeMode}>
                     <BackgroundComponent 
                         name = {this.state.idProject}
-                        id = {this.state.component.id}
-                        background = {this.state.component.color}  {...this.state.component}
+                        id = {bg.id}
+                        background = {bg.color}  {...bg}
                     >
-                    {this.state.childrens && this.state.childrens}
+                    {childrens && childrens}
                     </BackgroundComponent>
                     {!this.state.editStart && <p className = 'warningEdit'>Click for start edit</p>}
                 </section>
             </Fragment>
         )
-        else return <Loader type = 'components' />;
-    }
-
-
-    componentDidUpdate = (nextProps, nextState) => {
-        if (this.props.id !== nextProps.id){
-        const bg = this.props.currentProjectsData.components.find(item => item.name === this.props.id) || null;
-        const childrens = this.props.mainBuilderData.componentJSX.filter(item => item.name === this.props.id)
-        .map(item => item.component);
-        if (!this.state.component)
-        this.setState({
-            ...this.state,
-            component: bg,
-            childrens: childrens
-        })
-    }
-    }
-
-    componentDidMount = () => {
-
-        const bg = this.props.currentProjectsData.components.find(item => item.name === this.props.id) || null;
-        const childrens = this.props.mainBuilderData.componentJSX.filter(item => item.name === this.props.id)
-        .map(item => item.component);
-        if (!this.state.component)
-        this.setState({
-            ...this.state,
-            component: bg,
-            childrens: childrens
-        })
+        else return <Loader />;
     }
 }
 export default MainBackground;

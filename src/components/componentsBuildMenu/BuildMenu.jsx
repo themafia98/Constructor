@@ -102,7 +102,6 @@ class BuildMenu extends React.PureComponent {
                 id: `Section${id}`,
                 type: 'background',
             },
-           
             type:'section',
             component: <BuilderComponents
             target = {this.props.editComponentName}
