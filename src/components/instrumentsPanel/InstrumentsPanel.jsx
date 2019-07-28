@@ -194,7 +194,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
-        console.log('instrumentPanel render');
+
         return (
             <Fragment>
                 { this.state.confirmActive ?
@@ -226,7 +226,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidUpdate = (oldProps, oldState) => {
-        console.log('instrumentPanel componentDidUpdate');
         let targetBool = oldState.componentStats.targetSection !== this.props.componentStats.targetSection;
         let idBool = oldState.componentStats.id !== this.props.componentStats.id;
         let statsBool = this.state.componentStats !== oldState.componentStats && !this.state.isChange;

@@ -6,7 +6,7 @@ const Section = props => {
 
     const {currentProjectsData} = props.userData;
     const section = currentProjectsData.sectionTitleProject;
-    console.log(props);
+
             return section.map(item => {
                 return (
                     <MainBackground

@@ -26,8 +26,6 @@ const Image = props => {
     const [shiftCoords, setShiftCoords] = useState(null)
     const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
-
-console.log('image');
     const openImageInstruments = event => {
 
         const componentsPatternImage = {
@@ -67,7 +65,6 @@ console.log('image');
 
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
-        console.log(coordX);
 
         let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
         let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);

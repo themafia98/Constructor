@@ -43,7 +43,6 @@ class MainBackground extends React.PureComponent {
 
     render() {
 
-        console.log('sad');
         let bg = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
         let childrens = this.props.mainBuilderData.componentJSX.filter(item => item.targetSection === this.props.id)
         .map(item => item.component) || null;

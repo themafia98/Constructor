@@ -40,7 +40,6 @@ const TextComponent = props =>  {
 
     let textComponent = React.createRef();
 
-    console.log('texttext');
     const openTitleInstruments = event => {
 
         const componentsPatternText = {

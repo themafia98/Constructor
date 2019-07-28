@@ -112,8 +112,6 @@ class Build extends React.PureComponent {
     };
 
     addComponentsFromBD = array => {
-        console.log('addComponentsFromBD');
-        let sizeParentBox = {width: this.mainComponent.width, height: this.mainComponent.height};
 
         let {componentJSX} = this.state.mainBuilderData;
         let componentsFromDB = [];
@@ -311,7 +309,6 @@ class Build extends React.PureComponent {
     }
 
     componentDidUpdate = () => {
-        console.log('componentDidUpdate');
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         const isLoadComponents = this.state.isLoadComponents;
@@ -331,7 +328,6 @@ class Build extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        console.log('componentDidMount');
         let {userData} = this.props;
         let {currentProjectsData} = userData;
 

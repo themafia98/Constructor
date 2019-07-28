@@ -114,7 +114,6 @@ class ModalWindow extends React.PureComponent {
 
     makeImageResultBox = (items) => {
         if (!items) return null;
-        console.log(items);
         return items.map((item,i) =>{
            return <ImageItem 
                 key = {`item${i}`} 

@@ -131,7 +131,6 @@ class BuildMenu extends React.PureComponent {
     }
 
     render(){
-        console.log('buildMenu');
         if (this.state.mode === 'build'){
             return (
                 <div className = 'ComponentsMenu'>

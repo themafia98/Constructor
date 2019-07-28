@@ -18,8 +18,6 @@ const BackgroundComponent = props => {
     const [targetSection] = useState(props.targetSection);
     let boxComponent = React.createRef();
 
-    console.log(props);
-
     let [backgroundColor, setBgColor] = useState(props.background);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
 
@@ -46,7 +44,7 @@ const BackgroundComponent = props => {
         });
         event.stopPropagation();
     }
-console.log('build');
+
     const changeColor = eventItem => {
         setBgColor(eventItem.colorRGB);
     }

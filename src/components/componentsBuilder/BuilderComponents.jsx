@@ -12,7 +12,7 @@ const BuilderComponents = props => {
     let [color] = useState(props.color ? props.color : 'red');
     let [content] = useState(props.content ? props.content : null);
     let [type] = useState(props.type);
-console.log('text');
+
     if (type === 'text')
         return <TextComponent
                     key = {`text${id}`}
@@ -34,7 +34,7 @@ console.log('text');
                     id = {id}
                     key = {`bg${id}`}
                 />;
-    console.log(type);
+
     if (type === 'image')
         return <Image
                     targetSection = {targetSection}

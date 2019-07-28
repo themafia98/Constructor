@@ -4,7 +4,7 @@ import {SketchPicker} from 'react-color';
 const BackgroundInstruments = props => {
 
     const {componentsStats} = useState(props.componentStats);
-    const color = null;
+    let color = null;
     if (typeof componentsStats === 'object' &&
         componentsStats.hasOwnProperty('color'))
         color = componentsStats.color;
