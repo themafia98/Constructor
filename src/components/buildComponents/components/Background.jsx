@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 const Background = styled.div`
     position: relative;
-    width: 100%;
-    height: 800px;
+    width: ${props => props.width};
+    height: ${props => props.height};
     background-size: cover;
     background-color: ${props => props.backgroundColor};
     background-image: url(${props => props.backgroundImage});
@@ -20,6 +20,9 @@ const BackgroundComponent = props => {
 
     let [backgroundColor, setBgColor] = useState(props.background || props.color);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
+
+    let [width] = useState(props.width ? props.width : '100%');
+    let [height] = useState(props.height ? props.height : '100%');
 
     const saveWidth = event => {
         boxComponent.current.focus();
@@ -54,12 +57,18 @@ const BackgroundComponent = props => {
         setImage(urlFull);
     };
 
+    const saveScroll = eventItem => {
+        console.log(eventItem);
+    }
+
     const didUpdate = () => {
         saveWidth();
         eventEmitter.on(`EventChangeColorBackground${id}`, changeColor);
+        eventEmitter.on(`EventSaveSize${id}`, saveScroll);
         eventEmitter.on(`EventSetBackgroundImage${id}`, setBackgroundImage);
         return () => {
             eventEmitter.off(`EventChangeColorBackground${id}`, changeColor);
+            eventEmitter.off(`EventSaveSize${id}`, saveScroll);
             eventEmitter.off(`EventSetBackgroundImage${id}`, setBackgroundImage);
         }
     }
@@ -72,6 +81,8 @@ const BackgroundComponent = props => {
             data-name = {targetSection}
             backgroundColor = {backgroundColor ? backgroundColor : props.background}
             backgroundImage = {backgroundImage ? backgroundImage : props.backgroundImage}
+            width = {width}
+            height = {height}
         >
             {props.children}
         </Background>

@@ -15,16 +15,16 @@ class MainBackground extends React.PureComponent {
         countComponents: PropTypes.number.isRequired, /** @Number last project */
         menuActive: PropTypes.bool.isRequired, /** @Bool active menu or unactive */
         id: PropTypes.string.isRequired, /** @id current project */
-    }
+    };
 
     state = {
         targetSection: this.props.id,
         editRedy: false,
         component: null,
         children: null,
-    }
+    };
 
-    changeMode = event => {
+    changeMode = () => {
         if (!this.state.editStart || this.state.idProject !== this.props.editComponentName) {
             this.setState({
                 ...this.state,
@@ -36,28 +36,32 @@ class MainBackground extends React.PureComponent {
                 targetSection: this.state.targetSection,
             }));
         }
-    }
+    };
 
-    refBox = null;
-    refBackground = node => this.refBox = node;
+    // getSize = event => {
+    //     console.log(this.props.id);
+    //     eventEmitter.emit(`EventScrollRecalcPosition${this.props.id}`,this.refSection.data);
+    //     event.stopPropagation();
+    // }
+
+    refSection = null;
+    refSectionFunc = node => node ? this.refSection = {data: node.getBoundingClientRect(), node: node} : node;
 
     render() {
-
         let bg = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
-        let childrens = this.props.mainBuilderData.componentJSX.filter(item => item.targetSection === this.props.id)
-        .map(item => item.component) || null;
-
+        let children = this.props.mainBuilderData.componentJSX.filter(item => item.targetSection === this.props.id)
         if (bg)
         return (
             <Fragment>
-                <section data-class = 'editable' onClick = {this.changeMode}>
+                <section id = {`${this.props.sectionNumber}`} onWheel = {this.getSize} ref={this.refSectionFunc} 
+                data-class = 'editable' onClick = {this.changeMode}>
                     <BackgroundComponent {...bg} >
-                        {childrens}
+                        {children.map(item => item.component) || null}
                     </BackgroundComponent>
                     {!this.state.editStart && <div className = 'warningEdit'><p>Click for start edit</p></div>}
                 </section>
             </Fragment>
-        )
+        );
         else return <Loader />;
     }
 }

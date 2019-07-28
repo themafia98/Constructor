@@ -146,15 +146,16 @@ class BuildMenu extends React.PureComponent {
         eventEmitter.emit('EventNewSection', {
             componentsPatternBackground: {
                 ...this.state.componentsPatternBackground,
-                targetSection:  `Section${id}`,
+                targetSection: `Section${id}`,
                 id: `Section${id}`,
                 type: 'background',
             },
-            type:'section',
             component: <BuilderComponents
                             targetSection = {this.props.editComponentName}
                             key = {`bg${id}`}
                             id = {id}
+                            width = '100%'
+                            height = '800px'
                             type = 'background'
                         />
         });

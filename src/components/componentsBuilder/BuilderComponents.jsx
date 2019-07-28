@@ -13,6 +13,8 @@ const BuilderComponents = props => {
     let [color] = useState(props.color ? props.color : 'red');
     let [content] = useState(props.content ? props.content : null);
     let [type] = useState(props.type);
+    let [width] = useState(props.width);
+    let [height] = useState(props.height);
 
     if (type === 'text')
         return <TextComponent
@@ -31,6 +33,8 @@ const BuilderComponents = props => {
         return <BackgroundComponent
                     targetSection = {targetSection}
                     color = {color}
+                    width = {width}
+                    height = {height}
                     size = {size}
                     id = {id}
                     key = {`bg${id}`}

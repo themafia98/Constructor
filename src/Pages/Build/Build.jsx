@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
+
+import { Link, animateScroll as scroll } from "react-scroll";
+
 import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
 import updateMiddleware from '../../redux/middleware/updateMiddleware';
 import withFirebase from '../../components/firebaseHOC';
@@ -35,6 +38,7 @@ class Build extends React.PureComponent {
     state = {
             idProject: parseInt(this.props.match.params.param),
             editStart: false,
+            position: 0,
             isLoadComponents: true,
             projectEmpty: false,
             showSectionAddMenu: false,
@@ -58,7 +62,7 @@ class Build extends React.PureComponent {
         const modeHave = itemEvent.hasOwnProperty('mode');
         this.setState({
             ...this.state, 
-            modalSearch: this.state.modalSearch ? false : true,
+            modalSearch: !this.state.modalSearch,
             modalSearchMode: modeHave ? itemEvent.mode : null
         });
     }
@@ -132,13 +136,13 @@ class Build extends React.PureComponent {
                         sizeParentBox = {{...this.mainComponent.data}}
                         {...item}
                         key = {`${item.type}${item.id}`}
-                    />
+                    />;
 
                 const patternJSX = {
                     id: item.id,
                     targetSection: item.targetSection,
                     component: component
-                }
+                };
                 componentsFromDB.push(patternJSX);
                 components.push(item);
             }
@@ -154,7 +158,7 @@ class Build extends React.PureComponent {
                     componentJSX: [...componentJSX, ...componentsFromDB],
                 },
             });
-    }
+    };
 
     addComponent = itemEvent => {
         let {componentJSX} = this.state.mainBuilderData;
@@ -173,7 +177,7 @@ class Build extends React.PureComponent {
             id: componentsPatternStatus.id,
             targetSection: componentsPatternStatus.targetSection,
             component: itemEvent.component
-        }
+        };
             this.setState({
                 ...this.state,
                 mainBuilderData: {
@@ -269,6 +273,21 @@ class Build extends React.PureComponent {
         eventEmitter.emit("ScrollRecalcPosition", this.mainComponent.node.scrollTop);
     }
 
+    scrolllS = event => {
+        console.log(this.mainComponent.data);
+        console.log(this.mainComponent.node);
+        if (event.deltaY === 100 && this.state.position < this.mainComponent.data.height)
+        this.setState({
+            ...this.state,
+            position: this.state.position + 800
+        }, () =>scroll.scrollTo(this.state.position));
+        else if (event.deltaY !== 100 && this.state.position > 0)
+        this.setState({
+            ...this.state,
+            position: this.state.position - 800
+        }, () =>scroll.scrollTo(this.state.position));
+    }
+
     render(){
 
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
@@ -286,10 +305,12 @@ class Build extends React.PureComponent {
                     <Header key = 'Header' title = "Constructor"  />
                     <div
                         ref = {this.mainRefComponent} 
-                        onScroll = {this.updateCoordsComponents}
+                        // onScroll = {this.updateCoordsComponents}
+                        onWheel = {this.scrolllS}
                         onMouseMove = {this.showAddSection} 
                         className = 'Build' 
-                        key = 'Build'>
+                        key = 'Build'
+                    >
                         { this.state.editStart &&
                         <Controllers
                             key = 'controllers'

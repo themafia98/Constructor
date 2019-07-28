@@ -45,7 +45,7 @@ const TextComponent = props =>  {
     let [colorText, setColorText] = useState(props.color);
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
     let [contentText, setText] = useState(props.content ? props.content : props.children);
-    const [shiftCoords, setShiftCoords] = useState(null)
+    const [shiftCoords, setShiftCoords] = useState(null);
     const [posText, setPosition] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
     const [startDragNdrop,setStartDragNdrop] = useState(false);
@@ -62,7 +62,7 @@ const TextComponent = props =>  {
             fontSize: sizeText,
             content: contentText,
             coords: {...posText}, // x, y
-        }
+        };
 
         eventEmitter.emit(`EventInstrumentPanel`,{
             type: 'text',
@@ -73,17 +73,17 @@ const TextComponent = props =>  {
         });
 
         event.stopPropagation();
-    }
+    };
 
     const changeColorText = colorRGB => {
         if (typeof colorRGB === 'string')
         setColorText(colorRGB);
-    }
+    };
 
     const changeSizeText = eventSize => {
         const {size} = eventSize;
         setSizeText(size);
-    }
+    };
 
     const saveSize = event => {
 
@@ -99,36 +99,35 @@ const TextComponent = props =>  {
             const {content} = eventContent;
             setText(content);
         }
-    }
+    };
 
-    const scrollCordsSet = eventItem => {
-  
-        if (eventItem >= 700) eventItem =  eventItem - sizeParentBox.height;
-        setScrollY(eventItem);
-    }
+    // const scrollCordsSet = eventItem => {
+    //     console.log(eventItem);
+    //     // setScrollY(eventItem);
+    // };
 
 
     const didUpdate = event => {
-        eventEmitter.on('ScrollRecalcPosition', scrollCordsSet);
+        // eventEmitter.on(`EventScrollRecalcPosition${targetSection}`, scrollCordsSet);
         eventEmitter.on(`EventChangeColorText${id}`, changeColorText);
         eventEmitter.on(`EventChangeSizeText${id}`, changeSizeText);
         eventEmitter.on(`EventChangeContentText${id}`, changeContentText);
         eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
         return () => {
-            eventEmitter.off('ScrollRecalcPosition', scrollCordsSet);
+            // eventEmitter.off(`EventScrollRecalcPosition${targetSection}`, scrollCordsSet);
             eventEmitter.off(`EventChangeColorText${id}`, changeColorText);
             eventEmitter.off(`EventSaveWidth${targetSection}`,saveSize);
             eventEmitter.off(`EventChangeSizeText${id}`, changeSizeText);
             eventEmitter.off(`EventChangeContentText${id}`, changeContentText);
         }
-    }
+    };
 
     const getCoords = (element) => {
         return {
             left: element.left,
             top: element.top + _ScrollY,
         }
-    }
+    };
 
     const saveCoords = event => {
 
@@ -144,7 +143,7 @@ const TextComponent = props =>  {
         if (!startDragNdrop) setStartDragNdrop(true);
 
         event.stopPropagation();
-    }
+    };
 
     const moveText = event => {
 
@@ -152,32 +151,22 @@ const TextComponent = props =>  {
             let {current} = textComponent;
             current.focus();
 
-            const MARGIN = 150;
-            const borderBottom = sizeParentBox.height - MARGIN;
-
-            // const borderLeft = sizeParentBox.width - MARGIN;
 
             let coordX = event.pageX - shiftCoords.x;
             let coordY = event.pageY - shiftCoords.y;
-
-            if (coordY < 0) coordY =  0;
-            if (coordY > borderBottom) coordY = borderBottom;
-
-
 
             let convertToPercentX = coordX * 100 / sizeParentBox.width;
             let convertToPercentY = coordY * 100 / sizeParentBox.height;
 
             const position = {
-                x: convertToPercentX.toFixed(1) + '%', 
-                y: convertToPercentY.toFixed(1) + '%', 
-                shadowDisplay: event.type === 'drag' ? true : false
+                x: convertToPercentX.toFixed(1) + '%',
+                y: convertToPercentY.toFixed(1) + '%',
             };
             setPosition(position);
 
     }
         event.stopPropagation();
-    }
+    };
 
     const stopDragNdrop = event => {
         if (startDragNdrop) {
@@ -185,7 +174,7 @@ const TextComponent = props =>  {
             eventEmitter.emit(`EventUpdatePosition${id}`, posText);
         }
         event.stopPropagation();
-    }
+    };
 
     const weelResizeText = event => {
 
@@ -203,7 +192,7 @@ const TextComponent = props =>  {
              eventEmitter.emit(`EventUpdateSizeText${id}`, counter);
             }
         event.stopPropagation();
-    }
+    };
 
     useEffect(didUpdate);
 
@@ -225,6 +214,6 @@ const TextComponent = props =>  {
             <TextStyle>{contentText}</TextStyle>
         </WrapperText>
     )
-}
+};
 
 export default TextComponent;

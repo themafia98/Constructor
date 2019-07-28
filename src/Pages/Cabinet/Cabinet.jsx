@@ -34,20 +34,20 @@ class Cabinet extends React.PureComponent {
     workMode: 'default',
   }
 
-  logOut = event => {
+  logOut = () => {
     this.props.dispatch(middlewareLogOutUser(this.props.idUser));
   }
 
   deletItem = event => {
     this.props.dispatch(middlewareDelete({...event, uid: this.props.firebase.getCurrentUser().uid}));
-  }
+  };
 
   changeWorkMode = event => {
     this.setState ({
       ...this.state,
       workMode: event.action,
     });
-  }
+  };
 
   render(){
 
@@ -69,7 +69,7 @@ class Cabinet extends React.PureComponent {
   componentDidMount = () => {
     eventEmitter.on('EventDeleteItem', this.deletItem);
     eventEmitter.on('EventChangeWorkMode', this.changeWorkMode);
-  }
+  };
 
   componentWillUnmount = () => {
     eventEmitter.off('EventDeleteItem', this.deletItem);
@@ -83,6 +83,6 @@ const mapStateToProps = (state) => {
     projects: [...state.cabinet.projects],
     active: state.cabinet.active
   }
-}
+};
 
 export default connect(mapStateToProps)(withFirebase(Cabinet));
