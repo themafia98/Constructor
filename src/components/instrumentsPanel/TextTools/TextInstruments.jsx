@@ -9,7 +9,6 @@ const TextInstruments = props => {
         let {coords} = props.componentStats;
         let {color} = props.componentStats;
 
-        console.log(props);
         return (
             <Fragment>
             <p className = 'titleInstument'>Position: </p>

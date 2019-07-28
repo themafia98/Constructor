@@ -94,7 +94,6 @@ class InstrumentsPanel extends React.PureComponent {
 
     updateBimageStats = eventItem => {
         const {images} = eventItem;
-        console.log(eventItem);
         if (eventItem.mode !== 'image')
         this.setState({
             ...this.state,
@@ -159,7 +158,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     makePanelInstruments = (type) => {
-        console.log(type);
             switch (type){
                 case 'text':
                    return(
@@ -238,7 +236,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidUpdate = (oldProps, oldState) => {
-        console.log(oldProps);
         let targetBool = oldState.componentStats.targetSection !== this.props.componentStats.targetSection;
         let idBool = oldState.componentStats.id !== this.props.componentStats.id;
         let statsBool = this.state.componentStats !== oldState.componentStats && !this.state.isChange;
@@ -260,7 +257,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidMount = event => {
-        console.log(this.state.componentStats.id);
         eventEmitter.on(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);

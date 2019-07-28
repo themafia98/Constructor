@@ -17,7 +17,7 @@ const AdditionalTools = props => {
                     />
             }
                 <InstrumentsPanel
-                    key = 'InstrumentsPanel'
+                    key = {`InstrumentsPanel${props.componentStats.id}`}
                     editComponentName = {props.editComponentName}
                     componentStats = {{...props.componentStats}}
                     mainBuilderData =  {props.mainBuilderData}

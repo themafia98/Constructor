@@ -16,6 +16,7 @@ const WrapperText = styled.div.attrs(props => ({
     color: ${props => props.textColor};
     text-align: center;
     margin: 0;
+    border: 1px solid red;
 `;
 
 const TextStyle = styled.h1`
@@ -48,13 +49,11 @@ const TextComponent = props =>  {
     const [posText, setPosition] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
     const [startDragNdrop,setStartDragNdrop] = useState(false);
-    const [instrument,setOpenInstrument] = useState(false);
 
     let textComponent = React.createRef();
 
     const openTitleInstruments = event => {
 
-        setOpenInstrument(true);
         const componentsPatternText = {
             id: id,
             targetSection: targetSection,
@@ -135,8 +134,6 @@ const TextComponent = props =>  {
 
         if (_ScrollY === undefined) _ScrollY = 0;
         let element = event.target.getBoundingClientRect();
-        let left = element.left;
-        let top = element.top + _ScrollY;
 
         const cords = getCoords(element);
 
@@ -177,17 +174,18 @@ const TextComponent = props =>  {
                 shadowDisplay: event.type === 'drag' ? true : false
             };
             setPosition(position);
-            }
+
+    }
         event.stopPropagation();
     }
 
     const stopDragNdrop = event => {
-        if (startDragNdrop) setStartDragNdrop(false);
-        eventEmitter.emit(`EventUpdatePosition${id}`, posText);
+        if (startDragNdrop) {
+            setStartDragNdrop(false);
+            eventEmitter.emit(`EventUpdatePosition${id}`, posText);
+        }
         event.stopPropagation();
     }
-
-    console.log('text');
 
     const weelResizeText = event => {
 
