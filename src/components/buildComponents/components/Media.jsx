@@ -10,7 +10,7 @@ const Media = styled.iframe`
     left: 50%;
     top: 50%;
     position: absolute;
-    z-index: 9999999999999;
+    z-index: 10;
     border: 1px solid red;
     background: grey;
     padding: 25px;
@@ -38,8 +38,7 @@ const MediaComponent = props => {
             onClick={openMediaInstruments} 
             width = {props.width} 
             height = {props.height}
-            src="https://www.youtube.com/embed/B0b59jgudto" 
-            frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            src="https://www.youtube.com/embed/B0b59jgudto"
             allowfullscreen
         >
             {props.children}

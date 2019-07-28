@@ -146,7 +146,7 @@ const Image = props => {
     return (
         <ImageStyle  
             size = {size}
-            src = {process.env.PUBLIC_URL + path}
+            src = {path}
             alt = 'img' 
             onClick = {openImageInstruments}
             draggable = {true}
