@@ -18,7 +18,7 @@ const BackgroundComponent = props => {
     const [targetSection] = useState(props.targetSection);
     let boxComponent = React.createRef();
 
-    let [backgroundColor, setBgColor] = useState(props.background);
+    let [backgroundColor, setBgColor] = useState(props.background || props.color);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
 
     const saveWidth = event => {

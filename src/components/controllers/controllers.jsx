@@ -15,6 +15,7 @@ class Controllers extends React.PureComponent {
 
     state = {
         viewComponentMenu: false,
+        editComponentName: this.props.editComponentName,
         shiftX: 0,
         shiftY: 0,
         coordsX: '50%',
@@ -27,30 +28,6 @@ class Controllers extends React.PureComponent {
         event.stopPropagation();
     }
 
-    saveCoords = event => {
-        let left = this.controlBox.getBoundingClientRect().left;
-        let top = this.controlBox.getBoundingClientRect().top;
-        this.setState({...this.state, shiftX: event.pageX - left, 
-        shiftY: event.pageY - top });
-
-        event.stopPropagation();
-    }
-
-    drag = event => {
-        if (!this.state.viewComponentMenu)
-            this.setState({
-                ...this.state,
-                coordsX: event.pageX - this.state.shiftX + 'px', 
-                coordsY: event.pageY - this.state.shiftY + 'px',
-                shadowDisplay: event.type === 'drag' ? 'none' : 'block'
-            });
-        event.stopPropagation();
-    }
-
-    controlBox = null;
-    refControll = (node) => this.controlBox = node;
-
-
     render(){
         return (
             <Fragment>
@@ -61,16 +38,15 @@ class Controllers extends React.PureComponent {
                 onClick = {this.componentMenu}
                 >
                     <Icon
-                        draggable = {true}
                         onClick = {this.componentMenu}
                         className = 'addButton'
                         path = '/img/addButton.png'
                     />
                     { this.state.viewComponentMenu ?
                         <BuildMenu
-                            key = {`buildMenu ${this.props.mode}`}
+                            key = {`buildMenu ${this.state.editComponentName}`}
                             mode = 'build'
-                            editComponentName = {this.props.editComponentName}
+                            editComponentName = {this.state.editComponentName}
                             sizeParentBox = {this.props.sizeParentBox}
                             countComponents = {this.props.countComponents}
                         /> : null
@@ -79,6 +55,14 @@ class Controllers extends React.PureComponent {
             }
             </Fragment>
         )
+    }
+
+    componentDidUpdate = () => {
+        if (this.props.editComponentName !== this.state.editComponentName)
+            this.setState({
+                ...this.state,
+                editComponentName: this.props.editComponentName
+            })
     }
 
 }

@@ -36,8 +36,9 @@ const TextComponent = props =>  {
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
     let [contentText, setText] = useState(props.content ? props.content : props.children);
     const [shiftCoords, setShiftCoords] = useState(null)
-    const [dragNdrop, setDragNdrop] = useState(props.coords.left ? {x: props.coords.left, y: props.coords.top} : null);
+    const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
+    console.log(sizeParentBox);
     let textComponent = React.createRef();
 
     const openTitleInstruments = event => {
@@ -129,6 +130,7 @@ const TextComponent = props =>  {
 
         const MARGIN = 150;
         const borderBottom = sizeParentBox.height - MARGIN;
+        console.log(sizeParentBox);
         // const borderLeft = sizeParentBox.width - MARGIN;
 
         let coordX = event.pageX - shiftCoords.x;

@@ -69,7 +69,7 @@ class Build extends React.PureComponent {
     };
 
     workModeEdit = itemEvent => {
-
+        console.log(itemEvent.targetSection);
         if (itemEvent.editStart)
         this.setState({
             ...this.state,
@@ -85,14 +85,17 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
 
-            const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
-            const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
-            // const instumentActive = this.state.instrumentPanel.instrumentActive;
-            if (targetEqual || idEqual)
+            const targetEqual = this.state.editComponentName === itemEvent.targetSection;
+            const idEqual = this.state.componentStats.id === itemEvent.componentStats.id;
+            const instumentActive = this.state.instrumentPanel.instrumentActive;
+            if (!idEqual)
             this.setState({
                 ...this.state,
-                editComponentName: itemEvent.name,
-                componentStats: {...itemEvent.componentStats},
+                editComponentName: itemEvent.targetSection,
+                componentStats: {
+                    ...this.state.componentStats,
+                    ...itemEvent.componentStats
+                },
                 instrumentPanel: {
                     ...this.state.instrumentPanel,
                     instrumentActive: true,
@@ -222,7 +225,7 @@ class Build extends React.PureComponent {
         event.stopPropagation();
     }
     mainComponent = null;
-    mainRefComponent = node => this.mainComponent = node.getBoundingClientRect();
+    mainRefComponent = node => node ? this.mainComponent = node.getBoundingClientRect() : node;
 
     addNewSection = eventItem => {
 
@@ -271,8 +274,7 @@ class Build extends React.PureComponent {
 
 
         if (userData.active && currentProjectsData.loadProject){
-            // const _sizeParentBox = this.mainComponent.getBoundingClientRect();
-        //    const
+            console.log(this.state.editComponentName);
             return (
                 <Fragment>
                     <Header key = 'Header' title = "Constructor"  />
