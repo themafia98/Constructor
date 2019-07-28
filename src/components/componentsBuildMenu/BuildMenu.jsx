@@ -42,7 +42,15 @@ class BuildMenu extends React.PureComponent {
             borderRadius: null,
             opacity: null,
             zIndex: null,
-            image: '/img/test.jpg',
+            image: '/img/photoPattern.svg',
+            coords: {x: null, y: null}, // x, y
+        },
+        componentsPatternMedia: {
+            id: null,
+            targetSection: null,
+            type: 'media',
+            size: null,
+            content: null,
             coords: {x: null, y: null}, // x, y
         },
         sizeParentBox: {...this.props.sizeParentBox},
@@ -104,8 +112,31 @@ class BuildMenu extends React.PureComponent {
                             sizeParentBox = {this.props.sizeParentBox}
                             id = {id}
                             coords = {{...this.state.componentsPatternImage.coords}}
-                            path = {'/img/test.jpg'}
+                            path = {'/img/photoPattern.svg'}
                             type = 'image' />
+        });
+        event.stopPropagation();
+    }
+
+    addMedia = event => {
+        let id = Math.random().toFixed(3);
+        console.log(event);
+        eventEmitter.emit('EventBuildComponents', {
+            componentsPatternMedia: {
+                ...this.state.componentsPatternMedia,
+                id: id,
+                targetSection: this.props.editComponentName,
+            },
+            type: this.state.componentsPatternMedia.type,
+            component: <BuilderComponents
+                            key = {`media${id}`}
+                            targetSection = {this.props.editComponentName}
+                            sizeParentBox = {this.props.sizeParentBox}
+                            id = {id}
+                            coords = {{...this.state.componentsPatternMedia.coords}}
+                            path = {'/img/photoPattern.mp4'}
+                            type = 'media' 
+                        />
         });
         event.stopPropagation();
     }
@@ -150,7 +181,7 @@ class BuildMenu extends React.PureComponent {
                         className = 'ButtonTool CompoentnsMenu_button' >
                         <span>Button</span>
                     </button>
-                    <button
+                    <button onClick = {this.addMedia}
                         className = 'VideoTool CompoentnsMenu_button'
                     >
                         <span>Video</span>

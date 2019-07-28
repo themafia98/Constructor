@@ -54,7 +54,7 @@ class MainBackground extends React.PureComponent {
                     <BackgroundComponent {...bg} >
                         {childrens}
                     </BackgroundComponent>
-                    {!this.state.editStart && <p className = 'warningEdit'>Click for start edit</p>}
+                    {!this.state.editStart && <div className = 'warningEdit'><p>Click for start edit</p></div>}
                 </section>
             </Fragment>
         )

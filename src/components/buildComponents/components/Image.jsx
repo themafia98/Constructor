@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const ImageStyle = styled.img.attrs(props => ({
     style: {
-        display: props.shadowDisplay ? 'none' : 'block',
+        // display: props.shadowDisplay ? 'none' : 'block',
         left: props.coordX ? props.coordX : '45%',
         top:  props.coordY ? props.coordY : '0',
 }}))`
@@ -16,7 +16,7 @@ const ImageStyle = styled.img.attrs(props => ({
 const Image = props => {
 
     const [id] = useState(props.id);
-    const [path] = useState(props.path);
+    const [path, setImage] = useState(props.path);
     const [size,setSize] = useState(props.size ? props.size : 30);
     const [targetSection] = useState(props.targetSection);
 
@@ -69,6 +69,10 @@ const Image = props => {
         let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
         let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
 
+        if (isNaN(convertToPercentX) || isNaN(convertToPercentY)){
+            console.log('error');
+        }
+
         const position = {
             x: convertToPercentX.toFixed(1) + '%', 
             y: convertToPercentY.toFixed(1) + '%', 
@@ -77,11 +81,15 @@ const Image = props => {
         };
         setDragNdrop(position);
         if (event.type === 'dragend') {
-            eventEmitter.emit('EventUpdatePosition', position);
+            eventEmitter.emit(`EventUpdatePosition${id}`, position);
         }
         event.stopPropagation();
     }
 
+    const setCurrentImage = event => {
+        const {urlFull} = event;
+        setImage(urlFull);
+    };
     
     const weelResizeText = event => {
 
@@ -111,8 +119,10 @@ const Image = props => {
 
     const didUpdate = effect => {
         eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
+        eventEmitter.on(`EventSetCurrentImage${id}`, setCurrentImage);
         return () => {
             eventEmitter.off(`EventSaveWidth${targetSection}`,saveSize);
+            eventEmitter.off(`EventSetCurrentImage${id}`, setCurrentImage);
         }
     }
 

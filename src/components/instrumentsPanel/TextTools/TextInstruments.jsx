@@ -3,12 +3,13 @@ import {SketchPicker} from 'react-color';
 
 const TextInstruments = props => {
 
-        const stats = props.componentStats;
         let {colorPickerActive} = props.instrumentPanel;
-        let {content} = stats;
-        let {fontSize} = stats;
-        let {coords} = stats;
+        let {content} = props.componentStats;
+        let {fontSize} = props.componentStats;
+        let {coords} = props.componentStats;
+        let {color} = props.componentStats;
 
+        console.log(props);
         return (
             <Fragment>
             <p className = 'titleInstument'>Position: </p>
@@ -28,12 +29,12 @@ const TextInstruments = props => {
                 onChange = {props.cbSetSize}
                 type="number"
                 min = '10' max = '200'
-                value = {fontSize ? fontSize : 120 }
+                value = {fontSize ? fontSize : 120}
             />
                 { colorPickerActive ?
                     <SketchPicker
                     onChangeComplete={props.cbHandleChangeComplete}
-                    color = {stats.color ? stats.color : 'red'}
+                    color = {color ? color: 'red'}
                     />
                     : null
                 }
@@ -42,7 +43,7 @@ const TextInstruments = props => {
                 onChange = {props.cbSetContent}
                 maxLength = '20'
                 type = 'text'
-                defaultValue = {content}
+                value = {content ? content : 'Title'}
             />
             <input 
                 onClick = {props.cbSaveChanges}

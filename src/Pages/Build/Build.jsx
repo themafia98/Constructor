@@ -50,11 +50,17 @@ class Build extends React.PureComponent {
             editComponentName:  null,
             menuActive: false,
             modalSearch: false,
+            modalSearchMode: null,
             modalImageViewer: {action: false, image: null },
         }
 
     modalSearchOn = itemEvent => {
-        this.setState({...this.state, modalSearch: this.state.modalSearch ? false : true});
+        const modeHave = itemEvent.hasOwnProperty('mode');
+        this.setState({
+            ...this.state, 
+            modalSearch: this.state.modalSearch ? false : true,
+            modalSearchMode: modeHave ? itemEvent.mode : null
+        });
     }
 
     imageViewerSwitch = itemEvent => {
@@ -69,7 +75,7 @@ class Build extends React.PureComponent {
     };
 
     workModeEdit = itemEvent => {
-        console.log(itemEvent.targetSection);
+ 
         if (itemEvent.editStart)
         this.setState({
             ...this.state,
@@ -85,9 +91,7 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
 
-            const targetEqual = this.state.editComponentName === itemEvent.targetSection;
             const idEqual = this.state.componentStats.id === itemEvent.componentStats.id;
-            const instumentActive = this.state.instrumentPanel.instrumentActive;
             if (!idEqual)
             this.setState({
                 ...this.state,
@@ -100,7 +104,7 @@ class Build extends React.PureComponent {
                     ...this.state.instrumentPanel,
                     instrumentActive: true,
                 }
-            })
+            });
     }
 
     closePanel = itemEvent => {
@@ -125,7 +129,7 @@ class Build extends React.PureComponent {
                 let component =
                     <BuilderComponents
 
-                        sizeParentBox = {{...this.mainComponent}}
+                        sizeParentBox = {{...this.mainComponent.data}}
                         {...item}
                         key = {`${item.type}${item.id}`}
                     />
@@ -162,6 +166,8 @@ class Build extends React.PureComponent {
             componentsPatternStatus = itemEvent.componentsPatternBackground;
         else if (itemEvent.type === 'image')
             componentsPatternStatus = itemEvent.componentsPatternImage;
+            else if (itemEvent.type === 'media')
+            componentsPatternStatus = itemEvent.componentsPatternMedia;
 
         const patternJSX = {
             id: componentsPatternStatus.id,
@@ -225,7 +231,7 @@ class Build extends React.PureComponent {
         event.stopPropagation();
     }
     mainComponent = null;
-    mainRefComponent = node => node ? this.mainComponent = node.getBoundingClientRect() : node;
+    mainRefComponent = node => node ? this.mainComponent = {data: node.getBoundingClientRect(), node: node} : node;
 
     addNewSection = eventItem => {
 
@@ -260,7 +266,7 @@ class Build extends React.PureComponent {
 }
 
     updateCoordsComponents = event => {
-        eventEmitter.emit("ScrollRecalcPosition", this.mainComponent.scrollTop);
+        eventEmitter.emit("ScrollRecalcPosition", this.mainComponent.node.scrollTop);
     }
 
     render(){
@@ -274,7 +280,7 @@ class Build extends React.PureComponent {
 
 
         if (userData.active && currentProjectsData.loadProject){
-            console.log(this.state.editComponentName);
+      
             return (
                 <Fragment>
                     <Header key = 'Header' title = "Constructor"  />
@@ -290,7 +296,7 @@ class Build extends React.PureComponent {
                             editComponentName = {this.state.editComponentName}
                             countComponents = {this.state.mainBuilderData.components.length}
                             menuActive = {this.state.menuActive}
-                            sizeParentBox = {this.mainComponent}
+                            sizeParentBox = {this.mainComponent.data}
                         />
                         }
                         {this.state.showSectionAddMenu &&
@@ -343,7 +349,7 @@ class Build extends React.PureComponent {
                 components: [...current.components]
             }));
         };
-
+        console.log('build');
         eventEmitter.on('EventBuildComponents', this.addComponent);
         eventEmitter.on('EventNewSection', this.addNewSection);
         eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);

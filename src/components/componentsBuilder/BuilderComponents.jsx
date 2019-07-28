@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 
+import Media from '../buildComponents/components/Media';
 import Image from '../buildComponents/components/Image';
 import TextComponent from '../buildComponents/components/Text';
 import BackgroundComponent from '../buildComponents/components/Background';
@@ -8,7 +9,7 @@ const BuilderComponents = props => {
 
     let [targetSection] = useState(props.targetSection);
     let [id] = useState(props.id);
-    let [size] = useState(props.size);
+    let [size] = useState(props.size || props.fontSize);
     let [color] = useState(props.color ? props.color : 'red');
     let [content] = useState(props.content ? props.content : null);
     let [type] = useState(props.type);
@@ -44,6 +45,15 @@ const BuilderComponents = props => {
                     sizeParentBox = {{...props.sizeParentBox}}
                     id = {id}
                     key = {`image${id}`}
+                />
+    if (type === 'media')
+        return <Media
+                    key = {`media${id}`}
+                    id = {id}
+                    targetSection = {targetSection}
+                    sizeParentBox = {{...props.sizeParentBox}}
+                    path = {props.path ? props.path : props.content}
+                    coords = {{...props.coords}}
                 />
 };
 

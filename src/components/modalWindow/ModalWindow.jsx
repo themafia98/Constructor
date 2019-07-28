@@ -12,7 +12,7 @@ class ModalWindow extends React.PureComponent {
 
     static propTypes = {
         workMode: PropTypes.string.isRequired, /** @Mode for modal */
-        idComponent: PropTypes.string || PropTypes.number /** @Id current user project */
+        // idComponent: PropTypes.string || PropTypes.number /** @Id current user project */
     }
 
     state = {
@@ -107,8 +107,14 @@ class ModalWindow extends React.PureComponent {
     setSelectedImage = event => {
 
         let images = {...this.state.images};
-        eventEmitter.emit(`EventSetBackgroundImage${this.props.idComponent}`,images);
-        eventEmitter.emit(`EventSetBImageInstumentPanel`,images);
+        if (this.props.modalSearchMode !== 'image'){
+            eventEmitter.emit(`EventSetBackgroundImage${this.props.idComponent}`,images);
+            eventEmitter.emit(`EventSetBImageInstumentPanel`,{images: images, mode: this.props.modalSearchMode});
+        } else {
+            eventEmitter.emit(`EventSetCurrentImage${this.props.idComponent}`, images);
+            eventEmitter.emit(`EventSetBImageInstumentPanel`, {images: images,  mode: this.props.modalSearchMode });
+        }
+        
         event.stopPropagation();
     };
 
@@ -167,7 +173,7 @@ class ModalWindow extends React.PureComponent {
     cancel = event => {
 
         if (this.state.workMode === 'Search')
-            eventEmitter.emit("EventModalSearchOn");
+            eventEmitter.emit("EventModalSearchOn", {action: 'offline', mode: null});
         else  eventEmitter.emit('EventChangeWorkMode',{action: 'default'});
     }
 
@@ -212,10 +218,11 @@ class ModalWindow extends React.PureComponent {
                     </div>
                 )
             case 'Search':
+                console.log(this.props);
                 return (
                     <Fragment>
                         <div className = 'Modal Modal-search'>
-                            <h3>Search background image</h3>
+                            <h3>{`Search ${this.props.modalSearchMode !== 'image' ? 'background image' : 'image'}`}</h3>
                             { this.state.images.error ?
                                 <span className = 'error'>{this.state.images.error}</span> : null
                             }
@@ -249,6 +256,45 @@ class ModalWindow extends React.PureComponent {
                         }
                     </Fragment>
                 )
+
+                case 'SearchImage':
+                    return (
+                        <Fragment>
+                            <div className = 'Modal Modal-search'>
+                                <h3>Search background image</h3>
+                                { this.state.images.error ?
+                                    <span className = 'error'>{this.state.images.error}</span> : null
+                                }
+                                <input ref = {this.refSearch} type = 'text' placeholder = "Photo name" />
+                                <input 
+                                    disabled = {this.state.images.buttonSearchDisabled} 
+                                    className = 'acceptButton' 
+                                    type = 'button' 
+                                    value = 'Search'
+                                    onClick = {this.searchBackground}
+                                />
+                                <input onClick = {this.cancel} type ='button' value = 'Cancel' />
+                                {
+                                    this.state.images.imageBoxView ?
+                                    <div className = 'searchResultBox'>
+                                        {this.makeImageResultBox([...this.state.images['images']])}
+                                    </div>
+                                    : null
+                                }
+                            </div>
+                            {  this.state.imageMenuActive ?
+                                <div className = 'ActionModalSearch'>
+                                <button onClick = {this.showImage} className = 'actionModalSearch__view'>
+                                    <Icon path = '/img/view.png' />
+                                </button>
+                                <button onClick = {this.setSelectedImage} className = 'actionModalSearch__settings'>
+                                    <Icon path = '/img/settings.png' />
+                                </button>
+                                </div>
+                                : null
+                            }
+                        </Fragment>
+                    )
             default: return <Fragment></Fragment>
         }
     }

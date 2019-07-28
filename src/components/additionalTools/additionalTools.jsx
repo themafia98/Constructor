@@ -12,6 +12,7 @@ const AdditionalTools = props => {
             {   props.modalSearch &&
                     <ModalWindow
                         idComponent = {props.componentStats.id}
+                        modalSearchMode = {props.modalSearchMode}
                         key = 'ModalWindow' workMode = 'Search' 
                     />
             }
@@ -19,8 +20,8 @@ const AdditionalTools = props => {
                     key = 'InstrumentsPanel'
                     editComponentName = {props.editComponentName}
                     componentStats = {{...props.componentStats}}
-                    mainBuilderData =  {{...props.mainBuilderData}}
-                    instrumentPanel = {{...props.instrumentPanel}}
+                    mainBuilderData =  {props.mainBuilderData}
+                    instrumentPanel = {props.instrumentPanel}
                 />
         </Fragment>
     )

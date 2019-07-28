@@ -93,14 +93,25 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     updateBimageStats = eventItem => {
-        const {urlFull} = eventItem;
+        const {images} = eventItem;
+        console.log(eventItem);
+        if (eventItem.mode !== 'image')
         this.setState({
             ...this.state,
             componentStats:{
                 ...this.state.componentStats,
-                backgroundImage: urlFull
+                backgroundImage: images.urlFull
             }
         });
+        else {
+            this.setState({
+                ...this.state,
+                componentStats:{
+                    ...this.state.componentStats,
+                    image: images.urlFull
+                }
+            });
+        }
     };
 
     handleChangeComplete = event => {
@@ -142,12 +153,13 @@ class InstrumentsPanel extends React.PureComponent {
     searchImage = event => {
 
         let {id} = this.state.componentStats;
-        eventEmitter.emit('EventModalSearchOn', {idComponent: id});
+        eventEmitter.emit('EventModalSearchOn', {idComponent: id, mode: this.state.componentStats.type});
 
         event.stopPropagation();
     };
 
     makePanelInstruments = (type) => {
+        console.log(type);
             switch (type){
                 case 'text':
                    return(
@@ -226,6 +238,7 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidUpdate = (oldProps, oldState) => {
+        console.log(oldProps);
         let targetBool = oldState.componentStats.targetSection !== this.props.componentStats.targetSection;
         let idBool = oldState.componentStats.id !== this.props.componentStats.id;
         let statsBool = this.state.componentStats !== oldState.componentStats && !this.state.isChange;
@@ -237,25 +250,25 @@ class InstrumentsPanel extends React.PureComponent {
                 componentStats: this.props.mainBuilderData.components.find(item =>
                     {return item.id === this.props.componentStats.id }),
             });
-        } else if (statsBool) 
+        } else if (!this.state.isChange && statsBool) {
             this.setState({
                     ...this.state,
                     componentStats: {...this.state.componentStats},
                     isChange: true
             });
-        else if (compare && this.state.isChange) this.setState({...this.state, confirmActive: true});
+        } else if (compare && this.state.isChange) this.setState({...this.state, confirmActive: true});
     };
 
     componentDidMount = event => {
         eventEmitter.on(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
-        eventEmitter.on("EventUpdatePosition", this.updatePosition);
+        eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 
     componentWillUnmount = event => {
         eventEmitter.off(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
-        eventEmitter.off("EventUpdatePosition", this.updatePosition);
+        eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 };
 

@@ -38,7 +38,7 @@ const TextComponent = props =>  {
     const [shiftCoords, setShiftCoords] = useState(null)
     const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
-    console.log(sizeParentBox);
+
     let textComponent = React.createRef();
 
     const openTitleInstruments = event => {
@@ -91,6 +91,9 @@ const TextComponent = props =>  {
     }
 
     const scrollCordsSet = eventItem => {
+  
+        if (eventItem >= 700) eventItem =  eventItem - sizeParentBox.height;
+        // if (eventItem >= 1300) eventItem =  eventItem*2 - sizeParentBox.height;
         setScrollY(eventItem);
     }
 
@@ -112,6 +115,7 @@ const TextComponent = props =>  {
 
     const saveCoords = event => {
 
+        if (_ScrollY === undefined) _ScrollY = 0;
         let rect = event.target.getBoundingClientRect();
         let left = rect.left;
         let top = rect.top + _ScrollY;
@@ -130,7 +134,7 @@ const TextComponent = props =>  {
 
         const MARGIN = 150;
         const borderBottom = sizeParentBox.height - MARGIN;
-        console.log(sizeParentBox);
+
         // const borderLeft = sizeParentBox.width - MARGIN;
 
         let coordX = event.pageX - shiftCoords.x;
@@ -144,6 +148,10 @@ const TextComponent = props =>  {
         let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
         let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
 
+        if (isNaN(convertToPercentX) || isNaN(convertToPercentY)){
+            console.log('error');
+        }
+
         const position = {
             x: convertToPercentX.toFixed(1) + '%', 
             y: convertToPercentY.toFixed(1) + '%', 
@@ -151,7 +159,7 @@ const TextComponent = props =>  {
         };
         setDragNdrop(position);
         if (event.type === 'dragend') {
-            eventEmitter.emit('EventUpdatePosition', position);
+            eventEmitter.emit(`EventUpdatePosition${id}`, position);
         }
         event.stopPropagation();
     }
