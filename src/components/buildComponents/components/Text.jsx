@@ -4,9 +4,9 @@ import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
 
-const TextStyle = styled.h1.attrs(props => ({
+const WrapperText = styled.div.attrs(props => ({
     style: {
-        display: props.shadowDisplay ? 'none' : 'block',
+        zIndex: props.indexZ ? '9999999' : null,
         left: props.coordX ? props.coordX : '50%',
         top:  props.coordY,
 }}))`
@@ -18,8 +18,17 @@ const TextStyle = styled.h1.attrs(props => ({
     margin: 0;
 `;
 
-// left: ${props => props.coordX ? props.coordX : '50%'};
-// top:  ${props => props.coordY};
+const TextStyle = styled.h1`
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;  
+`;
+
+
 
 const TextComponent = props =>  {
 
@@ -36,13 +45,16 @@ const TextComponent = props =>  {
     let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
     let [contentText, setText] = useState(props.content ? props.content : props.children);
     const [shiftCoords, setShiftCoords] = useState(null)
-    const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
+    const [posText, setPosition] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
+    const [startDragNdrop,setStartDragNdrop] = useState(false);
+    const [instrument,setOpenInstrument] = useState(false);
 
     let textComponent = React.createRef();
 
     const openTitleInstruments = event => {
 
+        setOpenInstrument(true);
         const componentsPatternText = {
             id: id,
             targetSection: targetSection,
@@ -50,7 +62,7 @@ const TextComponent = props =>  {
             color: colorText,
             fontSize: sizeText,
             content: contentText,
-            coords: {...dragNdrop}, // x, y
+            coords: {...posText}, // x, y
         }
 
         eventEmitter.emit(`EventInstrumentPanel`,{
@@ -93,7 +105,6 @@ const TextComponent = props =>  {
     const scrollCordsSet = eventItem => {
   
         if (eventItem >= 700) eventItem =  eventItem - sizeParentBox.height;
-        // if (eventItem >= 1300) eventItem =  eventItem*2 - sizeParentBox.height;
         setScrollY(eventItem);
     }
 
@@ -113,56 +124,70 @@ const TextComponent = props =>  {
         }
     }
 
+    const getCoords = (element) => {
+        return {
+            left: element.left,
+            top: element.top + _ScrollY,
+        }
+    }
+
     const saveCoords = event => {
 
         if (_ScrollY === undefined) _ScrollY = 0;
-        let rect = event.target.getBoundingClientRect();
-        let left = rect.left;
-        let top = rect.top + _ScrollY;
-        let width = rect.width;
-        let height = rect.height;
+        let element = event.target.getBoundingClientRect();
+        let left = element.left;
+        let top = element.top + _ScrollY;
 
-        setShiftCoords({x: event.pageX - left - width/2, y: event.pageY - top + height/2});
+        const cords = getCoords(element);
+
+        let width = element.width;
+        let height = element.height;
+
+        setShiftCoords({x: event.pageX - cords.left - width/2, y: event.pageY - cords.top + height/4});
+        if (!startDragNdrop) setStartDragNdrop(true);
 
         event.stopPropagation();
     }
 
     const moveText = event => {
 
-        let {current} = textComponent;
-        current.focus();
+        if (startDragNdrop){
+            let {current} = textComponent;
+            current.focus();
 
-        const MARGIN = 150;
-        const borderBottom = sizeParentBox.height - MARGIN;
+            const MARGIN = 150;
+            const borderBottom = sizeParentBox.height - MARGIN;
 
-        // const borderLeft = sizeParentBox.width - MARGIN;
+            // const borderLeft = sizeParentBox.width - MARGIN;
 
-        let coordX = event.pageX - shiftCoords.x;
-        let coordY = event.pageY - shiftCoords.y;
+            let coordX = event.pageX - shiftCoords.x;
+            let coordY = event.pageY - shiftCoords.y;
 
-        if (coordY < 0) coordY =  0;
-        if (coordY > borderBottom) coordY = borderBottom;
+            if (coordY < 0) coordY =  0;
+            if (coordY > borderBottom) coordY = borderBottom;
 
 
 
-        let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
-        let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
+            let convertToPercentX = coordX * 100 / sizeParentBox.width;
+            let convertToPercentY = coordY * 100 / sizeParentBox.height;
 
-        if (isNaN(convertToPercentX) || isNaN(convertToPercentY)){
-            console.log('error');
-        }
-
-        const position = {
-            x: convertToPercentX.toFixed(1) + '%', 
-            y: convertToPercentY.toFixed(1) + '%', 
-            shadowDisplay: event.type === 'drag' ? true : false
-        };
-        setDragNdrop(position);
-        if (event.type === 'dragend') {
-            eventEmitter.emit(`EventUpdatePosition${id}`, position);
-        }
+            const position = {
+                x: convertToPercentX.toFixed(1) + '%', 
+                y: convertToPercentY.toFixed(1) + '%', 
+                shadowDisplay: event.type === 'drag' ? true : false
+            };
+            setPosition(position);
+            }
         event.stopPropagation();
     }
+
+    const stopDragNdrop = event => {
+        if (startDragNdrop) setStartDragNdrop(false);
+        eventEmitter.emit(`EventUpdatePosition${id}`, posText);
+        event.stopPropagation();
+    }
+
+    console.log('text');
 
     const weelResizeText = event => {
 
@@ -185,23 +210,22 @@ const TextComponent = props =>  {
     useEffect(didUpdate);
 
     return (
-        <TextStyle
+        <WrapperText
             ref  = {textComponent}
             onClick={openTitleInstruments}
             textColor = {colorText ? colorText : 'red'}
             size = {sizeText ? sizeText + 'px' : '120px'}
-            draggable = {true}
             onMouseDown = {saveCoords}
-            onDragStart = {openTitleInstruments}
-            onDrag   = {moveText}
-            onDragEnd = {moveText}
+            onMouseMove= {moveText}
+            onMouseLeave = {stopDragNdrop}
+            onMouseUp = {stopDragNdrop}
             onWheel = {weelResizeText}
-            coordX = {dragNdrop ? dragNdrop.x : null}
-            coordY = {dragNdrop ? dragNdrop.y : null}
-            shadowDisplay = {dragNdrop ? dragNdrop.shadowDisplay : false}
+            coordX = {posText ? posText.x : null}
+            coordY = {posText ? posText.y : null}
+            indexZ = {startDragNdrop}
         >
-            {contentText}
-        </TextStyle>
+            <TextStyle>{contentText}</TextStyle>
+        </WrapperText>
     )
 }
 

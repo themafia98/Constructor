@@ -68,7 +68,7 @@ const BackgroundComponent = props => {
     return (
         <Background
             ref  = {boxComponent}
-            onClick={openBgInstruments}
+            onDoubleClick={openBgInstruments}
             data-name = {targetSection}
             backgroundColor = {backgroundColor ? backgroundColor : props.background}
             backgroundImage = {backgroundImage ? backgroundImage : props.backgroundImage}

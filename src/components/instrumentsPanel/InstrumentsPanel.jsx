@@ -260,6 +260,7 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidMount = event => {
+        console.log(this.state.componentStats.id);
         eventEmitter.on(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);

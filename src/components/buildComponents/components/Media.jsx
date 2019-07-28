@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
@@ -19,12 +19,12 @@ const Media = styled.iframe`
 
 const MediaComponent = props => {
 
-    const [targetSection] = useState(props.targetSection);
-    const [id] = useState(props.id);
-    const [sizeParentBox] = useState(props.sizeParentBox);
-    const [content, setContent] = useState(props.path || props.content);
-    const [shiftCoords, setShiftCoords] = useState(null)
-    const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
+    // const [targetSection] = useState(props.targetSection);
+    // const [id] = useState(props.id);
+    // const [sizeParentBox] = useState(props.sizeParentBox);
+    // const [content, setContent] = useState(props.path || props.content);
+    // const [shiftCoords, setShiftCoords] = useState(null)
+    // const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
 
     const openMediaInstruments = event => {

@@ -148,7 +148,7 @@ const Image = props => {
             size = {size}
             src = {path}
             alt = 'img' 
-            onClick = {openImageInstruments}
+            onDoubleClick = {openImageInstruments}
             draggable = {true}
             onMouseDown = {saveCoords}
             onDragStart = {openImageInstruments}
