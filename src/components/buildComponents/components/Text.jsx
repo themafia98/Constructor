@@ -25,12 +25,11 @@ const TextComponent = props =>  {
 
 
     const [id] = useState(props.id);
-    const [sizeParenBox, setSizeParenBox] = useState({...props.sizeParenBox});
+    const [sizeParentBox, setsizeParentBox] = useState({...props.sizeParentBox});
 
     let [_ScrollY, setScrollY] = useState(0);
 
-
-    const [name] = useState(props.target);
+    const [targetSection] = useState(props.targetSection);
     let [count,setCount] = useState(0);
 
     let [colorText, setColorText] = useState(props.color);
@@ -41,18 +40,33 @@ const TextComponent = props =>  {
 
     let textComponent = React.createRef();
 
+    console.log('texttext');
     const openTitleInstruments = event => {
 
-        eventEmitter.emit(`EventInstrumentPanel`,{
-            target: 'text',
+        const componentsPatternText = {
             id: id,
+            targetSection: targetSection,
+            type: 'text',
+            color: colorText,
+            fontSize: sizeText,
+            content: contentText,
+            coords: {...dragNdrop}, // x, y
+        }
+
+        eventEmitter.emit(`EventInstrumentPanel`,{
+            type: 'text',
+            targetSection: targetSection,
+            id: id,
+            componentStats: componentsPatternText,
             sizeTextValue: sizeText
         });
+
         event.stopPropagation();
     }
 
-    const changeColorText = eventItem => {
-        setColorText(eventItem.colorRGB);
+    const changeColorText = colorRGB => {
+        if (typeof colorRGB === 'string')
+        setColorText(colorRGB);
     }
 
     const changeSizeText = eventSize => {
@@ -63,13 +77,14 @@ const TextComponent = props =>  {
     const saveSize = event => {
 
         if (count === 0){
-        setSizeParenBox({width: event.width, height: event.height});
+        setsizeParentBox({width: event.width, height: event.height});
         setCount(count + 1);
         } else  eventEmitter.off(`EventSaveWidth`,saveSize);
     }
 
     const changeContentText = eventContent => {
-        if (name === eventContent.idSection){
+        let booldContent = eventContent.content || eventContent.content === '';
+        if (booldContent){
             const {content} = eventContent;
             setText(content);
         }
@@ -85,11 +100,11 @@ const TextComponent = props =>  {
         eventEmitter.on(`EventChangeColorText${id}`, changeColorText);
         eventEmitter.on(`EventChangeSizeText${id}`, changeSizeText);
         eventEmitter.on(`EventChangeContentText${id}`, changeContentText);
-        eventEmitter.on(`EventSaveWidth${name}`,saveSize);
+        eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
         return () => {
             eventEmitter.off('ScrollRecalcPosition', scrollCordsSet);
             eventEmitter.off(`EventChangeColorText${id}`, changeColorText);
-            eventEmitter.off(`EventSaveWidth${name}`,saveSize);
+            eventEmitter.off(`EventSaveWidth${targetSection}`,saveSize);
             eventEmitter.off(`EventChangeSizeText${id}`, changeSizeText);
             eventEmitter.off(`EventChangeContentText${id}`, changeContentText);
         }
@@ -114,22 +129,19 @@ const TextComponent = props =>  {
         current.focus();
 
         const MARGIN = 150;
-        const borderBottom = sizeParenBox.height - MARGIN;
-        // const borderLeft = sizeParenBox.width - MARGIN;
+        const borderBottom = sizeParentBox.height - MARGIN;
+        // const borderLeft = sizeParentBox.width - MARGIN;
 
         let coordX = event.pageX - shiftCoords.x;
         let coordY = event.pageY - shiftCoords.y;
-        
-        console.log("X:" + coordX);
-        console.log("Y:" + coordY);
 
         if (coordY < 0) coordY =  0;
         if (coordY > borderBottom) coordY = borderBottom;
 
 
 
-        let convertToPercentX = ((coordX) * 100) / sizeParenBox.width;
-        let convertToPercentY = ((coordY) * 100) / (sizeParenBox.height);
+        let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
+        let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
 
         const position = {
             x: convertToPercentX.toFixed(1) + '%', 
@@ -149,14 +161,14 @@ const TextComponent = props =>  {
             let counter = sizeText + 1;
             counter = counter > 200 ? 200 : counter;
             setSizeText(counter);
-            eventEmitter.emit('EventUpdateSizeText', counter);
+            eventEmitter.emit(`EventUpdateSizeText${id}`, counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
             let counter = sizeText - 1;
              counter = counter <= 10 ? 10 : counter;
              setSizeText(counter);
-             eventEmitter.emit('EventUpdateSizeText', counter);
+             eventEmitter.emit(`EventUpdateSizeText${id}`, counter);
             }
         event.stopPropagation();
     }

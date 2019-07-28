@@ -9,7 +9,7 @@ class Controllers extends React.PureComponent {
 
     static propTypes = {
         countComponents: PropTypes.number.isRequired, /** @number last project id */
-        sizeParenBox: PropTypes.object, /** @Object with width and height parent(bg) */
+        sizeParentBox: PropTypes.object, /** @Object with width and height parent(bg) */
         menuActive: PropTypes.bool, /** @Bool value active menu or unactive */
     }
 
@@ -52,7 +52,6 @@ class Controllers extends React.PureComponent {
 
 
     render(){
-        console.log('controllers');
         return (
             <Fragment>
             {
@@ -72,7 +71,7 @@ class Controllers extends React.PureComponent {
                             key = {`buildMenu ${this.props.mode}`}
                             mode = 'build'
                             editComponentName = {this.props.editComponentName}
-                            sizeParenBox = {this.props.sizeParenBox}
+                            sizeParentBox = {this.props.sizeParentBox}
                             countComponents = {this.props.countComponents}
                         /> : null
                     }

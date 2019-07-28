@@ -1,10 +1,13 @@
-import React, {Fragment} from 'react';
+import React, {Fragment,useState} from 'react';
 import {SketchPicker} from 'react-color';
 
 const BackgroundInstruments = props => {
 
-    const stats = props.componentsStats;
-    let {colorPickerActive} = props.instrumentPanel;
+    const {componentsStats} = useState(props.componentStats);
+    const color = null;
+    if (typeof componentsStats === 'object' &&
+        componentsStats.hasOwnProperty('color'))
+        color = componentsStats.color;
 
     return (
         <Fragment>
@@ -15,10 +18,10 @@ const BackgroundInstruments = props => {
             type = 'button'
             value = 'color pick'
         />
-            { colorPickerActive ?
+            { props.colorPickerActive ?
                 <SketchPicker
                     onChangeComplete={props.cbHandleChangeComplete}
-                    color = {stats.color ? stats.color : 'red'}
+                    color = {color ? color : 'red'}
                 />
                 : null
             }

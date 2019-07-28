@@ -6,7 +6,7 @@ const Section = props => {
 
     const {currentProjectsData} = props.userData;
     const section = currentProjectsData.sectionTitleProject;
-
+    console.log(props);
             return section.map(item => {
                 return (
                     <MainBackground
@@ -16,10 +16,10 @@ const Section = props => {
                         editComponentName = {props.editComponentName}
                         countComponents = {props.mainBuilderData.componentJSX.length}
                         menuActive = {props.menuActive}
-                        sizeParenBox = {props.sizeParenBox}
+                        sizeParentBox = {props.sizeParentBox}
                         id = {item}
                     >
-                        {{name: props.editComponentName}}
+                        {{targetSection: props.editComponentName}}
                     </MainBackground>
                 );
             });

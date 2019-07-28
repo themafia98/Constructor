@@ -31,7 +31,6 @@ const loadCurrentProjectAction = (state) => {
 }
 
 const loadUpdateCurrentProject = (state) => {
-    console.log(state);
     return {
         type: LOAD_UPDATE_PROJECT,
         idProject: state.idProject,

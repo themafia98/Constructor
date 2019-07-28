@@ -16,7 +16,7 @@ const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getS
         backgroundImage: null,
         color: null,
         id: `MainBackgroundHeader${random(0,10000)}`,
-        name: "Header",
+        targetSection: "Header",
         type: "background"
     }
 

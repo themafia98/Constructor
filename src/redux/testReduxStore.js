@@ -30,7 +30,7 @@ const initialState = {
                 content: null,
                 fontSize: "135",
                 image: null,
-                name: "Header",
+                targetSection: "Header",
                 type: "text"
                 }
             ],

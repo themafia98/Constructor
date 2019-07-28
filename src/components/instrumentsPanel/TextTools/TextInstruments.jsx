@@ -3,7 +3,7 @@ import {SketchPicker} from 'react-color';
 
 const TextInstruments = props => {
 
-        const stats = props.componentsStats;
+        const stats = props.componentStats;
         let {colorPickerActive} = props.instrumentPanel;
         let {content} = stats;
         let {fontSize} = stats;

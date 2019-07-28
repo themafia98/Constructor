@@ -18,16 +18,14 @@ class MainBackground extends React.PureComponent {
     }
 
     state = {
-        idProject: this.props.id,
+        targetSection: this.props.id,
         editRedy: false,
         component: null,
         children: null,
     }
 
     changeMode = event => {
-        console.log('cgange');
         if (!this.state.editStart || this.state.idProject !== this.props.editComponentName) {
-            console.log(this.state.idProject);
             this.setState({
                 ...this.state,
                 editStart: true
@@ -35,8 +33,7 @@ class MainBackground extends React.PureComponent {
             eventEmitter.emit('EventModeEdit', {
                 ...this.state,
                 editStart: true,
-                idProject: this.state.idProject,
-                target: 'Header',
+                targetSection: this.state.targetSection,
             }));
         }
     }
@@ -46,20 +43,17 @@ class MainBackground extends React.PureComponent {
 
     render() {
 
-        let bg = this.props.currentProjectsData.components.find(item => item.name === this.props.id) || null;
-        let childrens = this.props.mainBuilderData.componentJSX.filter(item => item.name === this.props.id)
-        .map(item => item.component);
+        console.log('sad');
+        let bg = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
+        let childrens = this.props.mainBuilderData.componentJSX.filter(item => item.targetSection === this.props.id)
+        .map(item => item.component) || null;
 
         if (bg)
         return (
             <Fragment>
                 <section data-class = 'editable' onClick = {this.changeMode}>
-                    <BackgroundComponent 
-                        name = {this.state.idProject}
-                        id = {bg.id}
-                        background = {bg.color}  {...bg}
-                    >
-                    {childrens && childrens}
+                    <BackgroundComponent {...bg} >
+                        {childrens}
                     </BackgroundComponent>
                     {!this.state.editStart && <p className = 'warningEdit'>Click for start edit</p>}
                 </section>

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const ImageStyle = styled.img.attrs(props => ({
     style: {
         display: props.shadowDisplay ? 'none' : 'block',
-        left: props.coordX ? props.coordX : '30%',
+        left: props.coordX,
         top:  props.coordY,
 }}))`
     position: absolute;
@@ -15,29 +15,37 @@ const ImageStyle = styled.img.attrs(props => ({
 
 const Image = props => {
 
-
-    console.log(props);
-
     const [id] = useState(props.id);
     const [path] = useState(props.path);
     const [size,setSize] = useState(props.size ? props.size : 30);
-    const [name] = useState(props.target);
+    const [targetSection] = useState(props.targetSection);
 
+    let defaultCoords = {x: 50, y: 50};
+
+    console.log(props.sizeParentBox);
     let [count,setCount] = useState(0);
-    const [sizeParenBox, setSizeParenBox] = useState({...props.sizeParenBox});
+    const [sizeParentBox, setsizeParentBox] = useState({...props.sizeParentBox});
     const [shiftCoords, setShiftCoords] = useState(null)
-    const [dragNdrop, setDragNdrop] = useState(props.coords.left ? {x: props.coords.left, y: props.coords.top} : null);
+    const [dragNdrop, setDragNdrop] = useState(props.coords.left ? {x: props.coords.left, y: props.coords.top} : defaultCoords);
 
 
-
+console.log('image');
     const openImageInstruments = event => {
 
+        const componentsPatternImage = {
+            id: id,
+            targetSection: targetSection,
+            type: 'image',
+            borderRadius: null,
+            opacity: 1,
+            zIndex: null,
+            image: path,
+            coords: {...dragNdrop}, // x, y
+        }
+
         eventEmitter.emit(`EventInstrumentPanel`,{
-            imageConig:{
-                image: path,
-                backgroundImage: path,
-            },
-            target: 'image',
+            componentStats: componentsPatternImage,
+            targetSection: targetSection,
             id: id,
             sizeTextValue: size
         });
@@ -47,7 +55,7 @@ const Image = props => {
     const saveCoords = event => {
 
         let rect = event.target.getBoundingClientRect();
-        let left = rect.left + window.pageXOffset;
+        let left = rect.left;
         let top = rect.top;
         let width = rect.width;
         let height = rect.height;
@@ -59,17 +67,18 @@ const Image = props => {
 
     const moveText = event => {
 
-        let coordX = event.pageX - shiftCoords.x;
-        let coordY = event.pageY - shiftCoords.y;
+        let coordX = event.pageX - shiftCoords.left;
+        let coordY = event.pageY - shiftCoords.top;
+        console.log(coordX);
 
-
-        let convertToPercentX = ((coordX) * 100) / sizeParenBox.width;
-        let convertToPercentY = ((coordY) * 100) / (sizeParenBox.height);
+        let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
+        let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
 
         const position = {
-            x: convertToPercentX.toFixed(1) + '%', 
-            y: convertToPercentY.toFixed(1) + '%', 
-            shadowDisplay: event.type === 'drag' ? true : false
+            left: convertToPercentX.toFixed(1) + '%', 
+            top: convertToPercentY.toFixed(1) + '%', 
+            shadowDisplay: event.type === 'drag' ? true : false,
+            type: 'image'
         };
         setDragNdrop(position);
         if (event.type === 'dragend') {
@@ -100,15 +109,15 @@ const Image = props => {
     const saveSize = event => {
 
         if (count === 0){
-        setSizeParenBox({width: event.width, height: event.height});
+        setsizeParentBox({width: event.width, height: event.height});
         setCount(count + 1);
         } else  eventEmitter.off(`EventSaveWidth`,saveSize);
     }
 
     const didUpdate = effect => {
-        eventEmitter.on(`EventSaveWidth${name}`,saveSize);
+        eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
         return () => {
-            eventEmitter.off(`EventSaveWidth${name}`,saveSize);
+            eventEmitter.off(`EventSaveWidth${targetSection}`,saveSize);
         }
     }
 
@@ -129,7 +138,6 @@ const Image = props => {
     // }
 
     useEffect(didUpdate);
-    console.log(props);
     return (
         <ImageStyle  
             size = {size}

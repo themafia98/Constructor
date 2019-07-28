@@ -38,16 +38,14 @@ class Build extends React.PureComponent {
             isLoadComponents: true,
             projectEmpty: false,
             showSectionAddMenu: false,
+            componentStats: {},
             mainBuilderData: {
                 components: [],
                 componentJSX: []
             },
             instrumentPanel: {
-                imageConig: {},
                 colorPickerActive: false,
                 instrumentActive: false,
-                target: '',
-                idComponent: null,
             },
             editComponentName:  null,
             menuActive: false,
@@ -71,11 +69,12 @@ class Build extends React.PureComponent {
     };
 
     workModeEdit = itemEvent => {
+
         if (itemEvent.editStart)
         this.setState({
             ...this.state,
             editStart: itemEvent.editStart,
-            editComponentName: itemEvent.idProject,
+            editComponentName: itemEvent.targetSection,
             mainBuilderData: {
                 ...this.state.mainBuilderData,
             },
@@ -86,7 +85,6 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
 
-            console.log(itemEvent);
             const targetEqual = this.state.instrumentPanel.target !== itemEvent.target;
             const idEqual = this.state.instrumentPanel.idComponent !== itemEvent.id;
             // const instumentActive = this.state.instrumentPanel.instrumentActive;
@@ -94,13 +92,10 @@ class Build extends React.PureComponent {
             this.setState({
                 ...this.state,
                 editComponentName: itemEvent.name,
+                componentStats: {...itemEvent.componentStats},
                 instrumentPanel: {
                     ...this.state.instrumentPanel,
-                    imageConig: {...itemEvent.imageConig},
                     instrumentActive: true,
-                    sizeTextValue: itemEvent.sizeTextValue,
-                    idComponent: itemEvent.id,
-                    target: itemEvent.target
                 }
             })
     }
@@ -117,8 +112,10 @@ class Build extends React.PureComponent {
     };
 
     addComponentsFromBD = array => {
+        console.log('addComponentsFromBD');
+        let sizeParentBox = {width: this.mainComponent.width, height: this.mainComponent.height};
 
-        let _sizeParenBox = {...this.state.sizeParenBox};
+        let {componentJSX} = this.state.mainBuilderData;
         let componentsFromDB = [];
         let components = [...this.state.mainBuilderData.components];
         array.forEach(item => {
@@ -126,21 +123,15 @@ class Build extends React.PureComponent {
 
                 let component =
                     <BuilderComponents
-                        all = {{...item}}
-                        target = {item.name}
-                        sizeParenBox = {{..._sizeParenBox}}
-                        coords = {{...item.coords}}
-                        size = {item.fontSize}
-                        color = {item.color}
-                        id = {item.id}
-                        type = {item.type}
+
+                        sizeParentBox = {{...this.mainComponent}}
+                        {...item}
                         key = {`${item.type}${item.id}`}
-                        content = {item.content ? item.content : 'Title'}
                     />
 
                 const patternJSX = {
                     id: item.id,
-                    name: item.name,
+                    targetSection: item.targetSection,
                     component: component
                 }
                 componentsFromDB.push(patternJSX);
@@ -148,19 +139,32 @@ class Build extends React.PureComponent {
             }
             else components.push(item);
         });
-        this.addComponent({
-            components: components,
-            target: this.state.editComponentName,
-            dataBaseData: componentsFromDB, mode: 'DB'});
+            this.setState({
+                ...this.state,
+                isLoadComponents: false,
+                mainBuilderData: {
+                    ...this.state.mainBuilderData,
+                    components: [...this.state.mainBuilderData.components,
+                                ...components],
+                    componentJSX: [...componentJSX, ...componentsFromDB],
+                },
+            });
     }
 
     addComponent = itemEvent => {
         let {componentJSX} = this.state.mainBuilderData;
+        let componentsPatternStatus = null;
 
-        if (itemEvent.mode !== 'DB'){
+        if (itemEvent.type === 'text') 
+            componentsPatternStatus = itemEvent.componentsPatternText;
+        else if (itemEvent.type === 'background')
+            componentsPatternStatus = itemEvent.componentsPatternBackground;
+        else if (itemEvent.type === 'image')
+            componentsPatternStatus = itemEvent.componentsPatternImage;
+
         const patternJSX = {
-            id: itemEvent.componentsPatternStatus.id,
-            name: itemEvent.componentsPatternStatus.name,
+            id: componentsPatternStatus.id,
+            targetSection: componentsPatternStatus.targetSection,
             component: itemEvent.component
         }
             this.setState({
@@ -168,26 +172,14 @@ class Build extends React.PureComponent {
                 mainBuilderData: {
                     ...this.state.mainBuilderData,
                     components: [...this.state.mainBuilderData.components,
-                                itemEvent.componentsPatternStatus],
+                                    componentsPatternStatus],
                     componentJSX: [...componentJSX, patternJSX],
                 },
             });
-        } else {
-            this.setState({
-                ...this.state,
-                isLoadComponents: false,
-                mainBuilderData: {
-                    ...this.state.mainBuilderData,
-                    components: [...this.state.mainBuilderData.components,
-                                ...itemEvent.components],
-                    componentJSX: [...componentJSX, ...itemEvent.dataBaseData],
-                },
-            });
-        }
     };
 
     saveChangesComponent = itemEvent => {
-        console.log(itemEvent);
+
         const {userData} = this.props;
         let findCurrentItem = false;
         const _components = this.state.mainBuilderData.components.map(item => {
@@ -232,7 +224,7 @@ class Build extends React.PureComponent {
         event.stopPropagation();
     }
     mainComponent = null;
-    mainRefComponent = node => this.mainComponent = node;
+    mainRefComponent = node => this.mainComponent = node.getBoundingClientRect();
 
     addNewSection = eventItem => {
 
@@ -244,7 +236,7 @@ class Build extends React.PureComponent {
             ...this.state.mainBuilderData,
             components:[
                 ...this.state.mainBuilderData.components,
-                eventItem.componentsPatternStatus
+                eventItem.componentsPatternBackground
             ],
             componentJSX:[
                 ...this.state.mainBuilderData.componentJSX,
@@ -259,7 +251,7 @@ class Build extends React.PureComponent {
                 components: [...this.state.mainBuilderData.components],
                 sectionTitleProject: [
                     ...this.props.userData.currentProjectsData.sectionTitleProject,
-                    eventItem.componentsPatternStatus.id
+                    eventItem.componentsPatternBackground.id
                 ],
                 idProject: this.state.idProject
         }))
@@ -279,7 +271,10 @@ class Build extends React.PureComponent {
         const {currentProjectsData} = userData;
         const section = currentProjectsData.sectionTitleProject;
 
+
         if (userData.active && currentProjectsData.loadProject){
+            // const _sizeParentBox = this.mainComponent.getBoundingClientRect();
+        //    const
             return (
                 <Fragment>
                     <Header key = 'Header' title = "Constructor"  />
@@ -295,7 +290,7 @@ class Build extends React.PureComponent {
                             editComponentName = {this.state.editComponentName}
                             countComponents = {this.state.mainBuilderData.components.length}
                             menuActive = {this.state.menuActive}
-                            sizeParenBox = {this.state.sizeParenBox}
+                            sizeParentBox = {this.mainComponent}
                         />
                         }
                         {this.state.showSectionAddMenu &&
@@ -316,7 +311,7 @@ class Build extends React.PureComponent {
     }
 
     componentDidUpdate = () => {
-
+        console.log('componentDidUpdate');
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         const isLoadComponents = this.state.isLoadComponents;
@@ -336,7 +331,7 @@ class Build extends React.PureComponent {
     }
 
     componentDidMount = () => {
-
+        console.log('componentDidMount');
         let {userData} = this.props;
         let {currentProjectsData} = userData;
 

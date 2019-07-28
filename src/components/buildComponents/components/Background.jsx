@@ -15,8 +15,10 @@ const Background = styled.div`
 const BackgroundComponent = props => {
 
     const [id] = useState(props.id);
-    const [name] = useState(props.name);
+    const [targetSection] = useState(props.targetSection);
     let boxComponent = React.createRef();
+
+    console.log(props);
 
     let [backgroundColor, setBgColor] = useState(props.background);
     let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
@@ -24,20 +26,28 @@ const BackgroundComponent = props => {
     const saveWidth = event => {
         boxComponent.current.focus();
         let boxInform =  boxComponent.current.getBoundingClientRect();
-        eventEmitter.emit(`EventSaveWidth${name}`, {width: boxInform.width, height: boxInform.height});
+        eventEmitter.emit(`EventSaveWidth${targetSection}`, {width: boxInform.width, height: boxInform.height});
     }
 
     const openBgInstruments = event => {
+
+        const componentsPatternBackground = {
+            id: id,
+            targetSection: targetSection,
+            type: 'background',
+            color: backgroundColor,
+            backgroundImage: backgroundImage,
+        }
         eventEmitter.emit('EventInstrumentPanel',{
-            name: name,
-            target: 'background',
+            componentStats: componentsPatternBackground,
+            targetSection: targetSection,
+            type: 'background',
             id: id,
         });
         event.stopPropagation();
     }
-
+console.log('build');
     const changeColor = eventItem => {
-        if (eventItem.idSection === name)
         setBgColor(eventItem.colorRGB);
     }
 
@@ -61,6 +71,7 @@ const BackgroundComponent = props => {
         <Background
             ref  = {boxComponent}
             onClick={openBgInstruments}
+            data-name = {targetSection}
             backgroundColor = {backgroundColor ? backgroundColor : props.background}
             backgroundImage = {backgroundImage ? backgroundImage : props.backgroundImage}
         >

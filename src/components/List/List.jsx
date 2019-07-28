@@ -23,7 +23,12 @@ class List extends React.PureComponent {
 
     addNewProject = (item) => {
         if (this.props.idUser) {
-            this.props.dispatch(middlewareCreateProject(this.props.idUser, this.props.list, item.title, item.type));
+            this.props.dispatch(middlewareCreateProject(
+                    this.props.idUser,
+                    this.props.list,
+                    item.title,
+                    item.type
+                ));
         } else this.setState({...this.state, redirect: true});
     }
 

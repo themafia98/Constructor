@@ -44,7 +44,6 @@ class Index extends React.PureComponent {
                 error: 'Account create!'
             })
         : console.error('error registration');
-        event.stopPropagation();
     }
 
     showBox = event => {

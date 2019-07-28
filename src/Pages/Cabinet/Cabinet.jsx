@@ -55,8 +55,10 @@ class Cabinet extends React.PureComponent {
       return (
         <Fragment>
           <Header title = {title} idUser = {this.props.idUser} />
-          {(this.state.workMode === 'newProject') ? <Modal workMode = {this.state.workMode} /> : null}
-            <ProjectsSection />
+          <div className = 'Cabinet'>
+            {(this.state.workMode === 'newProject') ? <Modal workMode = {this.state.workMode} /> : null}
+              <ProjectsSection />
+            </div>
         </Fragment>
       )
     } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />

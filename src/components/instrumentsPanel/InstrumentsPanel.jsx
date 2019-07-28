@@ -20,8 +20,7 @@ class InstrumentsPanel extends React.PureComponent {
         isChange: false,
         confirmActive: false,
         instrumentPanel: {...this.props.instrumentPanel},
-        componentsStats: this.props.mainBuilderData.components.find(item =>
-                    {return item.id === this.props.instrumentPanel.idComponent }),
+        componentStats: this.props.componentStats,
         images: null,
     };
 
@@ -29,8 +28,8 @@ class InstrumentsPanel extends React.PureComponent {
         this.setState({
             ...this.state,
             instrumentPanel: {...this.state.instrumentPanel},
-            componentsStats: {
-                ...this.state.componentsStats,
+            componentStats: {
+                ...this.state.componentStats,
                 fontSize: eventSize
             }
         });
@@ -43,35 +42,40 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     setSize = event => {
-        let {idComponent} = this.state.instrumentPanel;
+        let {id} = this.state.componentStats;
         let size = event.target.value > 200 ? 200 : event.target.value;
         this.setState({
             ...this.state, 
             instrumentPanel: {...this.state.instrumentPanel},
-            componentsStats: {...this.state.componentsStats,fontSize: size}
+            componentStats: {...this.state.componentStats,fontSize: size}
         },
-            () => eventEmitter.emit(`EventChangeSizeText${idComponent}`, {idSection: this.props.editComponentName, size: size })
+            () => eventEmitter.emit(`EventChangeSizeText${id}`, {
+                targetSection: this.state.editComponentName, size: size 
+            })
         );
     };
 
     setContent = event => {
-        let {idComponent} = this.state.instrumentPanel;
+        let {id} = this.state.componentStats;
         let contentValue = event.target.value;
         this.setState({
             ...this.state, 
             instrumentPanel: {...this.state.instrumentPanel},
-            componentsStats: {...this.state.componentsStats,content: contentValue}
+            componentStats: {...this.state.componentStats,content: contentValue}
         },
-        () => eventEmitter.emit(`EventChangeContentText${idComponent}`,{idSection: this.props.editComponentName, content: contentValue}));
+            () => eventEmitter.emit(`EventChangeContentText${id}`,{
+                targetSection: this.state.editComponentName, content: contentValue
+            })
+        );
     };
 
     updatePosition = eventItem => {
         this.setState({
             ...this.state, 
-            componentsStats: {
-                ...this.state.componentsStats,
+            componentStats: {
+                ...this.state.componentStats,
                 coords: {
-                    ...this.state.componentsStats.coords,
+                    ...this.state.componentStats.coords,
                     left: eventItem.x,
                     top: eventItem.y
                 }
@@ -92,8 +96,8 @@ class InstrumentsPanel extends React.PureComponent {
         const {urlFull} = eventItem;
         this.setState({
             ...this.state,
-            componentsStats:{
-                ...this.state.componentsStats,
+            componentStats:{
+                ...this.state.componentStats,
                 backgroundImage: urlFull
             }
         });
@@ -104,20 +108,22 @@ class InstrumentsPanel extends React.PureComponent {
         const {rgb} = event;
         let colorRGB = `rgb(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
 
-        let {idComponent} = this.state.instrumentPanel;
-        if (this.state.instrumentPanel.target === 'background'){
+        let {id} = this.state.componentStats;
+        if (this.state.componentStats.type === 'background'){
             this.setState({
                 ...this.state,
-                componentsStats: {...this.state.componentsStats,color: colorRGB}
-            }, () => eventEmitter.emit(`EventChangeColorBackground${idComponent}`,{idSection: this.props.editComponentName,  colorRGB}));
+                componentStats: {...this.state.componentStats,color: colorRGB}
+            }, () => eventEmitter.emit(`EventChangeColorBackground${id}`,
+                        {colorRGB: this.state.componentStats.color}
+                    ));
         }
 
-        else if (this.state.instrumentPanel.target === 'text') {
+        else if (this.state.componentStats.type === 'text') {
             this.setState({
                 ...this.state,
-                componentsStats: {...this.state.componentsStats,color: colorRGB}
+                componentStats: {...this.state.componentStats,color: colorRGB}
             },
-            () => eventEmitter.emit(`EventChangeColorText${idComponent}`, colorRGB));
+            () => eventEmitter.emit(`EventChangeColorText${id}`, colorRGB));
         }
 
     };
@@ -125,10 +131,9 @@ class InstrumentsPanel extends React.PureComponent {
     saveChanges = event => {
         this.setState({...this.state, isChange: false, confirmActive: false}, () =>
         eventEmitter.emit("EventSaveChangesComponent", {
-            ...this.state.componentsStats,
-            imageConig: {...this.state.instrumentPanel.imageConig},
-            id: this.state.instrumentPanel.idComponent,
-            type: this.state.instrumentPanel.target,
+            ...this.state.componentStats,
+            id: this.state.componentStats.id,
+            type: this.state.componentStats.type,
         }));
 
         event.stopPropagation();
@@ -136,8 +141,8 @@ class InstrumentsPanel extends React.PureComponent {
 
     searchImage = event => {
 
-        let {idComponent} = this.state.instrumentPanel;
-        eventEmitter.emit('EventModalSearchOn', {idComponent: idComponent});
+        let {id} = this.state.componentStats;
+        eventEmitter.emit('EventModalSearchOn', {idComponent: id});
 
         event.stopPropagation();
     };
@@ -148,7 +153,7 @@ class InstrumentsPanel extends React.PureComponent {
                    return(
                     <TextInstruments
                         instrumentPanel = {{...this.state.instrumentPanel}}
-                        componentsStats = {{...this.state.componentsStats}}
+                        componentStats = {{...this.state.componentStats}}
                         cbSetColor = {this.setColor}
                         cbSetSize = {this.setSize}
                         cbHandleChangeComplete = {this.handleChangeComplete}
@@ -159,8 +164,8 @@ class InstrumentsPanel extends React.PureComponent {
                 case 'background':
                     return (
                         <BackgroundInstruments
-                            instrumentPanel = {{...this.state.instrumentPanel}}
-                            componentsStats = {{...this.state.componentsStats}}
+                            colorPickerActive = {this.state.instrumentPanel.colorPickerActive}
+                            componentStats = {{...this.state.componentStats}}
                             cbSetColor = {this.setColor}
                             cbHandleChangeComplete = {this.handleChangeComplete}
                             cbSearchImage = {this.searchImage}
@@ -171,7 +176,7 @@ class InstrumentsPanel extends React.PureComponent {
                         return (
                             <ImageInstruments
                                 instrumentPanel = {{...this.state.instrumentPanel}}
-                                componentsStats = {{...this.state.componentsStats}}
+                                componentStats = {{...this.state.componentStats}}
                                 cbSearchImage = {this.searchImage}
                                 cbSaveChanges = {this.saveChanges}
                             />
@@ -189,7 +194,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
-
+        console.log('instrumentPanel render');
         return (
             <Fragment>
                 { this.state.confirmActive ?
@@ -205,13 +210,13 @@ class InstrumentsPanel extends React.PureComponent {
                     <h3>Instruments</h3>
                     {
                         instrumentActive ? 
-                        <p className = 'TextComponent'>{this.state.instrumentPanel.target}</p>
+                        <p className = 'TextComponent'>{this.state.componentStats.type}</p>
                         : null
                     }
                     {
                         instrumentActive ?
                         <div className = 'instuments'>
-                            {this.makePanelInstruments(this.state.instrumentPanel.target)}
+                            {this.makePanelInstruments(this.state.componentStats.type)}
                         </div>
                         : null
                     }
@@ -221,32 +226,35 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidUpdate = (oldProps, oldState) => {
-
-        let targetBool = oldState.instrumentPanel.target !== this.props.instrumentPanel.target;
-        let idBool = oldState.instrumentPanel.idComponent !== this.props.instrumentPanel.idComponent;
-
+        console.log('instrumentPanel componentDidUpdate');
+        let targetBool = oldState.componentStats.targetSection !== this.props.componentStats.targetSection;
+        let idBool = oldState.componentStats.id !== this.props.componentStats.id;
+        let statsBool = this.state.componentStats !== oldState.componentStats && !this.state.isChange;
         const compare = idBool || targetBool;
         if (compare && !this.state.isChange){
             this.setState({
                 ...this.state,
                 instrumentPanel: {...this.props.instrumentPanel, colorPickerActive: false, isChange: false},
-                componentsStats: this.props.mainBuilderData.components.find(item =>
-                    {return item.id === this.props.instrumentPanel.idComponent }),
+                componentStats: this.props.mainBuilderData.components.find(item =>
+                    {return item.id === this.props.componentStats.id }),
             });
-        } else if (this.state.componentsStats !== oldState.componentsStats &&
-                !this.state.isChange) this.setState({...this.state, isChange: true});
+        } else if (statsBool) 
+            this.setState({
+                    ...this.state,
+                    componentStats: {...this.state.componentStats},
+                    isChange: true
+            });
         else if (compare && this.state.isChange) this.setState({...this.state, confirmActive: true});
     };
 
     componentDidMount = event => {
-        eventEmitter.on("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.on(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on("EventUpdatePosition", this.updatePosition);
     };
 
     componentWillUnmount = event => {
-        console.log('componentWillUnmount');
-        eventEmitter.off("EventUpdateSizeText", this.updateSizeText);
+        eventEmitter.off(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.off("EventUpdatePosition", this.updatePosition);
     };
