@@ -13,8 +13,8 @@ const TextInstruments = props => {
             <Fragment>
             <p className = 'titleInstument'>Position: </p>
             <span className = 'textCoordsPanel'>
-            {coords.left ?
-                coords.left + ' / ' + coords.top : ' drop for active'}
+            {coords.x ?
+                coords.x + ' / ' + coords.y : ' drop for active'}
             </span>
             <p className = 'titleInstument'>Color: </p>
             <input 

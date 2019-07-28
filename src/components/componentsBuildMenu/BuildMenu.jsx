@@ -16,17 +16,6 @@ class BuildMenu extends React.PureComponent {
         sizeParentBox: PropTypes.object /** @Object with width and height parent(bg) */
     }
 
-    // componentsPatternBackground: {
-    //     id: null,
-    //     name: null,
-    //     type: null,
-    //     content: null,
-    //     fontSize: null,
-    //     color: null,
-    //     backgroundImage: null,
-    //     image: null,
-    //     coords: {left: null, top: null}, // x, y
-    // }
 
     state = {
         mode: this.props.mode,
@@ -44,7 +33,7 @@ class BuildMenu extends React.PureComponent {
             color: null,
             fontSize: null,
             content: null,
-            coords: {left: null, top: null}, // x, y
+            coords: {x: null, y: null}, // x, y
         },
         componentsPatternImage: {
             id: null,
@@ -54,7 +43,7 @@ class BuildMenu extends React.PureComponent {
             opacity: null,
             zIndex: null,
             image: '/img/test.jpg',
-            coords: {left: null, top: null}, // x, y
+            coords: {x: null, y: null}, // x, y
         },
         sizeParentBox: {...this.props.sizeParentBox},
         title: 'Title'

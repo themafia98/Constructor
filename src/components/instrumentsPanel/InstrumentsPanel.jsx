@@ -76,8 +76,8 @@ class InstrumentsPanel extends React.PureComponent {
                 ...this.state.componentStats,
                 coords: {
                     ...this.state.componentStats.coords,
-                    left: eventItem.x,
-                    top: eventItem.y
+                    x: eventItem.x,
+                    y: eventItem.y
                 }
             }
         });

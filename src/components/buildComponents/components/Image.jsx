@@ -5,8 +5,8 @@ import styled from 'styled-components';
 const ImageStyle = styled.img.attrs(props => ({
     style: {
         display: props.shadowDisplay ? 'none' : 'block',
-        left: props.coordX,
-        top:  props.coordY,
+        left: props.coordX ? props.coordX : '45%',
+        top:  props.coordY ? props.coordY : '0',
 }}))`
     position: absolute;
     width: ${props => props.size}%;
@@ -20,13 +20,11 @@ const Image = props => {
     const [size,setSize] = useState(props.size ? props.size : 30);
     const [targetSection] = useState(props.targetSection);
 
-    let defaultCoords = {x: 50, y: 50};
 
-    console.log(props.sizeParentBox);
     let [count,setCount] = useState(0);
     const [sizeParentBox, setsizeParentBox] = useState({...props.sizeParentBox});
     const [shiftCoords, setShiftCoords] = useState(null)
-    const [dragNdrop, setDragNdrop] = useState(props.coords.left ? {x: props.coords.left, y: props.coords.top} : defaultCoords);
+    const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
 
 
 console.log('image');
@@ -67,16 +65,16 @@ console.log('image');
 
     const moveText = event => {
 
-        let coordX = event.pageX - shiftCoords.left;
-        let coordY = event.pageY - shiftCoords.top;
+        let coordX = event.pageX - shiftCoords.x;
+        let coordY = event.pageY - shiftCoords.y;
         console.log(coordX);
 
         let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
         let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
 
         const position = {
-            left: convertToPercentX.toFixed(1) + '%', 
-            top: convertToPercentY.toFixed(1) + '%', 
+            x: convertToPercentX.toFixed(1) + '%', 
+            y: convertToPercentY.toFixed(1) + '%', 
             shadowDisplay: event.type === 'drag' ? true : false,
             type: 'image'
         };
