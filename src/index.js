@@ -13,6 +13,8 @@ import 'normalize.css';
 
 import firebaseContext from './Firebase/firebaseContext';
 
+
+
 firebase.saveSession('SESSION');
 const config = require('./config.json');
 

@@ -1,0 +1,14 @@
+[data-textcomponent]:hover{
+    border: 1px solid red;
+    cursor: move;
+}
+[data-imagecomponent]{
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    pointer-events: none;
+}
+[data-imagecomponentwrapper]:hover{
+    border: 1px solid red;
+    box-sizing: border-box;
+}

@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import BuilderComponents from '../componentsBuilder/BuilderComponents';
+import Media from '../buildComponents/components/Media';
+import Image from '../buildComponents/components/Image';
+import TextComponent from '../buildComponents/components/Text';
+import BackgroundComponent from '../buildComponents/components/Background';
 
 import eventEmitter from '../../EventEmitter';
 import './buildMenu.scss';
@@ -59,38 +62,41 @@ class BuildMenu extends React.PureComponent {
 
     addText = event => {
         let id = this.props.countComponents;
+
+        const componentsPatternText = {
+            ...this.state.componentsPatternText,
+            id: id,
+            targetSection: this.props.editComponentName,
+        };
         eventEmitter.emit('EventBuildComponents',{
-            componentsPatternText: {
-                ...this.state.componentsPatternText,
-                id: id,
-                targetSection: this.props.editComponentName,
-            },
+            componentsPatternText,
             type: this.state.componentsPatternText.type,
-            component: <BuilderComponents
-                            key = {`text${id}`}
-                            sizeParentBox = {this.props.sizeParentBox}
-                            targetSection = {this.props.editComponentName}
-                            content = 'Title'
-                            id = {id}
-                            type = 'text' 
-                        />
+            component: <TextComponent
+                key = {`text${id}`}
+                {...componentsPatternText}
+                sizeParentBox = {{...this.props.sizeParentBox}}
+                id = {id}
+            >Title</TextComponent>
         });
         event.stopPropagation();
     }
 
     addBackground = event => {
         let id = this.props.countComponents;
+
+        const componentsPatternBackground = {
+            ...this.state.componentsPatternBackground,
+            targetSection: this.state.editComponentName,
+        };
+
         eventEmitter.emit('EventBuildComponents',{
-            componentsPatternBackground: {
-                ...this.state.componentsPatternBackground,
-                targetSection: this.state.editComponentName,
-            },
+            componentsPatternBackground,
             type: this.state.componentsPatternBackground.type,
-            component: <BuilderComponents
+            component: <BackgroundComponent
                             targetSection = {this.props.editComponentName}
+                            {...componentsPatternBackground}
                             key = {`bg${id}`}
                             id = {id}
-                            type = 'background'
                         />
         });
 
@@ -99,20 +105,20 @@ class BuildMenu extends React.PureComponent {
 
     addImage = event => {
         let id = this.props.countComponents;
+        const componentsPatternImage = {
+            ...this.state.componentsPatternImage,
+            id: id,
+            targetSection: this.props.editComponentName,
+        };
         eventEmitter.emit('EventBuildComponents',{
-            componentsPatternImage: {
-                ...this.state.componentsPatternImage,
-                id: id,
-                targetSection: this.props.editComponentName,
-            },
+            componentsPatternImage,
             type: this.state.componentsPatternImage.type,
-            component: <BuilderComponents
+            component: <Image
                             key = {`text${id}`}
-                            targetSection = {this.props.editComponentName}
                             sizeParentBox = {this.props.sizeParentBox}
                             id = {id}
-                            coords = {{...this.state.componentsPatternImage.coords}}
                             path = {'/img/photoPattern.svg'}
+                            {...componentsPatternImage}
                             type = 'image' />
         });
         event.stopPropagation();
@@ -120,21 +126,22 @@ class BuildMenu extends React.PureComponent {
 
     addMedia = event => {
         let id = Math.random().toFixed(3);
-        console.log(event);
+        const  componentsPatternMedia = {
+            ...this.state.componentsPatternMedia,
+            id: id,
+            targetSection: this.props.editComponentName,
+        };
+
         eventEmitter.emit('EventBuildComponents', {
-            componentsPatternMedia: {
-                ...this.state.componentsPatternMedia,
-                id: id,
-                targetSection: this.props.editComponentName,
-            },
-            type: this.state.componentsPatternMedia.type,
-            component: <BuilderComponents
+            componentsPatternMedia,
+            type: componentsPatternMedia.type,
+            component: <Media
                             key = {`media${id}`}
                             targetSection = {this.props.editComponentName}
                             sizeParentBox = {this.props.sizeParentBox}
                             id = {id}
-                            coords = {{...this.state.componentsPatternMedia.coords}}
                             path = {'/img/photoPattern.mp4'}
+                            {...componentsPatternMedia}
                             type = 'media' 
                         />
         });
@@ -143,15 +150,16 @@ class BuildMenu extends React.PureComponent {
 
     addSection = event => {
         let id = Math.random().toFixed(3);
+        const componentsPatternBackground = {
+            ...this.state.componentsPatternBackground,
+            targetSection: `Section${id}`,
+            id: `Section${id}`,
+            type: 'background',
+        };
         eventEmitter.emit('EventNewSection', {
-            componentsPatternBackground: {
-                ...this.state.componentsPatternBackground,
-                targetSection: `Section${id}`,
-                id: `Section${id}`,
-                type: 'background',
-            },
-            component: <BuilderComponents
-                            targetSection = {this.props.editComponentName}
+            componentsPatternBackground,
+            component: <BackgroundComponent
+                            {...componentsPatternBackground}
                             key = {`bg${id}`}
                             id = {id}
                             width = '100%'

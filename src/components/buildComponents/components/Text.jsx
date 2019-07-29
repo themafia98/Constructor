@@ -1,22 +1,21 @@
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
-
+import './components.scss';
 
 const WrapperText = styled.div.attrs(props => ({
     style: {
-        zIndex: props.indexZ ? '9999999' : null,
+        zIndex: props.indexZ ? '9999' : null,
         left: props.coordX ? props.coordX : '50%',
         top:  props.coordY,
 }}))`
     position: absolute;
-    transform: translate(-50%);
     font-size: ${props => props.size};
     color: ${props => props.textColor};
     text-align: center;
     margin: 0;
-    border: 1px solid red;
 `;
 
 const TextStyle = styled.h1`
@@ -26,194 +25,193 @@ const TextStyle = styled.h1`
     margin: 0;
     -moz-user-select: none;
     -khtml-user-select: none;
-    user-select: none;  
+    user-select: none;
 `;
 
+class TextComponent extends React.PureComponent {
 
+    static propTypes = {
+        id: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]).isRequired,
+        targetSection: PropTypes.string.isRequired,
+        sizeParentBox: PropTypes.object.isRequired,
+        children: PropTypes.string,
+    }
 
-const TextComponent = props =>  {
+    state = {
+        id: this.props.id,
+        isHaveSize: false,
+        parent: this.props.sizeParentBox,
+        targetSection: this.props.targetSection,
+        colorText: this.props.color,
+        sizeText: this.props.sizeText,
+        shiftCoords: null,
+        position: this.props.coords,
+        startDragNdrop: false,
+        contentText: this.props.children ? this.props.children : null
+    }
 
+    openTitleInstruments = event => {
 
-    const [id] = useState(props.id);
-    const [sizeParentBox, setsizeParentBox] = useState({...props.sizeParentBox});
-
-    let [_ScrollY, setScrollY] = useState(0);
-
-    const [targetSection] = useState(props.targetSection);
-    let [count,setCount] = useState(0);
-
-    let [colorText, setColorText] = useState(props.color);
-    let [sizeText, setSizeText] = useState(props.size ? props.size : 120);
-    let [contentText, setText] = useState(props.content ? props.content : props.children);
-    const [shiftCoords, setShiftCoords] = useState(null);
-    const [posText, setPosition] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
-
-    const [startDragNdrop,setStartDragNdrop] = useState(false);
-
-    let textComponent = React.createRef();
-
-    const openTitleInstruments = event => {
-
-        const componentsPatternText = {
-            id: id,
-            targetSection: targetSection,
+         const componentsPatternText = {
+            id: this.state.id,
+            targetSection: this.state.targetSection,
             type: 'text',
-            color: colorText,
-            fontSize: sizeText,
-            content: contentText,
-            coords: {...posText}, // x, y
+            color: this.state.colorText,
+            fontSize: this.state.sizeText,
+            content: this.state.contentText,
+            coords: {...this.state.posText}, // x, y
         };
-
         eventEmitter.emit(`EventInstrumentPanel`,{
-            type: 'text',
-            targetSection: targetSection,
-            id: id,
-            componentStats: componentsPatternText,
-            sizeTextValue: sizeText
+                type: 'text',
+                targetSection: this.state.targetSection,
+                id: this.state.id,
+                componentStats: componentsPatternText,
+                sizeTextValue: this.state.sizeText
+        });
+
+        event.stopPropagation();
+    }
+
+    changeColorText = colorRGB => {
+        if (typeof colorRGB === 'string')
+            this.setState({
+                ...this.state,
+                colorText: colorRGB
+            });
+    };
+
+    changeSizeText = eventSize => {
+        this.setState({...this.state, fontSize: eventSize.size});
+    };
+    saveSize = event => {
+        this.setState({...this.state, parent: {width: event.width, height: event.height}});
+    }
+
+    changeContentText = eventContent => {
+        let booldContent = eventContent.content || eventContent.content === '';
+        if (booldContent)
+            this.setState({
+                ...this.state,
+                content: eventContent
+            });
+    };
+
+    saveCoords = event => {
+        if (event.nativeEvent.which !== 1) return false;
+        const element = this.refText.getBoundingClientRect();
+
+        const cords = {
+            left: element.left,
+            top: element.top,
+            width: element.right - element.left,
+            height: element.bottom - element.top
+        }
+
+        this.setState({
+            ...this.state,
+            shiftCoords: {x: event.pageX - cords.left, y: event.pageY - cords.top},
+            startDragNdrop: !this.state.startDragNdrop ? true : false
         });
 
         event.stopPropagation();
     };
 
-    const changeColorText = colorRGB => {
-        if (typeof colorRGB === 'string')
-        setColorText(colorRGB);
-    };
-
-    const changeSizeText = eventSize => {
-        const {size} = eventSize;
-        setSizeText(size);
-    };
-
-    const saveSize = event => {
-
-        if (count === 0){
-        setsizeParentBox({width: event.width, height: event.height});
-        setCount(count + 1);
-        } else  eventEmitter.off(`EventSaveWidth`,saveSize);
-    }
-
-    const changeContentText = eventContent => {
-        let booldContent = eventContent.content || eventContent.content === '';
-        if (booldContent){
-            const {content} = eventContent;
-            setText(content);
-        }
-    };
-
-    // const scrollCordsSet = eventItem => {
-    //     console.log(eventItem);
-    //     // setScrollY(eventItem);
-    // };
-
-
-    const didUpdate = event => {
-        // eventEmitter.on(`EventScrollRecalcPosition${targetSection}`, scrollCordsSet);
-        eventEmitter.on(`EventChangeColorText${id}`, changeColorText);
-        eventEmitter.on(`EventChangeSizeText${id}`, changeSizeText);
-        eventEmitter.on(`EventChangeContentText${id}`, changeContentText);
-        eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
-        return () => {
-            // eventEmitter.off(`EventScrollRecalcPosition${targetSection}`, scrollCordsSet);
-            eventEmitter.off(`EventChangeColorText${id}`, changeColorText);
-            eventEmitter.off(`EventSaveWidth${targetSection}`,saveSize);
-            eventEmitter.off(`EventChangeSizeText${id}`, changeSizeText);
-            eventEmitter.off(`EventChangeContentText${id}`, changeContentText);
-        }
-    };
-
-    const getCoords = (element) => {
+    delta = (trans,transT) => {
         return {
-            left: element.left,
-            top: element.top + _ScrollY,
+            x: 0,
+            y: 0,
         }
-    };
+    }
+    move = (x,y) => this.setState({...this.state, position: {x: x, y: y}});
 
-    const saveCoords = event => {
+    moveText = event => {
 
-        if (_ScrollY === undefined) _ScrollY = 0;
-        let element = event.target.getBoundingClientRect();
+        if (this.state.startDragNdrop){
 
-        const cords = getCoords(element);
+            const cords = this.refText.getBoundingClientRect();
+            console.log(this.state.parent);
+            let coordX = event.pageX - this.props.sizeParentBox.left - this.state.shiftCoords.x + this.delta().x;
+            let coordY = event.pageY - this.props.sizeParentBox.top - this.state.shiftCoords.y + this.delta().y;
 
-        let width = element.width;
-        let height = element.height;
+            let convertToPercentX = coordX * 100 / this.state.parent.width;
+            let convertToPercentY = coordY * 100 / this.state.parent.height;
 
-        setShiftCoords({x: event.pageX - cords.left - width/2, y: event.pageY - cords.top + height/4});
-        if (!startDragNdrop) setStartDragNdrop(true);
-
-        event.stopPropagation();
-    };
-
-    const moveText = event => {
-
-        if (startDragNdrop){
-            let {current} = textComponent;
-            current.focus();
-
-
-            let coordX = event.pageX - shiftCoords.x;
-            let coordY = event.pageY - shiftCoords.y;
-
-            let convertToPercentX = coordX * 100 / sizeParentBox.width;
-            let convertToPercentY = coordY * 100 / sizeParentBox.height;
-
-            const position = {
-                x: convertToPercentX.toFixed(1) + '%',
-                y: convertToPercentY.toFixed(1) + '%',
-            };
-            setPosition(position);
-
+            this.move(convertToPercentX.toFixed(2) + '%',
+                      convertToPercentY.toFixed(2) + '%');
     }
         event.stopPropagation();
     };
 
-    const stopDragNdrop = event => {
-        if (startDragNdrop) {
-            setStartDragNdrop(false);
-            eventEmitter.emit(`EventUpdatePosition${id}`, posText);
+    stopDragNdrop = event => {
+        if (this.state.startDragNdrop) {
+            this.setState({...this.state, startDragNdrop: false})
+            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.position);
         }
         event.stopPropagation();
     };
 
-    const weelResizeText = event => {
+    weelResizeText = event => {
 
         if (event.shiftKey && event.deltaY === -100) {
-            let counter = sizeText + 1;
+            let counter = this.state.fontSize + 1;
             counter = counter > 200 ? 200 : counter;
-            setSizeText(counter);
-            eventEmitter.emit(`EventUpdateSizeText${id}`, counter);
+            this.setState({...this.state,fontSize: counter});
+            eventEmitter.emit(`EventUpdateSizeText${this.state.id}`, counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
-            let counter = sizeText - 1;
+            let counter = this.state.fontSize - 1;
              counter = counter <= 10 ? 10 : counter;
-             setSizeText(counter);
-             eventEmitter.emit(`EventUpdateSizeText${id}`, counter);
+             this.setState({...this.state,fontSize: counter});
+             eventEmitter.emit(`EventUpdateSizeText${this.state.id}`, counter);
             }
         event.stopPropagation();
     };
 
-    useEffect(didUpdate);
+    refText = null;
+    refTextComponent = node => this.refText = node;
 
-    return (
-        <WrapperText
-            ref  = {textComponent}
-            onClick={openTitleInstruments}
-            textColor = {colorText ? colorText : 'red'}
-            size = {sizeText ? sizeText + 'px' : '120px'}
-            onMouseDown = {saveCoords}
-            onMouseMove= {moveText}
-            onMouseLeave = {stopDragNdrop}
-            onMouseUp = {stopDragNdrop}
-            onWheel = {weelResizeText}
-            coordX = {posText ? posText.x : null}
-            coordY = {posText ? posText.y : null}
-            indexZ = {startDragNdrop}
-        >
-            <TextStyle>{contentText}</TextStyle>
-        </WrapperText>
-    )
-};
+
+    render(){
+        console.log(this.props);
+        return (
+            <WrapperText
+                ref  = {this.refTextComponent}
+                onClick={this.openTitleInstruments}
+                textColor = {this.state.colorText ? this.state.colorText : 'red'}
+                size = {this.statesizeText ? this.statesizeText + 'px' : '120px'}
+                onMouseDown = {this.saveCoords}
+                onMouseMove= {this.moveText}
+                onMouseLeave = {this.stopDragNdrop}
+                onMouseUp = {this.stopDragNdrop}
+                onWheel = {this.weelResizeText}
+                coordX = {this.state.position ? this.state.position.x : null}
+                coordY = {this.state.position ? this.state.position.y : null}
+                indexZ = {this.state.startDragNdrop}
+                data-textcomponent
+            >
+                <TextStyle>{this.state.contentText}</TextStyle>
+            </WrapperText>
+        )
+
+    }
+
+    componentDidMount = () => {
+        eventEmitter.on(`EventChangeColorText${this.state.id}`, this.changeColorText);
+        eventEmitter.on(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
+        eventEmitter.on(`EventChangeContentText${this.state.id}`, this.changeContentText);
+        eventEmitter.on(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+    }
+
+    componentWillUnmount = () => {
+        eventEmitter.off(`EventChangeColorText${this.state.id}`, this.changeColorText);
+        eventEmitter.off(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
+        eventEmitter.off(`EventChangeContentText${this.state.id}`, this.changeContentText);
+        eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+    }
+}
 
 export default TextComponent;

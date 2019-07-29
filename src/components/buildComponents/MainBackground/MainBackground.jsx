@@ -38,12 +38,6 @@ class MainBackground extends React.PureComponent {
         }
     };
 
-    // getSize = event => {
-    //     console.log(this.props.id);
-    //     eventEmitter.emit(`EventScrollRecalcPosition${this.props.id}`,this.refSection.data);
-    //     event.stopPropagation();
-    // }
-
     refSection = null;
     refSectionFunc = node => node ? this.refSection = {data: node.getBoundingClientRect(), node: node} : node;
 
@@ -53,7 +47,7 @@ class MainBackground extends React.PureComponent {
         if (bg)
         return (
             <Fragment>
-                <section id = {`${this.props.sectionNumber}`} onWheel = {this.getSize} ref={this.refSectionFunc} 
+                <section data-id = {`${this.props.sectionNumber}`}  ref={this.refSectionFunc} 
                 data-class = 'editable' onClick = {this.changeMode}>
                     <BackgroundComponent {...bg} >
                         {children.map(item => item.component) || null}

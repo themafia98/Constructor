@@ -1,4 +1,5 @@
 import React,{Fragment} from 'react';
+
 import isFetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 import eventEmitter from '../../EventEmitter.js';
@@ -7,6 +8,8 @@ import ImageItem from '../imageViewer/imageItem';
 import Icon from '../Icon/icon';
 
 import './modal.scss';
+
+require('es6-promise').polyfill();
 
 class ModalWindow extends React.PureComponent {
 

@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
 
-import { Link, animateScroll as scroll } from "react-scroll";
+import {animateScroll as scroll } from "react-scroll";
 
 import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
 import updateMiddleware from '../../redux/middleware/updateMiddleware';
@@ -38,10 +38,9 @@ class Build extends React.PureComponent {
     state = {
             idProject: parseInt(this.props.match.params.param),
             editStart: false,
-            position: 0,
+            position: 800,
             isLoadComponents: true,
             projectEmpty: false,
-            showSectionAddMenu: false,
             componentStats: {},
             mainBuilderData: {
                 components: [],
@@ -56,6 +55,7 @@ class Build extends React.PureComponent {
             modalSearch: false,
             modalSearchMode: null,
             modalImageViewer: {action: false, image: null },
+            sizeParentBox: null,
         }
 
     modalSearchOn = itemEvent => {
@@ -71,15 +71,15 @@ class Build extends React.PureComponent {
         this.setState({
             ...this.state,
             modalImageViewer: {
-                ...this.state.modalImageViewer, 
-                action: itemEvent.action, 
+                ...this.state.modalImageViewer,
+                action: itemEvent.action,
                 target: itemEvent.target
             }
         });
     };
 
     workModeEdit = itemEvent => {
- 
+
         if (itemEvent.editStart)
         this.setState({
             ...this.state,
@@ -129,11 +129,17 @@ class Build extends React.PureComponent {
         let components = [...this.state.mainBuilderData.components];
         array.forEach(item => {
             if (item.type !== 'background'){
-
+                console.log(this.mainComponent.data);
+                let sizeParentBox = {
+                    width: this.mainComponent.data.width,
+                    height: this.mainComponent.data.height,
+                    top: this.mainComponent.data.top,
+                    left: this.mainComponent.data.left,
+                }
                 let component =
                     <BuilderComponents
 
-                        sizeParentBox = {{...this.mainComponent.data}}
+                        sizeParentBox = {{...sizeParentBox}}
                         {...item}
                         key = {`${item.type}${item.id}`}
                     />;
@@ -219,23 +225,9 @@ class Build extends React.PureComponent {
         )});
     };
 
-
-    showAddSection = event => {
-        if (event.pageY > 780 && !this.state.showSectionAddMenu){
-            this.setState({
-                ...this.state,
-                showSectionAddMenu: true,
-            });
-        } else if (event.pageY < 780 && this.state.showSectionAddMenu){
-            this.setState({
-                ...this.state,
-                showSectionAddMenu: false,
-            });
-        }
-        event.stopPropagation();
-    }
     mainComponent = null;
-    mainRefComponent = node => node ? this.mainComponent = {data: node.getBoundingClientRect(), node: node} : node;
+    mainRefComponent = node => node ?
+        this.mainComponent = {data: node.getBoundingClientRect(), node: node} : node;
 
     addNewSection = eventItem => {
 
@@ -269,23 +261,33 @@ class Build extends React.PureComponent {
     ));
 }
 
-    updateCoordsComponents = event => {
-        eventEmitter.emit("ScrollRecalcPosition", this.mainComponent.node.scrollTop);
-    }
+    moveLocation = event => {
+        console.log(event.deltaY);
+        if (!this.state.modalSearch){
+            const moveDown = this.state.position < this.mainComponent.data.height && event.deltaY > 0;
+            const moveUp = event.deltaY < 0 && this.state.position > 0;
 
-    scrolllS = event => {
-        console.log(this.mainComponent.data);
-        console.log(this.mainComponent.node);
-        if (event.deltaY === 100 && this.state.position < this.mainComponent.data.height)
-        this.setState({
-            ...this.state,
-            position: this.state.position + 800
-        }, () =>scroll.scrollTo(this.state.position));
-        else if (event.deltaY !== 100 && this.state.position > 0)
-        this.setState({
-            ...this.state,
-            position: this.state.position - 800
-        }, () =>scroll.scrollTo(this.state.position));
+            let sizeParentBox = {
+                width: this.mainComponent.data.width,
+                height: this.mainComponent.data.height,
+                top: this.mainComponent.data.top,
+                left: this.mainComponent.data.left,
+            }
+
+            if (moveDown){
+                this.setState({
+                    ...this.state,
+                    position: this.state.position + 800,
+                    sizeParentBox: sizeParentBox
+                }, () =>scroll.scrollTo(this.state.position));
+            }  else if (moveUp){
+            this.setState({
+                ...this.state,
+                position: this.state.position - 800,
+                sizeParentBox: sizeParentBox
+            }, () =>scroll.scrollTo(this.state.position));
+            }
+        }
     }
 
     render(){
@@ -297,16 +299,14 @@ class Build extends React.PureComponent {
         const {currentProjectsData} = userData;
         const section = currentProjectsData.sectionTitleProject;
 
-
         if (userData.active && currentProjectsData.loadProject){
-      
+
             return (
                 <Fragment>
                     <Header key = 'Header' title = "Constructor"  />
                     <div
                         ref = {this.mainRefComponent} 
-                        // onScroll = {this.updateCoordsComponents}
-                        onWheel = {this.scrolllS}
+                        onWheel = {this.moveLocation}
                         onMouseMove = {this.showAddSection} 
                         className = 'Build' 
                         key = 'Build'
@@ -317,17 +317,15 @@ class Build extends React.PureComponent {
                             editComponentName = {this.state.editComponentName}
                             countComponents = {this.state.mainBuilderData.components.length}
                             menuActive = {this.state.menuActive}
-                            sizeParentBox = {this.mainComponent.data}
+                            sizeParentBox = {this.state.sizeParentBox}
                         />
                         }
-                        {this.state.showSectionAddMenu &&
                             <BuildMenu
                                 key = 'buildMenu'
                                 countSection = {this.state.mainBuilderData.componentJSX.length * 5}
                                 mode = "section"
                                 className = 'menu'
                             />
-                        }
                         {instrumentActive && <AdditionalTools key = 'tools' {...this.state} />}
                         {section.length && <Section key = 'section' {...this.state} userData = {userData} />}
                     </div>
@@ -341,6 +339,16 @@ class Build extends React.PureComponent {
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         const isLoadComponents = this.state.isLoadComponents;
+        console.log(this.mainComponent);
+        let sizeParentBox = null;
+        if (this.mainComponent && this.state.sizeParentBox === null){
+            sizeParentBox = {
+                width: this.mainComponent.data.width,
+                height: this.mainComponent.data.height,
+                top: this.mainComponent.data.top,
+                left: this.mainComponent.data.left,
+            }
+        }
 
         if (userData.active && !currentProjectsData.loadProject) {
             const current =  userData.projects.find(item => item.id === this.state.idProject)
@@ -350,10 +358,16 @@ class Build extends React.PureComponent {
                 typeProject: current.type,
                 sectionTitleProject: [...current.sectionTitleProject],
                 components: [...current.components]
-            })) : this.setState({...this.state, projectEmpty: true});
+            })) : this.setState({...this.state, projectEmpty: true, sizeParentBox: sizeParentBox});
         }
-        if (currentProjectsData.loadProject && isLoadComponents)
-            this.addComponentsFromBD([...currentProjectsData.components]);
+        if (currentProjectsData.loadProject && isLoadComponents) {
+            if (this.state.sizeParentBox === null && sizeParentBox !== null)
+            this.setState({
+                ...this.state,
+                sizeParentBox: sizeParentBox
+            }, () => this.addComponentsFromBD([...currentProjectsData.components]));
+            else this.addComponentsFromBD([...currentProjectsData.components]);
+        }
     }
 
     componentDidMount = () => {
@@ -370,7 +384,7 @@ class Build extends React.PureComponent {
                 components: [...current.components]
             }));
         };
-        console.log('build');
+
         eventEmitter.on('EventBuildComponents', this.addComponent);
         eventEmitter.on('EventNewSection', this.addNewSection);
         eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);

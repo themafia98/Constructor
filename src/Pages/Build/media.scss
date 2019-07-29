@@ -8,7 +8,10 @@
 
 @media screen and (max-width: 600px){
 
-    .warningEdit {
+    
+    .Build .warningEdit {
+        justify-content: center;
+        align-items: normal;
         text-align: center;
         width: 100%;
         font-size: 1.8rem;

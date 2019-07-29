@@ -2,29 +2,40 @@ import React,{useState,useEffect} from 'react';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
-const ImageStyle = styled.img.attrs(props => ({
+
+const WrapperImg = styled.div.attrs(props => ({
     style: {
-        // display: props.shadowDisplay ? 'none' : 'block',
+        zIndex: props.indexZ ? '9999' : null,
         left: props.coordX ? props.coordX : '45%',
         top:  props.coordY ? props.coordY : '0',
 }}))`
+    width: 30%;
+    height: 50%;
     position: absolute;
-    width: ${props => props.size}%;
-    transform: translate(-50%,50%);
+`;
+
+const ImageStyle = styled.img`
+    width: 100%;
+    height: 100%;
+    position: absolute;
 `;
 
 const Image = props => {
 
     const [id] = useState(props.id);
+
+    const [sizeParentBox, setsizeParentBox] = useState({...props.sizeParentBox});
+
+    const [targetSection] = useState(props.targetSection);
+    let [count,setCount] = useState(0);
+
     const [path, setImage] = useState(props.path);
     const [size,setSize] = useState(props.size ? props.size : 30);
-    const [targetSection] = useState(props.targetSection);
 
+    const [shiftCoords, setShiftCoords] = useState(null);
 
-    let [count,setCount] = useState(0);
-    const [sizeParentBox, setsizeParentBox] = useState({...props.sizeParentBox});
-    const [shiftCoords, setShiftCoords] = useState(null)
-    const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
+    const [posImage, setPosImage] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
+    const [startDragNdrop,setStartDragNdrop] = useState(false);
 
     const openImageInstruments = event => {
 
@@ -36,7 +47,7 @@ const Image = props => {
             opacity: 1,
             zIndex: null,
             image: path,
-            coords: {...dragNdrop}, // x, y
+            coords: {...posImage}, // x, y
         }
 
         eventEmitter.emit(`EventInstrumentPanel`,{
@@ -46,51 +57,60 @@ const Image = props => {
             sizeTextValue: size
         });
         event.stopPropagation();
+    };
+
+    const getPos = (element) => {
+        return {
+            left: element.left,
+            top: element.top,
+            width: element.right - element.left,
+            height: element.bottom - element.top
+        }
     }
 
     const saveCoords = event => {
 
-        let rect = event.target.getBoundingClientRect();
-        let left = rect.left;
-        let top = rect.top;
-        let width = rect.width;
-        let height = rect.height;
+        const cords = getPos(event.target.getBoundingClientRect());
 
-        setShiftCoords({x: event.pageX - left - width/2, y: event.pageY - top + height/2});
+        setShiftCoords({x: event.nativeEvent.pageX - cords.left, y: event.nativeEvent.pageY - cords.top});
+        if (!startDragNdrop) setStartDragNdrop(true);
 
         event.stopPropagation();
-    }
+    };
 
     const moveText = event => {
 
-        let coordX = event.pageX - shiftCoords.x;
-        let coordY = event.pageY - shiftCoords.y;
+        if (startDragNdrop){
 
-        let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
-        let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
+            let coordX = event.pageX - shiftCoords.x;
+            let coordY = event.pageY - shiftCoords.y;
 
-        if (isNaN(convertToPercentX) || isNaN(convertToPercentY)){
-            console.log('error');
-        }
+            let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
+            let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
 
-        const position = {
-            x: convertToPercentX.toFixed(1) + '%', 
-            y: convertToPercentY.toFixed(1) + '%', 
-            shadowDisplay: event.type === 'drag' ? true : false,
-            type: 'image'
-        };
-        setDragNdrop(position);
-        if (event.type === 'dragend') {
-            eventEmitter.emit(`EventUpdatePosition${id}`, position);
+            const position = {
+                x: convertToPercentX.toFixed(2) + '%',
+                y: convertToPercentY.toFixed(2) + '%',
+            };
+            setPosImage(position);
+    }
+        event.stopPropagation();
+    };
+
+    const stopDragNdrop = event => {
+        if (startDragNdrop) {
+            setStartDragNdrop(false);
+            eventEmitter.emit(`EventUpdatePosition${id}`, posImage);
         }
         event.stopPropagation();
-    }
+    };
+
 
     const setCurrentImage = event => {
         const {urlFull} = event;
         setImage(urlFull);
     };
-    
+
     const weelResizeText = event => {
 
         if (event.shiftKey && event.deltaY === -100) {
@@ -107,24 +127,23 @@ const Image = props => {
              eventEmitter.emit('EventUpdateSizeText', counter);
             }
         event.stopPropagation();
-    }
-
+    };
     const saveSize = event => {
 
         if (count === 0){
         setsizeParentBox({width: event.width, height: event.height});
         setCount(count + 1);
         } else  eventEmitter.off(`EventSaveWidth`,saveSize);
-    }
-
+    };
     const didUpdate = effect => {
-        eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
         eventEmitter.on(`EventSetCurrentImage${id}`, setCurrentImage);
+        eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
         return () => {
             eventEmitter.off(`EventSaveWidth${targetSection}`,saveSize);
             eventEmitter.off(`EventSetCurrentImage${id}`, setCurrentImage);
         }
-    }
+    };
+
 
     // const searchTest = e => {
 
@@ -142,23 +161,27 @@ const Image = props => {
     //     .catch(error => console.error(error));
     // }
 
+    const stop = () => false;
+
     useEffect(didUpdate);
+
     return (
-        <ImageStyle  
-            size = {size}
-            src = {path}
-            alt = 'img' 
-            onDoubleClick = {openImageInstruments}
-            draggable = {true}
-            onMouseDown = {saveCoords}
-            onDragStart = {openImageInstruments}
-            onDrag   = {moveText}
-            onDragEnd = {moveText}
-            coordX = {dragNdrop ? dragNdrop.x : null}
-            coordY = {dragNdrop ? dragNdrop.y : null}
-            onWheel = {weelResizeText}
-            shadowDisplay = {dragNdrop ? dragNdrop.shadowDisplay : false}
-        />
+        <WrapperImg
+        size = {size}
+        onClick = {openImageInstruments}
+        onMouseDown = {saveCoords}
+        onMouseMove= {moveText}
+        onMouseLeave = {stopDragNdrop}
+        onMouseUp = {stopDragNdrop}
+        onDragStart = {stop}
+        onWheel = {weelResizeText}
+        coordX = {posImage ? posImage.x : null}
+        coordY = {posImage ? posImage.y : null}
+        indexZ = {startDragNdrop}
+        data-imagecomponentwrapper
+        >
+            <ImageStyle data-imagecomponent src = {path}  alt = 'img' />
+        </WrapperImg>
     )
 };
 
