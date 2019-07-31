@@ -25,12 +25,6 @@ const ImageInstruments = props => {
             type="button"
             value = 'search image'
         />
-            <input 
-                onClick = {props.cbSaveChanges}
-                className = 'saveButtonInstument'
-                type = 'button'
-                value = 'save changes'
-            />
         </Fragment>
     )
 

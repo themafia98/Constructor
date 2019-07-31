@@ -31,12 +31,6 @@ const BackgroundInstruments = props => {
                 type = 'button'
                 value = 'background-image'
             />
-            <input 
-                onClick = {props.cbSaveChanges}
-                className = 'saveButtonInstument'
-                type = 'button'
-                value = 'save changes'
-            />
         </Fragment>
     )
 

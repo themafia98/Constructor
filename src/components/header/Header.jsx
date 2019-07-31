@@ -38,7 +38,7 @@ class Header extends React.Component {
     };
 
     confirm = event => {
-        this.setState({...this.state, isChange: true});
+        this.setState({isChange: event});
     }
 
     confirmSaveDetectChanges = event => {

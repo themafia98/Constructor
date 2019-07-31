@@ -11,13 +11,14 @@ const WrapperImg = styled.div.attrs(props => ({
         top:  props.coordY ? props.coordY : '0',
 }}))`
     width: ${props => props.size ? props.size + '%' : '50%'};
-    height: ${props => props.size ? props.size + '%' : '50%'};
+    height: ${props => props.size ? props.size + 20 + '%' : '50%'};
     position: absolute;
 `;
 
 const ImageStyle = styled.img`
     width: 100%;
     height: 100%;
+    pointer-events: none;
     position: absolute;
 `;
 
@@ -113,7 +114,7 @@ class Image extends React.PureComponent {
 
     moveText = event => {
 
-        if (this.state.startDragNdrop){
+        if (this.state.startDragNdrop && this.state.istrumentsActive){
 
             let coordX = event.pageX - this.props.sizeParentBox.left - this.state.shiftCoords.x + this.delta().x;
             let coordY = event.pageY - this.props.sizeParentBox.top - this.state.shiftCoords.y + this.delta().y;

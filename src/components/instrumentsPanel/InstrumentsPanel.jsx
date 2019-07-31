@@ -36,9 +36,7 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     closePanel = event => {
-        if (!this.state.isChange)
         eventEmitter.emit('EventClosePanel', {close: false});
-        else this.setState({...this.state, confirmActive: true});
     };
 
     setSize = event => {
@@ -70,6 +68,7 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     updatePosition = eventItem => {
+        if (!eventItem) return;
         this.setState({
             ...this.state, 
             componentStats: {
@@ -155,8 +154,9 @@ class InstrumentsPanel extends React.PureComponent {
                 id: this.state.componentStats.id,
                 type: this.state.componentStats.type,
             });
+            eventEmitter.emit('EventRedirectConfirm', false);
         }, 3000);
-        eventEmitter.emit('EventRedirectConfirm', 'saveChanges');
+        eventEmitter.emit('EventRedirectConfirm', true);
         if (event) event.stopPropagation();
     }
 
@@ -179,7 +179,6 @@ class InstrumentsPanel extends React.PureComponent {
                         cbSetSize = {this.setSize}
                         cbHandleChangeComplete = {this.handleChangeComplete}
                         cbSetContent = {this.setContent}
-                        cbSaveChanges = {this.saveChanges}
                     />
                    )
                 case 'background':
@@ -190,7 +189,6 @@ class InstrumentsPanel extends React.PureComponent {
                             cbSetColor = {this.setColor}
                             cbHandleChangeComplete = {this.handleChangeComplete}
                             cbSearchImage = {this.searchImage}
-                            cbSaveChanges = {this.saveChanges}
                         />
                     )
                 case 'image':
@@ -199,7 +197,6 @@ class InstrumentsPanel extends React.PureComponent {
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
                                 cbSearchImage = {this.searchImage}
-                                cbSaveChanges = {this.saveChanges}
                             />
                         )
                 default: return <p className = 'warningInstruments'>No found element</p>

@@ -44,12 +44,6 @@ const TextInstruments = props => {
                 type = 'text'
                 value = {content ? content : 'Title'}
             />
-            <input 
-                onClick = {props.cbSaveChanges}
-                className = 'saveButtonInstument'
-                type = 'button'
-                value = 'save changes'
-            />
             </Fragment>
         )
 }
