@@ -119,6 +119,21 @@ class TextComponent extends React.PureComponent {
         event.stopPropagation();
     };
 
+    checkPivotPosition = (coordX, coordY) => {
+
+        const element = this.refText.getBoundingClientRect();
+        const borderTopLeft = 0;
+        const borderDown = 800 - element.height;
+        const borderRight = this.props.sizeParentBox.width - element.width;
+
+        if (coordY < borderTopLeft) coordY = borderTopLeft;
+        if (coordY > borderDown) coordY = borderDown;
+        if (coordX < borderTopLeft) coordX = borderTopLeft;
+        if (coordX > borderRight) coordX = borderRight;
+
+        return {x: coordX, y: coordY};
+    }
+
     delta = (trans,transT) => {
         return {
             x: 0,
@@ -131,13 +146,14 @@ class TextComponent extends React.PureComponent {
 
         if (this.state.startDragNdrop){
 
-            const cords = this.refText.getBoundingClientRect();
-            console.log(this.state.parent);
+
             let coordX = event.pageX - this.props.sizeParentBox.left - this.state.shiftCoords.x + this.delta().x;
             let coordY = event.pageY - this.props.sizeParentBox.top - this.state.shiftCoords.y + this.delta().y;
 
-            let convertToPercentX = coordX * 100 / this.state.parent.width;
-            let convertToPercentY = coordY * 100 / this.state.parent.height;
+            let coords = this.checkPivotPosition(coordX,coordY);
+
+            let convertToPercentX = coords.x * 100 / this.state.parent.width;
+            let convertToPercentY = coords.y * 100 / this.state.parent.height;
 
             this.move(convertToPercentX.toFixed(2) + '%',
                       convertToPercentY.toFixed(2) + '%');
@@ -176,7 +192,6 @@ class TextComponent extends React.PureComponent {
 
 
     render(){
-        console.log(this.props);
         return (
             <WrapperText
                 ref  = {this.refTextComponent}

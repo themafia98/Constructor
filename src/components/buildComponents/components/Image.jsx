@@ -1,4 +1,5 @@
-import React,{useState,useEffect} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
@@ -20,169 +21,185 @@ const ImageStyle = styled.img`
     position: absolute;
 `;
 
-const Image = props => {
+class Image extends React.PureComponent {
 
-    const [id] = useState(props.id);
+    static propTypes = {
+        id: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]).isRequired,
+        targetSection: PropTypes.string.isRequired,
+        sizeParentBox: PropTypes.object.isRequired,
+    }
 
-    const [sizeParentBox, setsizeParentBox] = useState({...props.sizeParentBox});
+    state = {
+        id: this.props.id,
+        getSizeBool: false,
+        sizeParentBox: this.props.sizeParentBox,
+        targetSection: this.props.targetSection,
+        path: this.props.path,
+        size: this.props.size ? this.props.size : 30,
+        shiftCoords: null,
+        posImage: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
+        startDragNdrop: false,
+    }
 
-    const [targetSection] = useState(props.targetSection);
-    let [count,setCount] = useState(0);
-
-    const [path, setImage] = useState(props.path);
-    const [size,setSize] = useState(props.size ? props.size : 30);
-
-    const [shiftCoords, setShiftCoords] = useState(null);
-
-    const [posImage, setPosImage] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
-    const [startDragNdrop,setStartDragNdrop] = useState(false);
-
-    const openImageInstruments = event => {
+    openImageInstruments = event => {
 
         const componentsPatternImage = {
-            id: id,
-            targetSection: targetSection,
+            id: this.state.id,
+            targetSection: this.state.targetSection,
             type: 'image',
             borderRadius: null,
             opacity: 1,
             zIndex: null,
-            image: path,
-            coords: {...posImage}, // x, y
+            image: this.state.path,
+            coords: {...this.state.posImage}, // x, y
         }
 
         eventEmitter.emit(`EventInstrumentPanel`,{
             componentStats: componentsPatternImage,
-            targetSection: targetSection,
-            id: id,
-            sizeTextValue: size
+            targetSection: this.state.targetSection,
+            id: this.state.id,
+            sizeTextValue: this.state.size
         });
         event.stopPropagation();
     };
 
-    const getPos = (element) => {
-        return {
+    saveCoords = event => {
+        if (event.nativeEvent.which !== 1) return false;
+        const element = this.refImage.getBoundingClientRect();
+
+        const cords = {
             left: element.left,
             top: element.top,
             width: element.right - element.left,
             height: element.bottom - element.top
         }
-    }
 
-    const saveCoords = event => {
-
-        const cords = getPos(event.target.getBoundingClientRect());
-
-        setShiftCoords({x: event.nativeEvent.pageX - cords.left, y: event.nativeEvent.pageY - cords.top});
-        if (!startDragNdrop) setStartDragNdrop(true);
+        this.setState({
+            ...this.state,
+            shiftCoords: {x: event.pageX - cords.left, y: event.pageY - cords.top},
+            startDragNdrop: !this.state.startDragNdrop ? true : false
+        });
 
         event.stopPropagation();
     };
 
-    const moveText = event => {
+    checkPivotPosition = (coordX, coordY) => {
 
-        if (startDragNdrop){
+        const element = this.refImage.getBoundingClientRect();
+        const borderTopLeft = 0;
+        const borderDown = 800 - element.height;
+        const borderRight = this.props.sizeParentBox.width - element.width;
 
-            let coordX = event.pageX - shiftCoords.x;
-            let coordY = event.pageY - shiftCoords.y;
+        if (coordY < borderTopLeft) coordY = borderTopLeft;
+        if (coordY > borderDown) coordY = borderDown;
+        if (coordX < borderTopLeft) coordX = borderTopLeft;
+        if (coordX > borderRight) coordX = borderRight;
 
-            let convertToPercentX = ((coordX) * 100) / sizeParentBox.width;
-            let convertToPercentY = ((coordY) * 100) / (sizeParentBox.height);
+        return {x: coordX, y: coordY};
+    }
 
-            const position = {
-                x: convertToPercentX.toFixed(2) + '%',
-                y: convertToPercentY.toFixed(2) + '%',
-            };
-            setPosImage(position);
+    delta = (trans,transT) => {
+        return {
+            x: 0,
+            y: 0,
+        }
+    }
+    move = (x,y) => this.setState({...this.state, posImage: {x: x, y: y}});
+
+    moveText = event => {
+
+        if (this.state.startDragNdrop){
+
+            let coordX = event.pageX - this.props.sizeParentBox.left - this.state.shiftCoords.x + this.delta().x;
+            let coordY = event.pageY - this.props.sizeParentBox.top - this.state.shiftCoords.y + this.delta().y;
+
+            let coords = this.checkPivotPosition(coordX,coordY);
+
+            let convertToPercentX = coords.x * 100 / this.state.sizeParentBox.width;
+            let convertToPercentY = coords.y * 100 / this.state.sizeParentBox.height;
+
+            this.move(convertToPercentX.toFixed(2) + '%',
+                      convertToPercentY.toFixed(2) + '%');
     }
         event.stopPropagation();
     };
 
-    const stopDragNdrop = event => {
-        if (startDragNdrop) {
-            setStartDragNdrop(false);
-            eventEmitter.emit(`EventUpdatePosition${id}`, posImage);
+    stopDragNdrop = event => {
+        if (this.state.startDragNdrop) {
+            this.setState({...this.state, startDragNdrop: false})
+            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.posImage);
         }
         event.stopPropagation();
     };
 
-
-    const setCurrentImage = event => {
+    setCurrentImage = event => {
         const {urlFull} = event;
-        setImage(urlFull);
+        this.setState({...this.state, path: urlFull});
     };
 
-    const weelResizeText = event => {
+    weelResizeText = event => {
 
         if (event.shiftKey && event.deltaY === -100) {
-            let counter = size + 1;
+            let counter = this.state.size + 1;
             counter = counter > 100 ? 100 : counter;
-            setSize(counter);
+            this.setState({...this.state,size: counter});
             eventEmitter.emit('EventUpdateSizeText', counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
-            let counter = size - 1;
+            let counter = this.state.size - 1;
              counter = counter <= 0 ? 0 : counter;
-             setSize(counter);
+             this.setState({...this.state,size: counter});
              eventEmitter.emit('EventUpdateSizeText', counter);
             }
         event.stopPropagation();
     };
-    const saveSize = event => {
-
-        if (count === 0){
-        setsizeParentBox({width: event.width, height: event.height});
-        setCount(count + 1);
-        } else  eventEmitter.off(`EventSaveWidth`,saveSize);
-    };
-    const didUpdate = effect => {
-        eventEmitter.on(`EventSetCurrentImage${id}`, setCurrentImage);
-        eventEmitter.on(`EventSaveWidth${targetSection}`,saveSize);
-        return () => {
-            eventEmitter.off(`EventSaveWidth${targetSection}`,saveSize);
-            eventEmitter.off(`EventSetCurrentImage${id}`, setCurrentImage);
-        }
+    saveSize = event => {
+        if (!this.state.getSizeBool)
+        this.setState({
+            ...this.state, getSizeBool: true,
+            sizeParentBox: {width: event.width, height: event.height}
+        });
     };
 
+    refImage = null;
+    refImageComponent = node => this.refImage = node;
 
-    // const searchTest = e => {
+    render(){
+        console.log('image');
+            return (
+                <WrapperImg
+                ref = {this.refImageComponent}
+                size = {this.state.size}
+                onClick = {this.openImageInstruments}
+                onMouseDown = {this.saveCoords}
+                onMouseMove= {this.moveText}
+                onMouseLeave = {this.stopDragNdrop}
+                onMouseUp = {this.stopDragNdrop}
+                onDragStart = {this.stop}
+                onWheel = {this.weelResizeText}
+                coordX = {this.state.posImage ? this.state.posImage.x : null}
+                coordY = {this.state.posImage ? this.state.posImage.y : null}
+                indexZ = {this.state.startDragNdrop}
+                data-imagecomponentwrapper
+                >
+                    <ImageStyle data-imagecomponent src = {this.state.path}  alt = 'img' />
+                </WrapperImg>
+            )
+    }
 
-    //     const api = 'https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=';
+    componentDidMount = () => {
+        eventEmitter.on(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
+        eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
+    }
 
-    //     isFetch(`${api}${process.env.REACT_APP_CHANNEL_ID}&maxResults=20&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`)
-    //     .then(res => {
-    //         if (res.ok)
-    //         return res.json();
-    //         else throw new Error (`Error ${res.status}`);
-    //     })
-    //     .then(res => {
-    //         console.log(res);
-    //     })
-    //     .catch(error => console.error(error));
-    // }
-
-    const stop = () => false;
-
-    useEffect(didUpdate);
-
-    return (
-        <WrapperImg
-        size = {size}
-        onClick = {openImageInstruments}
-        onMouseDown = {saveCoords}
-        onMouseMove= {moveText}
-        onMouseLeave = {stopDragNdrop}
-        onMouseUp = {stopDragNdrop}
-        onDragStart = {stop}
-        onWheel = {weelResizeText}
-        coordX = {posImage ? posImage.x : null}
-        coordY = {posImage ? posImage.y : null}
-        indexZ = {startDragNdrop}
-        data-imagecomponentwrapper
-        >
-            <ImageStyle data-imagecomponent src = {path}  alt = 'img' />
-        </WrapperImg>
-    )
-};
+    componentWillUnmount = () => {
+        eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        eventEmitter.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
+    }
+}
 
 export default Image;

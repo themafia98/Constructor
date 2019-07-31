@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
 
-import {animateScroll as scroll } from "react-scroll";
+import {animateScroll as scroll, scroller } from "react-scroll";
 
 import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
 import updateMiddleware from '../../redux/middleware/updateMiddleware';
@@ -38,7 +38,7 @@ class Build extends React.PureComponent {
     state = {
             idProject: parseInt(this.props.match.params.param),
             editStart: false,
-            position: 800,
+            position: 0,
             isLoadComponents: true,
             projectEmpty: false,
             componentStats: {},
@@ -49,6 +49,12 @@ class Build extends React.PureComponent {
             instrumentPanel: {
                 colorPickerActive: false,
                 instrumentActive: false,
+            },
+            scrollConfig: {
+                duration: 1000,
+                delay: 50,
+                smooth: true,
+                offset: -80, // Scrolls to element -80 pixels down the page
             },
             editComponentName:  null,
             menuActive: false,
@@ -129,7 +135,6 @@ class Build extends React.PureComponent {
         let components = [...this.state.mainBuilderData.components];
         array.forEach(item => {
             if (item.type !== 'background'){
-                console.log(this.mainComponent.data);
                 let sizeParentBox = {
                     width: this.mainComponent.data.width,
                     height: this.mainComponent.data.height,
@@ -262,9 +267,10 @@ class Build extends React.PureComponent {
 }
 
     moveLocation = event => {
-        console.log(event.deltaY);
-        if (!this.state.modalSearch){
-            const moveDown = this.state.position < this.mainComponent.data.height && event.deltaY > 0;
+        if (!this.state.modalSearch){ 
+            const {sectionTitleProject} = this.props.userData.currentProjectsData;
+            const count = sectionTitleProject.length-1;
+            const moveDown = this.state.position < count && event.deltaY > 0;
             const moveUp = event.deltaY < 0 && this.state.position > 0;
 
             let sizeParentBox = {
@@ -277,15 +283,23 @@ class Build extends React.PureComponent {
             if (moveDown){
                 this.setState({
                     ...this.state,
-                    position: this.state.position + 800,
+                    position: this.state.position + 1,
                     sizeParentBox: sizeParentBox
-                }, () =>scroll.scrollTo(this.state.position));
+                }, () => scroller.scrollTo(`element${this.state.position}`,this.state.scrollConfig));
             }  else if (moveUp){
-            this.setState({
-                ...this.state,
-                position: this.state.position - 800,
-                sizeParentBox: sizeParentBox
-            }, () =>scroll.scrollTo(this.state.position));
+                if (this.state.position === 1){
+                    this.setState({
+                        ...this.state,
+                        position: this.state.position - 1,
+                        sizeParentBox: sizeParentBox
+                    }, () => scroll.scrollToTop());
+                } else {
+                    this.setState({
+                        ...this.state,
+                        position: this.state.position - 1,
+                        sizeParentBox: sizeParentBox
+                    }, () => scroller.scrollTo(`element${this.state.position}`,this.state.scrollConfig));
+                }
             }
         }
     }
@@ -339,7 +353,7 @@ class Build extends React.PureComponent {
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         const isLoadComponents = this.state.isLoadComponents;
-        console.log(this.mainComponent);
+
         let sizeParentBox = null;
         if (this.mainComponent && this.state.sizeParentBox === null){
             sizeParentBox = {
@@ -413,6 +427,7 @@ class Build extends React.PureComponent {
 
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
         userData: {
             active: state.cabinet.active,

@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import eventEmitter from '../../../EventEmitter';
 import PropTypes from 'prop-types';
 
-
+import {Element} from "react-scroll";
 import BackgroundComponent from '../components/Background';
 import Loader from '../../loading/Loader';
 
@@ -47,7 +47,7 @@ class MainBackground extends React.PureComponent {
         if (bg)
         return (
             <Fragment>
-                <section data-id = {`${this.props.sectionNumber}`}  ref={this.refSectionFunc} 
+                <section className = {`element${this.props.sectionNumber}`} ref={this.refSectionFunc}
                 data-class = 'editable' onClick = {this.changeMode}>
                     <BackgroundComponent {...bg} >
                         {children.map(item => item.component) || null}

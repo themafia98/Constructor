@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
@@ -16,35 +17,50 @@ const Media = styled.iframe`
     padding: 25px;
 `;
 
+class MediaComponent extends React.PureComponent {
 
-const MediaComponent = props => {
+    static propTypes = {
+        id: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]).isRequired,
+        targetSection: PropTypes.string.isRequired,
+        sizeParentBox: PropTypes.object.isRequired,
+        content: PropTypes.string,
+        children: PropTypes.object,
+    }
 
-    // const [targetSection] = useState(props.targetSection);
-    // const [id] = useState(props.id);
-    // const [sizeParentBox] = useState(props.sizeParentBox);
-    // const [content, setContent] = useState(props.path || props.content);
-    // const [shiftCoords, setShiftCoords] = useState(null)
-    // const [dragNdrop, setDragNdrop] = useState(props.coords.x ? {x: props.coords.x, y: props.coords.y} : null);
+    state = {
+        targetSection: this.props.targetSection,
+        id : this.props.id,
+        sizeParentBox: this.props.sizeParentBox,
+        content: this.props.path || this.props.content,
+        shiftCoords: null,
+        dragNdrop: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null
 
+    }
 
-    const openMediaInstruments = event => {
+    openMediaInstruments = event => {
 
         eventEmitter.emit('EventInstrumentPanel',{target: 'media'});
         event.stopPropagation();
     }
-    console.log('media');
-    return (
-        <Media
-            onClick={openMediaInstruments} 
-            width = {props.width} 
-            height = {props.height}
-            src="https://www.youtube.com/embed/B0b59jgudto"
-            allowfullscreen
-        >
-            {props.children}
-        </Media>
-    )
+
+    render(){
+        return (
+            <Media
+                onClick={this.openMediaInstruments}
+                width = {this.state.width} 
+                height = {this.state.height}
+                src="https://www.youtube.com/embed/B0b59jgudto"
+                allowfullscreen
+            >
+                {this.props.children}
+            </Media>
+        )
+    }
 }
+
 
 // <iframe width="560" height="315" 
 // src="https://www.youtube.com/embed/7KoHDwvSOwc" 
