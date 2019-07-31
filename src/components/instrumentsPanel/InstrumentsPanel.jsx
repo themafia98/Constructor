@@ -236,6 +236,7 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidUpdate = (oldProps, oldState) => {
+        console.log('ip componentDidUpdate');
         let targetBool = oldState.componentStats.targetSection !== this.props.componentStats.targetSection;
         let idBool = oldState.componentStats.id !== this.props.componentStats.id;
         let statsBool = this.state.componentStats !== oldState.componentStats && !this.state.isChange;
@@ -254,15 +255,19 @@ class InstrumentsPanel extends React.PureComponent {
                     isChange: true
             });
         } else if (compare && this.state.isChange) this.setState({...this.state, confirmActive: true});
+
+        if (this.state.isChange) return this.setState({...this.state, confirmActive: true});
     };
 
     componentDidMount = event => {
+
         eventEmitter.on(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 
     componentWillUnmount = event => {
+        console.log('componentWillUnmount');
         eventEmitter.off(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);

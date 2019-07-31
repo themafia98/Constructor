@@ -10,8 +10,8 @@ const WrapperImg = styled.div.attrs(props => ({
         left: props.coordX ? props.coordX : '45%',
         top:  props.coordY ? props.coordY : '0',
 }}))`
-    width: 30%;
-    height: 50%;
+    width: ${props => props.size ? props.size + '%' : '50%'};
+    height: ${props => props.size ? props.size + '%' : '50%'};
     position: absolute;
 `;
 
@@ -169,7 +169,6 @@ class Image extends React.PureComponent {
     refImageComponent = node => this.refImage = node;
 
     render(){
-        console.log('image');
             return (
                 <WrapperImg
                 ref = {this.refImageComponent}

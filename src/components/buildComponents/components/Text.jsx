@@ -46,7 +46,7 @@ class TextComponent extends React.PureComponent {
         parent: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
         colorText: this.props.color,
-        sizeText: this.props.sizeText,
+        sizeText: this.props.fontSize || this.props.size,
         shiftCoords: null,
         position: this.props.coords,
         startDragNdrop: false,
@@ -84,7 +84,7 @@ class TextComponent extends React.PureComponent {
     };
 
     changeSizeText = eventSize => {
-        this.setState({...this.state, fontSize: eventSize.size});
+        this.setState({...this.state, sizeText: eventSize.size});
     };
     saveSize = event => {
         this.setState({...this.state, parent: {width: event.width, height: event.height}});
@@ -172,16 +172,16 @@ class TextComponent extends React.PureComponent {
     weelResizeText = event => {
 
         if (event.shiftKey && event.deltaY === -100) {
-            let counter = this.state.fontSize + 1;
+            let counter = this.state.sizeText + 1;
             counter = counter > 200 ? 200 : counter;
-            this.setState({...this.state,fontSize: counter});
+            this.setState({...this.state,sizeText: counter});
             eventEmitter.emit(`EventUpdateSizeText${this.state.id}`, counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
-            let counter = this.state.fontSize - 1;
+            let counter = this.state.sizeText - 1;
              counter = counter <= 10 ? 10 : counter;
-             this.setState({...this.state,fontSize: counter});
+             this.setState({...this.state,sizeText: counter});
              eventEmitter.emit(`EventUpdateSizeText${this.state.id}`, counter);
             }
         event.stopPropagation();
@@ -192,12 +192,14 @@ class TextComponent extends React.PureComponent {
 
 
     render(){
+        console.log('text');
+        console.log(this.props);
         return (
             <WrapperText
                 ref  = {this.refTextComponent}
                 onClick={this.openTitleInstruments}
                 textColor = {this.state.colorText ? this.state.colorText : 'red'}
-                size = {this.statesizeText ? this.statesizeText + 'px' : '120px'}
+                size = {this.state.sizeText ? this.state.sizeText + 'px' : '120px'}
                 onMouseDown = {this.saveCoords}
                 onMouseMove= {this.moveText}
                 onMouseLeave = {this.stopDragNdrop}

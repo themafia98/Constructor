@@ -6,13 +6,14 @@ import TextComponent from '../buildComponents/components/Text';
 import BackgroundComponent from '../buildComponents/components/Background';
 
 const BuilderComponents = props => {
+    console.log('asd');
     if (props.type === 'text')
         return <TextComponent
                     key = {`text${props.id}`}
                     targetSection = {props.targetSection}
                     sizeParentBox = {{...props.sizeParentBox}}
                     id = {props.id}
-                    size = {props.size}
+                    size = {props.size ? props.size : props.fontSize}
                     color = {props.color}
                     coords = {{...props.coords}}
                 >
@@ -29,11 +30,11 @@ const BuilderComponents = props => {
                     id = {props.id}
                     key = {`bg${props.id}`}
                 />;
-
+    console.log('asd');
     if (props.type === 'image')
         return <Image
                     targetSection = {props.targetSection}
-                    size = {props.size}
+                    size = {props.size ? props.size : props.fontSize}
                     path = {props.path ? props.path : props.image}
                     coords = {{...props.coords}}
                     sizeParentBox = {{...props.sizeParentBox}}
