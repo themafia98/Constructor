@@ -17,12 +17,12 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     state = {
-        isChange: false,
-        confirmActive: false,
         instrumentPanel: {...this.props.instrumentPanel},
         componentStats: this.props.componentStats,
         images: null,
     };
+
+    timer = null;
 
     updateSizeText = eventSize => {
         this.setState({
@@ -138,15 +138,26 @@ class InstrumentsPanel extends React.PureComponent {
 
     };
 
-    saveChanges = event => {
-        this.setState({...this.state, isChange: false, confirmActive: false}, () =>
+    redirectSaveChanges = event => {
         eventEmitter.emit("EventSaveChangesComponent", {
             ...this.state.componentStats,
             id: this.state.componentStats.id,
             type: this.state.componentStats.type,
-        }));
+        });
+    }
 
-        event.stopPropagation();
+    saveChanges = event => {
+        if (this.timer) clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            console.log('save');
+            eventEmitter.emit("EventSaveChangesComponent", {
+                ...this.state.componentStats,
+                id: this.state.componentStats.id,
+                type: this.state.componentStats.type,
+            });
+        }, 3000);
+        eventEmitter.emit('EventRedirectConfirm', 'saveChanges');
+        if (event) event.stopPropagation();
     }
 
     searchImage = event => {
@@ -195,21 +206,11 @@ class InstrumentsPanel extends React.PureComponent {
             }
     };
 
-
-    cancelSave = event => {
-        this.setState({...this.state, isChange: false, confirmActive: false});
-        event.stopPropagation();
-    }
-
-
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
 
         return (
             <Fragment>
-                { this.state.confirmActive ?
-                    <Confirm cbSaveChanges = {this.saveChanges} cbCancelSave = {this.cancelSave} /> : null
-                }
                 <div  className = 'instumentsPanel'>
                     <button
                         onClick = {this.closePanel}
@@ -237,48 +238,25 @@ class InstrumentsPanel extends React.PureComponent {
 
     componentDidUpdate = (oldProps, oldState) => {
         console.log('ip componentDidUpdate');
-        let targetBool = oldState.componentStats.targetSection !== this.props.componentStats.targetSection;
-        let idBool = oldState.componentStats.id !== this.props.componentStats.id;
-        let statsBool = this.state.componentStats !== oldState.componentStats && !this.state.isChange;
-        const compare = idBool || targetBool;
-        if (compare && !this.state.isChange){
-            this.setState({
-                ...this.state,
-                instrumentPanel: {...this.props.instrumentPanel, colorPickerActive: false, isChange: false},
-                componentStats: this.props.mainBuilderData.components.find(item =>
-                    {return item.id === this.props.componentStats.id }),
-            });
-        } else if (!this.state.isChange && statsBool) {
-            this.setState({
-                    ...this.state,
-                    componentStats: {...this.state.componentStats},
-                    isChange: true
-            });
-        } else if (compare && this.state.isChange) this.setState({...this.state, confirmActive: true});
-
-        if (this.state.isChange) {
-            eventEmitter.emit("EventSaveChangesComponent", {
-                ...this.state.componentStats,
-                id: this.state.componentStats.id,
-                type: this.state.componentStats.type,
-            });
-            this.setState({...this.state, isChange: false});
-        }
+        if (oldState.componentStats !== this.state.componentStats)
+        this.saveChanges();
     };
 
     componentDidMount = event => {
-
+        eventEmitter.on('EventRedirectSaveChanges', this.redirectSaveChanges);
         eventEmitter.on(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 
     componentWillUnmount = event => {
-        console.log('componentWillUnmount');
+        if (this.timer) clearTimeout(this.timer);
+        eventEmitter.off('EventRedirectSaveChanges', this.redirectSaveChanges);
         eventEmitter.off(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 };
+
 
 export default InstrumentsPanel;

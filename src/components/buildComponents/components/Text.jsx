@@ -193,8 +193,6 @@ class TextComponent extends React.PureComponent {
 
 
     render(){
-        console.log('text');
-        console.log(this.props);
         return (
             <WrapperText
                 ref  = {this.refTextComponent}

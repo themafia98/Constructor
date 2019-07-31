@@ -6,7 +6,7 @@ import TextComponent from '../buildComponents/components/Text';
 import BackgroundComponent from '../buildComponents/components/Background';
 
 const BuilderComponents = props => {
-    console.log('asd');
+
     if (props.type === 'text')
         return <TextComponent
                     key = {`text${props.id}`}
@@ -30,7 +30,7 @@ const BuilderComponents = props => {
                     id = {props.id}
                     key = {`bg${props.id}`}
                 />;
-    console.log('asd');
+
     if (props.type === 'image')
         return <Image
                     targetSection = {props.targetSection}

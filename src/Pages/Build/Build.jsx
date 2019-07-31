@@ -1,7 +1,7 @@
 import React,{Fragment} from 'react';
 
 import PropTypes from 'prop-types';
-import {Redirect} from 'react-router-dom';
+import {Redirect, history} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
 
@@ -100,7 +100,6 @@ class Build extends React.PureComponent {
     }
 
     openInstrument = itemEvent => {
-
             const idEqual = this.state.componentStats.id === itemEvent.componentStats.id;
             if (!idEqual)
             this.setState({
@@ -118,6 +117,7 @@ class Build extends React.PureComponent {
     }
 
     closePanel = itemEvent => {
+
         this.setState({
             ...this.state,
             instrumentPanel: {
@@ -427,7 +427,6 @@ class Build extends React.PureComponent {
 
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         userData: {
             active: state.cabinet.active,

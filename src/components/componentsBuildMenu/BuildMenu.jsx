@@ -61,7 +61,7 @@ class BuildMenu extends React.PureComponent {
     }
 
     addText = event => {
-        let id = this.props.countComponents;
+        let id = Math.random().toFixed(3);
 
         const componentsPatternText = {
             ...this.state.componentsPatternText,
@@ -82,7 +82,7 @@ class BuildMenu extends React.PureComponent {
     }
 
     addBackground = event => {
-        let id = this.props.countComponents;
+        let id = Math.random().toFixed(3);
 
         const componentsPatternBackground = {
             ...this.state.componentsPatternBackground,
@@ -104,7 +104,7 @@ class BuildMenu extends React.PureComponent {
     }
 
     addImage = event => {
-        let id = this.props.countComponents;
+        let id = Math.random().toFixed(3);
         const componentsPatternImage = {
             ...this.state.componentsPatternImage,
             id: id,
@@ -114,7 +114,7 @@ class BuildMenu extends React.PureComponent {
             componentsPatternImage,
             type: this.state.componentsPatternImage.type,
             component: <Image
-                            key = {`text${id}`}
+                            key = {`image${id}`}
                             sizeParentBox = {this.props.sizeParentBox}
                             id = {id}
                             path = {'/img/photoPattern.svg'}

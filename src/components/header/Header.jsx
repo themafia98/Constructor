@@ -9,7 +9,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 
 import eventEmitter from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
-
+import Confirm from '../confirmBox/Confirm';
 
 const iconPath = require('../../config.json').CabinetIcon;
 
@@ -25,6 +25,8 @@ class Header extends React.Component {
 
     state = {
         title: this.props.title,
+        isChange: false,
+        redirectConfirm: false,
         redirectAbout: {
             path:  '/Cabinet/About',
             redirectA: false,
@@ -35,6 +37,21 @@ class Header extends React.Component {
         }
     };
 
+    confirm = event => {
+        this.setState({...this.state, isChange: true});
+    }
+
+    confirmSaveDetectChanges = event => {
+        eventEmitter.emit('EventRedirectSaveChanges');
+        this.setState({
+            redirectConfirm: false,
+            redirectCabinet: {
+                ...this.state.redirectCabinet,
+                redirectC: true
+            }
+        });
+    };
+
     logOut = event => {
         if (this.props.idUser)
             this.props.dispatch(middlewareLogOutUser(this.props.idUser));
@@ -42,29 +59,45 @@ class Header extends React.Component {
     };
 
     redirectAbout = event => {
-        if (this.props.location.pathname !== this.state.redirectAbout.path)
+        const isPath = this.props.location.pathname !== this.state.redirectAbout.path;
+        if (isPath && !this.state.isChange)
            this.setState({
-               redirectAbout: {
+                redirectConfirm: false,
+                redirectAbout: {
                    ...this.state.redirectAbout,
                    redirectA: true
                }
            });
+           else this.setState({redirectConfirm: true});
         event.stopPropagation()
     };
 
     redirectCabinet = event => {
-        if (this.props.location.pathname !== this.state.redirectCabinet.path)
-        this.setState({
+        if (event !== 'cancelMode'){
+            const isPath = this.props.location.pathname !== this.state.redirectCabinet.path;
+            if (isPath && !this.state.isChange)
+            this.setState({
+                redirectConfirm: false,
+                redirectCabinet: {
+                    ...this.state.redirectCabinet,
+                    redirectC: true
+                }
+            });
+            else this.setState({redirectConfirm: true});
+            event.stopPropagation();
+
+        } else this.setState({
+            redirectConfirm: false,
             redirectCabinet: {
                 ...this.state.redirectCabinet,
                 redirectC: true
             }
         });
-        event.stopPropagation()
     }
 
-    add = (e) => {
+    add = event => {
         eventEmitter.emit('EventChangeWorkMode',{action: 'newProject'});
+        event.stopPropagation()
     };
 
     render(){
@@ -75,27 +108,49 @@ class Header extends React.Component {
         if(redirectC) return <Redirect to = {this.state.redirectCabinet.path} />
 
         return (
-            <header>
-                <div className = 'container'>
-                    <div className = 'flex-row'>
-                            <div onClick = {this.redirectCabinet} className = 'header__CabinetInfo'>
-                                <Icon className ='mainIcon' path = {iconPath} />
-                                <h3 className = 'tilteApp'>{this.state.title}</h3>
-                            </div>
-                            {this.props.location.pathname === '/Cabinet' ?
-                                <div onClick = {this.add} className = 'header__newProject__AddButton'>
-                                    <Icon className = 'Cabinet' path = '/img/plus.png' />
+            <React.Fragment>
+            {this.state.isChange && this.state.redirectConfirm ? 
+                <Confirm 
+                    cbSaveChanges = {this.confirmSaveDetectChanges}
+                    cbCancelSave = {() => this.redirectCabinet('cancelMode')}
+                /> : null}
+                <header>
+                    <div className = 'container'>
+                        <div className = 'flex-row'>
+                                <div onClick = {this.redirectCabinet} className = 'header__CabinetInfo'>
+                                    <Icon className ='mainIcon' path = {iconPath} />
+                                    <h3 className = 'tilteApp'>{this.state.title}</h3>
                                 </div>
-                                : null
-                            }
-                                <div  className = 'Navigator'>
-                                    <Icon className = 'about' onClick = {this.redirectAbout} title = 'about' path = '/img/about_logo.svg' />
-                                    <Icon className = 'logoutButton' onClick = {this.logOut} title = 'logOut' path = '/img/logOut.svg' />
-                                </div>
-                    </div>
-               </div>
-            </header>
+                                {this.props.location.pathname === '/Cabinet' ?
+                                    <div onClick = {this.add} className = 'header__newProject__AddButton'>
+                                        <Icon className = 'Cabinet' path = '/img/plus.png' />
+                                    </div>
+                                    : null
+                                }
+                                    <div  className = 'Navigator'>
+                                        <Icon className = 'about' onClick = {this.redirectAbout}
+                                            title = 'about'
+                                            path = '/img/about_logo.svg'
+                                        />
+                                        <Icon className = 'logoutButton'
+                                            onClick = {this.logOut}
+                                            title = 'logOut'
+                                            path = '/img/logOut.svg'
+                                        />
+                                    </div>
+                        </div>
+                </div>
+                </header>
+            </React.Fragment>
         )
+    }
+
+    componentWillMount = () => {
+        eventEmitter.on('EventRedirectConfirm', this.confirm);
+    }
+
+    componentWillUnmount = () => {
+        eventEmitter.off('EventRedirectConfirm', this.confirm);
     }
 }
 
