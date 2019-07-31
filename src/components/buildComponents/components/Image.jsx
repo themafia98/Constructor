@@ -34,6 +34,7 @@ class Image extends React.PureComponent {
 
     state = {
         id: this.props.id,
+        istrumentsActive: false,
         getSizeBool: false,
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
@@ -63,6 +64,7 @@ class Image extends React.PureComponent {
             id: this.state.id,
             sizeTextValue: this.state.size
         });
+        this.setState({...this.state, istrumentsActive: true});
         event.stopPropagation();
     };
 

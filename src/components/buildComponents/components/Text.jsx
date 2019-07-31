@@ -42,6 +42,7 @@ class TextComponent extends React.PureComponent {
 
     state = {
         id: this.props.id,
+        istrumentsActive: false,
         isHaveSize: false,
         parent: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
@@ -71,7 +72,7 @@ class TextComponent extends React.PureComponent {
                 componentStats: componentsPatternText,
                 sizeTextValue: this.state.sizeText
         });
-
+        this.setState({...this.state, istrumentsActive: true});
         event.stopPropagation();
     }
 
@@ -95,7 +96,7 @@ class TextComponent extends React.PureComponent {
         if (booldContent)
             this.setState({
                 ...this.state,
-                content: eventContent
+                contentText: eventContent.content
             });
     };
 
@@ -144,7 +145,7 @@ class TextComponent extends React.PureComponent {
 
     moveText = event => {
 
-        if (this.state.startDragNdrop){
+        if (this.state.startDragNdrop && this.state.istrumentsActive){
 
 
             let coordX = event.pageX - this.props.sizeParentBox.left - this.state.shiftCoords.x + this.delta().x;
