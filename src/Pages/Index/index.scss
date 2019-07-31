@@ -2,7 +2,8 @@ html { overflow: hidden; height: 100%; }
 body {
     height: 100%;
     min-height: 100%;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color:  rgb(217, 233, 235);
 }
 

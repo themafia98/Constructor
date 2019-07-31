@@ -256,7 +256,14 @@ class InstrumentsPanel extends React.PureComponent {
             });
         } else if (compare && this.state.isChange) this.setState({...this.state, confirmActive: true});
 
-        if (this.state.isChange) return this.setState({...this.state, confirmActive: true});
+        if (this.state.isChange) {
+            eventEmitter.emit("EventSaveChangesComponent", {
+                ...this.state.componentStats,
+                id: this.state.componentStats.id,
+                type: this.state.componentStats.type,
+            });
+            this.setState({...this.state, isChange: false});
+        }
     };
 
     componentDidMount = event => {
