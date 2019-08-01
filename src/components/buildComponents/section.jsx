@@ -4,15 +4,15 @@ import MainBackground from './MainBackground/MainBackground';
 const Section = props => {
 
     const {currentProjectsData} = props.userData;
-    const section = currentProjectsData.sectionTitleProject;
+    const section = currentProjectsData.sectionsProject;
             return section.map((item,i) => {
                 return (
                         <MainBackground
                             key = {item}
-                            mainBuilderData = {{...props.mainBuilderData}}
+                            componentJSX = {[...props.componentJSX]}
                             currentProjectsData = {{...currentProjectsData}}
                             editComponentName = {props.editComponentName}
-                            countComponents = {props.mainBuilderData.componentJSX.length}
+                            countComponents = {props.componentJSX.length}
                             menuActive = {props.menuActive}
                             sizeParentBox = {props.sizeParentBox}
                             id = {item}

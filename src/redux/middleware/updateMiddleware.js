@@ -1,9 +1,10 @@
 import {errorAction, loadUpdateCurrentProject} from '../actions';
+
 const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
     let newProjects = item.projects.map(project => {
         if (project.id === item.idProject) {
             project.components = [...item.components]
-            project.sectionTitleProject = [...item.sectionTitleProject]
+            project.sectionsProject = [...item.sectionsProject]
         }
         return project;
     });
@@ -15,7 +16,7 @@ const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
         dispatch(loadUpdateCurrentProject({
             components: [...project.components],
             idProject: item.idProject,
-            sectionTitleProject: item.sectionTitleProject,
+            sectionsProject: item.sectionsProject,
         }))
     })
     .catch(error => dispatch(errorAction(error.message)));

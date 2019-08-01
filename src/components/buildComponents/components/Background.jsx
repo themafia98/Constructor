@@ -60,18 +60,13 @@ const BackgroundComponent = props => {
         setImage(urlFull);
     };
 
-    const saveScroll = eventItem => {
-        console.log(eventItem);
-    }
 
     const didUpdate = () => {
         saveDataParent();
         eventEmitter.on(`EventChangeColorBackground${id}`, changeColor);
-        eventEmitter.on(`EventSaveSize${id}`, saveScroll);
         eventEmitter.on(`EventSetBackgroundImage${id}`, setBackgroundImage);
         return () => {
             eventEmitter.off(`EventChangeColorBackground${id}`, changeColor);
-            eventEmitter.off(`EventSaveSize${id}`, saveScroll);
             eventEmitter.off(`EventSetBackgroundImage${id}`, setBackgroundImage);
         }
     }

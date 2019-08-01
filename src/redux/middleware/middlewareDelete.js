@@ -43,14 +43,17 @@ const middlewareDeleteProjectComponent = item => async (dispatch, getState, {fir
             dispatch(loadUpdateCurrentProject({
                 components: [...findProject.components],
                 idProject: item.id,
-                sectionTitleProject: [...item.sectionTitleProject],
+                sectionsProject: [...item.sectionsProject],
             }))
         });
     })
     .catch(error => {
         console.error(error.message);
         dispatch(errorAction(error.message));
+        return null;
     });
+
+    return item.idComponent;
 }
 
 export {middlewareDeleteProjectComponent};

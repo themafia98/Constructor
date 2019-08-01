@@ -40,14 +40,12 @@ class Build extends React.PureComponent {
     state = {
             idProject: parseInt(this.props.match.params.param),
             editStart: false,
+            isChange: false,
             position: 0,
             isLoadComponents: true,
             projectEmpty: false,
             componentStats: {},
-            mainBuilderData: {
-                components: [],
-                componentJSX: []
-            },
+            componentJSX: [],
             instrumentPanel: {
                 colorPickerActive: false,
                 instrumentActive: false,
@@ -93,9 +91,6 @@ class Build extends React.PureComponent {
             ...this.state,
             editStart: itemEvent.editStart,
             editComponentName: itemEvent.targetSection,
-            mainBuilderData: {
-                ...this.state.mainBuilderData,
-            },
             menuActive: true,
         });
 
@@ -132,43 +127,33 @@ class Build extends React.PureComponent {
 
     deleteComponent = eventItem => {
         let {currentProjectsData} = this.props.userData;
-        let {componentJSX} = this.state.mainBuilderData;
-        let {components} = this.state.mainBuilderData;
+        let {componentJSX} = this.state;
+
         const data = {
             id: this.state.idProject,
             uid: this.props.userData.idUser,
             idComponent: eventItem.id,
-            sectionTitleProject: [...currentProjectsData.sectionTitleProject],
+            sectionsProject: [...currentProjectsData.sectionsProject],
             type: eventItem.type
         }
 
-        this.setState({
-            ...this.state,
-            mainBuilderData: {
-                ...this.state.mainBuilderData,
-                components: components.filter(item => item.id !== eventItem.id),
-                componentJSX: componentJSX.filter(item => item.id !== eventItem.id)
-                }
-            }, () => this.props.dispatch(middlewareDeleteProjectComponent(data)));
-    }
-
-    updateDiff = (newComponents) => {
-        this.setState({
-            ...this.state,
-            mainBuilderData: {
-                ...this.state.mainBuilderData,
-                components: [...newComponents]
-            },
+        this.props.dispatch(middlewareDeleteProjectComponent(data))
+        .then(id => {
+            if (id !== null){
+               const _componentJSX = componentJSX.filter(item => item.id !== id);
+            this.setState({
+                ...this.state,
+                componentJSX: _componentJSX
+            });
+        }
         });
-
-        console.log(this.state.mainBuilderData.componentJSX);
     }
 
     addComponentsFromBD = array => {
 
-        let {componentJSX} = this.state.mainBuilderData;
+        let {componentJSX} = this.state;
         let componentsFromDB = [];
-        let components = [...this.state.mainBuilderData.components];
+
         array.forEach(item => {
             if (item.type !== 'background'){
                 let sizeParentBox = {
@@ -179,7 +164,6 @@ class Build extends React.PureComponent {
                 }
                 let component =
                     <BuilderComponents
-
                         sizeParentBox = {{...sizeParentBox}}
                         {...item}
                         key = {`${item.type}${item.id}`}
@@ -191,81 +175,49 @@ class Build extends React.PureComponent {
                     component: component
                 };
                 componentsFromDB.push(patternJSX);
-                components.push(item);
             }
-            else components.push(item);
         });
             this.setState({
                 ...this.state,
                 isLoadComponents: false,
-                mainBuilderData: {
-                    ...this.state.mainBuilderData,
-                    components: [...this.state.mainBuilderData.components,
-                                ...components],
-                    componentJSX: [...componentJSX, ...componentsFromDB],
-                },
+                componentJSX: [...componentJSX, ...componentsFromDB],
             });
     };
 
     addComponent = itemEvent => {
-        let {componentJSX} = this.state.mainBuilderData;
-        let componentsPatternStatus = null;
-
-        if (itemEvent.type === 'text') 
-            componentsPatternStatus = itemEvent.componentsPatternText;
-        else if (itemEvent.type === 'background')
-            componentsPatternStatus = itemEvent.componentsPatternBackground;
-        else if (itemEvent.type === 'image')
-            componentsPatternStatus = itemEvent.componentsPatternImage;
-        else if (itemEvent.type === 'media')
-            componentsPatternStatus = itemEvent.componentsPatternMedia;
-        else if (itemEvent.type === 'input')
-            componentsPatternStatus = itemEvent.componentsPatternInput;
+        let {componentJSX} = this.state;
+        let {componentsPattern} = itemEvent;
 
         const patternJSX = {
-            id: componentsPatternStatus.id,
-            targetSection: componentsPatternStatus.targetSection,
+            id: componentsPattern.id,
+            targetSection: componentsPattern.targetSection,
             component: itemEvent.component
         };
             this.setState({
                 ...this.state,
-                mainBuilderData: {
-                    ...this.state.mainBuilderData,
-                    components: [...this.state.mainBuilderData.components,
-                                    componentsPatternStatus],
-                    componentJSX: [...componentJSX, patternJSX],
-                },
+                componentJSX: [...componentJSX, patternJSX],
             });
     };
 
     saveChangesComponent = itemEvent => {
-
+        const {currentProjectsData} = this.props.userData;
         const {userData} = this.props;
         let findCurrentItem = false;
-        const _components = this.state.mainBuilderData.components.map(item => {
+        const _components = currentProjectsData.components.map(item => {
             if (item.id === itemEvent.id) { findCurrentItem = true; return {...itemEvent}; }
             return item;
         });
 
         if (!findCurrentItem) _components.push(itemEvent);
 
-        this.setState({
-            ...this.state,
-            mainBuilderData: {
-                ...this.state.mainBuilderData,
-                isChange: false,
-                components: _components
-            }
-        }, () => {
-            let {currentProjectsData} =this.props.userData;
-        return    (
         this.props.dispatch(updateMiddleware({
             uid: userData.idUser,
             projects: [...userData.projects],
-            components: [...this.state.mainBuilderData.components],
-            sectionTitleProject: [...currentProjectsData.sectionTitleProject],
-            idProject: this.state.idProject}))
-        )});
+            components: _components,
+            sectionsProject: [...currentProjectsData.sectionsProject],
+            idProject: this.state.idProject
+        }))
+        .then(() => this.setState({...this.state,isChange: false}));
     };
 
     mainComponent = null;
@@ -275,39 +227,34 @@ class Build extends React.PureComponent {
     addNewSection = eventItem => {
 
         const {userData} = this.props;
+        const {currentProjectsData} = userData;
 
-    this.setState({
-        ...this.state,
-        mainBuilderData:{
-            ...this.state.mainBuilderData,
-            components:[
-                ...this.state.mainBuilderData.components,
-                eventItem.componentsPatternBackground
-            ],
-            componentJSX:[
-                ...this.state.mainBuilderData.componentJSX,
-                eventItem.component
-            ]
-        }
-    },
-    () => (
         this.props.dispatch(updateMiddleware({
                 uid: userData.idUser,
                 projects: [...userData.projects],
-                components: [...this.state.mainBuilderData.components],
-                sectionTitleProject: [
-                    ...this.props.userData.currentProjectsData.sectionTitleProject,
+                components: [...currentProjectsData.components,
+                            eventItem.componentsPatternBackground],
+                sectionsProject: [
+                    ...currentProjectsData.sectionsProject,
                     eventItem.componentsPatternBackground.id
                 ],
                 idProject: this.state.idProject
         }))
-    ));
+        .then(() => {
+            this.setState({
+                ...this.state,
+                componentJSX:[
+                    ...this.state.componentJSX,
+                    eventItem.component
+                ]
+            })
+        });
 }
 
     moveLocation = event => {
         if (!this.state.modalSearch){ 
-            const {sectionTitleProject} = this.props.userData.currentProjectsData;
-            const count = sectionTitleProject.length-1;
+            const {sectionsProject} = this.props.userData.currentProjectsData;
+            const count = sectionsProject.length-1;
             const moveDown = this.state.position < count && event.deltaY > 0;
             const moveUp = event.deltaY < 0 && this.state.position > 0;
 
@@ -344,13 +291,13 @@ class Build extends React.PureComponent {
 
 
     render(){
-        console.log('render build');
+
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
 
         const {instrumentActive} = this.state.instrumentPanel;
         const {userData} = this.props;
         const {currentProjectsData} = userData;
-        const section = currentProjectsData.sectionTitleProject;
+        const section = currentProjectsData.sectionsProject;
 
         if (userData.active && currentProjectsData.loadProject){
 
@@ -368,14 +315,14 @@ class Build extends React.PureComponent {
                         <Controllers
                             key = 'controllers'
                             editComponentName = {this.state.editComponentName}
-                            countComponents = {this.state.mainBuilderData.components.length}
+                            countComponents = {currentProjectsData.components.length}
                             menuActive = {this.state.menuActive}
                             sizeParentBox = {this.state.sizeParentBox}
                         />
                         }
                             <BuildMenu
                                 key = 'buildMenu'
-                                countSection = {this.state.mainBuilderData.componentJSX.length * 5}
+                                countSection = {this.state.componentJSX.length * 5}
                                 mode = "section"
                                 className = 'menu'
                             />
@@ -389,20 +336,19 @@ class Build extends React.PureComponent {
     }
 
     componentDidUpdate = (prevProps) => {
-        console.log('componentDidUpdate');
+
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         const isLoadComponents = this.state.isLoadComponents;
-
         let sizeParentBox = null;
-        if (this.mainComponent && this.state.sizeParentBox === null){
+
+        if (this.mainComponent && this.state.sizeParentBox === null)
             sizeParentBox = {
                 width: this.mainComponent.data.width,
                 height: this.mainComponent.data.height,
                 top: this.mainComponent.data.top,
                 left: this.mainComponent.data.left,
             }
-        }
 
         if (userData.active && !currentProjectsData.loadProject) {
             const current =  userData.projects.find(item => item.id === this.state.idProject)
@@ -410,7 +356,7 @@ class Build extends React.PureComponent {
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 typeProject: current.type,
-                sectionTitleProject: [...current.sectionTitleProject],
+                sectionsProject: [...current.sectionsProject],
                 components: [...current.components]
             })) : this.setState({...this.state, projectEmpty: true, sizeParentBox: sizeParentBox});
         }
@@ -421,12 +367,6 @@ class Build extends React.PureComponent {
                 sizeParentBox: sizeParentBox
             }, () => this.addComponentsFromBD([...currentProjectsData.components]));
             else this.addComponentsFromBD([...currentProjectsData.components]);
-        }
-        if (userData && userData.mode === 'delete'){
-
-            let stateComponentsCount =  this.state.mainBuilderData.components.length;
-            const current = this.props.userData.projects.find(item => item.id === this.state.idProject);
-            (stateComponentsCount !== current.components.length) && this.updateDiff(current.components);
         }
     }
 
@@ -439,7 +379,7 @@ class Build extends React.PureComponent {
             const current =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
-                sectionTitleProject: [...current.sectionTitleProject],
+                sectionsProject: [...current.sectionsProject],
                 typeProject: current.type,
                 components: [...current.components]
             }));
@@ -457,7 +397,7 @@ class Build extends React.PureComponent {
     }
 
     componentWillUnmount = () => {
-    
+
         let {userData} = this.props;
         if (userData.active)  this.props.dispatch(exitProjectAction(true));
 
@@ -480,7 +420,6 @@ const mapStateToProps = (state) => {
             active: state.cabinet.active,
             idUser: state.cabinet.idUser,
             projects: [...state.cabinet.projects],
-            mode: state.builder.mode,
            currentProjectsData: {...state.builder}
         },
     }

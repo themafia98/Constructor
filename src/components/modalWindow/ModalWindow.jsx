@@ -221,7 +221,6 @@ class ModalWindow extends React.PureComponent {
                     </div>
                 )
             case 'Search':
-                console.log(this.props);
                 return (
                     <Fragment>
                         <div className = 'Modal Modal-search'>

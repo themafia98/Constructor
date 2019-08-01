@@ -184,7 +184,7 @@ class MediaComponent extends React.PureComponent {
 
     render(){
         let link = "https://www.youtube.com/embed/B0b59jgudto";
-        console.log(link);
+
         return (
             <WrapperMedia
                 ref = {this.refMediaComponent}

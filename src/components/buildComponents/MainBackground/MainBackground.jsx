@@ -6,7 +6,7 @@ import BackgroundComponent from '../components/Background';
 import Loader from '../../loading/Loader';
 
 import './MainBackground.scss';
-import { log } from 'util';
+
 
 class MainBackground extends React.PureComponent {
 
@@ -43,7 +43,7 @@ class MainBackground extends React.PureComponent {
 
     render() {
         let props = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
-        let children = this.props.mainBuilderData.componentJSX.filter(item => item.targetSection === this.props.id)
+        let children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
         
         if (props)
         return (

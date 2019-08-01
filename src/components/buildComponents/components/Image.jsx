@@ -201,7 +201,6 @@ class Image extends React.PureComponent {
     }
 
     changeSizeImage = eventItem => {
-        console.log(eventItem);
         this.setState({...this.state, size: eventItem.size});
     };
 
@@ -228,7 +227,6 @@ class Image extends React.PureComponent {
     refImageComponent = node => this.refImage = node;
 
     render(){
-        console.log(this.state);
             return (
                 <WrapperImg
                 ref = {this.refImageComponent}

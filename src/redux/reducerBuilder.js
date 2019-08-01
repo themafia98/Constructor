@@ -5,7 +5,7 @@ const initialState = {
     idProject: null,
     typeProject: null,
     components: [],
-    sectionTitleProject: [],
+    sectionsProject: [],
 };
 
 export default (state = initialState, action) => {
@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
                 idProject: action.id,
                 typeProject: action.typeProject,
                 components: [...action.components],
-                sectionTitleProject: [...action.sectionTitleProject]
+                sectionsProject: [...action.sectionsProject]
             }
         }
 
@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 components: [...action.components],
-                sectionTitleProject: [...action.sectionTitleProject]
+                sectionsProject: [...action.sectionsProject]
             }
         }
 

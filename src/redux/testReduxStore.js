@@ -20,7 +20,7 @@ const initialStateOffline = {
 const initialState = {
     cabinet: {
     active: true,
-    idUser: "asdasdsdasda",
+    idUser: "testToken",
     projects: [
         {
             components: [

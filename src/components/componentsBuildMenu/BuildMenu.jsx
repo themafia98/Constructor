@@ -23,51 +23,6 @@ class BuildMenu extends React.PureComponent {
 
     state = {
         mode: this.props.mode,
-        componentsPatternBackground: {
-            id: null,
-            targetSection: null,
-            type: 'background',
-            color: null,
-            backgroundImage: null,
-        },
-        componentsPatternText: {
-            id: null,
-            targetSection: null,
-            type: 'text',
-            font: 'Arial',
-            color: null,
-            opacity: 1,
-            fontSize: null,
-            content: null,
-            coords: {x: null, y: null}, // x, y
-        },
-        componentsPatternImage: {
-            id: null,
-            size: {w: 30, h: 50},
-            targetSection: null,
-            borderRadius: 0,
-            type: 'image',
-            opacity: 1,
-            zIndex: null,
-            image: '/img/photoPattern.svg',
-            coords: {x: null, y: null}, // x, y
-        },
-        componentsPatternMedia: {
-            id: null,
-            targetSection: null,
-            type: 'media',
-            size: null,
-            content: null,
-            coords: {x: null, y: null}, // x, y
-        },
-        componentsPatternInput: {
-            id: null,
-            targetSection: null,
-            type: 'input',
-            size: null,
-            content: null,
-            coords: {x: null, y: null}, // x, y
-        },
         sizeParentBox: {...this.props.sizeParentBox},
         title: 'Title'
     }
@@ -76,13 +31,19 @@ class BuildMenu extends React.PureComponent {
         let id = Math.random().toFixed(3);
 
         const componentsPatternText = {
-            ...this.state.componentsPatternText,
+            type: 'text',
+            font: 'Arial',
+            color: null,
+            opacity: 1,
+            fontSize: null,
+            content: null,
+            coords: {x: null, y: null}, // x, y
             id: id,
             targetSection: this.props.editComponentName,
         };
         eventEmitter.emit('EventBuildComponents',{
-            componentsPatternText,
-            type: this.state.componentsPatternText.type,
+            componentsPattern: componentsPatternText,
+            type: componentsPatternText.type,
             component: <TextComponent
                 key = {`text${id}`}
                 {...componentsPatternText}
@@ -97,13 +58,16 @@ class BuildMenu extends React.PureComponent {
         let id = Math.random().toFixed(3);
 
         const componentsPatternBackground = {
-            ...this.state.componentsPatternBackground,
+            id: id,
+            type: 'background',
+            color: null,
+            backgroundImage: null,
             targetSection: this.state.editComponentName,
         };
 
         eventEmitter.emit('EventBuildComponents',{
-            componentsPatternBackground,
-            type: this.state.componentsPatternBackground.type,
+            componentsPattern: componentsPatternBackground,
+            type: componentsPatternBackground.type,
             component: <BackgroundComponent
                             targetSection = {this.props.editComponentName}
                             {...componentsPatternBackground}
@@ -117,14 +81,21 @@ class BuildMenu extends React.PureComponent {
 
     addImage = event => {
         let id = Math.random().toFixed(3);
+
         const componentsPatternImage = {
-            ...this.state.componentsPatternImage,
+            borderRadius: 0,
+            type: 'image',
+            size: {w: 30, h: 50},
+            opacity: 1,
+            zIndex: null,
+            image: '/img/photoPattern.svg',
+            coords: {x: null, y: null}, // x, y
             id: id,
             targetSection: this.props.editComponentName,
         };
         eventEmitter.emit('EventBuildComponents',{
-            componentsPatternImage,
-            type: this.state.componentsPatternImage.type,
+            componentsPattern: componentsPatternImage,
+            type: componentsPatternImage.type,
             component: <Image
                             key = {`image${id}`}
                             sizeParentBox = {this.props.sizeParentBox}
@@ -138,14 +109,18 @@ class BuildMenu extends React.PureComponent {
 
     addMedia = event => {
         let id = Math.random().toFixed(3);
+
         const  componentsPatternMedia = {
-            ...this.state.componentsPatternMedia,
+            type: 'media',
+            size: null,
+            content: null,
+            coords: {x: null, y: null}, // x, y
             id: id,
             targetSection: this.props.editComponentName,
         };
 
         eventEmitter.emit('EventBuildComponents', {
-            componentsPatternMedia,
+            componentsPattern: componentsPatternMedia,
             type: componentsPatternMedia.type,
             component: <Media
                             key = {`media${id}`}
@@ -162,14 +137,18 @@ class BuildMenu extends React.PureComponent {
 
     addInput = event => {
         let id = Math.random().toFixed(3);
+
         const  componentsPatternInput = {
-            ...this.state.componentsPatternInput,
+            type: 'input',
+            size: null,
+            content: null,
+            coords: {x: null, y: null}, // x, y
             id: id,
             targetSection: this.props.editComponentName,
         };
 
         eventEmitter.emit('EventBuildComponents', {
-            componentsPatternInput,
+            componentsPattern: componentsPatternInput,
             type: componentsPatternInput.type,
             component: <Input
                             key = {`input${id}`}
@@ -186,14 +165,16 @@ class BuildMenu extends React.PureComponent {
 
     addSection = event => {
         let id = Math.random().toFixed(3);
+
         const componentsPatternBackground = {
-            ...this.state.componentsPatternBackground,
+            color: null,
+            backgroundImage: null,
             targetSection: `Section${id}`,
             id: `Section${id}`,
             type: 'background',
         };
         eventEmitter.emit('EventNewSection', {
-            componentsPatternBackground,
+            componentsPattern: componentsPatternBackground,
             component: <BackgroundComponent
                             {...componentsPatternBackground}
                             key = {`bg${id}`}

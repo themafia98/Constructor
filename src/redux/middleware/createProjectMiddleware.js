@@ -9,9 +9,9 @@ function random(min,max){
 const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getState, {firebase}) => {
     let lastProject = [...list];
     const lastIndex = lastProject.length  ? lastProject[lastProject.length-1].id + 1 : 0;
-    const sectionTitleProject = [];
-    if (type === 'portfolio') sectionTitleProject.push("Header");
-    else sectionTitleProject.push("Header");
+    const sectionsProject = [];
+    if (type === 'portfolio') sectionsProject.push("Header");
+    else sectionsProject.push("Header");
     const header = {
         backgroundImage: null,
         color: null,
@@ -25,7 +25,7 @@ const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getS
         title: title,
         type: type,
         components: [header],
-        sectionTitleProject: [...sectionTitleProject],
+        sectionsProject: [...sectionsProject],
     });
 
     await firebase.db.collection("users").doc(uid).update({
