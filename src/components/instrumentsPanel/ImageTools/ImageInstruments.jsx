@@ -4,6 +4,7 @@ const ImageInstruments = props => {
 
     let {coords} = props.componentStats;
     let {size} = props.componentStats;
+    let fileRef = React.createRef();
     return (
         <Fragment>
         <p className = 'titleInstument'>Position: </p>
@@ -11,20 +12,23 @@ const ImageInstruments = props => {
         {coords.x ?
             coords.x + ' / ' + coords.y : ' drop for active'}
         </span>
-        <p className = 'titleInstument'>Width (%):</p>
-        <input 
-            onChange = {props.cbSetWidth}
-            type="number"
-            min = '10' max = '100'
-            value = {size.w ? size.w : 30}
-        />
-        <p className = 'titleInstument'>Height (%):</p>
-        <input 
-            onChange = {props.cbSetHeight}
-            type="number"
-            min = '10' max = '100'
-            value = {size.h ? size.h : 30}
-        />
+        <p className = 'titleInstument'>Size (%):</p>
+        <div className = 'panel__sizes'>
+            <input
+                className = 'button_switch'
+                onChange = {props.cbSetWidth}
+                type="number"
+                min = '10' max = '100'
+                value = {size.w ? size.w : 30}
+            />
+            <input 
+                className = 'button_switch'
+                onChange = {props.cbSetHeight}
+                type="number"
+                min = '10' max = '100'
+                value = {size.h ? size.h : 30}
+            />
+        </div>
         <p className = 'titleInstument'>Border radius: </p>
             <input
                 onChange = {props.cbSetBorderRadius}
@@ -46,6 +50,21 @@ const ImageInstruments = props => {
                 step = '0.1'
                 min = '0' max = '1'
             />
+            <p className = 'titleInstument titleInstrument__opacity'>Loader: </p>
+            <div className = 'fileLoader'>
+            <input
+                ref = {fileRef}
+                className = 'fileInput'
+                onChange = {props.cbLoadFile}
+                type="file"
+            />
+                <input
+                        // onClick = {simulateClickFile}
+                        className = 'ImageSearchButton'
+                        type = 'button'
+                        value = 'loading file'
+                />
+            </div>
             <input 
                 onClick = {props.cbSearchImage}
                 className = 'ImageSearchButton'

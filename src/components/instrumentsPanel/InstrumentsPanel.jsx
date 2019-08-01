@@ -11,6 +11,7 @@ import TextInstruments from './TextTools/TextInstruments';
 
 import Icon from '../Icon/icon';
 
+
 class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
@@ -248,6 +249,27 @@ class InstrumentsPanel extends React.PureComponent {
         event.stopPropagation();
     };
 
+    loadFile = event => {
+        let {id} = this.state.componentStats;
+        try {
+            let image = event.target.files[0];
+            let reader = new FileReader();
+            if (image.type[0] !== 'i') throw new Error('Invalid file');
+            reader.readAsDataURL(image);
+            reader.onload = () => {
+                eventEmitter.emit(`EventSetCurrentImage${id}`,{ urlFull: reader.result });
+                this.updateBimageStats({images: { urlFull: reader.result }, mode: 'image'});
+            }
+            reader.onerror = () => {
+                console.error(reader.error);
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+
+        event.stopPropagation();
+    }
+
     makePanelInstruments = (type) => {
             switch (type){
                 case 'text':
@@ -285,6 +307,7 @@ class InstrumentsPanel extends React.PureComponent {
                                 cbSetOpacity = {this.setOpacity}
                                 cbSetWidth = {this.setWidth}
                                 cbSetHeight = {this.setHeight}
+                                cbLoadFile = {this.loadFile}
                                 cbDelete = {this.deleteComponent}
                             />
                         )

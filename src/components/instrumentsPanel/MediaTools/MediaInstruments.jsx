@@ -2,7 +2,7 @@ import React,{Fragment} from 'react';
 
 const MediaInstruments = props => {
 
-    let {content} = props.componentStats;
+    // let {content} = props.componentStats;
     let {fontSize} = props.componentStats;
     let {coords} = props.componentStats;
 
