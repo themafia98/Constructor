@@ -344,6 +344,7 @@ class Build extends React.PureComponent {
 
 
     render(){
+        console.log('render build');
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
 
         const {instrumentActive} = this.state.instrumentPanel;
@@ -420,6 +421,12 @@ class Build extends React.PureComponent {
                 sizeParentBox: sizeParentBox
             }, () => this.addComponentsFromBD([...currentProjectsData.components]));
             else this.addComponentsFromBD([...currentProjectsData.components]);
+        }
+        if (userData && userData.mode === 'delete'){
+
+            let stateComponentsCount =  this.state.mainBuilderData.components.length;
+            const current = this.props.userData.projects.find(item => item.id === this.state.idProject);
+            (stateComponentsCount !== current.components.length) && this.updateDiff(current.components);
         }
     }
 

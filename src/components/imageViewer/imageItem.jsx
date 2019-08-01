@@ -8,6 +8,7 @@ const ImageItem = props => {
     const [urlFull] = useState(props.urls.full);
     const [isFull] = useState(props.isFull);
 
+    console.log('image');
     const showImageMenu = event => {
        eventEmitter.emit("EventShowMenuImage", {id: id, url: urlRegular, urlFull: urlFull});
     }

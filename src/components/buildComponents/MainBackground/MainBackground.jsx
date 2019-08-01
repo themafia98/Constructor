@@ -6,6 +6,7 @@ import BackgroundComponent from '../components/Background';
 import Loader from '../../loading/Loader';
 
 import './MainBackground.scss';
+import { log } from 'util';
 
 class MainBackground extends React.PureComponent {
 
@@ -24,7 +25,7 @@ class MainBackground extends React.PureComponent {
     };
 
     changeMode = () => {
-        if (!this.state.editStart || this.state.idProject !== this.props.editComponentName) {
+        if (!this.state.editStart || this.props.id !== this.props.editComponentName) {
             this.setState({
                 ...this.state,
                 editStart: true
