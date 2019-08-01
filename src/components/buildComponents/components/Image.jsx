@@ -8,7 +8,7 @@ const WrapperImg = styled.div.attrs(props => ({
     style: {
         zIndex: props.indexZ ? '9999' : null,
         left: props.coordX ? props.coordX : '45%',
-        top:  props.coordY ? props.coordY : '0',
+        top:  props.coordY ? props.coordY : '0%',
 }}))`
     width: ${props => props.size ? props.size + '%' : '50%'};
     height: ${props => props.size ? props.size + 20 + '%' : '50%'};
@@ -82,7 +82,7 @@ class Image extends React.PureComponent {
 
         this.setState({
             ...this.state,
-            shiftCoords: {x: event.pageX - cords.left, y: event.pageY - cords.top},
+            shiftCoords: {x: event.clientX - cords.left, y: event.clientY - cords.top},
             startDragNdrop: !this.state.startDragNdrop ? true : false
         });
 
@@ -116,8 +116,11 @@ class Image extends React.PureComponent {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
-            let coordX = event.pageX - this.props.sizeParentBox.left - this.state.shiftCoords.x + this.delta().x;
-            let coordY = event.pageY - this.props.sizeParentBox.top - this.state.shiftCoords.y + this.delta().y;
+            let xItem = event.clientX - this.props.sizeParentBox.left;
+            let yItem = event.clientY - this.props.sizeParentBox.top;
+
+            let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
+            let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
 
             let coords = this.checkPivotPosition(coordX,coordY);
 
@@ -161,11 +164,13 @@ class Image extends React.PureComponent {
         event.stopPropagation();
     };
     saveSize = event => {
-        if (!this.state.getSizeBool)
+        if (!this.state.getSizeBool){
+            const {size} = event;
         this.setState({
             ...this.state, getSizeBool: true,
-            sizeParentBox: {width: event.width, height: event.height}
+            sizeParentBox: {width: size.width, height: size.height}
         });
+    } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     };
 
     refImage = null;

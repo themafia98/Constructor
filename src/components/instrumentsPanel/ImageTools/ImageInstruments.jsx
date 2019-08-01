@@ -2,9 +2,16 @@ import React, {Fragment} from 'react';
 
 const ImageInstruments = props => {
 
-
+    let {fontSize} = props.componentStats;
     return (
         <Fragment>
+        <p className = 'titleInstument'>Size: </p>
+        <input 
+            onChange = {props.cbSetSize}
+            type="number"
+            min = '10' max = '200'
+            value = {fontSize ? fontSize : 120}
+        />
         <p className = 'titleInstument'>Border radius: </p>
             <input
                 onClick = {props.cbSetColor}

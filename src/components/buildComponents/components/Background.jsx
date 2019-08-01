@@ -24,10 +24,13 @@ const BackgroundComponent = props => {
     let [width] = useState(props.width ? props.width : '100%');
     let [height] = useState(props.height ? props.height : '100%');
 
-    const saveWidth = event => {
+    const saveDataParent = () => {
         boxComponent.current.focus();
         let boxInform =  boxComponent.current.getBoundingClientRect();
-        eventEmitter.emit(`EventSaveWidth${targetSection}`, {width: boxInform.width, height: boxInform.height});
+        eventEmitter.emit(`EventSaveWidth${targetSection}`,{
+            sectionNumber: props.sectionNumber,
+            size: {width: boxInform.width, height: boxInform.height}
+        });
     }
 
     const openBgInstruments = event => {
@@ -62,7 +65,7 @@ const BackgroundComponent = props => {
     }
 
     const didUpdate = () => {
-        saveWidth();
+        saveDataParent();
         eventEmitter.on(`EventChangeColorBackground${id}`, changeColor);
         eventEmitter.on(`EventSaveSize${id}`, saveScroll);
         eventEmitter.on(`EventSetBackgroundImage${id}`, setBackgroundImage);

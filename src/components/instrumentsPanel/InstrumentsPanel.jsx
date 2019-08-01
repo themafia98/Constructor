@@ -2,11 +2,13 @@ import React, {Fragment} from 'react';
 import eventEmitter from '../../EventEmitter';
 import PropTypes from 'prop-types';
 import './instrumentsPanel.scss';
+
+import MediaInstruments from './MediaTools/MediaInstruments';
 import ImageInstruments from './ImageTools/ImageInstruments';
 import BackgroundInstruments from './BackgroundTools/BackgroundInstruments';
 import TextInstruments from './TextTools/TextInstruments';
 
-import Confirm from '../confirmBox/Confirm';
+
 import Icon from '../Icon/icon';
 
 class InstrumentsPanel extends React.PureComponent {
@@ -148,14 +150,13 @@ class InstrumentsPanel extends React.PureComponent {
     saveChanges = event => {
         if (this.timer) clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-            console.log('save');
             eventEmitter.emit("EventSaveChangesComponent", {
                 ...this.state.componentStats,
                 id: this.state.componentStats.id,
                 type: this.state.componentStats.type,
             });
             eventEmitter.emit('EventRedirectConfirm', false);
-        }, 3000);
+        }, 2000);
         eventEmitter.emit('EventRedirectConfirm', true);
         if (event) event.stopPropagation();
     }
@@ -199,6 +200,14 @@ class InstrumentsPanel extends React.PureComponent {
                                 cbSearchImage = {this.searchImage}
                             />
                         )
+                case 'media':
+                        return (
+                            <MediaInstruments
+                                instrumentPanel = {{...this.state.instrumentPanel}}
+                                componentStats = {{...this.state.componentStats}}
+                                cbSearchImage = {this.searchImage}
+                            />
+                            )
                 default: return <p className = 'warningInstruments'>No found element</p>
             }
     };

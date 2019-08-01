@@ -3,30 +3,21 @@ import PropTypes from 'prop-types';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
-const WrapperMedia = styled.div.attrs(props => ({
+
+const InputComponent = styled.input.attrs(props => ({
     style: {
         zIndex: props.indexZ ? '9999' : null,
         left: props.coordX ? props.coordX : '45%',
         top:  props.coordY ? props.coordY : '0%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
 }}))`
-    width: 30%;
-    height: 50%;
+    width: ${props => props.size ? props.size + '%' : null};
+    height: ${props => props.size ? props.size + 20 + '%' :  null};
     position: absolute;
-    background: url(/img/media.svg);
-    border: 1px solid red;
-    padding: 40px;
-    box-sizing: border-box;
-`;
-const Media = styled.iframe`
-    width: 90%;
-    height: 90%;
-    z-index: ${props => props.zIndex ? props.zIndex : '-1'};
+    pointer-events: none;
 `;
 
-class MediaComponent extends React.PureComponent {
+
+class Input extends React.PureComponent {
 
     static propTypes = {
         id: PropTypes.oneOfType([
@@ -35,47 +26,47 @@ class MediaComponent extends React.PureComponent {
         ]).isRequired,
         targetSection: PropTypes.string.isRequired,
         sizeParentBox: PropTypes.object.isRequired,
-        content: PropTypes.string,
-        children: PropTypes.object,
     }
 
     state = {
-        targetSection: this.props.targetSection,
-        id : this.props.id,
-        sizeParentBox: this.props.sizeParentBox,
-        content: this.props.path || this.props.content,
-        shiftCoords: null,
-        size: this.props.size ? this.props.size : 30,
-        posMedia: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
-        startDragNdrop: false,
+        id: this.props.id,
         istrumentsActive: false,
-        drawContent: false,
+        getSizeBool: false,
+        sizeParentBox: this.props.sizeParentBox,
+        targetSection: this.props.targetSection,
+        path: this.props.path,
+        size: this.props.size ? this.props.size : null,
+        shiftCoords: null,
+        posImage: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
+        startDragNdrop: false,
     }
 
-    openMediaInstruments = event => {
+    openImageInstruments = event => {
 
-        const componentsPatternMedia = {
+        const componentsPatternImage = {
             id: this.state.id,
             targetSection: this.state.targetSection,
-            type: 'media',
+            type: 'image',
+            borderRadius: null,
+            opacity: 1,
             zIndex: null,
             image: this.state.path,
-            coords: {...this.state.posMedia}, // x, y
+            coords: {...this.state.posImage}, // x, y
         }
 
-        eventEmitter.emit('EventInstrumentPanel',{
-            componentStats: componentsPatternMedia,
+        eventEmitter.emit(`EventInstrumentPanel`,{
+            componentStats: componentsPatternImage,
             targetSection: this.state.targetSection,
             id: this.state.id,
             sizeTextValue: this.state.size
         });
         this.setState({...this.state, istrumentsActive: true});
         event.stopPropagation();
-    }
+    };
 
     saveCoords = event => {
         if (event.nativeEvent.which !== 1) return false;
-        const element = this.refMedia.getBoundingClientRect();
+        const element = this.refInput.getBoundingClientRect();
 
         const cords = {
             left: element.left,
@@ -95,7 +86,7 @@ class MediaComponent extends React.PureComponent {
 
     checkPivotPosition = (coordX, coordY) => {
 
-        const element = this.refMedia.getBoundingClientRect();
+        const element = this.refInput.getBoundingClientRect();
         const borderTopLeft = 0;
         const borderDown = 800 - element.height;
         const borderRight = this.props.sizeParentBox.width - element.width;
@@ -114,9 +105,9 @@ class MediaComponent extends React.PureComponent {
             y: 0,
         }
     }
-    move = (x,y) => this.setState({...this.state, posMedia: {x: x, y: y}});
+    move = (x,y) => this.setState({...this.state, posImage: {x: x, y: y}});
 
-    moveMedia = event => {
+    moveText = event => {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
@@ -140,12 +131,12 @@ class MediaComponent extends React.PureComponent {
     stopDragNdrop = event => {
         if (this.state.startDragNdrop) {
             this.setState({...this.state, startDragNdrop: false})
-            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.posMedia);
+            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.posImage);
         }
         event.stopPropagation();
     };
 
-    setContent = event => {
+    setCurrentImage = event => {
         const {urlFull} = event;
         this.setState({...this.state, path: urlFull});
     };
@@ -174,61 +165,43 @@ class MediaComponent extends React.PureComponent {
             ...this.state, getSizeBool: true,
             sizeParentBox: {width: size.width, height: size.height}
         });
-    }
+    } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     };
 
-    refMedia = null;
-    refMediaComponent = node => this.refMedia = node;
+    refInput = null;
+    refInputComponent = node => this.refInput = node;
 
     render(){
-        let link = "https://www.youtube.com/embed/B0b59jgudto";
-        console.log(link);
-        return (
-            <WrapperMedia
-                ref = {this.refMediaComponent}
-                onClick={this.openMediaInstruments}
-                onMouseDown = {this.saveCoords}
-                onMouseMove= {this.moveMedia}
-                onMouseLeave = {this.stopDragNdrop}
-                onMouseUp = {this.stopDragNdrop}
-                onDragStart = {this.stop}
-                onWheel = {this.weelResizeText}
-                indexZ = {this.state.startDragNdrop}
-                coordX = {this.state.posMedia ? this.state.posMedia.x : null}
-                coordY = {this.state.posMedia ? this.state.posMedia.y : null}
-            >
-            {!this.state.startDragNdrop ? 
-                <Media
-                    src= {!this.state.startDragNdrop ? link : null }
-                    drawContent = {this.state.drawContent}
-                    width = {this.state.width} 
-                    height = {this.state.height}
-                    zIndex = {'0'}
-                    allowfullscreen
-                >
-                    {this.props.children}
-                </Media> : null
-            }
-            </WrapperMedia>
-        )
+            return (
+                <InputComponent
+                    type = 'button'
+                    value = 'Input'
+                    ref = {this.refInputComponent}
+                    size = {this.state.size}
+                    onClick = {this.openImageInstruments}
+                    onMouseDown = {this.saveCoords}
+                    onMouseMove= {this.moveText}
+                    onMouseLeave = {this.stopDragNdrop}
+                    onMouseUp = {this.stopDragNdrop}
+                    onDragStart = {this.stop}
+                    onWheel = {this.weelResizeText}
+                    coordX = {this.state.posImage ? this.state.posImage.x : null}
+                    coordY = {this.state.posImage ? this.state.posImage.y : null}
+                    indexZ = {this.state.startDragNdrop}
+                    data-imagecomponentwrapper
+                />
+            )
     }
 
     componentDidMount = () => {
-        eventEmitter.on(`EventSetContentMedia${this.state.id}`, this.setContent);
+        eventEmitter.on(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
         eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
-        eventEmitter.off(`EventSetContentMedia${this.state.id}`, this.setContent);
+        eventEmitter.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
     }
 }
 
-
-// <iframe width="560" height="315" 
-// src="https://www.youtube.com/embed/7KoHDwvSOwc" 
-// frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-// allowfullscreen>
-// </iframe>
-
-export default MediaComponent;
+export default Input;

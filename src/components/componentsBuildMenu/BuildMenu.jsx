@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Input from '../buildComponents/components/Input';
 import Media from '../buildComponents/components/Media';
 import Image from '../buildComponents/components/Image';
 import TextComponent from '../buildComponents/components/Text';
@@ -52,6 +53,14 @@ class BuildMenu extends React.PureComponent {
             id: null,
             targetSection: null,
             type: 'media',
+            size: null,
+            content: null,
+            coords: {x: null, y: null}, // x, y
+        },
+        componentsPatternInput: {
+            id: null,
+            targetSection: null,
+            type: 'input',
             size: null,
             content: null,
             coords: {x: null, y: null}, // x, y
@@ -148,6 +157,30 @@ class BuildMenu extends React.PureComponent {
         event.stopPropagation();
     }
 
+    addInput = event => {
+        let id = Math.random().toFixed(3);
+        const  componentsPatternInput = {
+            ...this.state.componentsPatternInput,
+            id: id,
+            targetSection: this.props.editComponentName,
+        };
+
+        eventEmitter.emit('EventBuildComponents', {
+            componentsPatternInput,
+            type: componentsPatternInput.type,
+            component: <Input
+                            key = {`input${id}`}
+                            targetSection = {this.props.editComponentName}
+                            sizeParentBox = {this.props.sizeParentBox}
+                            id = {id}
+                            inputType = 'button'
+                            {...componentsPatternInput}
+                            type = 'input' 
+                        />
+        });
+        event.stopPropagation();
+    }
+
     addSection = event => {
         let id = Math.random().toFixed(3);
         const componentsPatternBackground = {
@@ -186,6 +219,7 @@ class BuildMenu extends React.PureComponent {
                         <span>Text</span>
                     </button>
                     <button
+                        onClick = {this.addInput}
                         disabled = {this.props.editComponentName !== 'Header' ? false : true}
                         className = 'ButtonTool CompoentnsMenu_button' >
                         <span>Button</span>

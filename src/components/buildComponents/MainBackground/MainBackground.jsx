@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import eventEmitter from '../../../EventEmitter';
 import PropTypes from 'prop-types';
 
-import {Element} from "react-scroll";
 import BackgroundComponent from '../components/Background';
 import Loader from '../../loading/Loader';
 
@@ -42,14 +41,15 @@ class MainBackground extends React.PureComponent {
     refSectionFunc = node => node ? this.refSection = {data: node.getBoundingClientRect(), node: node} : node;
 
     render() {
-        let bg = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
+        let props = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
         let children = this.props.mainBuilderData.componentJSX.filter(item => item.targetSection === this.props.id)
-        if (bg)
+        
+        if (props)
         return (
             <Fragment>
                 <section className = {`element${this.props.sectionNumber}`} ref={this.refSectionFunc}
                 data-class = 'editable' onClick = {this.changeMode}>
-                    <BackgroundComponent {...bg} >
+                    <BackgroundComponent {...props} sectionNumber = {this.props.sectionNumber} >
                         {children.map(item => item.component) || null}
                     </BackgroundComponent>
                     {!this.state.editStart && <div className = 'warningEdit'><p>Click for start edit</p></div>}

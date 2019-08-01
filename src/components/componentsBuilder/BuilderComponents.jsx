@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Input from '../buildComponents/components/Input';
 import Media from '../buildComponents/components/Media';
 import Image from '../buildComponents/components/Image';
 import TextComponent from '../buildComponents/components/Text';
@@ -50,6 +51,16 @@ const BuilderComponents = props => {
                     path = {props.path ? props.path : props.content}
                     coords = {{...props.coords}}
                 />
+        if (props.type === 'input')
+            return <Input
+                        targetSection = {props.targetSection}
+                        size = {props.size ? props.size : props.fontSize}
+                        path = {props.path ? props.path : props.image}
+                        coords = {{...props.coords}}
+                        sizeParentBox = {{...props.sizeParentBox}}
+                        id = {props.id}
+                        key = {`input${props.id}`}
+                    />
 };
 
 export default BuilderComponents;

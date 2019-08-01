@@ -1,7 +1,7 @@
 import React,{Fragment} from 'react';
 
 import PropTypes from 'prop-types';
-import {Redirect, history} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
 
 
@@ -181,8 +181,10 @@ class Build extends React.PureComponent {
             componentsPatternStatus = itemEvent.componentsPatternBackground;
         else if (itemEvent.type === 'image')
             componentsPatternStatus = itemEvent.componentsPatternImage;
-            else if (itemEvent.type === 'media')
+        else if (itemEvent.type === 'media')
             componentsPatternStatus = itemEvent.componentsPatternMedia;
+        else if (itemEvent.type === 'input')
+            componentsPatternStatus = itemEvent.componentsPatternInput;
 
         const patternJSX = {
             id: componentsPatternStatus.id,
@@ -267,6 +269,7 @@ class Build extends React.PureComponent {
 }
 
     moveLocation = event => {
+        console.log(this.mainComponent.node.scrollTop);
         if (!this.state.modalSearch){ 
             const {sectionTitleProject} = this.props.userData.currentProjectsData;
             const count = sectionTitleProject.length-1;
@@ -304,8 +307,9 @@ class Build extends React.PureComponent {
         }
     }
 
-    render(){
 
+    render(){
+        console.log('asd');
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
 
         const {instrumentActive} = this.state.instrumentPanel;

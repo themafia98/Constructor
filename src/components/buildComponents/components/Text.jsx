@@ -51,7 +51,9 @@ class TextComponent extends React.PureComponent {
         shiftCoords: null,
         position: this.props.coords,
         startDragNdrop: false,
-        contentText: this.props.children ? this.props.children : null
+        contentText: this.props.children ? this.props.children : null,
+        sectionNumber: 0,
+        getSizeBool: false
     }
 
     openTitleInstruments = event => {
@@ -88,7 +90,14 @@ class TextComponent extends React.PureComponent {
         this.setState({...this.state, sizeText: eventSize.size});
     };
     saveSize = event => {
-        this.setState({...this.state, parent: {width: event.width, height: event.height}});
+        const {size} = event;
+        if (!this.state.getSizeBool){
+        this.setState({
+            ...this.state,
+            getSizeBool: true,
+            sectionNumber: event.sectionNumber + 1,
+            parent: {width: size.width, height: size.height}});
+        } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
     changeContentText = eventContent => {
@@ -113,7 +122,7 @@ class TextComponent extends React.PureComponent {
 
         this.setState({
             ...this.state,
-            shiftCoords: {x: event.pageX - cords.left, y: event.pageY - cords.top},
+            shiftCoords: {x: event.clientX - cords.left, y: event.clientY - cords.top},
             startDragNdrop: !this.state.startDragNdrop ? true : false
         });
 
@@ -147,9 +156,11 @@ class TextComponent extends React.PureComponent {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
+            let xItem = event.clientX - this.props.sizeParentBox.left;
+            let yItem = event.clientY - (this.props.sizeParentBox.top);
 
-            let coordX = event.pageX - this.props.sizeParentBox.left - this.state.shiftCoords.x + this.delta().x;
-            let coordY = event.pageY - this.props.sizeParentBox.top - this.state.shiftCoords.y + this.delta().y;
+            let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
+            let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
 
             let coords = this.checkPivotPosition(coordX,coordY);
 
