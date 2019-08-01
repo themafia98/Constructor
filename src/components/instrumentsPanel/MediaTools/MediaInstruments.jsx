@@ -27,6 +27,12 @@ const MediaInstruments = props => {
                 type="button"
                 value = 'search media'
             />
+            <input 
+                onClick = {props.cbDelete}
+                className = 'instrumentPanel__deleteComponentButton'
+                type="button"
+                value = 'delete'
+            />
         </Fragment>
     )
 };

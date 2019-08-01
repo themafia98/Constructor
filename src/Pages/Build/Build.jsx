@@ -8,6 +8,8 @@ import eventEmitter from '../../EventEmitter';
 import {animateScroll as scroll, scroller } from "react-scroll";
 
 import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
+
+import {middlewareDeleteProjectComponent} from '../../redux/middleware/middlewareDelete';
 import updateMiddleware from '../../redux/middleware/updateMiddleware';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
@@ -54,7 +56,7 @@ class Build extends React.PureComponent {
                 duration: 1000,
                 delay: 50,
                 smooth: true,
-                offset: -80, // Scrolls to element -80 pixels down the page
+                offset: -70, // Scrolls to element -80 pixels down the page
             },
             editComponentName:  null,
             menuActive: false,
@@ -127,6 +129,40 @@ class Build extends React.PureComponent {
             }
         });
     };
+
+    deleteComponent = eventItem => {
+        let {currentProjectsData} = this.props.userData;
+        let {componentJSX} = this.state.mainBuilderData;
+        let {components} = this.state.mainBuilderData;
+        const data = {
+            id: this.state.idProject,
+            uid: this.props.userData.idUser,
+            idComponent: eventItem.id,
+            sectionTitleProject: [...currentProjectsData.sectionTitleProject],
+            type: eventItem.type
+        }
+
+        this.setState({
+            ...this.state,
+            mainBuilderData: {
+                ...this.state.mainBuilderData,
+                components: components.filter(item => item.id !== eventItem.id),
+                componentJSX: componentJSX.filter(item => item.id !== eventItem.id)
+                }
+            }, () => this.props.dispatch(middlewareDeleteProjectComponent(data)));
+    }
+
+    updateDiff = (newComponents) => {
+        this.setState({
+            ...this.state,
+            mainBuilderData: {
+                ...this.state.mainBuilderData,
+                components: [...newComponents]
+            },
+        });
+
+        console.log(this.state.mainBuilderData.componentJSX);
+    }
 
     addComponentsFromBD = array => {
 
@@ -269,7 +305,6 @@ class Build extends React.PureComponent {
 }
 
     moveLocation = event => {
-        console.log(this.mainComponent.node.scrollTop);
         if (!this.state.modalSearch){ 
             const {sectionTitleProject} = this.props.userData.currentProjectsData;
             const count = sectionTitleProject.length-1;
@@ -352,7 +387,8 @@ class Build extends React.PureComponent {
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
     }
 
-    componentDidUpdate = () => {
+    componentDidUpdate = (prevProps) => {
+        console.log('componentDidUpdate');
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         const isLoadComponents = this.state.isLoadComponents;
@@ -403,6 +439,7 @@ class Build extends React.PureComponent {
         };
 
         eventEmitter.on('EventBuildComponents', this.addComponent);
+        eventEmitter.on('EventDeleteComponent', this.deleteComponent);
         eventEmitter.on('EventNewSection', this.addNewSection);
         eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.on('EventClosePanel', this.closePanel);
@@ -418,6 +455,7 @@ class Build extends React.PureComponent {
         if (userData.active)  this.props.dispatch(exitProjectAction(true));
 
         eventEmitter.off('EventBuildComponents', this.addComponent);
+        eventEmitter.off('EventDeleteComponent', this.deleteComponent);
         eventEmitter.off('EventNewSection', this.addNewSection);
         eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
@@ -435,6 +473,7 @@ const mapStateToProps = (state) => {
             active: state.cabinet.active,
             idUser: state.cabinet.idUser,
             projects: [...state.cabinet.projects],
+            mode: state.builder.mode,
            currentProjectsData: {...state.builder}
         },
     }

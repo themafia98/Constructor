@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 
+import './icon.scss';
 
 function Icon(props){
     const [path] = useState(props.path);

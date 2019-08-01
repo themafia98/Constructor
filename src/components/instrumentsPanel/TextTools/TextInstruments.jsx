@@ -55,6 +55,12 @@ const TextInstruments = props => {
                 type = 'text'
                 value = {content ? content : _content}
             />
+            <input 
+                onClick = {props.cbDelete}
+                className = 'instrumentPanel__deleteComponentButton'
+                type="button"
+                value = 'delete'
+            />
             </Fragment>
         )
 }

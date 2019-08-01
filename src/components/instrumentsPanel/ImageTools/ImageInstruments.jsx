@@ -47,11 +47,17 @@ const ImageInstruments = props => {
                 min = '0' max = '1'
             />
             <input 
-            onClick = {props.cbSearchImage}
-            className = 'ImageSearchButton'
-            type="button"
-            value = 'search image'
-        />
+                onClick = {props.cbSearchImage}
+                className = 'ImageSearchButton'
+                type="button"
+                value = 'search image'
+            />
+            <input 
+                onClick = {props.cbDelete}
+                className = 'instrumentPanel__deleteComponentButton'
+                type="button"
+                value = 'delete'
+            />
         </Fragment>
     )
 

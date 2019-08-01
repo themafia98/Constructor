@@ -232,6 +232,14 @@ class InstrumentsPanel extends React.PureComponent {
         if (event) event.stopPropagation();
     }
 
+    deleteComponent = event => {
+        eventEmitter.emit('EventDeleteComponent', {
+            id: this.state.componentStats.id,
+            targetSection: this.state.componentStats.targetSection,
+            type: this.state.componentStats.type
+        });
+    };
+
     searchImage = event => {
 
         let {id} = this.state.componentStats;
@@ -253,6 +261,7 @@ class InstrumentsPanel extends React.PureComponent {
                         cbSetContent = {this.setContent}
                         cbSetFont = {this.setFont}
                         cbSetOpacity = {this.setOpacity}
+                        cbDelete = {this.deleteComponent}
                     />
                    )
                 case 'background':
@@ -276,6 +285,7 @@ class InstrumentsPanel extends React.PureComponent {
                                 cbSetOpacity = {this.setOpacity}
                                 cbSetWidth = {this.setWidth}
                                 cbSetHeight = {this.setHeight}
+                                cbDelete = {this.deleteComponent}
                             />
                         )
                 case 'media':
@@ -284,6 +294,7 @@ class InstrumentsPanel extends React.PureComponent {
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
                                 cbSearchImage = {this.searchImage}
+                                cbDelete = {this.deleteComponent}
                             />
                             )
                 default: return <p className = 'warningInstruments'>No found element</p>

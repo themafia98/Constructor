@@ -34,8 +34,8 @@ const loadUpdateCurrentProject = (state) => {
     return {
         type: LOAD_UPDATE_PROJECT,
         idProject: state.idProject,
-        sectionTitleProject: state.sectionTitleProject,
-        components: state.components
+        sectionTitleProject: [...state.sectionTitleProject],
+        components: [...state.components]
     }
 }
 

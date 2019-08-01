@@ -167,8 +167,9 @@ class TextComponent extends React.PureComponent {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
-            let xItem = event.clientX - this.props.sizeParentBox.left;
-            let yItem = event.clientY - (this.props.sizeParentBox.top);
+          
+            let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
+            let yItem = event.clientY - (this.props.sizeParentBox.top+10 * this.state.sectionNumber);
 
             let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
             let coordY = yItem - this.state.shiftCoords.y + this.delta().y;

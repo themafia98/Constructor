@@ -158,15 +158,17 @@ class Input extends React.PureComponent {
             }
         event.stopPropagation();
     };
+
     saveSize = event => {
+        const {size} = event;
         if (!this.state.getSizeBool){
-            const {size} = event;
         this.setState({
-            ...this.state, getSizeBool: true,
-            sizeParentBox: {width: size.width, height: size.height}
-        });
-    } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
-    };
+            ...this.state,
+            getSizeBool: true,
+            sectionNumber: event.sectionNumber + 1,
+            sizeParentBox: {width: size.width, height: size.height}});
+        } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+    }
 
     refInput = null;
     refInputComponent = node => this.refInput = node;

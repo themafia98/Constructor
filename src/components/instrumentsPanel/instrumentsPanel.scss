@@ -114,6 +114,24 @@ $closeSize: 25px;
     .titleInstrument__opacity {
         margin-bottom: 0;
     }
+
+    .instrumentPanel__deleteComponentButton {
+        font-weight: bold;
+        color: white;
+        padding: 10px;
+        background: rgb(226, 24, 9);
+        margin-top: 1rem;
+        border: 2px solid rgb(243, 182, 182);
+        border-radius: 30px;
+    }
+
+    input[type = 'button']:hover {
+        transform: scale(1.05);
+    }
+
+    .instrumentPanel__deleteComponentButton:hover {
+        border: 2px solid rgb(199, 243, 182);
+    }
 }
 
 span.textCoordsPanel {

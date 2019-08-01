@@ -120,8 +120,8 @@ class MediaComponent extends React.PureComponent {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
-            let xItem = event.clientX - this.props.sizeParentBox.left;
-            let yItem = event.clientY - this.props.sizeParentBox.top;
+            let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
+            let yItem = event.clientY - (this.props.sizeParentBox.top * this.state.sectionNumber);
 
             let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
             let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
@@ -167,15 +167,17 @@ class MediaComponent extends React.PureComponent {
             }
         event.stopPropagation();
     };
+
     saveSize = event => {
+        const {size} = event;
         if (!this.state.getSizeBool){
-            const {size} = event;
         this.setState({
-            ...this.state, getSizeBool: true,
-            sizeParentBox: {width: size.width, height: size.height}
-        });
+            ...this.state,
+            getSizeBool: true,
+            sectionNumber: event.sectionNumber + 1,
+            sizeParentBox: {width: size.width, height: size.height}});
+        } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
-    };
 
     refMedia = null;
     refMediaComponent = node => this.refMedia = node;
