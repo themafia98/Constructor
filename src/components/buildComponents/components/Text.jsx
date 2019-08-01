@@ -16,11 +16,13 @@ const WrapperText = styled.div.attrs(props => ({
     color: ${props => props.textColor};
     text-align: center;
     margin: 0;
+    word-break: break-all;
 `;
 
-const TextStyle = styled.h1`
+const TextStyle = styled.p`
     width: 100%;
     height: 100%;
+    font-family: ${props => props.font};
     text-align: center;
     margin: 0;
     -moz-user-select: none;
@@ -50,6 +52,7 @@ class TextComponent extends React.PureComponent {
         sizeText: this.props.fontSize || this.props.size,
         shiftCoords: null,
         position: this.props.coords,
+        font: this.props.font ? this.props.font : 'Arial',
         startDragNdrop: false,
         contentText: this.props.children ? this.props.children : null,
         sectionNumber: 0,
@@ -62,6 +65,7 @@ class TextComponent extends React.PureComponent {
             id: this.state.id,
             targetSection: this.state.targetSection,
             type: 'text',
+            font: this.state.font,
             color: this.state.colorText,
             fontSize: this.state.sizeText,
             content: this.state.contentText,
@@ -129,6 +133,13 @@ class TextComponent extends React.PureComponent {
         event.stopPropagation();
     };
 
+    setFont = eventItem => {
+        this.setState({
+            ...this.state,
+            font: eventItem.font
+        });
+    };
+
     checkPivotPosition = (coordX, coordY) => {
 
         const element = this.refText.getBoundingClientRect();
@@ -187,14 +198,14 @@ class TextComponent extends React.PureComponent {
             let counter = this.state.sizeText + 1;
             counter = counter > 200 ? 200 : counter;
             this.setState({...this.state,sizeText: counter});
-            eventEmitter.emit(`EventUpdateSizeText${this.state.id}`, counter);
+            eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
             let counter = this.state.sizeText - 1;
              counter = counter <= 10 ? 10 : counter;
              this.setState({...this.state,sizeText: counter});
-             eventEmitter.emit(`EventUpdateSizeText${this.state.id}`, counter);
+             eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
             }
         event.stopPropagation();
     };
@@ -220,7 +231,7 @@ class TextComponent extends React.PureComponent {
                 indexZ = {this.state.startDragNdrop}
                 data-textcomponent
             >
-                <TextStyle>{this.state.contentText}</TextStyle>
+                <TextStyle font = {this.state.font}>{this.state.contentText}</TextStyle>
             </WrapperText>
         )
 
@@ -228,14 +239,16 @@ class TextComponent extends React.PureComponent {
 
     componentDidMount = () => {
         eventEmitter.on(`EventChangeColorText${this.state.id}`, this.changeColorText);
-        eventEmitter.on(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
+        eventEmitter.on(`EventSetFont${this.state.id}`, this.setFont);
+        eventEmitter.on(`EventChangeSize${this.state.id}`, this.changeSizeText);
         eventEmitter.on(`EventChangeContentText${this.state.id}`, this.changeContentText);
         eventEmitter.on(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off(`EventChangeColorText${this.state.id}`, this.changeColorText);
-        eventEmitter.off(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
+        eventEmitter.off(`EventSetFont${this.state.id}`, this.setFont);
+        eventEmitter.off(`EventChangeSize${this.state.id}`, this.changeSizeText);
         eventEmitter.off(`EventChangeContentText${this.state.id}`, this.changeContentText);
         eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }

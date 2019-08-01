@@ -309,7 +309,6 @@ class Build extends React.PureComponent {
 
 
     render(){
-        console.log('asd');
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
 
         const {instrumentActive} = this.state.instrumentPanel;

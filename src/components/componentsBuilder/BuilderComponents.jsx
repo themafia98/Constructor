@@ -16,7 +16,9 @@ const BuilderComponents = props => {
                     id = {props.id}
                     size = {props.size ? props.size : props.fontSize}
                     color = {props.color}
+                    opacity = {props.opacity}
                     coords = {{...props.coords}}
+                    font = {props.font}
                 >
                     {props.content}
                 </TextComponent>
@@ -32,9 +34,11 @@ const BuilderComponents = props => {
                     key = {`bg${props.id}`}
                 />;
 
-    if (props.type === 'image')
+    if (props.type === 'image'){
         return <Image
                     targetSection = {props.targetSection}
+                    borderRadius = {props.borderRadius || 0}
+                    opacity = {props.opacity}
                     size = {props.size ? props.size : props.fontSize}
                     path = {props.path ? props.path : props.image}
                     coords = {{...props.coords}}
@@ -42,6 +46,7 @@ const BuilderComponents = props => {
                     id = {props.id}
                     key = {`image${props.id}`}
                 />
+    }
     if (props.type === 'media')
         return <Media
                     key = {`media${props.id}`}

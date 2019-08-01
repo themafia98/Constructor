@@ -8,6 +8,7 @@ const TextInstruments = props => {
         let {fontSize} = props.componentStats;
         let {coords} = props.componentStats;
         let {color} = props.componentStats;
+        let _content = content !== '' ? 'Title' : '';
 
         return (
             <Fragment>
@@ -37,12 +38,22 @@ const TextInstruments = props => {
                     />
                     : null
                 }
+                <p className = 'titleInstument'>Font: </p>
+                <select value = {props.componentStats.font} onChange = {props.cbSetFont}>
+                <option>Arial</option>
+                <option>Times</option>
+                <option>Georgia</option>
+                <option>Impact</option>
+                <option>Tahoma</option>
+                <option>Verdana</option>
+                <option>Comic</option>
+                </select>
             <p className = 'titleInstument'>Content: </p>
             <input
                 onChange = {props.cbSetContent}
-                maxLength = '20'
+                maxLength = '100'
                 type = 'text'
-                value = {content ? content : 'Title'}
+                value = {content ? content : _content}
             />
             </Fragment>
         )

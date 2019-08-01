@@ -10,14 +10,16 @@ const WrapperImg = styled.div.attrs(props => ({
         left: props.coordX ? props.coordX : '45%',
         top:  props.coordY ? props.coordY : '0%',
 }}))`
-    width: ${props => props.size ? props.size + '%' : '50%'};
-    height: ${props => props.size ? props.size + 20 + '%' : '50%'};
+    width: ${props => props.size ? props.size + '%' : '30%'};
+    height: ${props => props.size ? props.size + '%' : '50%'};
     position: absolute;
 `;
 
 const ImageStyle = styled.img`
     width: 100%;
     height: 100%;
+    opacity: ${props => props.opacity};
+    border-radius: ${props => props.borderRadius}px;
     pointer-events: none;
     position: absolute;
 `;
@@ -37,6 +39,8 @@ class Image extends React.PureComponent {
         id: this.props.id,
         istrumentsActive: false,
         getSizeBool: false,
+        opacity: this.props.opacity || 1,
+        borderRadius: this.props.borderRadius || 0,
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
         path: this.props.path,
@@ -52,8 +56,8 @@ class Image extends React.PureComponent {
             id: this.state.id,
             targetSection: this.state.targetSection,
             type: 'image',
-            borderRadius: null,
-            opacity: 1,
+            borderRadius: this.state.borderRadius,
+            opacity: this.state.opacity,
             zIndex: null,
             image: this.state.path,
             coords: {...this.state.posImage}, // x, y
@@ -152,17 +156,18 @@ class Image extends React.PureComponent {
             let counter = this.state.size + 1;
             counter = counter > 100 ? 100 : counter;
             this.setState({...this.state,size: counter});
-            eventEmitter.emit('EventUpdateSizeText', counter);
+            eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
             let counter = this.state.size - 1;
              counter = counter <= 0 ? 0 : counter;
              this.setState({...this.state,size: counter});
-             eventEmitter.emit('EventUpdateSizeText', counter);
+             eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
             }
         event.stopPropagation();
     };
+
     saveSize = event => {
         if (!this.state.getSizeBool){
             const {size} = event;
@@ -173,10 +178,35 @@ class Image extends React.PureComponent {
     } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     };
 
+    changeSizeImage = eventItem => {
+        console.log(eventItem);
+        this.setState({...this.state, size: eventItem.size});
+    };
+
+    setBorderRadius = eventItem => {
+
+    let radius = eventItem.borderRadius > 200 ? 200 : eventItem.borderRadius;
+    radius = eventItem.borderDown < 0 ? 0 : eventItem.borderRadius;
+        this.setState({
+            ...this.state,
+            borderRadius: radius
+        });
+    };
+
+    setOpacity = eventItem => {
+        let opacity = eventItem.opacity > 1 ? 1 : eventItem.opacity;
+        opacity = eventItem.opacity < 0 ? 0 : eventItem.opacity;
+            this.setState({
+                ...this.state,
+                opacity: opacity
+            });
+    }
+ 
     refImage = null;
     refImageComponent = node => this.refImage = node;
 
     render(){
+        console.log(this.state);
             return (
                 <WrapperImg
                 ref = {this.refImageComponent}
@@ -193,18 +223,30 @@ class Image extends React.PureComponent {
                 indexZ = {this.state.startDragNdrop}
                 data-imagecomponentwrapper
                 >
-                    <ImageStyle data-imagecomponent src = {this.state.path}  alt = 'img' />
+                    <ImageStyle
+                        data-imagecomponent
+                        borderRadius = {this.state.borderRadius}
+                        opacity = {this.state.opacity}
+                        src = {this.state.path}
+                        alt = 'img'
+                    />
                 </WrapperImg>
             )
     }
 
     componentDidMount = () => {
         eventEmitter.on(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
+        eventEmitter.on(`EventChangeSize${this.state.id}`, this.changeSizeImage);
+        eventEmitter.on(`EventSetOpacity${this.state.id}`, this.setOpacity);
+        eventEmitter.on(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        eventEmitter.off(`EventChangeSize${this.state.id}`, this.changeSizeImage);
+        eventEmitter.off(`EventSetOpacity${this.state.id}`, this.setOpacity);
+        eventEmitter.off(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         eventEmitter.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
     }
 }

@@ -5,25 +5,39 @@ const ImageInstruments = props => {
     let {fontSize} = props.componentStats;
     return (
         <Fragment>
-        <p className = 'titleInstument'>Size: </p>
+        <p className = 'titleInstument'>Width (%):</p>
         <input 
             onChange = {props.cbSetSize}
             type="number"
-            min = '10' max = '200'
-            value = {fontSize ? fontSize : 120}
+            min = '10' max = '100'
+            value = {fontSize ? fontSize : 100}
+        />
+        <p className = 'titleInstument'>Height (%):</p>
+        <input 
+            onChange = {props.cbSetSize}
+            type="number"
+            min = '10' max = '100'
+            value = {fontSize ? fontSize : 100}
         />
         <p className = 'titleInstument'>Border radius: </p>
             <input
-                onClick = {props.cbSetColor}
+                onChange = {props.cbSetBorderRadius}
                 className = 'button_switch radius'
                 type="number"
+                value = {props.componentStats.borderRadius ?
+                            props.componentStats.borderRadius : 10
+                        }
                 min = '10' max = '200'
             />
-            <p className = 'titleInstument'>Opacity: </p>
+            <p className = 'titleInstument titleInstrument__opacity'>Opacity: </p>
             <input 
-                onClick = {props.cbSearchImage}
+                onChange = {props.cbSetOpacity}
                 className = 'ImageSearchButton'
                 type="number"
+                value = {props.componentStats.opacity ?
+                    props.componentStats.opacity : 1
+                }
+                step = '0.1'
                 min = '0' max = '1'
             />
             <input 

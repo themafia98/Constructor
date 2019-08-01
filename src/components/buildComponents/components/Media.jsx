@@ -156,14 +156,14 @@ class MediaComponent extends React.PureComponent {
             let counter = this.state.size + 1;
             counter = counter > 100 ? 100 : counter;
             this.setState({...this.state,size: counter});
-            eventEmitter.emit('EventUpdateSizeText', counter);
+            eventEmitter.emit('EventupdateSize', counter);
         }
 
         if (event.shiftKey && event.deltaY === 100) {
             let counter = this.state.size - 1;
              counter = counter <= 0 ? 0 : counter;
              this.setState({...this.state,size: counter});
-             eventEmitter.emit('EventUpdateSizeText', counter);
+             eventEmitter.emit('EventupdateSize', counter);
             }
         event.stopPropagation();
     };

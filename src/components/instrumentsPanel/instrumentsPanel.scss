@@ -72,7 +72,9 @@ $closeSize: 25px;
             margin-top: 20px;
         }
 
-        .saveButtonInstument:hover, .button_switchColor:hover, .ImageSearchButton:hover{
+        .saveButtonInstument:hover, 
+        .button_switchColor:hover, 
+        .ImageSearchButton:hover{
             background-color: rgb(83, 190, 137);
             border: 1px solid  rgb(0, 39, 19);
         }
@@ -107,6 +109,10 @@ $closeSize: 25px;
     .button_switchColor {
 
         font-weight: bold;
+    }
+
+    .titleInstrument__opacity {
+        margin-bottom: 0;
     }
 }
 

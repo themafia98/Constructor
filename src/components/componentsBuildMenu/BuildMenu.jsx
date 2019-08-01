@@ -34,7 +34,9 @@ class BuildMenu extends React.PureComponent {
             id: null,
             targetSection: null,
             type: 'text',
+            font: 'Arial',
             color: null,
+            opacity: 1,
             fontSize: null,
             content: null,
             coords: {x: null, y: null}, // x, y
@@ -42,9 +44,9 @@ class BuildMenu extends React.PureComponent {
         componentsPatternImage: {
             id: null,
             targetSection: null,
+            borderRadius: 0,
             type: 'image',
-            borderRadius: null,
-            opacity: null,
+            opacity: 1,
             zIndex: null,
             image: '/img/photoPattern.svg',
             coords: {x: null, y: null}, // x, y

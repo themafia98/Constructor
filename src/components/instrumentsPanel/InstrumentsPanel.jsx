@@ -26,7 +26,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     timer = null;
 
-    updateSizeText = eventSize => {
+    updateSize = eventSize => {
         this.setState({
             ...this.state,
             instrumentPanel: {...this.state.instrumentPanel},
@@ -49,11 +49,25 @@ class InstrumentsPanel extends React.PureComponent {
             instrumentPanel: {...this.state.instrumentPanel},
             componentStats: {...this.state.componentStats,fontSize: size}
         },
-            () => eventEmitter.emit(`EventChangeSizeText${id}`, {
+            () => eventEmitter.emit(`EventChangeSize${id}`, {
                 targetSection: this.state.editComponentName, size: size 
             })
         );
     };
+
+    setFont = event => {
+        let {id} = this.state.componentStats;
+        let fontName = event.target.value;
+        this.setState({
+            ...this.state, 
+            instrumentPanel: {...this.state.instrumentPanel},
+            componentStats: {...this.state.componentStats,font: fontName}
+        },
+            () => eventEmitter.emit(`EventSetFont${id}`, {
+                targetSection: this.state.editComponentName, font: fontName
+            })
+        );
+    }
 
     setContent = event => {
         let {id} = this.state.componentStats;
@@ -91,6 +105,28 @@ class InstrumentsPanel extends React.PureComponent {
                 colorPickerActive: this.state.instrumentPanel.colorPickerActive ? false : true
             }
         });
+    };
+
+    setOpacity = event => {
+        let {id} = this.state.componentStats;
+        let opacity = event.target.value;
+
+        this.setState({
+            ...this.state,
+            componentStats: {...this.state.componentStats,opacity: opacity}
+        },
+         () => eventEmitter.emit(`EventSetOpacity${id}`, {opacity: opacity}));
+    };
+
+    setBorderRadius = event => {
+        let {id} = this.state.componentStats;
+        let radius = event.target.value;
+
+        this.setState({
+            ...this.state,
+            componentStats: {...this.state.componentStats,borderRadius: radius}
+        },
+         () => eventEmitter.emit(`EventSetBorderRadius${id}`, {borderRadius: radius}));
     };
 
     updateBimageStats = eventItem => {
@@ -180,6 +216,8 @@ class InstrumentsPanel extends React.PureComponent {
                         cbSetSize = {this.setSize}
                         cbHandleChangeComplete = {this.handleChangeComplete}
                         cbSetContent = {this.setContent}
+                        cbSetFont = {this.setFont}
+                        cbSetOpacity = {this.setOpacity}
                     />
                    )
                 case 'background':
@@ -193,11 +231,16 @@ class InstrumentsPanel extends React.PureComponent {
                         />
                     )
                 case 'image':
+                    console.log(this.state.componentStats);
+                    console.log(this.props);
                         return (
                             <ImageInstruments
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
                                 cbSearchImage = {this.searchImage}
+                                cbSetSize = {this.setSize}
+                                cbSetBorderRadius = {this.setBorderRadius}
+                                cbSetOpacity = {this.setOpacity}
                             />
                         )
                 case 'media':
@@ -214,7 +257,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
-
+        console.log('ip');
         return (
             <Fragment>
                 <div  className = 'instumentsPanel'>
@@ -250,7 +293,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     componentDidMount = event => {
         eventEmitter.on('EventRedirectSaveChanges', this.redirectSaveChanges);
-        eventEmitter.on(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
+        eventEmitter.on(`EventupdateSize${this.state.componentStats.id}`, this.updateSize);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
@@ -258,7 +301,7 @@ class InstrumentsPanel extends React.PureComponent {
     componentWillUnmount = event => {
         if (this.timer) clearTimeout(this.timer);
         eventEmitter.off('EventRedirectSaveChanges', this.redirectSaveChanges);
-        eventEmitter.off(`EventUpdateSizeText${this.state.componentStats.id}`, this.updateSizeText);
+        eventEmitter.off(`EventupdateSize${this.state.componentStats.id}`, this.updateSize);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
