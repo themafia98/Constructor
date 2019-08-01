@@ -39,7 +39,7 @@ const BuilderComponents = props => {
                     targetSection = {props.targetSection}
                     borderRadius = {props.borderRadius || 0}
                     opacity = {props.opacity}
-                    size = {props.size ? props.size : props.fontSize}
+                    size = {props.size ? props.size : {w: 30, h: 50}}
                     path = {props.path ? props.path : props.image}
                     coords = {{...props.coords}}
                     sizeParentBox = {{...props.sizeParentBox}}

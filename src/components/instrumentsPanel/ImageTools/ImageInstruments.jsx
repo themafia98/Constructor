@@ -2,22 +2,28 @@ import React, {Fragment} from 'react';
 
 const ImageInstruments = props => {
 
-    let {fontSize} = props.componentStats;
+    let {coords} = props.componentStats;
+    let {size} = props.componentStats;
     return (
         <Fragment>
+        <p className = 'titleInstument'>Position: </p>
+        <span className = 'textCoordsPanel'>
+        {coords.x ?
+            coords.x + ' / ' + coords.y : ' drop for active'}
+        </span>
         <p className = 'titleInstument'>Width (%):</p>
         <input 
-            onChange = {props.cbSetSize}
+            onChange = {props.cbSetWidth}
             type="number"
             min = '10' max = '100'
-            value = {fontSize ? fontSize : 100}
+            value = {size.w ? size.w : 30}
         />
         <p className = 'titleInstument'>Height (%):</p>
         <input 
-            onChange = {props.cbSetSize}
+            onChange = {props.cbSetHeight}
             type="number"
             min = '10' max = '100'
-            value = {fontSize ? fontSize : 100}
+            value = {size.h ? size.h : 30}
         />
         <p className = 'titleInstument'>Border radius: </p>
             <input

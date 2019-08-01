@@ -43,6 +43,7 @@ class BuildMenu extends React.PureComponent {
         },
         componentsPatternImage: {
             id: null,
+            size: {w: 30, h: 50},
             targetSection: null,
             borderRadius: 0,
             type: 'image',

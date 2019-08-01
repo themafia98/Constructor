@@ -81,7 +81,40 @@ class InstrumentsPanel extends React.PureComponent {
                 targetSection: this.state.editComponentName, content: contentValue
             })
         );
+        if (event) event.stopPropagation();
     };
+
+    setWidth = event => {
+        const {id} = this.state.componentStats;
+        const width = event.target.value;
+        this.setState({
+            ...this.state,
+            componentStats: {...this.state.componentStats,
+                size: {
+                    ...this.state.componentStats.size,
+                    w: width
+                }}
+        },
+            () => eventEmitter.emit(`EventSetWidth${id}`,{width: width}));
+
+        if (event) event.stopPropagation();
+    };
+
+    setHeight = event => {
+        const {id} = this.state.componentStats;
+        const height = event.target.value;
+        this.setState({
+            ...this.state,
+            componentStats: {...this.state.componentStats,
+                size: {
+                    ...this.state.componentStats.size,
+                    h: height
+                }}
+        },
+            () => eventEmitter.emit(`EventSetHeight${id}`,{height: height}));
+
+        if (event) event.stopPropagation();
+    }
 
     updatePosition = eventItem => {
         if (!eventItem) return;
@@ -105,6 +138,7 @@ class InstrumentsPanel extends React.PureComponent {
                 colorPickerActive: this.state.instrumentPanel.colorPickerActive ? false : true
             }
         });
+        if (event) event.stopPropagation();
     };
 
     setOpacity = event => {
@@ -181,6 +215,7 @@ class InstrumentsPanel extends React.PureComponent {
             id: this.state.componentStats.id,
             type: this.state.componentStats.type,
         });
+        if (event) event.stopPropagation();
     }
 
     saveChanges = event => {
@@ -231,8 +266,6 @@ class InstrumentsPanel extends React.PureComponent {
                         />
                     )
                 case 'image':
-                    console.log(this.state.componentStats);
-                    console.log(this.props);
                         return (
                             <ImageInstruments
                                 instrumentPanel = {{...this.state.instrumentPanel}}
@@ -241,6 +274,8 @@ class InstrumentsPanel extends React.PureComponent {
                                 cbSetSize = {this.setSize}
                                 cbSetBorderRadius = {this.setBorderRadius}
                                 cbSetOpacity = {this.setOpacity}
+                                cbSetWidth = {this.setWidth}
+                                cbSetHeight = {this.setHeight}
                             />
                         )
                 case 'media':
@@ -257,7 +292,6 @@ class InstrumentsPanel extends React.PureComponent {
 
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
-        console.log('ip');
         return (
             <Fragment>
                 <div  className = 'instumentsPanel'>
@@ -286,7 +320,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     componentDidUpdate = (oldProps, oldState) => {
-        console.log('ip componentDidUpdate');
         if (oldState.componentStats !== this.state.componentStats)
         this.saveChanges();
     };

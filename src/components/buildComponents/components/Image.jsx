@@ -10,8 +10,8 @@ const WrapperImg = styled.div.attrs(props => ({
         left: props.coordX ? props.coordX : '45%',
         top:  props.coordY ? props.coordY : '0%',
 }}))`
-    width: ${props => props.size ? props.size + '%' : '30%'};
-    height: ${props => props.size ? props.size + '%' : '50%'};
+    width: ${props => props.size ? props.size.w + '%' : '30%'};
+    height: ${props => props.size ? props.size.h + '%' : '50%'};
     position: absolute;
 `;
 
@@ -44,7 +44,7 @@ class Image extends React.PureComponent {
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
         path: this.props.path,
-        size: this.props.size ? this.props.size : 30,
+        size: this.props.size ? this.props.size : {w: 30, h: 50},
         shiftCoords: null,
         posImage: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
         startDragNdrop: false,
@@ -55,6 +55,7 @@ class Image extends React.PureComponent {
         const componentsPatternImage = {
             id: this.state.id,
             targetSection: this.state.targetSection,
+            size: {...this.state.size},
             type: 'image',
             borderRadius: this.state.borderRadius,
             opacity: this.state.opacity,
@@ -150,6 +151,26 @@ class Image extends React.PureComponent {
         this.setState({...this.state, path: urlFull});
     };
 
+    setWidth = eventItem => {
+        const {width} = eventItem;
+        this.setState({...this.state, 
+            size: {
+                ...this.state.size,
+                w: width,
+            }
+        });
+    }
+
+    setHeight = eventItem => {
+        const {height} = eventItem;
+        this.setState({...this.state, 
+            size: {
+                ...this.state.size,
+                h: height,
+            }
+        });
+    }
+
     weelResizeText = event => {
 
         if (event.shiftKey && event.deltaY === -100) {
@@ -240,6 +261,8 @@ class Image extends React.PureComponent {
         eventEmitter.on(`EventSetOpacity${this.state.id}`, this.setOpacity);
         eventEmitter.on(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
+        eventEmitter.on(`EventSetWidth${this.state.id}`, this.setWidth);
+        eventEmitter.on(`EventSetHeight${this.state.id}`, this.setHeight);
     }
 
     componentWillUnmount = () => {
@@ -248,6 +271,8 @@ class Image extends React.PureComponent {
         eventEmitter.off(`EventSetOpacity${this.state.id}`, this.setOpacity);
         eventEmitter.off(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         eventEmitter.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
+        eventEmitter.off(`EventSetWidth${this.state.id}`, this.setWidth);
+        eventEmitter.off(`EventSetHeight${this.state.id}`, this.setHeight);
     }
 }
 
