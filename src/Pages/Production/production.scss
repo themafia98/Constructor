@@ -1,7 +1,6 @@
-
-[data-class="editable"]{
+[data-class="production"]{
     position: relative;
-    cursor: pointer;
+    cursor: auto;
     width: 100%;
     height: 800px;
     border: 1px solid black;
@@ -12,5 +11,3 @@
         color: red;
     }
 }
-
-

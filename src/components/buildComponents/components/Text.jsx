@@ -94,6 +94,7 @@ class TextComponent extends React.PureComponent {
     changeSizeText = eventSize => {
         this.setState({...this.state, sizeText: eventSize.size});
     };
+
     saveSize = event => {
         const {size} = event;
         if (!this.state.getSizeBool){

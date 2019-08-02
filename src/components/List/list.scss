@@ -10,9 +10,9 @@
     text-align: center;
 
     .item {
+        position: relative;
         flex: 0 0 20vw;
-        // cursor: pointer;
-        height: 20vh;
+        padding-bottom: 10px;
         border: 1px solid red;
         margin: 5px;
         background-color: whitesmoke;

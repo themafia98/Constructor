@@ -14,7 +14,8 @@ const MediaInstruments = props => {
                 coords.x + ' / ' + coords.y : ' drop for active'}
             </span>
             <p className = 'titleInstument'>Size: </p>
-            <input 
+            <input
+                className = 'button_switch'
                 onChange = {props.cbSetSize}
                 type="number"
                 min = '10' max = '200'

@@ -240,7 +240,7 @@ class Build extends React.PureComponent {
                             eventItem.componentsPatternBackground],
                 sectionsProject: [
                     ...currentProjectsData.sectionsProject,
-                    eventItem.componentsPatternBackground.id
+                    eventItem.componentsPattern.id
                 ],
                 idProject: this.state.idProject
         }))

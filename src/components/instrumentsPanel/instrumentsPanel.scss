@@ -8,7 +8,7 @@ $closeSize: 25px;
     top: 50%;
     left: 100%;
     width: 20%;
-    height: 80%;
+    height: 85%;
     overflow: hidden;
     background-color: $bgColor;
 
@@ -42,8 +42,10 @@ $closeSize: 25px;
 
     .instuments {
         display: flex;
+        position: absolute;
         flex-direction: column;
         align-items: center;
+        width: 100%;
 
         .title_bg {
             font-weight:  bold;
@@ -157,6 +159,10 @@ $closeSize: 25px;
         }
 
     }
+
+    // .wrapperColorPicker {
+    //     position: absolute;
+    // }
 }
 
 span.textCoordsPanel {

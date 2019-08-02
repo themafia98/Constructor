@@ -1,15 +1,16 @@
 import React, {Fragment} from 'react';
 import eventEmitter from '../../EventEmitter';
 import PropTypes from 'prop-types';
-import './instrumentsPanel.scss';
 
+import InputInstruments from './InputTools/InputInstruments';
 import MediaInstruments from './MediaTools/MediaInstruments';
 import ImageInstruments from './ImageTools/ImageInstruments';
 import BackgroundInstruments from './BackgroundTools/BackgroundInstruments';
 import TextInstruments from './TextTools/TextInstruments';
 
-
 import Icon from '../Icon/icon';
+
+import './instrumentsPanel.scss';
 
 
 class InstrumentsPanel extends React.PureComponent {
@@ -331,6 +332,16 @@ class InstrumentsPanel extends React.PureComponent {
                                 cbDelete = {this.deleteComponent}
                             />
                             )
+                case 'input':
+                        return (
+                            <InputInstruments
+                                instrumentPanel = {{...this.state.instrumentPanel}}
+                                componentStats = {{...this.state.componentStats}}
+                                cbSetColor = {this.setColor}
+                                cbSetSize = {this.setSize}
+                                cbDelete = {this.deleteComponent}
+                            />
+                        )
                 default: return <p className = 'warningInstruments'>No found element</p>
             }
     };

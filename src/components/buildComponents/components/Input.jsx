@@ -10,10 +10,9 @@ const InputComponent = styled.input.attrs(props => ({
         left: props.coordX ? props.coordX : '45%',
         top:  props.coordY ? props.coordY : '0%',
 }}))`
-    width: ${props => props.size ? props.size + '%' : null};
-    height: ${props => props.size ? props.size + 20 + '%' :  null};
+    width: ${props => props.size ? props.size.w + 'px' : null};
+    height: ${props => props.size ? props.size.h + 'px' : null};
     position: absolute;
-    pointer-events: none;
 `;
 
 
@@ -34,24 +33,22 @@ class Input extends React.PureComponent {
         getSizeBool: false,
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
-        path: this.props.path,
-        size: this.props.size ? this.props.size : null,
+        size: this.props.size ? this.props.size : {w: '100', h:'50'},
         shiftCoords: null,
-        posImage: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
+        posInput: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
         startDragNdrop: false,
     }
 
-    openImageInstruments = event => {
+    openInputInstruments = event => {
 
         const componentsPatternImage = {
             id: this.state.id,
             targetSection: this.state.targetSection,
-            type: 'image',
+            type: 'input',
             borderRadius: null,
-            opacity: 1,
             zIndex: null,
-            image: this.state.path,
-            coords: {...this.state.posImage}, // x, y
+            value: this.state.content,
+            coords: {...this.state.posInput}, // x, y
         }
 
         eventEmitter.emit(`EventInstrumentPanel`,{
@@ -105,14 +102,14 @@ class Input extends React.PureComponent {
             y: 0,
         }
     }
-    move = (x,y) => this.setState({...this.state, posImage: {x: x, y: y}});
+    move = (x,y) => this.setState({...this.state, posInput: {x: x, y: y}});
 
-    moveText = event => {
+    moveInput = event => {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
-            let xItem = event.clientX - this.props.sizeParentBox.left;
-            let yItem = event.clientY - this.props.sizeParentBox.top;
+            let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
+            let yItem = event.clientY - (this.props.sizeParentBox.top * this.state.sectionNumber);
 
             let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
             let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
@@ -131,31 +128,8 @@ class Input extends React.PureComponent {
     stopDragNdrop = event => {
         if (this.state.startDragNdrop) {
             this.setState({...this.state, startDragNdrop: false})
-            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.posImage);
+            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.posInput);
         }
-        event.stopPropagation();
-    };
-
-    setCurrentImage = event => {
-        const {urlFull} = event;
-        this.setState({...this.state, path: urlFull});
-    };
-
-    weelResizeText = event => {
-
-        if (event.shiftKey && event.deltaY === -100) {
-            let counter = this.state.size + 1;
-            counter = counter > 100 ? 100 : counter;
-            this.setState({...this.state,size: counter});
-            eventEmitter.emit('EventupdateSize', counter);
-        }
-
-        if (event.shiftKey && event.deltaY === 100) {
-            let counter = this.state.size - 1;
-             counter = counter <= 0 ? 0 : counter;
-             this.setState({...this.state,size: counter});
-             eventEmitter.emit('EventupdateSize', counter);
-            }
         event.stopPropagation();
     };
 
@@ -165,7 +139,7 @@ class Input extends React.PureComponent {
         this.setState({
             ...this.state,
             getSizeBool: true,
-            sectionNumber: event.sectionNumber + 1,
+            sectionNumber: event.sectionNumber,
             sizeParentBox: {width: size.width, height: size.height}});
         } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
@@ -174,35 +148,50 @@ class Input extends React.PureComponent {
     refInputComponent = node => this.refInput = node;
 
     render(){
+
+        if (this.props.mode === 'dev'){
             return (
                 <InputComponent
                     type = 'button'
                     value = 'Input'
                     ref = {this.refInputComponent}
                     size = {this.state.size}
-                    onClick = {this.openImageInstruments}
+                    onClick = {this.openInputInstruments}
                     onMouseDown = {this.saveCoords}
-                    onMouseMove= {this.moveText}
+                    onMouseMove= {this.moveInput}
                     onMouseLeave = {this.stopDragNdrop}
                     onMouseUp = {this.stopDragNdrop}
                     onDragStart = {this.stop}
                     onWheel = {this.weelResizeText}
-                    coordX = {this.state.posImage ? this.state.posImage.x : null}
-                    coordY = {this.state.posImage ? this.state.posImage.y : null}
+                    coordX = {this.state.posInput ? this.state.posInput.x : null}
+                    coordY = {this.state.posInput ? this.state.posInput.y : null}
                     indexZ = {this.state.startDragNdrop}
                     data-imagecomponentwrapper
                 />
             )
+        } else if (this.props.mode === 'production'){
+
+            return (
+                <InputComponent
+                    type = 'button'
+                    value = 'Input'
+                    ref = {this.refInputComponent}
+                    size = {this.state.size}
+                    coordX = {this.state.posInput ? this.state.posInput.x : null}
+                    coordY = {this.state.posInput ? this.state.posInput.y : null}
+                    indexZ = {this.state.startDragNdrop}
+                    mode = {this.props.mode}
+                />
+            )
+        }
     }
 
     componentDidMount = () => {
-        eventEmitter.on(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
         eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
-        eventEmitter.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
     }
 }
 

@@ -26,6 +26,7 @@ const TextInstruments = props => {
             />
             <p className = 'titleInstument'>Text size: </p>
             <input 
+                className = 'button_switch'
                 onChange = {props.cbSetSize}
                 type="number"
                 min = '10' max = '200'
@@ -39,7 +40,11 @@ const TextInstruments = props => {
                     : null
                 }
                 <p className = 'titleInstument'>Font: </p>
-                <select value = {props.componentStats.font} onChange = {props.cbSetFont}>
+                <select 
+                    value = {props.componentStats.font} 
+                    onChange = {props.cbSetFont}
+                    className = 'button_switch'
+                >
                 <option>Arial</option>
                 <option>Times</option>
                 <option>Georgia</option>
@@ -50,6 +55,7 @@ const TextInstruments = props => {
                 </select>
             <p className = 'titleInstument'>Content: </p>
             <input
+                className = 'button_switch'
                 onChange = {props.cbSetContent}
                 maxLength = '100'
                 type = 'text'

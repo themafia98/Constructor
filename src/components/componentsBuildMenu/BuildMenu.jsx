@@ -45,12 +45,12 @@ class BuildMenu extends React.PureComponent {
             componentsPattern: componentsPatternText,
             type: componentsPatternText.type,
             component: <TextComponent
-                key = {`text${id}`}
-                mode = 'dev'
-                {...componentsPatternText}
-                sizeParentBox = {{...this.props.sizeParentBox}}
-                id = {id}
-            >Title</TextComponent>
+                            key = {`text${id}`}
+                            mode = 'dev'
+                            {...componentsPatternText}
+                            sizeParentBox = {{...this.props.sizeParentBox}}
+                            id = {id}
+                        >Title</TextComponent>
         });
         event.stopPropagation();
     }
@@ -184,6 +184,7 @@ class BuildMenu extends React.PureComponent {
                             {...componentsPatternBackground}
                             key = {`bg${id}`}
                             id = {id}
+                            targetSection = {`Section${id}`}
                             width = '100%'
                             height = '800px'
                             type = 'background'

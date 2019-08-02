@@ -11,6 +11,8 @@ import Header from '../../components/header/Header';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
+import './production.scss';
+
 class Production extends React.PureComponent {
 
     static propTypes = {
