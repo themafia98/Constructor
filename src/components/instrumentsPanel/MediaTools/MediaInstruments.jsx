@@ -22,7 +22,7 @@ const MediaInstruments = props => {
             />
             <p className = 'titleInstument'>Content: </p>
             <input 
-                onClick = {props.cbSearchMedia}
+                onClick = {props.cbSearch}
                 className = 'ImageSearchButton'
                 type="button"
                 value = 'search media'

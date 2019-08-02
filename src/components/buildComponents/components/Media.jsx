@@ -11,19 +11,19 @@ const WrapperMedia = styled.div.attrs(props => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: props.mode === 'dev' ? '40px' : null
 }}))`
     width: 30%;
     height: 50%;
     position: absolute;
-    background: url(/img/media.svg);
-    border: 1px solid red;
+    background: ${props => props.mode === 'dev' ? `url(/img/media.svg)` : null};
+    border: ${props => props.mode === 'dev' ? `1px solid red` : null};
     padding: 10px;
-    box-sizing: border-box;
 `;
 const Media = styled.iframe`
     width: 100%;
     height: 100%;
-    z-index: ${props => props.zIndex ? '-1' : '-1'};
+    z-index: ${props => props.zIndex ? '0' : '-1'};
 `;
 
 class MediaComponent extends React.PureComponent {
@@ -36,7 +36,6 @@ class MediaComponent extends React.PureComponent {
         targetSection: PropTypes.string.isRequired,
         sizeParentBox: PropTypes.object.isRequired,
         content: PropTypes.string,
-        children: PropTypes.object,
     }
 
     state = {
@@ -59,7 +58,7 @@ class MediaComponent extends React.PureComponent {
             targetSection: this.state.targetSection,
             type: 'media',
             zIndex: null,
-            image: this.state.path,
+            content: this.state.content,
             coords: {...this.state.posMedia}, // x, y
         }
 
@@ -146,8 +145,8 @@ class MediaComponent extends React.PureComponent {
     };
 
     setContent = event => {
-        const {urlFull} = event;
-        this.setState({...this.state, path: urlFull});
+        const {iframe} = event;
+        this.setState({...this.state, content: iframe});
     };
 
     weelResizeText = event => {
@@ -183,36 +182,58 @@ class MediaComponent extends React.PureComponent {
     refMediaComponent = node => this.refMedia = node;
 
     render(){
-        // let link = "https://www.youtube.com/embed/B0b59jgudto";
+        const url = 'https://www.youtube.com/embed/';
 
-        return (
-            <WrapperMedia
-                ref = {this.refMediaComponent}
-                onClick={this.openMediaInstruments}
-                onMouseDown = {this.saveCoords}
-                onMouseMove= {this.moveMedia}
-                onMouseLeave = {this.stopDragNdrop}
-                onMouseUp = {this.stopDragNdrop}
-                onDragStart = {this.stop}
-                onWheel = {this.weelResizeText}
-                indexZ = {this.state.startDragNdrop}
-                coordX = {this.state.posMedia ? this.state.posMedia.x : null}
-                coordY = {this.state.posMedia ? this.state.posMedia.y : null}
-            >
-            {!this.state.startDragNdrop ? 
-                <Media
-                    src= {!this.state.content ? this.state.content : null }
-                    drawContent = {this.state.drawContent}
-                    width = {this.state.width} 
-                    height = {this.state.height}
-                    zIndex = {this.startDragNdrop}
-                    allowfullscreen
+        if (this.props.mode === 'dev'){
+            return (
+                <WrapperMedia
+                    ref = {this.refMediaComponent}
+                    onClick={this.openMediaInstruments}
+                    onMouseDown = {this.saveCoords}
+                    onMouseMove= {this.moveMedia}
+                    onMouseLeave = {this.stopDragNdrop}
+                    onMouseUp = {this.stopDragNdrop}
+                    onDragStart = {this.stop}
+                    onWheel = {this.weelResizeText}
+                    indexZ = {this.state.startDragNdrop}
+                    coordX = {this.state.posMedia ? this.state.posMedia.x : null}
+                    coordY = {this.state.posMedia ? this.state.posMedia.y : null}
                 >
-                    {this.props.children}
-                </Media> : null
-            }
-            </WrapperMedia>
-        )
+                {!this.state.startDragNdrop ? 
+                    <Media
+                        src= {this.state.content ? url + this.state.content : null }
+                        drawContent = {this.state.drawContent}
+                        width = {this.state.width} 
+                        height = {this.state.height}
+                        zIndex = {this.state.content}
+                        allowfullscreen
+                    ></Media> : null
+                }
+                </WrapperMedia>
+            )
+        } else if (this.props.mode === 'production'){
+            return (
+                <WrapperMedia
+                    ref = {this.refMediaComponent}
+                    indexZ = {this.state.startDragNdrop}
+                    coordX = {this.state.posMedia ? this.state.posMedia.x : null}
+                    coordY = {this.state.posMedia ? this.state.posMedia.y : null}
+                    mode = {this.props.mode}
+                >
+                {!this.state.startDragNdrop ? 
+                    <Media
+                        src= {this.state.content ? url + this.state.content : null }
+                        drawContent = {this.state.drawContent}
+                        width = {this.state.width} 
+                        height = {this.state.height}
+                        zIndex = {this.state.content}
+                        mode = {this.props.mode}
+                        allowfullscreen
+                    ></Media> : null
+                }
+                </WrapperMedia>
+            )
+        }
     }
 
     componentDidMount = () => {
@@ -225,12 +246,5 @@ class MediaComponent extends React.PureComponent {
         eventEmitter.off(`EventSetContentMedia${this.state.id}`, this.setContent);
     }
 }
-
-
-// <iframe width="560" height="315" 
-// src="https://www.youtube.com/embed/7KoHDwvSOwc" 
-// frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-// allowfullscreen>
-// </iframe>
 
 export default MediaComponent;

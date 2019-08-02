@@ -44,7 +44,6 @@ class App extends React.PureComponent {
     render(){
         if (this.state.firebaseLoadState){
         return (
-            <div>
                 <Switch>
                     <Route
                         path = {'/'} exact
@@ -55,12 +54,11 @@ class App extends React.PureComponent {
                         path = {'/Cabinet/About'}
                         render = {(props) => <About {...props} config = {this.props.config} />}
                     />
-                    <Route path = {'/Cabinet/Build/:param'} component = {Build}/>
-                    <Route path = {'/Cabinet/Production/:param'} component = {Production} />
+                    <Route path = {'/Cabinet/Build/:param'} exact component = {Build}/>
+                    <Route path = {'/Cabinet/Build/:param/Production'} exact component = {Production} />
                     <Route path = {'*'} component = {Index} />
                     <Route path = {'/crashPage'} component = {ErrorPage} />
                 </Switch>
-                </div>
 
         )
         } else return <Loader path = { '/img/loading.gif'} type = 'application' />

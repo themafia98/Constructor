@@ -1,13 +1,19 @@
 import React,{Fragment} from 'react';
-import ImageViewer from '../../components/imageViewer/imageViewer';
+import Viewer from '../imageViewer/Viewer';
 import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel';
 import ModalWindow from '../../components/modalWindow/ModalWindow';
 
 const AdditionalTools = props => {
+
     return (
         <Fragment key = 'AdditionalBuild'>
-            {   props.modalImageViewer.action &&
-                    <ImageViewer key = 'ImageViewer' path = {props.modalImageViewer.target} />
+            {   props.modalViewer.action &&
+                    <Viewer 
+                        key = 'ImageViewer' 
+                        mode = {props.modalViewer.mode} 
+                        path = {props.modalViewer.target}
+                        iframe = {props.modalViewer.iframe}
+                    />
             }
             {   props.modalSearch &&
                     <ModalWindow

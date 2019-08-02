@@ -7,10 +7,10 @@ const ImageItem = props => {
     const [urlRegular] = useState(props.urls.regular);
     const [urlFull] = useState(props.urls.full);
     const [isFull] = useState(props.isFull);
+    const [urlContent] = useState(props.urlContent);
 
-    console.log('image');
     const showImageMenu = event => {
-       eventEmitter.emit("EventShowMenuImage", {id: id, url: urlRegular, urlFull: urlFull});
+       eventEmitter.emit("EventShowMenuImage", {id: id, url: urlRegular, urlFull: urlFull, iframe: urlContent});
     }
 
 

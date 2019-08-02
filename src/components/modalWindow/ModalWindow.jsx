@@ -5,14 +5,13 @@ import PropTypes from 'prop-types';
 import eventEmitter from '../../EventEmitter.js';
 
 import ImageItem from '../imageViewer/imageItem';
-import Icon from '../Icon/icon';
 
 import CreateProject from './createProject/createProject';
-import SearchImage from './Search/searchModal';
+import SearchModal from './Search/searchModal';
 import './modal.scss';
 
 require('es6-promise').polyfill();
-console.log('asd');
+
 class ModalWindow extends React.PureComponent {
 
     static propTypes = {
@@ -23,12 +22,14 @@ class ModalWindow extends React.PureComponent {
     state = {
         workMode: this.props.workMode,
         images: {
+            loading: false,
             buttonSearchDisabled: false,
             selectedItem: null, 
             showUrl: null, 
             images: null,
             urlFull: null,
             imageBoxView: false, 
+            iframe: null,
             error: ''
         },
         newProject: {
@@ -49,28 +50,37 @@ class ModalWindow extends React.PureComponent {
     inputSearch = null;
     inputSelect = null;
 
-    searchBackground = (event,value) => {
-        const mode = 'search/photos/?page=1&per_page=40&query=';
-        const api = `https://api.unsplash.com/${mode}`;
+    searchData = (event,value, mode) => {
+
+        this.setState({...this.state, 
+            images: {
+                ...this.state.inages,
+                loading: true,
+                buttonSearchDisabled: true
+            }
+        });
+
         let search = null;
         if (value) search = value;
         else search = this.inputSearch.value;
 
-        this.setState({...this.state, images: {...this.state.inages, buttonSearchDisabled: true}})
-
+        if (mode !== 'media'){
+        const modeAPI = 'search/photos/?page=1&per_page=40&query=';
+        const api = `https://api.unsplash.com/${modeAPI}`;
+ 
         isFetch(`${api + search}&client_id=${process.env.REACT_APP_UNSPLASH_TOKEN}`)
         .then(response => {
             if (response.ok) return response.json();
             else throw new Error('request invalid');
         })
         .then(response => {
-
             let {results} = response;
             if (results.length)
             this.setState({
                 ...this.state,
                 images: {
                     ...this.state.images,
+                    loading: false,
                     imageBoxView: true,
                     error: '',
                     images: [...results],
@@ -83,11 +93,53 @@ class ModalWindow extends React.PureComponent {
             console.error(error.message);
             this.setState({
                 ...this.state,
-                images: {...this.state.images, error: error.message},
+                images: {
+                    ...this.state.images,
+                    buttonSearchDisabled: false,
+                    loading: false,
+                    error: error.message},
                 imageBoxView: false,
-                buttonSearchDisabled: false
             });
         });
+        } else this.searchYouTubeAPI(search);
+    }
+
+    
+    searchYouTubeAPI = (search) => {
+
+        const API = `https://www.googleapis.com/youtube/v3/search?part=snippet`;
+        const RAITE = `&maxResults=25&order=date&q=${search}`;
+        const KEY = `&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`;
+        isFetch(API + RAITE + KEY)
+        .then(res => {
+            if (res.ok)
+            return res.json();
+            else throw new Error (`Error ${res.status}`);
+        })
+        .then(res => {
+            const arrayItems = [];
+            res.items.forEach(item => {
+                arrayItems.push({
+                    urls: { regular: item.snippet.thumbnails.high.url },
+                    videoId: item.id.videoId
+                })
+            });
+            return arrayItems;
+        })
+        .then(results => {
+            this.setState({
+                ...this.state,
+                images: {
+                    ...this.state.images,
+                    loading: false,
+                    imageBoxView: true,
+                    error: '',
+                    images: [...results],
+                    buttonSearchDisabled: false
+                },
+            });
+        })
+        .catch(error => console.error(error));
     }
 
     showMenuImage = event => {
@@ -98,7 +150,8 @@ class ModalWindow extends React.PureComponent {
                 ...this.state.images,
                 selectedItem: event.id, 
                 showUrl: event.url,
-                urlFull: event.urlFull
+                urlFull: event.urlFull,
+                iframe: event.iframe
 
             }
         });
@@ -106,31 +159,46 @@ class ModalWindow extends React.PureComponent {
 
     showImage = event => {
 
-        const {showUrl} = this.state.images;
-        eventEmitter.emit("EventImageView", {action: true, target: showUrl ? showUrl : null});
+        const {showUrl, iframe} = this.state.images;
+
+        eventEmitter.emit("EventView", {
+            action: true, 
+            target: showUrl ? showUrl : null,
+            iframe: iframe,
+            mode: this.props.modalSearchMode
+        });
         event.stopPropagation();
     }
 
     setSelectedImage = event => {
 
-        let images = {...this.state.images};
-        if (this.props.modalSearchMode !== 'image'){
-            eventEmitter.emit(`EventSetBackgroundImage${this.props.idComponent}`,images);
-            eventEmitter.emit(`EventSetBImageInstumentPanel`,{images: images, mode: this.props.modalSearchMode});
-        } else {
-            eventEmitter.emit(`EventSetCurrentImage${this.props.idComponent}`, images);
-            eventEmitter.emit(`EventSetBImageInstumentPanel`, {images: images,  mode: this.props.modalSearchMode });
+        let data = {...this.state.images};
+        if (this.props.modalSearchMode === 'background'){
+            eventEmitter.emit(`EventSetBackgroundImage${this.props.idComponent}`,data);
+            eventEmitter.emit(`EventSetBImageInstumentPanel`,{images: data, mode: this.props.modalSearchMode});
+        } else if (this.props.modalSearchMode === 'image'){
+            eventEmitter.emit(`EventSetCurrentImage${this.props.idComponent}`, data);
+            eventEmitter.emit(`EventSetBImageInstumentPanel`, {images: data,  mode: this.props.modalSearchMode });
+        } else if (this.props.modalSearchMode === 'media'){
+            eventEmitter.emit(`EventSetContentMedia${this.props.idComponent}`,{
+                    iframe: data.iframe,
+                    mode: this.props.modalSearchMode
+                }
+            );
+            eventEmitter.emit(`EventSetIframe`, {iframe: data.iframe});
         }
-        
+
         event.stopPropagation();
     };
 
     makeImageResultBox = (items) => {
         if (!items) return null;
+
         return items.map((item,i) =>{
            return <ImageItem 
                 key = {`item${i}`} 
                 id = {i}
+                urlContent = {item.videoId ? item.videoId : null}
                 selected = {this.state.images.selectedItem === i ? true : false} 
                 isFull = {false}
                 urls = {{...item.urls}} 
@@ -206,8 +274,9 @@ class ModalWindow extends React.PureComponent {
                         />
             case 'Search':
                     return (
-                        <SearchImage
+                        <SearchModal
                             images = {this.state.images['images']}
+                            loading = {this.state.images.loading}
                             view = {this.state.images.imageBoxView}
                             dissabled = {this.state.images.buttonSearchDisabled}
                             error = {this.state.images.error}
@@ -217,7 +286,7 @@ class ModalWindow extends React.PureComponent {
                             cbShowImage = {this.showImage}
                             cbSetSelectedImage = {this.setSelectedImage}
                             modalSearchMode = {this.props.modalSearchMode}
-                            cbSearchBackground = {this.searchBackground}
+                            cbSearch = {this.searchData}
                         />
                     )
 

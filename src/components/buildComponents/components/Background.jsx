@@ -24,6 +24,7 @@ const BackgroundComponent = props => {
     let [width] = useState(props.width ? props.width : '100%');
     let [height] = useState(props.height ? props.height : '100%');
 
+
     const saveDataParent = () => {
         boxComponent.current.focus();
         let boxInform =  boxComponent.current.getBoundingClientRect();
@@ -72,19 +73,35 @@ const BackgroundComponent = props => {
     }
 
     useEffect(didUpdate);
-    return (
-        <Background
-            ref  = {boxComponent}
-            onDoubleClick={openBgInstruments}
-            data-name = {targetSection}
-            backgroundColor = {backgroundColor ? backgroundColor : props.background}
-            backgroundImage = {backgroundImage ? backgroundImage : props.backgroundImage}
-            width = {width}
-            height = {height}
-        >
-            {props.children}
-        </Background>
-    )
+
+    if (props.mode === 'dev'){
+        return (
+            <Background
+                ref  = {boxComponent}
+                onDoubleClick={openBgInstruments}
+                data-name = {targetSection}
+                backgroundColor = {backgroundColor ? backgroundColor : props.background}
+                backgroundImage = {backgroundImage ? backgroundImage : props.backgroundImage}
+                width = {width}
+                height = {height}
+            >
+                {props.children}
+            </Background>
+        )
+    } else if (props.mode === 'production'){
+        return (
+            <Background
+                ref  = {boxComponent}
+                data-name = {targetSection}
+                backgroundColor = {props.background}
+                backgroundImage = {props.backgroundImage}
+                width = {width}
+                height = {height}
+            >
+                {props.children}
+            </Background>
+        )
+    }
 }
 
 export default BackgroundComponent;

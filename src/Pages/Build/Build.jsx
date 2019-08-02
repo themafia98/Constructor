@@ -54,13 +54,13 @@ class Build extends React.PureComponent {
                 duration: 1000,
                 delay: 50,
                 smooth: true,
-                offset: -70, // Scrolls to element -80 pixels down the page
+                offset: -60, // Scrolls to element -80 pixels down the page
             },
             editComponentName:  null,
             menuActive: false,
             modalSearch: false,
             modalSearchMode: null,
-            modalImageViewer: {action: false, image: null },
+            modalViewer: {action: false, image: null, mode: null },
             sizeParentBox: null,
         }
 
@@ -73,13 +73,16 @@ class Build extends React.PureComponent {
         });
     }
 
-    imageViewerSwitch = itemEvent => {
+    ViewerSwitch = itemEvent => {
+
         this.setState({
             ...this.state,
-            modalImageViewer: {
-                ...this.state.modalImageViewer,
+            modalViewer: {
+                ...this.state.modalViewer,
                 action: itemEvent.action,
-                target: itemEvent.target
+                target: itemEvent.target,
+                mode: itemEvent.mode,
+                iframe: itemEvent.iframe
             }
         });
     };
@@ -166,6 +169,7 @@ class Build extends React.PureComponent {
                     <BuilderComponents
                         sizeParentBox = {{...sizeParentBox}}
                         {...item}
+                        mode = 'dev'
                         key = {`${item.type}${item.id}`}
                     />;
 
@@ -327,7 +331,7 @@ class Build extends React.PureComponent {
                                 className = 'menu'
                             />
                         {instrumentActive && <AdditionalTools key = 'tools' {...this.state} />}
-                        {section.length && <Section key = 'section' {...this.state} userData = {userData} />}
+                        {section.length && <Section mode = 'dev' key = 'section' {...this.state} userData = {userData} />}
                     </div>
                 </Fragment>
             )
@@ -392,7 +396,7 @@ class Build extends React.PureComponent {
         eventEmitter.on('EventClosePanel', this.closePanel);
         eventEmitter.on('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
-        eventEmitter.on('EventImageView', this.imageViewerSwitch);
+        eventEmitter.on('EventView', this.ViewerSwitch);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
     }
 
@@ -408,7 +412,7 @@ class Build extends React.PureComponent {
         eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);
-        eventEmitter.off('EventImageView', this.imageViewerSwitch);
+        eventEmitter.off('EventView', this.ViewerSwitch);
         eventEmitter.off('EventModeEdit', this.workModeEdit);
     }
 }

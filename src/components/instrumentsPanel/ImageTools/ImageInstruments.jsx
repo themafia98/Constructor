@@ -56,6 +56,7 @@ const ImageInstruments = props => {
                 ref = {fileRef}
                 className = 'fileInput'
                 onChange = {props.cbLoadFile}
+                accept="image/*"
                 type="file"
             />
                 <input
@@ -66,7 +67,7 @@ const ImageInstruments = props => {
                 />
             </div>
             <input 
-                onClick = {props.cbSearchImage}
+                onClick = {props.cbSearch}
                 className = 'ImageSearchButton'
                 type="button"
                 value = 'search image'

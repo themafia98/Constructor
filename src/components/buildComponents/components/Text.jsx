@@ -12,7 +12,7 @@ const WrapperText = styled.div.attrs(props => ({
         top:  props.coordY,
 }}))`
     position: absolute;
-    font-size: ${props => props.size};
+    font-size: ${props => props.size ? props.size : '120px'};
     color: ${props => props.textColor};
     text-align: center;
     margin: 0;
@@ -40,6 +40,7 @@ class TextComponent extends React.PureComponent {
         targetSection: PropTypes.string.isRequired,
         sizeParentBox: PropTypes.object.isRequired,
         children: PropTypes.string,
+        mode: PropTypes.string.isRequired,
     }
 
     state = {
@@ -99,7 +100,7 @@ class TextComponent extends React.PureComponent {
         this.setState({
             ...this.state,
             getSizeBool: true,
-            sectionNumber: event.sectionNumber + 1,
+            sectionNumber: event.sectionNumber,
             parent: {width: size.width, height: size.height}});
         } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
@@ -167,9 +168,10 @@ class TextComponent extends React.PureComponent {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
-          
-            let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
-            let yItem = event.clientY - (this.props.sizeParentBox.top+10 * this.state.sectionNumber);
+ 
+            let sectionNum = this.state.sectionNumber === 0 ? 1 : this.state.sectionNumber;
+            let xItem = event.clientX - (this.props.sizeParentBox.left  * sectionNum);
+            let yItem = event.clientY - (this.props.sizeParentBox.top * sectionNum);
 
             let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
             let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
@@ -216,25 +218,41 @@ class TextComponent extends React.PureComponent {
 
 
     render(){
-        return (
-            <WrapperText
-                ref  = {this.refTextComponent}
-                onClick={this.openTitleInstruments}
-                textColor = {this.state.colorText ? this.state.colorText : 'red'}
-                size = {this.state.sizeText ? this.state.sizeText + 'px' : '120px'}
-                onMouseDown = {this.saveCoords}
-                onMouseMove= {this.moveText}
-                onMouseLeave = {this.stopDragNdrop}
-                onMouseUp = {this.stopDragNdrop}
-                onWheel = {this.weelResizeText}
-                coordX = {this.state.position ? this.state.position.x : null}
-                coordY = {this.state.position ? this.state.position.y : null}
-                indexZ = {this.state.startDragNdrop}
-                data-textcomponent
-            >
-                <TextStyle font = {this.state.font}>{this.state.contentText}</TextStyle>
-            </WrapperText>
-        )
+
+        if (this.props.mode === 'dev'){
+            return (
+                <WrapperText
+                    ref  = {this.refTextComponent}
+                    onClick={this.openTitleInstruments}
+                    textColor = {this.state.colorText ? this.state.colorText : 'red'}
+                    size = {this.state.sizeText ? this.state.sizeText + 'px' : '120px'}
+                    onMouseDown = {this.saveCoords}
+                    onMouseMove= {this.moveText}
+                    onMouseLeave = {this.stopDragNdrop}
+                    onMouseUp = {this.stopDragNdrop}
+                    onWheel = {this.weelResizeText}
+                    coordX = {this.state.position ? this.state.position.x : null}
+                    coordY = {this.state.position ? this.state.position.y : null}
+                    indexZ = {this.state.startDragNdrop}
+                    data-textcomponent
+                >
+                    <TextStyle font = {this.state.font}>{this.state.contentText}</TextStyle>
+                </WrapperText>
+            ) 
+        } else if (this.props.mode === 'production'){
+            return (
+                <WrapperText
+                    ref  = {this.refTextComponent}
+                    textColor = {this.state.colorText ? this.state.colorText : 'red'}
+                    size = {this.state.sizeText ? this.state.sizeText + 'px' : '120px'}
+                    coordX = {this.state.position ? this.state.position.x : null}
+                    coordY = {this.state.position ? this.state.position.y : null}
+                    indexZ = {this.state.startDragNdrop}
+                >
+                    <TextStyle font = {this.state.font}>{this.state.contentText}</TextStyle>
+                </WrapperText>
+            )
+        }
 
     }
 

@@ -26,7 +26,7 @@ const BackgroundInstruments = props => {
                 : null
             }
             <input 
-                onClick = {props.cbSearchImage}
+                onClick = {props.cbSearch}
                 className = 'ImageSearchButton'
                 type = 'button'
                 value = 'background-image'

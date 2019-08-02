@@ -5,10 +5,26 @@
     width: 100%;
     height: 800px;
     border: 1px solid black;
+
+    .headerBuild {
+        text-align: center;
+        font-size: 10vw;
+        color: red;
+    }
 }
 
-.headerBuild {
-    text-align: center;
-    font-size: 10vw;
-    color: red;
+
+[data-class="production"]{
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    height: 800px;
+    border: 1px solid black;
+
+    .headerBuild {
+        text-align: center;
+        font-size: 10vw;
+        color: red;
+    }
 }
+

@@ -5,8 +5,10 @@ import {withRouter, Redirect} from 'react-router-dom';
 function Item(props) {
 
     const [path] = useState( `/Cabinet/Build/${props.id}`);
+    const [productionPath] = useState(`/Cabinet/Build/${props.id}/Production/`);
 
     let [canBuild,setCanBuild] = useState(false);
+    let [canProd, setCanProd] = useState(false);
 
     const [id] = useState(props.id);
     const [name] = useState(props.name);
@@ -19,6 +21,12 @@ function Item(props) {
         event.stopPropagation();
     };
 
+    const showProduction = event => {
+        if(props.location.pathname !== path)
+        setCanProd(true);
+        event.stopPropagation();
+    };
+
     const deleteItem = event => {
         eventEmitter.emit('EventDeleteItem',{
             id: props.id,
@@ -28,11 +36,9 @@ function Item(props) {
         event.stopPropagation();
     };
 
-    const showProduction =event => {
-        event.stopPropagation();
-    }
 
     if (canBuild) return <Redirect to = {path} />
+    else if (canProd) return <Redirect to = {productionPath} />
     else return (
             <div className = 'item' data-id = {id}>
                 <p className = 'ProjectName'>{name}</p>
@@ -51,7 +57,7 @@ function Item(props) {
                 <input onClick = {showProduction} 
                     className = 'productionButton' 
                     type = 'button' 
-                    value = 'Show demo' />
+                    value = 'Production' />
             </div>
         )
 }

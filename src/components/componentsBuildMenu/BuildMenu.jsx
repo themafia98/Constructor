@@ -46,6 +46,7 @@ class BuildMenu extends React.PureComponent {
             type: componentsPatternText.type,
             component: <TextComponent
                 key = {`text${id}`}
+                mode = 'dev'
                 {...componentsPatternText}
                 sizeParentBox = {{...this.props.sizeParentBox}}
                 id = {id}
@@ -100,6 +101,7 @@ class BuildMenu extends React.PureComponent {
                             key = {`image${id}`}
                             sizeParentBox = {this.props.sizeParentBox}
                             id = {id}
+                            mode = 'dev'
                             path = {'/img/photoPattern.svg'}
                             {...componentsPatternImage}
                             type = 'image' />
@@ -126,10 +128,12 @@ class BuildMenu extends React.PureComponent {
                             key = {`media${id}`}
                             targetSection = {this.props.editComponentName}
                             sizeParentBox = {this.props.sizeParentBox}
+                            content = {null}
                             id = {id}
                             path = {'/img/photoPattern.mp4'}
                             {...componentsPatternMedia}
-                            type = 'media' 
+                            type = 'media'
+                            mode = 'dev'
                         />
         });
         event.stopPropagation();
@@ -157,7 +161,8 @@ class BuildMenu extends React.PureComponent {
                             id = {id}
                             inputType = 'button'
                             {...componentsPatternInput}
-                            type = 'input' 
+                            type = 'input'
+                            mode = 'dev'
                         />
         });
         event.stopPropagation();
@@ -182,6 +187,7 @@ class BuildMenu extends React.PureComponent {
                             width = '100%'
                             height = '800px'
                             type = 'background'
+                            mode = 'dev'
                         />
         });
         event.stopPropagation();

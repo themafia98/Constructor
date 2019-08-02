@@ -19,6 +19,7 @@ const BuilderComponents = props => {
                     opacity = {props.opacity}
                     coords = {{...props.coords}}
                     font = {props.font}
+                    mode = {props.mode}
                 >
                     {props.content}
                 </TextComponent>
@@ -32,6 +33,7 @@ const BuilderComponents = props => {
                     size = {props.size}
                     id = {props.id}
                     key = {`bg${props.id}`}
+                    mode = {props.mode}
                 />;
 
     if (props.type === 'image'){
@@ -45,16 +47,20 @@ const BuilderComponents = props => {
                     sizeParentBox = {{...props.sizeParentBox}}
                     id = {props.id}
                     key = {`image${props.id}`}
+                    mode = {props.mode}
                 />
     }
+
     if (props.type === 'media')
         return <Media
                     key = {`media${props.id}`}
                     id = {props.id}
+                    content = {props.content}
                     targetSection = {props.targetSection}
                     sizeParentBox = {{...props.sizeParentBox}}
                     path = {props.path ? props.path : props.content}
                     coords = {{...props.coords}}
+                    mode = {props.mode}
                 />
         if (props.type === 'input')
             return <Input
@@ -65,6 +71,7 @@ const BuilderComponents = props => {
                         sizeParentBox = {{...props.sizeParentBox}}
                         id = {props.id}
                         key = {`input${props.id}`}
+                        mode = {props.mode}
                     />
 };
 

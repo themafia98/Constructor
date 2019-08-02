@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-import isFetch from 'isomorphic-fetch';
 import eventEmitter from '../../EventEmitter';
 import PropTypes from 'prop-types';
 import './instrumentsPanel.scss';
@@ -43,23 +42,6 @@ class InstrumentsPanel extends React.PureComponent {
         eventEmitter.emit('EventClosePanel', {close: false});
     };
 
-    searchYouTubeAPI = event => {
-
-        const API = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=`;
-        const RAITE = '&maxResults=20&order=date';
-        const KEY = `&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`;
-        isFetch(API + `UC-jPqsBeg5F_9zACfNHwLrw` + RAITE + KEY)
-        .then(res => {
-            if (res.ok)
-            return res.json();
-            else throw new Error (`Error ${res.status}`);
-        })
-        .then(res => {
-            console.log(res);
-        })
-        .catch(error => console.error(error));
-    }
-
     setSize = event => {
         let {id} = this.state.componentStats;
         let size = event.target.value > 200 ? 200 : event.target.value;
@@ -86,6 +68,17 @@ class InstrumentsPanel extends React.PureComponent {
                 targetSection: this.state.editComponentName, font: fontName
             })
         );
+    }
+
+    setIframeContent = eventItem => {
+
+        this.setState({
+            ...this.state,
+            componentStats:{
+                ...this.state.componentStats,
+                content: eventItem.iframe
+            }
+        });
     }
 
     setContent = event => {
@@ -259,7 +252,7 @@ class InstrumentsPanel extends React.PureComponent {
         });
     };
 
-    searchImage = event => {
+    search = event => {
 
         let {id} = this.state.componentStats;
         eventEmitter.emit('EventModalSearchOn', {idComponent: id, mode: this.state.componentStats.type});
@@ -311,7 +304,7 @@ class InstrumentsPanel extends React.PureComponent {
                             componentStats = {{...this.state.componentStats}}
                             cbSetColor = {this.setColor}
                             cbHandleChangeComplete = {this.handleChangeComplete}
-                            cbSearchImage = {this.searchImage}
+                            cbSearch = {this.search}
                         />
                     )
                 case 'image':
@@ -319,7 +312,7 @@ class InstrumentsPanel extends React.PureComponent {
                             <ImageInstruments
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
-                                cbSearchImage = {this.searchImage}
+                                cbSearch = {this.search}
                                 cbSetSize = {this.setSize}
                                 cbSetBorderRadius = {this.setBorderRadius}
                                 cbSetOpacity = {this.setOpacity}
@@ -334,7 +327,7 @@ class InstrumentsPanel extends React.PureComponent {
                             <MediaInstruments
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
-                                cbSearchMedia = {this.searchYouTubeAPI}
+                                cbSearch = {this.search}
                                 cbDelete = {this.deleteComponent}
                             />
                             )
@@ -378,6 +371,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     componentDidMount = event => {
         eventEmitter.on('EventRedirectSaveChanges', this.redirectSaveChanges);
+        eventEmitter.on(`EventSetIframe`, this.setIframeContent);
         eventEmitter.on(`EventupdateSize${this.state.componentStats.id}`, this.updateSize);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
@@ -386,6 +380,7 @@ class InstrumentsPanel extends React.PureComponent {
     componentWillUnmount = event => {
         if (this.timer) clearTimeout(this.timer);
         eventEmitter.off('EventRedirectSaveChanges', this.redirectSaveChanges);
+        eventEmitter.off(`EventSetIframe`, this.setIframeContent);
         eventEmitter.off(`EventupdateSize${this.state.componentStats.id}`, this.updateSize);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);

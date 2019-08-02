@@ -1,41 +1,39 @@
 import React from 'react';
 import Icon from '../../Icon/icon';
-
-const SearchImageModal = props => {
+import Loader from '../../loading/Loader';
+const SearchModal = props => {
 
     const refSearch = React.createRef();
-    console.log('search image');
-    const searchBackground = event => {
+
+    const search = event => {
+        let value = null;
         refSearch.current.focus();
-        let value = refSearch.current;
-        props.cbSearchBackground(event,value);
+        value = refSearch.current.value;
+
+        props.cbSearch(event,value,props.modalSearchMode);
         event.stopPropagation();
     }
-     console.log('search image');
     return (
 
         <React.Fragment>
             <div className = 'Modal Modal-search'>
-            <h3>{`Search ${props.modalSearchMode !== 'image' ? 'background image' : 'image'}`}</h3>
+            <h3>{`Search ${props.modalSearchMode}`}</h3>
             { props.error ?
                 <span className = 'error'>{props.error}</span> : null
             }
-            <input ref = {refSearch} type = 'text' placeholder = "Photo name" />
-            <input
-                disabled = {props.dissabled}
-                className = 'acceptButton'
-                type = 'button'
-                value = 'Search'
-                onClick = {searchBackground}
-            />
-            <input onClick = {props.cbCancel} type ='button' value = 'Cancel' />
-            {
-                props.view ?
-                <div className = 'searchResultBox'>
-                    {props.cbMakeImageResultBox([...props.images])}
-                </div>
-                : null
-            }
+                <input ref = {refSearch} type = 'text' placeholder = "name" />
+                    <input
+                        disabled = {props.dissabled}
+                        className = 'acceptButton'
+                        type = 'button'
+                        value = 'Search'
+                        onClick = {search}
+                    />
+                <input onClick = {props.cbCancel} type ='button' value = 'Cancel' />
+            <div className = 'searchResultBox'>
+                {props.view ? props.cbMakeImageResultBox([...props.images]) : null}
+                {props.loading ? <Loader type = 'images' /> : null}
+            </div>
         </div>
         {  props.menuActive ?
             <div className = 'ActionModalSearch'>
@@ -53,4 +51,4 @@ const SearchImageModal = props => {
     )
 }
 
-export default SearchImageModal;
+export default SearchModal;

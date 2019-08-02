@@ -227,6 +227,8 @@ class Image extends React.PureComponent {
     refImageComponent = node => this.refImage = node;
 
     render(){
+
+        if (this.props.mode === 'dev'){
             return (
                 <WrapperImg
                 ref = {this.refImageComponent}
@@ -252,6 +254,24 @@ class Image extends React.PureComponent {
                     />
                 </WrapperImg>
             )
+        } else if (this.props.mode === 'production'){
+            return (
+                <WrapperImg
+                ref = {this.refImageComponent}
+                size = {this.state.size}
+                coordX = {this.state.posImage ? this.state.posImage.x : null}
+                coordY = {this.state.posImage ? this.state.posImage.y : null}
+                indexZ = {this.state.startDragNdrop}
+                >
+                    <ImageStyle
+                        borderRadius = {this.state.borderRadius}
+                        opacity = {this.state.opacity}
+                        src = {this.state.path}
+                        alt = 'img'
+                    />
+                </WrapperImg>
+            )
+        }
     }
 
     componentDidMount = () => {
