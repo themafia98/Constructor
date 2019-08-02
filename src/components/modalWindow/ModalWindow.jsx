@@ -7,10 +7,12 @@ import eventEmitter from '../../EventEmitter.js';
 import ImageItem from '../imageViewer/imageItem';
 import Icon from '../Icon/icon';
 
+import CreateProject from './createProject/createProject';
+import SearchImage from './Search/searchModal';
 import './modal.scss';
 
 require('es6-promise').polyfill();
-
+console.log('asd');
 class ModalWindow extends React.PureComponent {
 
     static propTypes = {
@@ -47,10 +49,12 @@ class ModalWindow extends React.PureComponent {
     inputSearch = null;
     inputSelect = null;
 
-    searchBackground = event => {
+    searchBackground = (event,value) => {
         const mode = 'search/photos/?page=1&per_page=40&query=';
         const api = `https://api.unsplash.com/${mode}`;
-        const search = this.inputSearch.value;
+        let search = null;
+        if (value) search = value;
+        else search = this.inputSearch.value;
 
         this.setState({...this.state, images: {...this.state.inages, buttonSearchDisabled: true}})
 
@@ -186,117 +190,37 @@ class ModalWindow extends React.PureComponent {
     render(){
         switch (this.state.workMode){
             case 'newProject':
-                return (
-                    <div className = 'Modal'>
-                        <h3>Create new Project</h3>
-                        { this.state[this.state.workMode].name.length <= 3 ?
-                            <span className = 'warning'>{this.state.warning.lengthMin}</span> : null
-                        }
-                        { this.state[this.state.workMode].name.length >= 20 ?
-                            <span className = 'warning'>{this.state.warning.lengthMax}</span> : null
-                        }
-                        <input
-                            className = {this.state[this.state.workMode].validateName ? 'ready' : 'wrong'}
-                            value = {this.state[this.state.workMode].name}
-                            onChange = {this.validateName}
-                            type = 'text'
-                            placeholder = "Project name"
+                return <CreateProject
+                            dissabled = {this.state[this.state.workMode].disabled}
+                            nameLength = {this.state[this.state.workMode].name.length}
+                            name = {this.state[this.state.workMode].name}
+                            validType = {this.state[this.state.workMode].validateType}
+                            warningType = {this.state.warning.type}
+                            typeClassName = {this.state[this.state.workMode].validateName}
+                            warningLengthMin = {this.state.warning.lengthMin}
+                            warningLengthMax = {this.state.warning.lengthMax}
+                            cbValidateName = {this.validateName}
+                            cbSelectOption = {this.selectOption}
+                            cbAddNewProject = {this.addNewProject}
+                            cbCancel = {this.cancel}
                         />
-                        { !this.state[this.state.workMode].validateType ?
-                            <span className = 'warning'>{this.state.warning.type}</span> : null
-                        }
-                        <select onChange = {this.selectOption} >
-                            <option value = 'empty'>--------</option>
-                            <option value = 'landing'>Landing</option>
-                            <option value = 'portfolio'>Portfolio</option>
-                        </select>
-                        <input 
-                            onClick = {this.addNewProject}
-                            className = 'acceptButton'
-                            disabled = {this.state[this.state.workMode].disabled}
-                            type = 'button'
-                            value = 'Submit'
-                        />
-                            <input onClick = {this.cancel} type ='button' value = 'Cancel' />
-                    </div>
-                )
             case 'Search':
-                return (
-                    <Fragment>
-                        <div className = 'Modal Modal-search'>
-                            <h3>{`Search ${this.props.modalSearchMode !== 'image' ? 'background image' : 'image'}`}</h3>
-                            { this.state.images.error ?
-                                <span className = 'error'>{this.state.images.error}</span> : null
-                            }
-                            <input ref = {this.refSearch} type = 'text' placeholder = "Photo name" />
-                            <input 
-                                disabled = {this.state.images.buttonSearchDisabled} 
-                                className = 'acceptButton' 
-                                type = 'button' 
-                                value = 'Search'
-                                onClick = {this.searchBackground}
-                            />
-                            <input onClick = {this.cancel} type ='button' value = 'Cancel' />
-                            {
-                                this.state.images.imageBoxView ?
-                                <div className = 'searchResultBox'>
-                                    {this.makeImageResultBox([...this.state.images['images']])}
-                                </div>
-                                : null
-                            }
-                        </div>
-                        {  this.state.imageMenuActive ?
-                            <div className = 'ActionModalSearch'>
-                            <button onClick = {this.showImage} className = 'actionModalSearch__view'>
-                                <Icon path = '/img/view.png' />
-                            </button>
-                            <button onClick = {this.setSelectedImage} className = 'actionModalSearch__settings'>
-                                <Icon path = '/img/settings.png' />
-                            </button>
-                            </div>
-                            : null
-                        }
-                    </Fragment>
-                )
-
-                case 'SearchImage':
                     return (
-                        <Fragment>
-                            <div className = 'Modal Modal-search'>
-                                <h3>Search background image</h3>
-                                { this.state.images.error ?
-                                    <span className = 'error'>{this.state.images.error}</span> : null
-                                }
-                                <input ref = {this.refSearch} type = 'text' placeholder = "Photo name" />
-                                <input 
-                                    disabled = {this.state.images.buttonSearchDisabled} 
-                                    className = 'acceptButton' 
-                                    type = 'button' 
-                                    value = 'Search'
-                                    onClick = {this.searchBackground}
-                                />
-                                <input onClick = {this.cancel} type ='button' value = 'Cancel' />
-                                {
-                                    this.state.images.imageBoxView ?
-                                    <div className = 'searchResultBox'>
-                                        {this.makeImageResultBox([...this.state.images['images']])}
-                                    </div>
-                                    : null
-                                }
-                            </div>
-                            {  this.state.imageMenuActive ?
-                                <div className = 'ActionModalSearch'>
-                                <button onClick = {this.showImage} className = 'actionModalSearch__view'>
-                                    <Icon path = '/img/view.png' />
-                                </button>
-                                <button onClick = {this.setSelectedImage} className = 'actionModalSearch__settings'>
-                                    <Icon path = '/img/settings.png' />
-                                </button>
-                                </div>
-                                : null
-                            }
-                        </Fragment>
+                        <SearchImage
+                            images = {this.state.images['images']}
+                            view = {this.state.images.imageBoxView}
+                            dissabled = {this.state.images.buttonSearchDisabled}
+                            error = {this.state.images.error}
+                            cbCancel = {this.cancel}
+                            menuActive = {this.state.imageMenuActive}
+                            cbMakeImageResultBox = {this.makeImageResultBox}
+                            cbShowImage = {this.showImage}
+                            cbSetSelectedImage = {this.setSelectedImage}
+                            modalSearchMode = {this.props.modalSearchMode}
+                            cbSearchBackground = {this.searchBackground}
+                        />
                     )
+
             default: return <Fragment></Fragment>
         }
     }

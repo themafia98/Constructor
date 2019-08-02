@@ -17,13 +17,13 @@ const WrapperMedia = styled.div.attrs(props => ({
     position: absolute;
     background: url(/img/media.svg);
     border: 1px solid red;
-    padding: 40px;
+    padding: 10px;
     box-sizing: border-box;
 `;
 const Media = styled.iframe`
-    width: 90%;
-    height: 90%;
-    z-index: ${props => props.zIndex ? props.zIndex : '-1'};
+    width: 100%;
+    height: 100%;
+    z-index: ${props => props.zIndex ? '-1' : '-1'};
 `;
 
 class MediaComponent extends React.PureComponent {
@@ -43,13 +43,13 @@ class MediaComponent extends React.PureComponent {
         targetSection: this.props.targetSection,
         id : this.props.id,
         sizeParentBox: this.props.sizeParentBox,
-        content: this.props.path || this.props.content,
         shiftCoords: null,
         size: this.props.size ? this.props.size : 30,
         posMedia: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
         startDragNdrop: false,
         istrumentsActive: false,
         drawContent: false,
+        content: this.props.content ? this.props.content : null
     }
 
     openMediaInstruments = event => {
@@ -183,7 +183,7 @@ class MediaComponent extends React.PureComponent {
     refMediaComponent = node => this.refMedia = node;
 
     render(){
-        let link = "https://www.youtube.com/embed/B0b59jgudto";
+        // let link = "https://www.youtube.com/embed/B0b59jgudto";
 
         return (
             <WrapperMedia
@@ -201,11 +201,11 @@ class MediaComponent extends React.PureComponent {
             >
             {!this.state.startDragNdrop ? 
                 <Media
-                    src= {!this.state.startDragNdrop ? link : null }
+                    src= {!this.state.content ? this.state.content : null }
                     drawContent = {this.state.drawContent}
                     width = {this.state.width} 
                     height = {this.state.height}
-                    zIndex = {'0'}
+                    zIndex = {this.startDragNdrop}
                     allowfullscreen
                 >
                     {this.props.children}

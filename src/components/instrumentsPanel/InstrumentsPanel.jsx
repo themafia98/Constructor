@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import isFetch from 'isomorphic-fetch';
 import eventEmitter from '../../EventEmitter';
 import PropTypes from 'prop-types';
 import './instrumentsPanel.scss';
@@ -41,6 +42,23 @@ class InstrumentsPanel extends React.PureComponent {
     closePanel = event => {
         eventEmitter.emit('EventClosePanel', {close: false});
     };
+
+    searchYouTubeAPI = event => {
+
+        const API = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=`;
+        const RAITE = '&maxResults=20&order=date';
+        const KEY = `&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`;
+        isFetch(API + `UC-jPqsBeg5F_9zACfNHwLrw` + RAITE + KEY)
+        .then(res => {
+            if (res.ok)
+            return res.json();
+            else throw new Error (`Error ${res.status}`);
+        })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(error => console.error(error));
+    }
 
     setSize = event => {
         let {id} = this.state.componentStats;
@@ -316,7 +334,7 @@ class InstrumentsPanel extends React.PureComponent {
                             <MediaInstruments
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
-                                cbSearchImage = {this.searchImage}
+                                cbSearchMedia = {this.searchYouTubeAPI}
                                 cbDelete = {this.deleteComponent}
                             />
                             )
@@ -373,6 +391,5 @@ class InstrumentsPanel extends React.PureComponent {
         eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 };
-
 
 export default InstrumentsPanel;

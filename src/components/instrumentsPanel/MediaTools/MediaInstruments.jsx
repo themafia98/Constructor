@@ -18,11 +18,11 @@ const MediaInstruments = props => {
                 onChange = {props.cbSetSize}
                 type="number"
                 min = '10' max = '200'
-                value = {fontSize ? fontSize : 120}
+                defaultValue = {fontSize ? fontSize : 120}
             />
             <p className = 'titleInstument'>Content: </p>
             <input 
-                onClick = {props.cbSearchImage}
+                onClick = {props.cbSearchMedia}
                 className = 'ImageSearchButton'
                 type="button"
                 value = 'search media'
