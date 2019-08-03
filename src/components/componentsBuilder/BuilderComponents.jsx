@@ -27,7 +27,7 @@ const BuilderComponents = props => {
     if (props.type === 'background')
         return <BackgroundComponent
                     targetSection = {props.targetSection}
-                    color = {props.color}
+                    backgroundColor = {props.color}
                     width = {props.width}
                     height = {props.height}
                     size = {props.size}

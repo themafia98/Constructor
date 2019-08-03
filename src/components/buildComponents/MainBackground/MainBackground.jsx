@@ -66,7 +66,7 @@ class MainBackground extends React.PureComponent {
             );
         } else if (this.props.mode === 'production'){
             let props = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
-            let children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
+            let children = this.props.componentJSX.filter(item => item.targetSection === this.props.id);
 
             if (props)
             return (

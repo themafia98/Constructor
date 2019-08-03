@@ -4,7 +4,7 @@ import {createProjectAction, errorAction} from '../actions';
 function random(min,max){
     return `${Math.floor(min + Math.random() * (max-min))}`
 }
-
+console.log('create');
 
 const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getState, {firebase}) => {
     let lastProject = [...list];
@@ -14,7 +14,7 @@ const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getS
     else sectionsProject.push("Header");
     const header = {
         backgroundImage: null,
-        color: null,
+        backgroundColor: null,
         id: `MainBackgroundHeader${random(0,10000)}`,
         targetSection: "Header",
         type: "background"

@@ -268,9 +268,10 @@ class InstrumentsPanel extends React.PureComponent {
             let reader = new FileReader();
             if (image.type[0] !== 'i') throw new Error('Invalid file');
             reader.readAsDataURL(image);
-            reader.onload = () => {
+            reader.onload = (e) => {
                 eventEmitter.emit(`EventSetCurrentImage${id}`,{ urlFull: reader.result });
                 this.updateBimageStats({images: { urlFull: reader.result }, mode: 'image'});
+                e.stopPropagation();
             }
             reader.onerror = () => {
                 console.error(reader.error);
@@ -390,6 +391,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     componentWillUnmount = event => {
         if (this.timer) clearTimeout(this.timer);
+        eventEmitter.on('EventClosePaanel', this.closePanel);
         eventEmitter.off('EventRedirectSaveChanges', this.redirectSaveChanges);
         eventEmitter.off(`EventSetIframe`, this.setIframeContent);
         eventEmitter.off(`EventupdateSize${this.state.componentStats.id}`, this.updateSize);

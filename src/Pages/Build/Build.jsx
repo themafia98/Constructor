@@ -101,7 +101,7 @@ class Build extends React.PureComponent {
 
     openInstrument = itemEvent => {
             const idEqual = this.state.componentStats.id === itemEvent.componentStats.id;
-            if (!idEqual)
+            if (!idEqual || !this.state.instrumentPanel.instrumentActive)
             this.setState({
                 ...this.state,
                 editComponentName: itemEvent.targetSection,
@@ -229,7 +229,7 @@ class Build extends React.PureComponent {
         this.mainComponent = {data: node.getBoundingClientRect(), node: node} : node;
 
     addNewSection = eventItem => {
-
+        console.log(eventItem);
         const {userData} = this.props;
         const {currentProjectsData} = userData;
 
@@ -237,7 +237,7 @@ class Build extends React.PureComponent {
                 uid: userData.idUser,
                 projects: [...userData.projects],
                 components: [...currentProjectsData.components,
-                            eventItem.componentsPatternBackground],
+                            eventItem.componentsPattern],
                 sectionsProject: [
                     ...currentProjectsData.sectionsProject,
                     eventItem.componentsPattern.id
@@ -262,6 +262,7 @@ class Build extends React.PureComponent {
             const moveDown = this.state.position < count && event.deltaY > 0;
             const moveUp = event.deltaY < 0 && this.state.position > 0;
 
+
             let sizeParentBox = {
                 width: this.mainComponent.data.width,
                 height: this.mainComponent.data.height,
@@ -273,20 +274,32 @@ class Build extends React.PureComponent {
                 this.setState({
                     ...this.state,
                     position: this.state.position + 1,
-                    sizeParentBox: sizeParentBox
+                    sizeParentBox: sizeParentBox,
+                    instrumentPanel: {
+                        ...this.state.instrumentPanel,
+                        instrumentActive: false,
+                    },
                 }, () => scroller.scrollTo(`element${this.state.position}`,this.state.scrollConfig));
             }  else if (moveUp){
                 if (this.state.position === 1){
                     this.setState({
                         ...this.state,
                         position: this.state.position - 1,
-                        sizeParentBox: sizeParentBox
+                        sizeParentBox: sizeParentBox,
+                         instrumentPanel: {
+                            ...this.state.instrumentPanel,
+                            instrumentActive: false,
+                        },
                     }, () => scroll.scrollToTop());
                 } else {
                     this.setState({
                         ...this.state,
                         position: this.state.position - 1,
-                        sizeParentBox: sizeParentBox
+                        sizeParentBox: sizeParentBox,
+                        instrumentPanel: {
+                            ...this.state.instrumentPanel,
+                            instrumentActive: false,
+                        },
                     }, () => scroller.scrollTo(`element${this.state.position}`,this.state.scrollConfig));
                 }
             }

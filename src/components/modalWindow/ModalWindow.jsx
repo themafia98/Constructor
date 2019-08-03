@@ -9,7 +9,7 @@ import ImageItem from '../imageViewer/imageItem';
 import CreateProject from './createProject/createProject';
 import SearchModal from './Search/searchModal';
 import './modal.scss';
-
+console.log('asd')
 require('es6-promise').polyfill();
 
 class ModalWindow extends React.PureComponent {
@@ -194,6 +194,22 @@ class ModalWindow extends React.PureComponent {
     makeImageResultBox = (items) => {
         if (!items) return null;
 
+        // let item = items[0];
+        // let canvas = document.createElement('canvas');
+        // let ctx = canvas.getContext('2d'); 
+        // let img = new Image();
+        // let _img = new Image();
+        // img.onload =  (e) => {
+        //     img.crossOrigin = "anonymous";
+        // ctx.drawImage(img,0,0);
+        // var dataURL = canvas.toDataURL("image/png");
+        // _img.src = dataURL;
+        // _img.onload = (e) => {
+        //     document.body.appendChild(_img);
+
+        // }
+        // }
+
         return items.map((item,i) =>{
            return <ImageItem 
                 key = {`item${i}`} 
@@ -204,6 +220,7 @@ class ModalWindow extends React.PureComponent {
                 urls = {{...item.urls}} 
             />
         });
+
     }
 
     addNewProject = event => {

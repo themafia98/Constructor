@@ -1,107 +1,131 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
 
 const Background = styled.div`
     position: relative;
-    width: ${props => props.width};
-    height: ${props => props.height};
+    width: ${props => props.width || '100%'};
+    height: ${props => props.height || '100%'};
     background-size: cover;
     background-color: ${props => props.backgroundColor};
-    background-image: url(${props => props.backgroundImage});
+    ${props => props.backgroundImage ? `background-image: url(${props.backgroundImage});` : null}
 `;
 
-const BackgroundComponent = props => {
+class BackgroundComponent extends React.PureComponent {
 
-    const [id] = useState(props.id);
-    const [targetSection] = useState(props.targetSection);
-    let boxComponent = React.createRef();
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        targetSection: PropTypes.string.isRequired,
+        background: PropTypes.string,
+        backgroundImage: PropTypes.string,
+        width: PropTypes.string,
+        height: PropTypes.string,
+        sectionNumber: PropTypes.number,
+        mode: PropTypes.string.isRequired
+    };
 
-    let [backgroundColor, setBgColor] = useState(props.background || props.color);
-    let [backgroundImage, setImage] = useState(props.backgroundImage ? props.backgroundImage : null);
+    state = {
+        id: this.props.id,
+        targetSection: this.props.targetSection,
+        backgroundColor: this.props.background || this.props.color,
+        backgroundImage: this.props.backgroundImage,
+        width: this.props.width,
+        height: this.props.height
+    };
 
-    let [width] = useState(props.width ? props.width : '100%');
-    let [height] = useState(props.height ? props.height : '100%');
+    boxComponent = null; // ref
+    boxComponentRef = node => this.boxComponent = node;
 
-
-    const saveDataParent = () => {
-        boxComponent.current.focus();
-        let boxInform =  boxComponent.current.getBoundingClientRect();
-        eventEmitter.emit(`EventSaveWidth${targetSection}`,{
-            sectionNumber: props.sectionNumber,
+    saveDataParent = () => {
+        let boxInform =  this.boxComponent.getBoundingClientRect();
+        eventEmitter.emit(`EventSaveWidth${this.state.targetSection}`,{
+            sectionNumber: this.props.sectionNumber,
             size: {width: boxInform.width, height: boxInform.height}
         });
-    }
+    };
 
-    const openBgInstruments = event => {
+    openBgInstruments = event => {
 
         const componentsPatternBackground = {
-            id: id,
-            targetSection: targetSection,
+            id: this.state.id,
+            targetSection: this.state.targetSection,
             type: 'background',
-            color: backgroundColor,
-            backgroundImage: backgroundImage,
+            backgroundColor: this.state.backgroundColor,
+            backgroundImage: this.state.backgroundImage,
         }
         eventEmitter.emit('EventInstrumentPanel',{
             componentStats: componentsPatternBackground,
-            targetSection: targetSection,
+            targetSection: this.state.targetSection,
             type: 'background',
-            id: id,
+            id: this.state.id,
         });
         event.stopPropagation();
-    }
-
-    const changeColor = eventItem => {
-        setBgColor(eventItem.colorRGB);
-    }
-
-    const setBackgroundImage = event => {
-        const {urlFull} = event;
-        setImage(urlFull);
     };
 
+    changeColor = eventItem => {
+        this.setState({
+            ...this.state,
+            backgroundColor: eventItem.colorRGB
+        });
+    };
 
-    const didUpdate = () => {
-        saveDataParent();
-        eventEmitter.on(`EventChangeColorBackground${id}`, changeColor);
-        eventEmitter.on(`EventSetBackgroundImage${id}`, setBackgroundImage);
-        return () => {
-            eventEmitter.off(`EventChangeColorBackground${id}`, changeColor);
-            eventEmitter.off(`EventSetBackgroundImage${id}`, setBackgroundImage);
-        }
-    }
+    setBackgroundImage = event => {
+        const {urlFull} = event;
+        this.setState({
+            ...this.state,
+            backgroundImage: urlFull,
+        });
+    };
 
-    useEffect(didUpdate);
-
-    if (props.mode === 'dev'){
+    render(){
+   
+            if (this.props.mode === 'dev'){
         return (
             <Background
-                ref  = {boxComponent}
-                onDoubleClick={openBgInstruments}
-                data-name = {targetSection}
-                backgroundColor = {backgroundColor ? backgroundColor : props.background}
-                backgroundImage = {backgroundImage ? backgroundImage : props.backgroundImage}
-                width = {width}
-                height = {height}
+                ref  = {this.boxComponentRef}
+                onDoubleClick={this.openBgInstruments}
+                data-name = {this.state.targetSection}
+                backgroundColor = {this.state.backgroundColor}
+                backgroundImage = {this.state.backgroundImage}
+                width = {this.state.width}
+                height = {this.state.height}
             >
-                {props.children}
+                {this.props.children}
             </Background>
         )
-    } else if (props.mode === 'production'){
+    } else if (this.props.mode === 'production'){
+        console.log('prod');
         return (
             <Background
-                ref  = {boxComponent}
-                data-name = {targetSection}
-                backgroundColor = {props.background}
-                backgroundImage = {props.backgroundImage}
-                width = {width}
-                height = {height}
+            ref  = {this.boxComponentRef}
+                data-name = {this.state.targetSection}
+                backgroundColor = {this.state.backgroundColor}
+                backgroundImage = {this.state.backgroundImage}
+                width = {this.state.width}
+                height = {this.state.height}
             >
-                {props.children}
+            {this.props.children}
             </Background>
         )
     }
-}
+
+    }
+
+
+    componentDidMount = () => {
+        this.saveDataParent();
+        eventEmitter.on(`EventChangeColorBackground${this.state.id}`, this.changeColor);
+        eventEmitter.on(`EventSetBackgroundImage${this.state.id}`, this.setBackgroundImage);
+    };
+
+    componentWillUnmount = () => {
+        eventEmitter.off(`EventChangeColorBackground${this.state.id}`, this.changeColor);
+        eventEmitter.off(`EventSetBackgroundImage${this.state.id}`, this.setBackgroundImage);
+    };
+};
+
+
 
 export default BackgroundComponent;

@@ -1,13 +1,12 @@
-import React, {Fragment,useState} from 'react';
+import React, {Fragment} from 'react';
 import {SketchPicker} from 'react-color';
 
 const BackgroundInstruments = props => {
 
-    const {componentsStats} = useState(props.componentStats);
+    const {componentStats} = props;
     let color = null;
-    if (typeof componentsStats === 'object' &&
-        componentsStats.hasOwnProperty('color'))
-        color = componentsStats.color;
+    if (componentStats)
+        color = componentStats.backgroundColor;
 
     return (
         <Fragment>

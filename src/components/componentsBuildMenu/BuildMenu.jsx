@@ -61,7 +61,7 @@ class BuildMenu extends React.PureComponent {
         const componentsPatternBackground = {
             id: id,
             type: 'background',
-            color: null,
+            backgroundColor: null,
             backgroundImage: null,
             targetSection: this.state.editComponentName,
         };
@@ -172,7 +172,7 @@ class BuildMenu extends React.PureComponent {
         let id = Math.random().toFixed(3);
 
         const componentsPatternBackground = {
-            color: null,
+            backgroundColor: null,
             backgroundImage: null,
             targetSection: `Section${id}`,
             id: `Section${id}`,
@@ -195,6 +195,7 @@ class BuildMenu extends React.PureComponent {
     }
 
     render(){
+        console.log('buildMenu');
         if (this.state.mode === 'build'){
             return (
                 <div className = 'ComponentsMenu'>

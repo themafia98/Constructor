@@ -266,6 +266,7 @@ class Image extends React.PureComponent {
                     <ImageStyle
                         borderRadius = {this.state.borderRadius}
                         opacity = {this.state.opacity}
+                        crossOrigin = "anonymous"
                         src = {this.state.path}
                         alt = 'img'
                     />
