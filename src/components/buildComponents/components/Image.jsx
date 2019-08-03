@@ -40,6 +40,7 @@ class Image extends React.PureComponent {
         istrumentsActive: false,
         getSizeBool: false,
         opacity: this.props.opacity || 1,
+        sectionNumber: 0,
         borderRadius: this.props.borderRadius || 0,
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
@@ -171,31 +172,13 @@ class Image extends React.PureComponent {
         });
     }
 
-    weelResizeText = event => {
-
-        if (event.shiftKey && event.deltaY === -100) {
-            let counter = this.state.size + 1;
-            counter = counter > 100 ? 100 : counter;
-            this.setState({...this.state,size: counter});
-            eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
-        }
-
-        if (event.shiftKey && event.deltaY === 100) {
-            let counter = this.state.size - 1;
-             counter = counter <= 0 ? 0 : counter;
-             this.setState({...this.state,size: counter});
-             eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
-            }
-        event.stopPropagation();
-    };
-
     saveSize = event => {
         const {size} = event;
         if (!this.state.getSizeBool){
         this.setState({
             ...this.state,
             getSizeBool: true,
-            sectionNumber: event.sectionNumber + 1,
+            sectionNumber: event.sectionNumber,
             sizeParentBox: {width: size.width, height: size.height}});
         } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
@@ -239,7 +222,6 @@ class Image extends React.PureComponent {
                 onMouseLeave = {this.stopDragNdrop}
                 onMouseUp = {this.stopDragNdrop}
                 onDragStart = {this.stop}
-                onWheel = {this.weelResizeText}
                 coordX = {this.state.posImage ? this.state.posImage.x : null}
                 coordY = {this.state.posImage ? this.state.posImage.y : null}
                 indexZ = {this.state.startDragNdrop}

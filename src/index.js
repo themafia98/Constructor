@@ -13,11 +13,9 @@ import 'normalize.css';
 
 import firebaseContext from './Firebase/firebaseContext';
 
-
-
 firebase.saveSession('SESSION');
 const config = require('./config.json');
-
+console.time();
 ReactDOM.render(
         <HashRouter>
             <ErrorBoundary>
@@ -30,6 +28,7 @@ ReactDOM.render(
         </HashRouter>,
         document.getElementById('root')
 );
+
 
 serviceWorker.register();
 

@@ -196,24 +196,6 @@ class TextComponent extends React.PureComponent {
         event.stopPropagation();
     };
 
-    weelResizeText = event => {
-
-        if (event.shiftKey && event.deltaY === -100) {
-            let counter = this.state.sizeText + 1;
-            counter = counter > 200 ? 200 : counter;
-            this.setState({...this.state,sizeText: counter});
-            eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
-        }
-
-        if (event.shiftKey && event.deltaY === 100) {
-            let counter = this.state.sizeText - 1;
-             counter = counter <= 10 ? 10 : counter;
-             this.setState({...this.state,sizeText: counter});
-             eventEmitter.emit(`EventupdateSize${this.state.id}`, counter);
-            }
-        event.stopPropagation();
-    };
-
     refText = null;
     refTextComponent = node => this.refText = node;
 
@@ -231,7 +213,6 @@ class TextComponent extends React.PureComponent {
                     onMouseMove= {this.moveText}
                     onMouseLeave = {this.stopDragNdrop}
                     onMouseUp = {this.stopDragNdrop}
-                    onWheel = {this.weelResizeText}
                     coordX = {this.state.position ? this.state.position.x : null}
                     coordY = {this.state.position ? this.state.position.y : null}
                     indexZ = {this.state.startDragNdrop}

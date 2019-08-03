@@ -9,7 +9,6 @@ import ImageItem from '../imageViewer/imageItem';
 import CreateProject from './createProject/createProject';
 import SearchModal from './Search/searchModal';
 import './modal.scss';
-console.log('asd')
 require('es6-promise').polyfill();
 
 class ModalWindow extends React.PureComponent {

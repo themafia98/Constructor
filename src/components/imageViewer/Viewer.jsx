@@ -16,7 +16,7 @@ function Viewer(props){
     return (
         
         <div onClick = {closeViewer} className = 'Viewer'>
-            {mode === 'image' ? <img src = {path} alt = 'fullImage' /> 
+            {(mode === 'image' || mode === 'background') ? <img src = {path} alt = 'fullImage' /> 
             : 
             <iframe 
             src= {`https://www.youtube.com/embed/${props.iframe}`}

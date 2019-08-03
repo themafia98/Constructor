@@ -38,7 +38,9 @@ class Header extends React.Component {
     };
 
     confirm = event => {
+        if (typeof event !== 'object')
         this.setState({isChange: event});
+        else this.setState({isChange: event.false, redirectConfirm: event.confirm});
     }
 
     confirmSaveDetectChanges = event => {
@@ -75,7 +77,8 @@ class Header extends React.Component {
     redirectCabinet = event => {
         if (event !== 'cancelMode'){
             const isPath = this.props.location.pathname !== this.state.redirectCabinet.path;
-            if (isPath && !this.state.isChange)
+            console.log(isPath);
+            if (isPath && this.state.isChange === false)
             this.setState({
                 redirectConfirm: false,
                 redirectCabinet: {
@@ -83,7 +86,7 @@ class Header extends React.Component {
                     redirectC: true
                 }
             });
-            else this.setState({redirectConfirm: true});
+            else if (!this.state.redirectConfirm) this.setState({redirectConfirm: true});
             event.stopPropagation();
 
         } else this.setState({

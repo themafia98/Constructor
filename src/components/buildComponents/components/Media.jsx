@@ -48,6 +48,7 @@ class MediaComponent extends React.PureComponent {
         startDragNdrop: false,
         istrumentsActive: false,
         drawContent: false,
+        sectionNumber: this.props.sectionNumber,
         content: this.props.content ? this.props.content : null
     }
 
@@ -75,7 +76,7 @@ class MediaComponent extends React.PureComponent {
     saveCoords = event => {
         if (event.nativeEvent.which !== 1) return false;
         const element = this.refMedia.getBoundingClientRect();
-
+        console.log(element);
         const cords = {
             left: element.left,
             top: element.top,
@@ -149,23 +150,6 @@ class MediaComponent extends React.PureComponent {
         this.setState({...this.state, content: iframe});
     };
 
-    weelResizeText = event => {
-
-        if (event.shiftKey && event.deltaY === -100) {
-            let counter = this.state.size + 1;
-            counter = counter > 100 ? 100 : counter;
-            this.setState({...this.state,size: counter});
-            eventEmitter.emit('EventupdateSize', counter);
-        }
-
-        if (event.shiftKey && event.deltaY === 100) {
-            let counter = this.state.size - 1;
-             counter = counter <= 0 ? 0 : counter;
-             this.setState({...this.state,size: counter});
-             eventEmitter.emit('EventupdateSize', counter);
-            }
-        event.stopPropagation();
-    };
 
     saveSize = event => {
         const {size} = event;
@@ -194,7 +178,7 @@ class MediaComponent extends React.PureComponent {
                     onMouseLeave = {this.stopDragNdrop}
                     onMouseUp = {this.stopDragNdrop}
                     onDragStart = {this.stop}
-                    onWheel = {this.weelResizeText}
+                    mode = {this.props.mode}
                     indexZ = {this.state.startDragNdrop}
                     coordX = {this.state.posMedia ? this.state.posMedia.x : null}
                     coordY = {this.state.posMedia ? this.state.posMedia.y : null}

@@ -203,25 +203,34 @@ class Build extends React.PureComponent {
             });
     };
 
+    timer = null;
+
     saveChangesComponent = itemEvent => {
-        const {currentProjectsData} = this.props.userData;
-        const {userData} = this.props;
-        let findCurrentItem = false;
-        const _components = currentProjectsData.components.map(item => {
-            if (item.id === itemEvent.id) { findCurrentItem = true; return {...itemEvent}; }
-            return item;
-        });
+        if (this.timer) clearTimeout(this.timer);
+        const {ms} = itemEvent;
+        this.timer = setTimeout(() => {
+            const {currentProjectsData} = this.props.userData;
+            const {userData} = this.props;
+            let findCurrentItem = false;
+            const _components = currentProjectsData.components.map(item => {
+                if (item.id === itemEvent.id) { findCurrentItem = true; return {...itemEvent}; }
+                return item;
+            });
 
-        if (!findCurrentItem) _components.push(itemEvent);
+            if (!findCurrentItem) _components.push(itemEvent);
 
-        this.props.dispatch(updateMiddleware({
-            uid: userData.idUser,
-            projects: [...userData.projects],
-            components: _components,
-            sectionsProject: [...currentProjectsData.sectionsProject],
-            idProject: this.state.idProject
-        }))
-        .then(() => this.setState({...this.state,isChange: false}));
+            this.props.dispatch(updateMiddleware({
+                uid: userData.idUser,
+                projects: [...userData.projects],
+                components: _components,
+                sectionsProject: [...currentProjectsData.sectionsProject],
+                idProject: this.state.idProject
+            }))
+            .then(() => {
+                // this.setState({...this.state,isChange: false});
+                eventEmitter.emit('EventRedirectConfirm', {false: false, confirm: false});
+            });
+        },ms);
     };
 
     mainComponent = null;
@@ -229,7 +238,7 @@ class Build extends React.PureComponent {
         this.mainComponent = {data: node.getBoundingClientRect(), node: node} : node;
 
     addNewSection = eventItem => {
-        console.log(eventItem);
+ 
         const {userData} = this.props;
         const {currentProjectsData} = userData;
 

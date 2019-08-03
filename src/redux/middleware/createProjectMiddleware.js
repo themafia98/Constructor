@@ -4,7 +4,7 @@ import {createProjectAction, errorAction} from '../actions';
 function random(min,max){
     return `${Math.floor(min + Math.random() * (max-min))}`
 }
-console.log('create');
+
 
 const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getState, {firebase}) => {
     let lastProject = [...list];

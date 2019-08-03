@@ -26,18 +26,6 @@ class InstrumentsPanel extends React.PureComponent {
         images: null,
     };
 
-    timer = null;
-
-    updateSize = eventSize => {
-        this.setState({
-            ...this.state,
-            instrumentPanel: {...this.state.instrumentPanel},
-            componentStats: {
-                ...this.state.componentStats,
-                fontSize: eventSize
-            }
-        });
-    };
 
     closePanel = event => {
         eventEmitter.emit('EventClosePanel', {close: false});
@@ -227,20 +215,20 @@ class InstrumentsPanel extends React.PureComponent {
             ...this.state.componentStats,
             id: this.state.componentStats.id,
             type: this.state.componentStats.type,
+            ms: 0
         });
         if (event) event.stopPropagation();
     }
 
     saveChanges = event => {
-        if (this.timer) clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
+
             eventEmitter.emit("EventSaveChangesComponent", {
                 ...this.state.componentStats,
                 id: this.state.componentStats.id,
                 type: this.state.componentStats.type,
+                ms: 1500
             });
-            eventEmitter.emit('EventRedirectConfirm', false);
-        }, 2000);
+
         eventEmitter.emit('EventRedirectConfirm', true);
         if (event) event.stopPropagation();
     }
@@ -384,7 +372,6 @@ class InstrumentsPanel extends React.PureComponent {
     componentDidMount = event => {
         eventEmitter.on('EventRedirectSaveChanges', this.redirectSaveChanges);
         eventEmitter.on(`EventSetIframe`, this.setIframeContent);
-        eventEmitter.on(`EventupdateSize${this.state.componentStats.id}`, this.updateSize);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
@@ -394,7 +381,6 @@ class InstrumentsPanel extends React.PureComponent {
         eventEmitter.on('EventClosePaanel', this.closePanel);
         eventEmitter.off('EventRedirectSaveChanges', this.redirectSaveChanges);
         eventEmitter.off(`EventSetIframe`, this.setIframeContent);
-        eventEmitter.off(`EventupdateSize${this.state.componentStats.id}`, this.updateSize);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
         eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };

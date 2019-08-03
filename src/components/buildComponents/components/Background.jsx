@@ -96,7 +96,7 @@ class BackgroundComponent extends React.PureComponent {
             </Background>
         )
     } else if (this.props.mode === 'production'){
-        console.log('prod');
+
         return (
             <Background
             ref  = {this.boxComponentRef}
@@ -111,6 +111,11 @@ class BackgroundComponent extends React.PureComponent {
         )
     }
 
+    }
+
+    componentDidUpdate = () => {
+        console.log('update');
+        this.saveDataParent();
     }
 
 
