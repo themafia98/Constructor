@@ -15,6 +15,8 @@ class ModalWindow extends React.PureComponent {
 
     static propTypes = {
         workMode: PropTypes.string.isRequired, /** @Mode for modal */
+        cabinetStream: PropTypes.object, /** @Events stream cabinet */
+        eventStreamBuild: PropTypes.object, /** @Events stream build */
         idComponent: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.number
@@ -196,22 +198,6 @@ class ModalWindow extends React.PureComponent {
     makeImageResultBox = (items) => {
         if (!items) return null;
 
-        // let item = items[0];
-        // let canvas = document.createElement('canvas');
-        // let ctx = canvas.getContext('2d'); 
-        // let img = new Image();
-        // let _img = new Image();
-        // img.onload =  (e) => {
-        //     img.crossOrigin = "anonymous";
-        // ctx.drawImage(img,0,0);
-        // var dataURL = canvas.toDataURL("image/png");
-        // _img.src = dataURL;
-        // _img.onload = (e) => {
-        //     document.body.appendChild(_img);
-
-        // }
-        // }
-
         return items.map((item,i) =>{
            return <ImageItem 
                 key = {`item${i}`} 
@@ -226,15 +212,16 @@ class ModalWindow extends React.PureComponent {
     }
 
     addNewProject = event => {
+        console.log(this.props);
         let mode = this.state[this.state.workMode];
         if (mode.validateType &&  mode.validateName) {
-            eventEmitter.emit('EventAddProject',
+            this.props.cabinetStream.emit('EventAddProject',
             {
                 title: this.state[this.state.workMode].name,
                 type: this.state[this.state.workMode].type
             });
 
-            eventEmitter.emit('EventChangeWorkMode',{action: 'default'});
+            this.props.cabinetStream.emit('EventChangeWorkMode',{action: 'default'});
         }
     }
 
@@ -268,7 +255,7 @@ class ModalWindow extends React.PureComponent {
 
         if (this.state.workMode === 'Search')
         this.props.eventStreamBuild.emit("EventModalSearchOn", {action: 'offline', mode: null});
-        else  eventEmitter.emit('EventChangeWorkMode',{action: 'default'});
+        else  this.props.cabinetStream.emit('EventChangeWorkMode',{action: 'default'});
     }
 
     refSelect = (node) => this.inputSelect = node;

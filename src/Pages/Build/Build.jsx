@@ -272,7 +272,6 @@ class Build extends React.PureComponent {
         const section = currentProjectsData.sectionsProject;
 
         if (userData.active && currentProjectsData.loadProject){
-            console.log(userData);
             return (
                 <Fragment>
                     <Header key = 'Header' title = "Constructor" idUser = {userData.idUser}  />
@@ -298,9 +297,10 @@ class Build extends React.PureComponent {
                                 mode = "section"
                                 className = 'menu'
                             />
-                        {instrumentActive && <AdditionalTools
-                            eventStreamBuild = {this.eventEmitterBuild}
-                            key = 'tools' {...this.state} 
+                        {instrumentActive && 
+                            <AdditionalTools
+                                eventStreamBuild = {this.eventEmitterBuild}
+                                key = 'tools' {...this.state} 
                             />}
                         {section.length && <Section mode = 'dev' key = 'section' {...this.state} userData = {userData} />}
                     </div>

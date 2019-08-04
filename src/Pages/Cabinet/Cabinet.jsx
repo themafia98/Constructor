@@ -1,6 +1,6 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../EventEmitter.js';
+import Events from 'events';
 import {Redirect} from 'react-router-dom';
 import withFirebase from '../../components/firebaseHOC';
 
@@ -30,6 +30,8 @@ class Cabinet extends React.PureComponent {
     projects: PropTypes.arrayOf(PropTypes.object).isRequired /** @Projects array with user projects from redux */
   }
 
+  cabinetStream = new Events();
+
   state = {
     workMode: 'default',
   }
@@ -54,9 +56,14 @@ class Cabinet extends React.PureComponent {
     if (this.props.active){
       return (
         <Fragment>
-          <Header title = {title} idUser = {this.props.idUser} />
+          <Header cabinetStream = {this.cabinetStream} title = {title} idUser = {this.props.idUser} />
           <div className = 'Cabinet'>
-            {(this.state.workMode === 'newProject') ? <Modal workMode = {this.state.workMode} /> : null}
+            {(this.state.workMode === 'newProject') ?
+              <Modal
+                cabinetStream = {this.cabinetStream}
+                workMode = {this.state.workMode} 
+              />
+            : null}
               <ProjectsSection />
             </div>
         </Fragment>
@@ -67,13 +74,13 @@ class Cabinet extends React.PureComponent {
 
 
   componentDidMount = () => {
-    eventEmitter.on('EventDeleteItem', this.deletItem);
-    eventEmitter.on('EventChangeWorkMode', this.changeWorkMode);
+    this.cabinetStream.on('EventDeleteItem', this.deletItem);
+    this.cabinetStream.on('EventChangeWorkMode', this.changeWorkMode);
   };
 
   componentWillUnmount = () => {
-    eventEmitter.off('EventDeleteItem', this.deletItem);
-    eventEmitter.off('EventChangeWorkMode', this.changeWorkMode);
+    this.cabinetStream.off('EventDeleteItem', this.deletItem);
+    this.cabinetStream.off('EventChangeWorkMode', this.changeWorkMode);
   }
 }
 

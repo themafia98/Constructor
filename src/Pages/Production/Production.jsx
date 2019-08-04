@@ -50,7 +50,7 @@ class Production extends React.PureComponent {
                     left: this.prodRef.data.left,
                 },
                 ...item,
-                mode: 'dev',
+                mode: 'production',
             }
 
             let Component = null;

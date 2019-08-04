@@ -17,6 +17,7 @@ class Header extends React.Component {
 
     static propTypes = {
         title: PropTypes.string.isRequired, /** @Config title app */
+        cabinetStream: PropTypes.object, /** @Events stream cabinet */
         dispatch: PropTypes.func.isRequired, /** @dispatch redux */
         history: PropTypes.object.isRequired, /** @Router HTML5 history */
         location: PropTypes.object.isRequired, /** @Router */
@@ -100,7 +101,7 @@ class Header extends React.Component {
     }
 
     add = event => {
-        eventEmitter.emit('EventChangeWorkMode',{action: 'newProject'});
+        this.props.cabinetStream.emit('EventChangeWorkMode',{action: 'newProject'});
         event.stopPropagation()
     };
 
