@@ -20,6 +20,7 @@ class MainBackground extends React.PureComponent {
         targetSection: this.props.id,
         editRedy: false,
         component: null,
+        children: null,
     };
 
     changeMode = () => {
@@ -40,11 +41,8 @@ class MainBackground extends React.PureComponent {
     refSectionFunc = node => node ? this.refSection = {data: node.getBoundingClientRect(), node: node} : node;
 
     render() {
-        if (this.props.mode === 'dev'){
-            let props = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
-            let children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
-            
-            if (props)
+
+        if (this.props.mode === 'dev' && this.state.component){
             return (
                 <Fragment>
                     <section
@@ -52,24 +50,22 @@ class MainBackground extends React.PureComponent {
                         className = {`element${this.props.sectionNumber}`} 
                         ref={this.refSectionFunc}
                         data-class = 'editable' 
-                        onClick = {this.changeMode}>
-                            <BackgroundComponent 
-                                mode = {this.props.mode} 
-                                {...props} sectionNumber = {this.props.sectionNumber} 
-                            >
-                                {children.map(item => item.component) || null}
-                            </BackgroundComponent>
-                            {!this.state.editStart && 
-                                <div className = 'warningEdit'><p>Click for start edit</p></div>
-                            }
+                        onClick = {this.changeMode}
+                    >
+                        <BackgroundComponent 
+                            mode = {this.props.mode}
+                            sectionNumber = {this.props.sectionNumber}
+                            {...this.state.component}
+                        >
+                            {this.state.children || null}
+                        </BackgroundComponent>
+                        {!this.state.editStart &&
+                            <div className = 'warningEdit'><p>Click for start edit</p></div>
+                        }
                     </section>
                 </Fragment>
             );
-        } else if (this.props.mode === 'production'){
-            let props = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
-            let children = this.props.componentJSX.filter(item => item.targetSection === this.props.id);
-
-            if (props)
+        } else if (this.props.mode === 'production' && this.state.component){
             return (
                 <Fragment>
                     <section 
@@ -80,15 +76,36 @@ class MainBackground extends React.PureComponent {
                         <BackgroundComponent
                             key = {this.props.sectionNumber*2}
                             mode = {this.props.mode}
-                            {...props} sectionNumber = {this.props.sectionNumber} 
+                            sectionNumber = {this.props.sectionNumber}
+                            {...this.state.component}
                         >
-                            {children.map(item => item.component) || null}
+                        {this.state.children || null}
                         </BackgroundComponent>
                     </section>
                 </Fragment>
             );
         }
         else return <Loader type = {`${this.props.mode} components`} />;
+    }
+
+    componentDidUpdate = (prevProps) => {
+        const needUpdate = this.props.countComponents !== prevProps.countComponents;
+        if (!this.state.component){
+            let component = this.props.currentProjectsData.components.find(item =>
+                                            item.targetSection === this.props.id);
+            const children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
+                            .map(item => item.component);
+           this.setState({
+               ...this.state,
+               component: component,
+               children: children,
+           });
+        }
+
+        if (needUpdate){
+            const children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
+            children && this.setState({...this.state,children: children.map(item => item.component) });
+        }
     }
 }
 export default MainBackground;

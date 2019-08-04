@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import eventEmitter from '../../EventEmitter';
 
@@ -9,14 +10,16 @@ const ImageItem = props => {
     const [urlFull] = useState(props.urls.full);
     const [isFull] = useState(props.isFull);
     const [urlContent] = useState(props.urlContent);
+    const [selected,setSelected] = useState(false);
 
     const showImageMenu = event => {
+        setSelected(true);
        eventEmitter.emit("EventShowMenuImage", {id: id, url: urlRegular, urlFull: urlFull, iframe: urlContent});
     }
-
+    console.log(props.selected);
 
     return (
-        <div className = {props.selected ? 'ItemBox selected' : 'ItemBox'}>
+        <div className = {selected ? 'ItemBox selected' : 'ItemBox'}>
             <img
                 className = 'ImageItem'
                 onClick = {showImageMenu}

@@ -63,6 +63,7 @@ class Build extends React.PureComponent {
         timer = null; // save timer
 
     modalSearchOn = itemEvent => {
+        console.log(itemEvent);
         const modeHave = itemEvent.hasOwnProperty('mode');
         this.setState({
             ...this.state, 
@@ -301,11 +302,25 @@ class Build extends React.PureComponent {
                                 className = 'menu'
                             />
                         {instrumentActive && 
-                            <AdditionalTools
+                            <AdditionalTools key = 'tools'
                                 eventStreamBuild = {this.eventEmitterBuild}
-                                key = 'tools' {...this.state} 
+                                modalViewer = {this.state.modalViewer}
+                                componentStats = {this.state.componentStats}
+                                editComponentName = {this.state.editComponentName}
+                                instrumentPanel = {this.state.instrumentPanel}
+                                modalSearchMode = {this.state.modalSearchMode}
+                                modalSearch = {this.state.modalSearch}
+                                
                             />}
-                        {section.length && <Section mode = 'dev' key = 'section' {...this.state} userData = {userData} />}
+                        {section.length &&
+                             <Section mode = 'dev' key = 'section'
+                                    componentJSX = {this.state.componentJSX}
+                                    editComponentName = {this.state.editComponentName}
+                                    menuActive = {this.state.menuActive}
+                                    sizeParentBox = {this.state.sizeParentBox}
+                                    userData = {userData}
+                                />
+                        }
                     </div>
                 </Fragment>
             )

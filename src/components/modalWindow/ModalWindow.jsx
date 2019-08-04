@@ -26,6 +26,7 @@ class ModalWindow extends React.PureComponent {
     state = {
         workMode: this.props.workMode,
         loading: false,
+        items: [],
         images: {
             loading: false,
             buttonSearchDisabled: false,
@@ -199,16 +200,15 @@ class ModalWindow extends React.PureComponent {
 
     makeImageResultBox = (items) => {
         if (!items) return null;
-
         return items.map((item,i) =>{
-           return <ImageItem 
-                key = {`item${i}`} 
-                id = {i}
-                urlContent = {item.videoId ? item.videoId : null}
-                selected = {this.state.images.selectedItem === i ? true : false} 
-                isFull = {false}
-                urls = {{...item.urls}} 
-            />
+                return <ImageItem
+                            key = {`item${i}`}
+                            id = {i}
+                            urlContent = {item.videoId ? item.videoId : null}
+                            selected = {this.state.images.selectedItem === i ? true : false} 
+                            isFull = {false}
+                            urls = {item.urls}
+                        />
         });
 
     }
@@ -267,6 +267,7 @@ class ModalWindow extends React.PureComponent {
     refSearch = node => this.inputSearch = node;
 
     render(){
+        console.log(this.state.workMode);
         switch (this.state.workMode){
             case 'newProject':
                 return <CreateProject
@@ -287,6 +288,7 @@ class ModalWindow extends React.PureComponent {
                             loading = {this.state.loading}
                         />
             case 'Search':
+                console.log('search');
                     return (
                         <SearchModal
                             images = {this.state.images['images']}
@@ -301,6 +303,7 @@ class ModalWindow extends React.PureComponent {
                             cbSetSelectedImage = {this.setSelectedImage}
                             modalSearchMode = {this.props.modalSearchMode}
                             cbSearch = {this.searchData}
+                            loader = {this.state.loading}
                         />
                     )
 

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Loader from '../../loading/Loader';
 const CreateProject = props => {
-    console.log(props);
+
     let isNumber = props.nameLength >= 4 && props.nameLength <= 20;
-    console.log(isNumber);
+
     return (
     <div className = 'Modal'>
         <h3>Create new Project</h3>

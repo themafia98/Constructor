@@ -7,12 +7,13 @@ const Section = props => {
     if (props.mode === 'dev'){
     const {currentProjectsData} = props.userData;
     const section = currentProjectsData.sectionsProject;
+
             return section.map((item,i) => {
                 return (
                         <MainBackground
                             key = {item}
-                            componentJSX = {[...props.componentJSX]}
-                            currentProjectsData = {{...currentProjectsData}}
+                            componentJSX = {props.componentJSX}
+                            currentProjectsData = {currentProjectsData}
                             editComponentName = {props.editComponentName}
                             countComponents = {props.componentJSX.length}
                             menuActive = {props.menuActive}
@@ -30,8 +31,8 @@ const Section = props => {
             return (
                     <MainBackground
                         key = {item}
-                        componentJSX = {[...props.componentsProdJSX]}
-                        currentProjectsData = {{...currentProjectsData}}
+                        componentJSX = {props.componentsProdJSX}
+                        currentProjectsData = {currentProjectsData}
                         editComponentName = {props.editComponentName}
                         countComponents = {props.componentsProdJSX.length}
                         sizeParentBox = {props.sizeParentBox}

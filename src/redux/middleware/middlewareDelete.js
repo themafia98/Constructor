@@ -2,7 +2,7 @@
 import {errorAction, loadUserAction, loadUpdateCurrentProject} from '../actions';
 
 const middlewareDelete = item => async (dispatch,getState, {firebase}) => {
-    console.log(item);
+
     await firebase.db.collection('users').doc(item.uid).get()
     .then(user => user.data())
     .then(data => {

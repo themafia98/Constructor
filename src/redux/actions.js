@@ -38,7 +38,7 @@ const loadUpdateCurrentProject = (state) => {
         components: [...state.components]
     }
 }
-console.log('asd');
+
 const loadUserAction = (state) => {
     return {
         type: LOAD_USER_CABINET,
