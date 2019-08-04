@@ -191,7 +191,6 @@ class Build extends React.PureComponent {
     };
 
     addComponent = itemEvent => {
-        console.log(itemEvent);
         let {componentJSX} = this.state;
         let {componentsPattern} = itemEvent;
 

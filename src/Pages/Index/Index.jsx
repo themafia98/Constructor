@@ -51,7 +51,6 @@ class Index extends React.PureComponent {
     timerAnimation = null;
 
     animationTitle = event => {
-        console.log(event);
         let self = this;
         this.timerAnimation = setTimeout( function tick(){
             if (self.state.directionAnimation === 'up'){
@@ -158,7 +157,6 @@ class Index extends React.PureComponent {
     }
 
     componentDidMount = (e) => {
-        console.log(e);
         this.animationTitle();
         this.indexStream.on('EventRegistrationCorrect', this.statusRegistration);
     }

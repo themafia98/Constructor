@@ -5,7 +5,6 @@ import MainBackground from './MainBackground/MainBackground';
 
 const Section = props => {
     if (props.mode === 'dev'){
-        console.log(props);
     const {currentProjectsData} = props.userData;
     const section = currentProjectsData.sectionsProject;
             return section.map((item,i) => {

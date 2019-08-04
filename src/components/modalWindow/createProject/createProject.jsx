@@ -25,7 +25,6 @@ const CreateProject = props => {
         <select onChange = {props.cbSelectOption} >
             <option value = 'empty'>--------</option>
             <option value = 'landing'>Landing</option>
-            <option value = 'portfolio'>Portfolio</option>
         </select>
         <input 
             onClick = {props.cbAddNewProject}

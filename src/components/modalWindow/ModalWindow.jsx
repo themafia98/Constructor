@@ -212,7 +212,6 @@ class ModalWindow extends React.PureComponent {
     }
 
     addNewProject = event => {
-        console.log(this.props);
         let mode = this.state[this.state.workMode];
         if (mode.validateType &&  mode.validateName) {
             this.props.cabinetStream.emit('EventAddProject',

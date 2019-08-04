@@ -93,7 +93,6 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     setWidth = event => {
-        console.log(event);
         const {id} = this.state.componentStats;
         const width = event.target.value;
         this.setState({

@@ -12,8 +12,6 @@ const InputInstruments = props => {
     let {size} = props.componentStats;
     let {color} = props.componentStats;
 
-    console.log(props);
-
     let _content = content !== '' ? 'Input' : '';
 
     return (

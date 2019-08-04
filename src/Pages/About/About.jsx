@@ -50,12 +50,6 @@ class About extends React.PureComponent {
         else return <Loader path = '/img/loading.gif' type = 'About' />
 
     }
-
-    componentDidUpdate = (prevProps, prevState) => {
-        console.log('componentDidUpdate')
-    }
-    
-
 }
 
 const mapStateToProps = (state) => {

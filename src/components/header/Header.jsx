@@ -57,7 +57,6 @@ class Header extends React.Component {
     };
 
     logOut = event => {
-        console.log(this.state);
         if (this.state.idUser)
             this.props.dispatch(middlewareLogOutUser(this.props.idUser));
         event.stopPropagation();

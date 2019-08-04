@@ -42,6 +42,7 @@ class List extends React.PureComponent {
                     id = {project.id}
                     name = {project.title}
                     type = {project.type}
+                    cabinetStream = {this.props.cabinetStream}
                 />
             )
         });

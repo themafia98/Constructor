@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../EventEmitter';
 import {withRouter, Redirect} from 'react-router-dom';
 
 function Item(props) {
@@ -29,7 +28,7 @@ function Item(props) {
     };
 
     const deleteItem = event => {
-        eventEmitter.emit('EventDeleteItem',{
+        props.cabinetStream.emit('EventDeleteItem',{
             id: props.id,
             name: props.name,
             type: props.type

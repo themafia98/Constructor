@@ -182,7 +182,6 @@ class TextComponent extends React.PureComponent {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
- 
             let sectionNum = this.state.sectionNumber === 0 ? 1 : this.state.sectionNumber;
             let xItem = event.clientX - (this.props.sizeParentBox.left  * sectionNum);
             let yItem = event.clientY - (this.props.sizeParentBox.top * sectionNum);
@@ -214,7 +213,6 @@ class TextComponent extends React.PureComponent {
 
 
     render(){
-        console.log(this.props);
         if (this.props.mode === 'dev'){
             return (
                 <WrapperText

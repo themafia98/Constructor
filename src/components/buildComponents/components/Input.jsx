@@ -107,7 +107,7 @@ class Input extends React.PureComponent {
     };
 
     changeColor = colorRGB => {
-        console.log(colorRGB);
+
         if (typeof colorRGB === 'string')
             this.setState({
                 ...this.state,

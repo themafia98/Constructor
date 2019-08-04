@@ -40,7 +40,6 @@ class MainBackground extends React.PureComponent {
     refSectionFunc = node => node ? this.refSection = {data: node.getBoundingClientRect(), node: node} : node;
 
     render() {
-        console.log('main');
         if (this.props.mode === 'dev'){
             let props = this.props.currentProjectsData.components.find(item => item.targetSection === this.props.id) || null;
             let children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
