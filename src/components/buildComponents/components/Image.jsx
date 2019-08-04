@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../../EventEmitter';
+import eventEmitter,{controllerStream} from '../../../EventEmitter';
 import styled from 'styled-components';
 
 
@@ -151,7 +151,7 @@ class Image extends React.PureComponent {
     stopDragNdrop = event => {
         if (this.state.startDragNdrop) {
             this.setState({...this.state, startDragNdrop: false})
-            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.posImage);
+            controllerStream.emit(`EventUpdatePosition${this.state.id}`, this.state.posImage);
         }
         event.stopPropagation();
     };
@@ -189,7 +189,7 @@ class Image extends React.PureComponent {
             getSizeBool: true,
             sectionNumber: event.sectionNumber,
             sizeParentBox: {width: size.width, height: size.height}});
-        } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
     changeSizeImage = eventItem => {
@@ -268,23 +268,24 @@ class Image extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        eventEmitter.on(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
-        eventEmitter.on(`EventChangeSize${this.state.id}`, this.changeSizeImage);
-        eventEmitter.on(`EventSetOpacity${this.state.id}`, this.setOpacity);
-        eventEmitter.on(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
-        eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
-        eventEmitter.on(`EventSetWidth${this.state.id}`, this.setWidth);
-        eventEmitter.on(`EventSetHeight${this.state.id}`, this.setHeight);
+        controllerStream.on(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
+        controllerStream.on(`EventChangeSize${this.state.id}`, this.changeSizeImage);
+        controllerStream.on(`EventSetOpacity${this.state.id}`, this.setOpacity);
+        controllerStream.on(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
+        controllerStream.on(`EventSetWidth${this.state.id}`, this.setWidth);
+        controllerStream.on(`EventSetHeight${this.state.id}`, this.setHeight); 
+        controllerStream.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
     }
 
     componentWillUnmount = () => {
-        eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
-        eventEmitter.off(`EventChangeSize${this.state.id}`, this.changeSizeImage);
-        eventEmitter.off(`EventSetOpacity${this.state.id}`, this.setOpacity);
-        eventEmitter.off(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
-        eventEmitter.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
-        eventEmitter.off(`EventSetWidth${this.state.id}`, this.setWidth);
-        eventEmitter.off(`EventSetHeight${this.state.id}`, this.setHeight);
+       
+        controllerStream.off(`EventChangeSize${this.state.id}`, this.changeSizeImage);
+        controllerStream.off(`EventSetOpacity${this.state.id}`, this.setOpacity);
+        controllerStream.off(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
+        controllerStream.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
+        controllerStream.off(`EventSetWidth${this.state.id}`, this.setWidth);
+        controllerStream.off(`EventSetHeight${this.state.id}`, this.setHeight); 
+        controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 }
 

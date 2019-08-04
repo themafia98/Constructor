@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../../EventEmitter';
+import eventEmitter,{controllerStream} from '../../../EventEmitter';
 import styled from 'styled-components';
 
 
@@ -40,7 +40,7 @@ class BackgroundComponent extends React.PureComponent {
 
     saveDataParent = () => {
         let boxInform =  this.boxComponent.getBoundingClientRect();
-        eventEmitter.emit(`EventSaveWidth${this.state.targetSection}`,{
+        controllerStream.emit(`EventSaveWidth${this.state.targetSection}`,{
             sectionNumber: this.props.sectionNumber,
             size: {width: boxInform.width, height: boxInform.height}
         });
@@ -118,13 +118,13 @@ class BackgroundComponent extends React.PureComponent {
 
     componentDidMount = () => {
         this.saveDataParent();
-        eventEmitter.on(`EventChangeColorBackground${this.state.id}`, this.changeColor);
-        eventEmitter.on(`EventSetBackgroundImage${this.state.id}`, this.setBackgroundImage);
+        controllerStream.on(`EventChangeColorBackground${this.state.id}`, this.changeColor);
+        controllerStream.on(`EventSetBackgroundImage${this.state.id}`, this.setBackgroundImage);
     };
 
     componentWillUnmount = () => {
-        eventEmitter.off(`EventChangeColorBackground${this.state.id}`, this.changeColor);
-        eventEmitter.off(`EventSetBackgroundImage${this.state.id}`, this.setBackgroundImage);
+        controllerStream.off(`EventChangeColorBackground${this.state.id}`, this.changeColor);
+        controllerStream.off(`EventSetBackgroundImage${this.state.id}`, this.setBackgroundImage);
     };
 };
 

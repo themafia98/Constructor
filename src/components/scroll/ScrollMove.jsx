@@ -43,7 +43,8 @@ class ScrollMove extends React.PureComponent {
 
     render(){
         return (
-            <div key = 'moveScroll' onWheel = {this.moveLocation}>
+            <div key = 'moveScroll' onWheel = {this.moveLocation} onTouchStart = {() => false}
+            >
                 {this.props.children}
             </div>
         )
@@ -57,6 +58,5 @@ class ScrollMove extends React.PureComponent {
         eventEmitter.off('EventSetState', this.setStates);
     }
 }
-
 
 export default ScrollMove;

@@ -67,7 +67,7 @@ const InputInstruments = props => {
                 onChange = {props.cbSetBorderRadius}
                 className = 'button_switch radius'
                 type="number"
-                value = {props.componentStats.borderRadius ?
+                defaultValue = {props.componentStats.borderRadius ?
                             props.componentStats.borderRadius : 10
                         }
                 min = '10' max = '200'

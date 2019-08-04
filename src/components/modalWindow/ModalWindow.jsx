@@ -2,7 +2,7 @@ import React,{Fragment} from 'react';
 
 import isFetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../EventEmitter.js';
+import eventEmitter,{controllerStream} from '../../EventEmitter.js';
 
 import ImageItem from '../imageViewer/imageItem';
 
@@ -25,6 +25,7 @@ class ModalWindow extends React.PureComponent {
 
     state = {
         workMode: this.props.workMode,
+        loading: false,
         images: {
             loading: false,
             buttonSearchDisabled: false,
@@ -45,8 +46,9 @@ class ModalWindow extends React.PureComponent {
         },
         imageMenuActive: false,
         warning: {
-            lengthMax: 'Max length: 20 symbols',
-            lengthMin: 'Min length: 4 symbol',
+            lengthMax: 'Max length: 20 laters',
+            warningNumber: `Don't use numbers`,
+            lengthMin: 'Min length: 4 letters',
             type: 'Select type of webpage',
         }
     }
@@ -178,13 +180,13 @@ class ModalWindow extends React.PureComponent {
 
         let data = {...this.state.images};
         if (this.props.modalSearchMode === 'background'){
-            eventEmitter.emit(`EventSetBackgroundImage${this.props.idComponent}`,data);
+            controllerStream.emit(`EventSetBackgroundImage${this.props.idComponent}`,data);
             eventEmitter.emit(`EventSetBImageInstumentPanel`,{images: data, mode: this.props.modalSearchMode});
         } else if (this.props.modalSearchMode === 'image'){
-            eventEmitter.emit(`EventSetCurrentImage${this.props.idComponent}`, data);
+            controllerStream.emit(`EventSetCurrentImage${this.props.idComponent}`, data);
             eventEmitter.emit(`EventSetBImageInstumentPanel`, {images: data,  mode: this.props.modalSearchMode });
         } else if (this.props.modalSearchMode === 'media'){
-            eventEmitter.emit(`EventSetContentMedia${this.props.idComponent}`,{
+            controllerStream.emit(`EventSetContentMedia${this.props.idComponent}`,{
                     iframe: data.iframe,
                     mode: this.props.modalSearchMode
                 }
@@ -214,6 +216,11 @@ class ModalWindow extends React.PureComponent {
     addNewProject = event => {
         let mode = this.state[this.state.workMode];
         if (mode.validateType &&  mode.validateName) {
+
+            this.setState({
+                ...this.state,
+                loading: true,
+            });
             this.props.cabinetStream.emit('EventAddProject',
             {
                 title: this.state[this.state.workMode].name,
@@ -240,8 +247,7 @@ class ModalWindow extends React.PureComponent {
 
         let inputs = {...this.state[this.state.workMode]};
         inputs.name = event.target.value;
-        let lengthInput = inputs.name.length;
-        inputs.validateName = lengthInput >= 4 && lengthInput < 20 ? true : false;
+        inputs.validateName = /^\D{4,20}$/i.test(inputs.name);
         inputs.disabled = inputs.validateType && inputs.validateName ? false : true;
 
         this.setState({
@@ -265,6 +271,8 @@ class ModalWindow extends React.PureComponent {
             case 'newProject':
                 return <CreateProject
                             dissabled = {this.state[this.state.workMode].disabled}
+                            warningNumber = {this.state.warning.warningNumber}
+                            validName = {this.state[this.state.workMode].validateName}
                             nameLength = {this.state[this.state.workMode].name.length}
                             name = {this.state[this.state.workMode].name}
                             validType = {this.state[this.state.workMode].validateType}
@@ -276,6 +284,7 @@ class ModalWindow extends React.PureComponent {
                             cbSelectOption = {this.selectOption}
                             cbAddNewProject = {this.addNewProject}
                             cbCancel = {this.cancel}
+                            loading = {this.state.loading}
                         />
             case 'Search':
                     return (

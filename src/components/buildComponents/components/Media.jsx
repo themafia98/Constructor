@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../../EventEmitter';
+import eventEmitter,{controllerStream} from '../../../EventEmitter';
 import styled from 'styled-components';
 
 const WrapperMedia = styled.div.attrs(props => {
@@ -148,7 +148,7 @@ class MediaComponent extends React.PureComponent {
     stopDragNdrop = event => {
         if (this.state.startDragNdrop) {
             this.setState({...this.state, startDragNdrop: false})
-            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.posMedia);
+            controllerStream.emit(`EventUpdatePosition${this.state.id}`, this.state.posMedia);
         }
         event.stopPropagation();
     };
@@ -167,7 +167,7 @@ class MediaComponent extends React.PureComponent {
             getSizeBool: true,
             sectionNumber: event.sectionNumber + 1,
             sizeParentBox: {width: size.width, height: size.height}});
-        } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
     refMedia = null;
@@ -229,13 +229,13 @@ class MediaComponent extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        eventEmitter.on(`EventSetContentMedia${this.state.id}`, this.setContent);
-        eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
+        controllerStream.on(`EventSetContentMedia${this.state.id}`, this.setContent);
+        controllerStream.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
     }
 
     componentWillUnmount = () => {
-        eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
-        eventEmitter.off(`EventSetContentMedia${this.state.id}`, this.setContent);
+        controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        controllerStream.off(`EventSetContentMedia${this.state.id}`, this.setContent);
     }
 }
 

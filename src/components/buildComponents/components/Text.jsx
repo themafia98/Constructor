@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../../EventEmitter';
+import eventEmitter,{controllerStream} from '../../../EventEmitter';
 import styled from 'styled-components';
 import './components.scss';
 
@@ -116,7 +116,7 @@ class TextComponent extends React.PureComponent {
             getSizeBool: true,
             sectionNumber: event.sectionNumber,
             parent: {width: size.width, height: size.height}});
-        } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
     changeContentText = eventContent => {
@@ -203,7 +203,7 @@ class TextComponent extends React.PureComponent {
     stopDragNdrop = event => {
         if (this.state.startDragNdrop) {
             this.setState({...this.state, startDragNdrop: false})
-            eventEmitter.emit(`EventUpdatePosition${this.state.id}`, this.state.position);
+            controllerStream.emit(`EventUpdatePosition${this.state.id}`, this.state.position);
         }
         event.stopPropagation();
     };
@@ -251,19 +251,19 @@ class TextComponent extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        eventEmitter.on(`EventChangeColorText${this.state.id}`, this.changeColorText);
-        eventEmitter.on(`EventSetFont${this.state.id}`, this.setFont);
-        eventEmitter.on(`EventChangeSize${this.state.id}`, this.changeSizeText);
-        eventEmitter.on(`EventChangeContentText${this.state.id}`, this.changeContentText);
-        eventEmitter.on(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        controllerStream.on(`EventChangeColorText${this.state.id}`, this.changeColorText);
+        controllerStream.on(`EventSetFont${this.state.id}`, this.setFont);
+        controllerStream.on(`EventChangeSize${this.state.id}`, this.changeSizeText);
+        controllerStream.on(`EventChangeContentText${this.state.id}`, this.changeContentText);
+        controllerStream.on(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
     componentWillUnmount = () => {
-        eventEmitter.off(`EventChangeColorText${this.state.id}`, this.changeColorText);
-        eventEmitter.off(`EventSetFont${this.state.id}`, this.setFont);
-        eventEmitter.off(`EventChangeSize${this.state.id}`, this.changeSizeText);
-        eventEmitter.off(`EventChangeContentText${this.state.id}`, this.changeContentText);
-        eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        controllerStream.off(`EventChangeColorText${this.state.id}`, this.changeColorText);
+        controllerStream.off(`EventSetFont${this.state.id}`, this.setFont);
+        controllerStream.off(`EventChangeSize${this.state.id}`, this.changeSizeText);
+        controllerStream.off(`EventChangeContentText${this.state.id}`, this.changeContentText);
+        controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 }
 

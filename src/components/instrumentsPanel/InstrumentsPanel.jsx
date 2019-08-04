@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import eventEmitter from '../../EventEmitter';
+import eventEmitter,{controllerStream} from '../../EventEmitter';
 import PropTypes from 'prop-types';
 
 import InputInstruments from './InputTools/InputInstruments';
@@ -41,14 +41,14 @@ class InstrumentsPanel extends React.PureComponent {
             ...this.state, 
             instrumentPanel: {...this.state.instrumentPanel},
             componentStats: {...this.state.componentStats,fontSize: size}
-        }, () => eventEmitter.emit(`EventChangeSize${id}`, {
+        }, () => controllerStream.emit(`EventChangeSize${id}`, {
                 targetSection: this.state.editComponentName, size: size 
         }));
         else this.setState({
                 ...this.state, 
                 instrumentPanel: {...this.state.instrumentPanel},
                 componentStats: {...this.state.componentStats,fontSize: size}
-            }, () => eventEmitter.emit(`EventChangeSizeText${id}`, {size: size}
+            }, () => controllerStream.emit(`EventChangeSizeText${id}`, {size: size}
             ));
     };
 
@@ -60,7 +60,7 @@ class InstrumentsPanel extends React.PureComponent {
             instrumentPanel: {...this.state.instrumentPanel},
             componentStats: {...this.state.componentStats,font: fontName}
         },
-            () => eventEmitter.emit(`EventSetFont${id}`, {
+            () => controllerStream.emit(`EventSetFont${id}`, {
                 targetSection: this.state.editComponentName, font: fontName
             })
         );
@@ -85,7 +85,7 @@ class InstrumentsPanel extends React.PureComponent {
             instrumentPanel: {...this.state.instrumentPanel},
             componentStats: {...this.state.componentStats,content: contentValue}
         },
-            () => eventEmitter.emit(`EventChangeContentText${id}`,{
+            () => controllerStream.emit(`EventChangeContentText${id}`,{
                 targetSection: this.state.editComponentName, content: contentValue
             })
         );
@@ -103,7 +103,7 @@ class InstrumentsPanel extends React.PureComponent {
                     w: width
                 }}
         },
-            () => eventEmitter.emit(`EventSetWidth${id}`,{width: width}));
+            () => controllerStream.emit(`EventSetWidth${id}`,{width: width}));
 
         if (event) event.stopPropagation();
     };
@@ -119,7 +119,7 @@ class InstrumentsPanel extends React.PureComponent {
                     h: height
                 }}
         },
-            () => eventEmitter.emit(`EventSetHeight${id}`,{height: height}));
+            () => controllerStream.emit(`EventSetHeight${id}`,{height: height}));
 
         if (event) event.stopPropagation();
     }
@@ -157,7 +157,7 @@ class InstrumentsPanel extends React.PureComponent {
             ...this.state,
             componentStats: {...this.state.componentStats,opacity: opacity}
         },
-         () => eventEmitter.emit(`EventSetOpacity${id}`, {opacity: opacity}));
+         () => controllerStream.emit(`EventSetOpacity${id}`, {opacity: opacity}));
     };
 
     setBorderRadius = event => {
@@ -168,7 +168,7 @@ class InstrumentsPanel extends React.PureComponent {
             ...this.state,
             componentStats: {...this.state.componentStats,borderRadius: radius}
         },
-         () => eventEmitter.emit(`EventSetBorderRadius${id}`, {borderRadius: radius}));
+         () => controllerStream.emit(`EventSetBorderRadius${id}`, {borderRadius: radius}));
     };
 
     updateBimageStats = eventItem => {
@@ -202,7 +202,7 @@ class InstrumentsPanel extends React.PureComponent {
             this.setState({
                 ...this.state,
                 componentStats: {...this.state.componentStats,color: colorRGB}
-            }, () => eventEmitter.emit(`EventChangeColorBackground${id}`,
+            }, () => controllerStream.emit(`EventChangeColorBackground${id}`,
                         {colorRGB: this.state.componentStats.color}
                     ));
         }
@@ -212,7 +212,7 @@ class InstrumentsPanel extends React.PureComponent {
                 ...this.state,
                 componentStats: {...this.state.componentStats,color: colorRGB}
             },
-            () => eventEmitter.emit(`EventChangeColorText${id}`, colorRGB));
+            () => controllerStream.emit(`EventChangeColorText${id}`, colorRGB));
         }
 
         else if (this.state.componentStats.type === 'input') {
@@ -220,7 +220,7 @@ class InstrumentsPanel extends React.PureComponent {
                 ...this.state,
                 componentStats: {...this.state.componentStats,color: colorRGB}
             },
-            () => eventEmitter.emit(`EventChangecolor${id}`, colorRGB));
+            () => controllerStream.emit(`EventChangecolor${id}`, colorRGB));
         }
 
     };
@@ -272,7 +272,7 @@ class InstrumentsPanel extends React.PureComponent {
             if (image.type[0] !== 'i') throw new Error('Invalid file');
             reader.readAsDataURL(image);
             reader.onload = (e) => {
-                eventEmitter.emit(`EventSetCurrentImage${id}`,{ urlFull: reader.result });
+                controllerStream.emit(`EventSetCurrentImage${id}`,{ urlFull: reader.result });
                 this.updateBimageStats({images: { urlFull: reader.result }, mode: 'image'});
                 e.stopPropagation();
             }
@@ -342,6 +342,7 @@ class InstrumentsPanel extends React.PureComponent {
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
                                 cbSetColor = {this.setColor}
+                                cbSetBorderRadius = {this.setBorderRadius}
                                 cbHandleChangeComplete = {this.handleChangeComplete}
                                 cbSetSize = {this.setSize}
                                 cbSetWidth = {this.setWidth}
@@ -390,18 +391,17 @@ class InstrumentsPanel extends React.PureComponent {
 
     componentDidMount = event => {
         eventEmitter.on('EventRedirectSaveChanges', this.redirectSaveChanges);
-        eventEmitter.on(`EventSetIframe`, this.setIframeContent);
         eventEmitter.on("EventSetBImageInstumentPanel", this.updateBimageStats);
-        eventEmitter.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
+        eventEmitter.on(`EventSetIframe`, this.setIframeContent);
+        controllerStream.on(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 
     componentWillUnmount = event => {
         if (this.timer) clearTimeout(this.timer);
-        eventEmitter.on('EventClosePaanel', this.closePanel);
         eventEmitter.off('EventRedirectSaveChanges', this.redirectSaveChanges);
-        eventEmitter.off(`EventSetIframe`, this.setIframeContent);
         eventEmitter.off("EventSetBImageInstumentPanel", this.updateBimageStats);
-        eventEmitter.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
+        eventEmitter.off(`EventSetIframe`, this.setIframeContent);
+        controllerStream.off(`EventUpdatePosition${this.state.componentStats.id}`, this.updatePosition);
     };
 };
 

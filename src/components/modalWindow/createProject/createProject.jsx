@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import Loader from '../../loading/Loader';
 const CreateProject = props => {
-
+    console.log(props);
+    let isNumber = props.nameLength >= 4 && props.nameLength <= 20;
+    console.log(isNumber);
     return (
     <div className = 'Modal'>
         <h3>Create new Project</h3>
@@ -11,6 +13,10 @@ const CreateProject = props => {
         }
         { props.nameLength >= 20 ?
             <span className = 'warning'>{props.warningLengthMax}</span> : null
+        }
+        {
+            isNumber && !props.validName ?
+            <span className = 'warning'>{props.warningNumber}</span> : null
         }
         <input
             className = {props.typeClassName ? 'ready' : 'wrong'}
@@ -34,6 +40,7 @@ const CreateProject = props => {
             value = 'Submit'
         />
         <input onClick = {props.cbCancel} type ='button' value = 'Cancel' />
+        {props.loading && <Loader mode = 'create' />}
     </div>
     )
 }
