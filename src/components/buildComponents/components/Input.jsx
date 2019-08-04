@@ -16,7 +16,12 @@ const InputComponent = styled.input.attrs(props => {
 })`
     width: ${props => props.size ? props.size.w + 'px' : null};
     height: ${props => props.size ? props.size.h + 'px' : null};
+    font-size: ${props => props.fontSize ? props.fontSize + 'px' : null};
     position: absolute;
+    background-color: ${props => props.color || null};
+    border-radius: ${props => props.borderRadius || null};
+    white-space: normal;
+    font-weight: bold;
 `;
 
 const ProductionStyle = styled(InputComponent)`
@@ -42,8 +47,12 @@ class Input extends React.PureComponent {
         getSizeBool: false,
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
-        size: this.props.size ? this.props.size : {w: '100', h:'50'},
+        size: this.props.size && this.props.size.w ? this.props.size : {w: '100', h:'50'},
+        fontSize: this.props.fontSize || 20,
+        borderRadius: this.props.borderRadius || null,
+        color: this.props.color || null,
         shiftCoords: null,
+        content: this.props.content || 'Input',
         posInput: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
         startDragNdrop: false,
     }
@@ -54,9 +63,12 @@ class Input extends React.PureComponent {
             id: this.state.id,
             targetSection: this.state.targetSection,
             type: 'input',
-            borderRadius: null,
+            color: this.state.color,
+            borderRadius: this.state.borderRadius,
             zIndex: null,
-            value: this.state.content,
+            size: {...this.state.size},
+            fontSize: this.state.fontSize,
+            content: this.state.content,
             coords: {...this.state.posInput}, // x, y
         }
 
@@ -89,6 +101,44 @@ class Input extends React.PureComponent {
 
         event.stopPropagation();
     };
+
+    changeSize = eventSize => {
+        this.setState({...this.state, size: eventSize.size});
+    };
+
+    changeColor = colorRGB => {
+        console.log(colorRGB);
+        if (typeof colorRGB === 'string')
+            this.setState({
+                ...this.state,
+                color: colorRGB
+            });
+    };
+
+    changeSizeText = eventSize => {
+        this.setState({...this.state, fontSize: eventSize.size});
+    };
+
+    setBorderRadius = eventItem => {
+
+        let radius = eventItem.borderRadius > 200 ? 200 : eventItem.borderRadius;
+        radius = eventItem.borderDown < 0 ? 0 : eventItem.borderRadius;
+            this.setState({
+                ...this.state,
+                borderRadius: radius
+            });
+    };
+
+    changeContent = eventItem => {
+        let booldContent = eventItem.content || eventItem.content === '';
+        if (booldContent)
+            this.setState({
+                ...this.state,
+                content: eventItem.content
+            });
+    }
+
+
 
     checkPivotPosition = (coordX, coordY) => {
 
@@ -153,6 +203,26 @@ class Input extends React.PureComponent {
         } else eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
+    setWidth = eventItem => {
+        const {width} = eventItem;
+        this.setState({...this.state, 
+            size: {
+                ...this.state.size,
+                w: width,
+            }
+        });
+    }
+
+    setHeight = eventItem => {
+        const {height} = eventItem;
+        this.setState({...this.state, 
+            size: {
+                ...this.state.size,
+                h: height,
+            }
+        });
+    }
+
     refInput = null;
     refInputComponent = node => this.refInput = node;
 
@@ -162,9 +232,12 @@ class Input extends React.PureComponent {
             return (
                 <InputComponent
                     type = 'button'
-                    value = 'Input'
+                    value = {this.state.content}
                     ref = {this.refInputComponent}
                     size = {this.state.size}
+                    color = {this.state.color}
+                    borderRadius = {this.state.borderRadius}
+                    fontSize = {this.state.fontSize}
                     onClick = {this.openInputInstruments}
                     onMouseDown = {this.saveCoords}
                     onMouseMove= {this.moveInput}
@@ -182,9 +255,12 @@ class Input extends React.PureComponent {
             return (
                 <ProductionStyle
                     type = 'button'
-                    value = 'Input'
+                    value = {this.state.content}
                     ref = {this.refInputComponent}
                     size = {this.state.size}
+                    color = {this.state.color}
+                    fontSize = {this.state.fontSize}
+                    borderRadius = {this.state.borderRadius}
                     coordX = {this.state.posInput ? this.state.posInput.x : null}
                     coordY = {this.state.posInput ? this.state.posInput.y : null}
                     indexZ = {this.state.startDragNdrop}
@@ -196,10 +272,22 @@ class Input extends React.PureComponent {
 
     componentDidMount = () => {
         eventEmitter.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
+        eventEmitter.on(`EventChangecolor${this.state.id}`, this.changeColor);
+        eventEmitter.on(`EventChangeSize${this.state.id}`, this.changeSize);
+        eventEmitter.on(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
+        eventEmitter.on(`EventChangeContentText${this.state.id}`, this.changeContent);
+        eventEmitter.on(`EventSetWidth${this.state.id}`, this.setWidth);
+        eventEmitter.on(`EventSetHeight${this.state.id}`, this.setHeight);
     }
 
     componentWillUnmount = () => {
         eventEmitter.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        eventEmitter.off(`EventChangeSize${this.state.id}`, this.changeSize);
+        eventEmitter.off(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
+        eventEmitter.off(`EventChangeContentText${this.state.id}`, this.changeContent);
+        eventEmitter.off(`EventChangecolor${this.state.id}`, this.changeColor);
+        eventEmitter.off(`EventSetWidth${this.state.id}`, this.setWidth);
+        eventEmitter.off(`EventSetHeight${this.state.id}`, this.setHeight);
     }
 }
 

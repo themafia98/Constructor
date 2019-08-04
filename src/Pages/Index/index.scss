@@ -50,10 +50,9 @@ input {
         color: green;
     }
     .LoginBox {
-        height: 400px;
+        height: 350px;
         display: flex;
         background-color: lightcyan;
-        justify-content: center;
         align-items: center;
         flex-direction: column;
         box-shadow: 0 0 5px;
@@ -141,6 +140,10 @@ input[type='text'], input[type='password']{
     -webkit-user-select: none; 
     -webkit-user-drag: element; 
     cursor: move;
+}
+
+[data-titlebuild]:after{
+    content: '|'
 }
 
 @import './media.scss';

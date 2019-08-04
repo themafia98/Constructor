@@ -9,7 +9,10 @@ const InputInstruments = props => {
     let {content} = props.componentStats;
     let {fontSize} = props.componentStats;
     let {coords} = props.componentStats;
+    let {size} = props.componentStats;
     let {color} = props.componentStats;
+
+    console.log(props);
 
     let _content = content !== '' ? 'Input' : '';
 
@@ -42,15 +45,15 @@ const InputInstruments = props => {
                     className = 'button_switch'
                     onChange = {props.cbSetWidth}
                     type="number"
-                    min = '10' max = '100'
-                    value = {30}
+                    min = '10' max = '200'
+                    value = {size.w ? size.w : 100}
                 />
                 <input 
                     className = 'button_switch'
                     onChange = {props.cbSetHeight}
                     type="number"
-                    min = '10' max = '100'
-                    value = {30}
+                    min = '10' max = '200'
+                    value = {size.h ? size.h : 50}
                 />
             </div>
             <p className = 'titleInstument'>Text size: </p>
@@ -59,7 +62,7 @@ const InputInstruments = props => {
                 onChange = {props.cbSetSize}
                 type="number"
                 min = '10' max = '200'
-                value = {fontSize ? fontSize : 120}
+                value = {fontSize ? fontSize : 21}
             />
             <p className = 'titleInstument'>Border radius: </p>
             <input

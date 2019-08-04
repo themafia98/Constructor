@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 
+import styled from 'styled-components';
 import Events from 'events';
 import {middlewareLogin} from '../../redux/middleware/loadUserMiddleware';
 
@@ -11,6 +12,12 @@ import Registration from '../../components/Registration/Registration';
 import {connect} from 'react-redux';
 
 import './index.scss';
+
+const AnimationTitle = styled.h3`
+    user-select: none;
+    transition: .4s linear all;
+    color: ${props => props.color === 'up' ? 'red' : 'blue'};
+`;
 
 class Index extends React.PureComponent {
 
@@ -31,11 +38,50 @@ class Index extends React.PureComponent {
         registrationActive: false,
         regStatus: false,
         wrongEnter: false,
-        error: ''
+        error: '',
+        tilteContent: 'Build your landing page!'.split(''),
+        currentTitle: 'B',
+        positionTitle: 1,
+        directionAnimation: 'up',
+        msAnimation: 100,
     }
 
     emailImput = null;
     passwordImput = null;
+    timerAnimation = null;
+
+    animationTitle = event => {
+        console.log(event);
+        let self = this;
+        this.timerAnimation = setTimeout( function tick(){
+            if (self.state.directionAnimation === 'up'){
+                let counter = self.state.tilteContent.length;
+                const word = counter > self.state.positionTitle ?
+                            self.state.tilteContent[self.state.positionTitle] :
+                            self.state.tilteContent[self.state.positionTitle-1];
+                self.setState({
+                    ...self.state,
+                    currentTitle: self.state.currentTitle + word,
+                    positionTitle: self.state.positionTitle + 1,
+                    directionAnimation: self.state.positionTitle === counter ? 'down' : 'up',
+                    msAnimation: self.state.positionTitle === counter ? 1000 : 150
+                });
+            }
+            if (self.state.directionAnimation === 'down'){
+                let _title = self.state.currentTitle;
+                const length = self.state.currentTitle.length;
+                _title = _title.slice(0,length - 1);
+                self.setState({
+                    ...self.state,
+                    currentTitle: _title,
+                    positionTitle: self.state.positionTitle - 1,
+                    directionAnimation: self.state.positionTitle === 2 ? 'up' : 'down',
+                    msAnimation: self.state.positionTitle === 2 ? 1000 : 150
+                });
+            }
+            self.timerAnimation = setTimeout(tick, self.state.msAnimation);
+        }, this.state.msAnimation);
+    }
 
     statusRegistration = event => {
         event.additionalUserInfo.isNewUser ?
@@ -73,6 +119,9 @@ class Index extends React.PureComponent {
                 <div className = 'LoginPage flex-column'>
                         <h1>{this.state.title}</h1>
                         <div className = 'LoginBox'>
+                        <AnimationTitle data-titlebuild color = {this.state.directionAnimation}>
+                            {this.state.currentTitle}
+                        </AnimationTitle>
                             <div className = 'LoginForm'>
                                 <h3>Connect form</h3>
                                 {
@@ -109,9 +158,12 @@ class Index extends React.PureComponent {
     }
 
     componentDidMount = (e) => {
+        console.log(e);
+        this.animationTitle();
         this.indexStream.on('EventRegistrationCorrect', this.statusRegistration);
     }
     componentWillUnmount = (e) => {
+        if (this.timerAnimation) clearTimeout(this.timerAnimation);
         this.indexStream.off('EventRegistrationCorrect', this.statusRegistration);
     }
 }

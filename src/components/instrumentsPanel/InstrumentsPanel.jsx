@@ -35,15 +35,21 @@ class InstrumentsPanel extends React.PureComponent {
     setSize = event => {
         let {id} = this.state.componentStats;
         let size = event.target.value > 200 ? 200 : event.target.value;
+
+        if (this.state.componentStats.type !== 'input')
         this.setState({
             ...this.state, 
             instrumentPanel: {...this.state.instrumentPanel},
             componentStats: {...this.state.componentStats,fontSize: size}
-        },
-            () => eventEmitter.emit(`EventChangeSize${id}`, {
+        }, () => eventEmitter.emit(`EventChangeSize${id}`, {
                 targetSection: this.state.editComponentName, size: size 
-            })
-        );
+        }));
+        else this.setState({
+                ...this.state, 
+                instrumentPanel: {...this.state.instrumentPanel},
+                componentStats: {...this.state.componentStats,fontSize: size}
+            }, () => eventEmitter.emit(`EventChangeSizeText${id}`, {size: size}
+            ));
     };
 
     setFont = event => {
@@ -87,6 +93,7 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     setWidth = event => {
+        console.log(event);
         const {id} = this.state.componentStats;
         const width = event.target.value;
         this.setState({
@@ -209,6 +216,14 @@ class InstrumentsPanel extends React.PureComponent {
             () => eventEmitter.emit(`EventChangeColorText${id}`, colorRGB));
         }
 
+        else if (this.state.componentStats.type === 'input') {
+            this.setState({
+                ...this.state,
+                componentStats: {...this.state.componentStats,color: colorRGB}
+            },
+            () => eventEmitter.emit(`EventChangecolor${id}`, colorRGB));
+        }
+
     };
 
     redirectSaveChanges = event => {
@@ -328,7 +343,11 @@ class InstrumentsPanel extends React.PureComponent {
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
                                 cbSetColor = {this.setColor}
+                                cbHandleChangeComplete = {this.handleChangeComplete}
                                 cbSetSize = {this.setSize}
+                                cbSetWidth = {this.setWidth}
+                                cbSetHeight = {this.setHeight}
+                                cbSetContent = {this.setContent}
                                 cbDelete = {this.deleteComponent}
                             />
                         )

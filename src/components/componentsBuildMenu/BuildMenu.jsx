@@ -144,7 +144,10 @@ class BuildMenu extends React.PureComponent {
 
         const  componentsPatternInput = {
             type: 'input',
-            size: null,
+            size: {w: null, h: null},
+            color: null,
+            fontSize: null,
+            borderRadius: null,
             content: null,
             coords: {x: null, y: null}, // x, y
             id: id,
