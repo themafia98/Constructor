@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../EventEmitter';
 import {Redirect} from 'react-router-dom';
 
+import Events from 'events';
 import {middlewareLogin} from '../../redux/middleware/loadUserMiddleware';
 
 import Loader from '../../components/loading/Loader';
@@ -23,6 +23,8 @@ class Index extends React.PureComponent {
         wrongEnter: PropTypes.string, /** @Error about invalid enter */
         config: PropTypes.object, /** @config - app settings */
     }
+
+    indexStream = new Events();
 
     state = {
         title:  "Constructor",
@@ -98,7 +100,7 @@ class Index extends React.PureComponent {
                         </div>
                         {
                             this.state.registrationActive ?
-                            <Registration />
+                            <Registration indexStream = {this.indexStream} />
                             : null
                         }
                 </div>
@@ -107,10 +109,10 @@ class Index extends React.PureComponent {
     }
 
     componentDidMount = (e) => {
-        eventEmitter.on('EventRegistrationCorrect', this.statusRegistration);
+        this.indexStream.on('EventRegistrationCorrect', this.statusRegistration);
     }
     componentWillUnmount = (e) => {
-        eventEmitter.off('EventRegistrationCorrect', this.statusRegistration);
+        this.indexStream.off('EventRegistrationCorrect', this.statusRegistration);
     }
 }
 

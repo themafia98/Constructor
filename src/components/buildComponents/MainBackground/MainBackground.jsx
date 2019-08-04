@@ -11,7 +11,6 @@ import './MainBackground.scss';
 class MainBackground extends React.PureComponent {
 
     static propTypes = {
-        children: PropTypes.object.isRequired, /** @Object with name */
         countComponents: PropTypes.number.isRequired, /** @Number last project */
         menuActive: PropTypes.bool, /** @Bool active menu or unactive */
         id: PropTypes.string.isRequired, /** @id current project */
@@ -21,7 +20,6 @@ class MainBackground extends React.PureComponent {
         targetSection: this.props.id,
         editRedy: false,
         component: null,
-        children: null,
     };
 
     changeMode = () => {
@@ -50,17 +48,21 @@ class MainBackground extends React.PureComponent {
             if (props)
             return (
                 <Fragment>
-                    <section className = {`element${this.props.sectionNumber}`} ref={this.refSectionFunc}
-                    data-class = 'editable' onClick = {this.changeMode}>
-                        <BackgroundComponent 
-                            mode = {this.props.mode} 
-                            {...props} sectionNumber = {this.props.sectionNumber} 
-                        >
-                            {children.map(item => item.component) || null}
-                        </BackgroundComponent>
-                        {!this.state.editStart && 
-                            <div className = 'warningEdit'><p>Click for start edit</p></div>
-                        }
+                    <section
+                        key = {this.props.sectionNumber}
+                        className = {`element${this.props.sectionNumber}`} 
+                        ref={this.refSectionFunc}
+                        data-class = 'editable' 
+                        onClick = {this.changeMode}>
+                            <BackgroundComponent 
+                                mode = {this.props.mode} 
+                                {...props} sectionNumber = {this.props.sectionNumber} 
+                            >
+                                {children.map(item => item.component) || null}
+                            </BackgroundComponent>
+                            {!this.state.editStart && 
+                                <div className = 'warningEdit'><p>Click for start edit</p></div>
+                            }
                     </section>
                 </Fragment>
             );
@@ -71,10 +73,15 @@ class MainBackground extends React.PureComponent {
             if (props)
             return (
                 <Fragment>
-                    <section ref={this.refSectionFunc} data-class = 'production'>
-                        <BackgroundComponent {...props}
+                    <section 
+                        key = {this.props.sectionNumber}
+                        ref={this.refSectionFunc} 
+                        data-class = 'production'
+                    >
+                        <BackgroundComponent
+                            key = {this.props.sectionNumber*2}
                             mode = {this.props.mode}
-                            sectionNumber = {this.props.sectionNumber} 
+                            {...props} sectionNumber = {this.props.sectionNumber} 
                         >
                             {children.map(item => item.component) || null}
                         </BackgroundComponent>

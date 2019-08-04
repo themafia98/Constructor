@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const CreateProject = props => {
 
@@ -36,6 +37,18 @@ const CreateProject = props => {
         <input onClick = {props.cbCancel} type ='button' value = 'Cancel' />
     </div>
     )
+}
+
+CreateProject.propTypes = {
+    typeClassName: PropTypes.bool, // type color className
+    name: PropTypes.string, // name of project
+    warningType: PropTypes.string, // errors
+    warningLengthMax: PropTypes.string, // error max length
+    warningLengthMin: PropTypes.string, // error min length
+    dissabled: PropTypes.bool, // buttons dissabled
+    validType: PropTypes.bool, // valid or no
+    cbValidateName: PropTypes.func.isRequired, // callback validate
+    cbAddNewProject: PropTypes.func.isRequired, // callback add new project
 }
 
 export default CreateProject;

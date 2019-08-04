@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 
 const ImageInstruments = props => {
 
@@ -81,6 +82,17 @@ const ImageInstruments = props => {
         </Fragment>
     )
 
+}
+
+ImageInstruments.propTypes = {
+    componentStats: PropTypes.object.isRequired, // object with current component data
+    cbSetWidth: PropTypes.func.isRequired, // callback set width
+    cbSetHeight: PropTypes.func.isRequired, // callback set height
+    cbSetBorderRadius: PropTypes.func.isRequired, // callback set border-radius
+    cbSetOpacity: PropTypes.func.isRequired, // callback set opacity
+    cbLoadFile: PropTypes.func.isRequired, // callback load file
+    cbSearch: PropTypes.func.isRequired, // callback search
+    cbDelete: PropTypes.func.isRequired, // callback delete
 }
 
 export default ImageInstruments;

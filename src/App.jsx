@@ -14,8 +14,7 @@ import Production from './Pages/Production/Production';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
 import ErrorPage from './components/ErrorCatch/ErrorPage';
-
-// require('es6-promise').polyfill();
+import ScrollMove from './components/scroll/ScrollMove';
 
 class App extends React.PureComponent {
 
@@ -43,7 +42,7 @@ class App extends React.PureComponent {
 
     render(){
         if (this.state.firebaseLoadState){
-        return (
+            return (
                 <Switch>
                     <Route
                         path = {'/'} exact
@@ -54,13 +53,14 @@ class App extends React.PureComponent {
                         path = {'/Cabinet/About'}
                         render = {(props) => <About {...props} config = {this.props.config} />}
                     />
-                    <Route path = {'/Cabinet/Build/:param'} exact component = {Build}/>
+                    <Route path = {'/Cabinet/Build/:param'} exact 
+                        render = {(props) => <ScrollMove><Build {...props}></Build></ScrollMove>}
+                    />
                     <Route path = {'/Cabinet/Build/:param/Production'} exact component = {Production} />
                     <Route path = {'*'} component = {Index} />
                     <Route path = {'/crashPage'} component = {ErrorPage} />
                 </Switch>
-
-        )
+            )
         } else return <Loader path = { '/img/loading.gif'} type = 'application' />
     }
 }

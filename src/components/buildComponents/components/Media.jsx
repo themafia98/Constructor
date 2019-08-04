@@ -3,16 +3,20 @@ import PropTypes from 'prop-types';
 import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
-const WrapperMedia = styled.div.attrs(props => ({
-    style: {
-        zIndex: props.indexZ ? '9999' : null,
-        left: props.coordX ? props.coordX : '45%',
-        top:  props.coordY ? props.coordY : '0%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: props.mode === 'dev' ? '40px' : null
-}}))`
+const WrapperMedia = styled.div.attrs(props => {
+    if (props.mode !== 'production')
+    return ({
+        style: {
+            zIndex: props.indexZ ? '9999' : null,
+            left: props.coordX ? props.coordX : '45%',
+            top:  props.coordY ? props.coordY : '0%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: props.mode === 'dev' ? '40px' : null
+        }
+    })
+})`
     width: 30%;
     height: 50%;
     position: absolute;
@@ -24,6 +28,11 @@ const Media = styled.iframe`
     width: 100%;
     height: 100%;
     z-index: ${props => props.zIndex ? '0' : '-1'};
+`;
+
+const ProductionStyle = styled(WrapperMedia)`
+    left: ${props => props.coordX ? props.coordX : '45%'};
+    top:  ${props => props.coordY ? props.coordY : '0%'};
 `;
 
 class MediaComponent extends React.PureComponent {
@@ -76,7 +85,6 @@ class MediaComponent extends React.PureComponent {
     saveCoords = event => {
         if (event.nativeEvent.which !== 1) return false;
         const element = this.refMedia.getBoundingClientRect();
-        console.log(element);
         const cords = {
             left: element.left,
             top: element.top,
@@ -197,7 +205,7 @@ class MediaComponent extends React.PureComponent {
             )
         } else if (this.props.mode === 'production'){
             return (
-                <WrapperMedia
+                <ProductionStyle
                     ref = {this.refMediaComponent}
                     indexZ = {this.state.startDragNdrop}
                     coordX = {this.state.posMedia ? this.state.posMedia.x : null}
@@ -215,7 +223,7 @@ class MediaComponent extends React.PureComponent {
                         allowfullscreen
                     ></Media> : null
                 }
-                </WrapperMedia>
+                </ProductionStyle>
             )
         }
     }

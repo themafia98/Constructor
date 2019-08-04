@@ -17,7 +17,8 @@ class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
         instrumentPanel:  PropTypes.object.isRequired, /** @Settings for panel and data about component */
-        editComponentName: PropTypes.string /** @Name editable component */
+        editComponentName: PropTypes.string, /** @Name editable component */
+        eventStreamBuild: PropTypes.object.isRequired // stream events
     };
 
     state = {
@@ -28,7 +29,7 @@ class InstrumentsPanel extends React.PureComponent {
 
 
     closePanel = event => {
-        eventEmitter.emit('EventClosePanel', {close: false});
+        this.props.eventStreamBuild.emit('EventClosePanel', {close: false});
     };
 
     setSize = event => {
@@ -211,7 +212,7 @@ class InstrumentsPanel extends React.PureComponent {
     };
 
     redirectSaveChanges = event => {
-        eventEmitter.emit("EventSaveChangesComponent", {
+        this.props.eventStreamBuild.emit("EventSaveChangesComponent", {
             ...this.state.componentStats,
             id: this.state.componentStats.id,
             type: this.state.componentStats.type,
@@ -222,7 +223,7 @@ class InstrumentsPanel extends React.PureComponent {
 
     saveChanges = event => {
 
-            eventEmitter.emit("EventSaveChangesComponent", {
+        this.props.eventStreamBuild.emit("EventSaveChangesComponent", {
                 ...this.state.componentStats,
                 id: this.state.componentStats.id,
                 type: this.state.componentStats.type,
@@ -234,7 +235,7 @@ class InstrumentsPanel extends React.PureComponent {
     }
 
     deleteComponent = event => {
-        eventEmitter.emit('EventDeleteComponent', {
+        this.props.eventStreamBuild.emit('EventDeleteComponent', {
             id: this.state.componentStats.id,
             targetSection: this.state.componentStats.targetSection,
             type: this.state.componentStats.type
@@ -244,7 +245,7 @@ class InstrumentsPanel extends React.PureComponent {
     search = event => {
 
         let {id} = this.state.componentStats;
-        eventEmitter.emit('EventModalSearchOn', {idComponent: id, mode: this.state.componentStats.type});
+        this.props.eventStreamBuild.emit('EventModalSearchOn', {idComponent: id, mode: this.state.componentStats.type});
 
         event.stopPropagation();
     };

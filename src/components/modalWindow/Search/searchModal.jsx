@@ -1,6 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Icon from '../../Icon/icon';
 import Loader from '../../loading/Loader';
+
 const SearchModal = props => {
 
     const refSearch = React.createRef();
@@ -50,5 +53,15 @@ const SearchModal = props => {
 
     )
 }
+
+SearchModal.propTypes = {
+    modalSearchMode: PropTypes.string.isRequired, // search mode
+    error: PropTypes.string, // about error
+    dissabled: PropTypes.bool, // dissabled buttons
+    images: PropTypes.array, // array of images
+    cbCancel: PropTypes.func.isRequired, // callback cancel
+    cbShowImage: PropTypes.func.isRequired, // callback show image
+    cbSetSelectedImage: PropTypes.func.isRequired, // callback show image
+};
 
 export default SearchModal;

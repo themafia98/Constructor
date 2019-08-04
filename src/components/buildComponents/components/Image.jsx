@@ -4,12 +4,16 @@ import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
 
-const WrapperImg = styled.div.attrs(props => ({
-    style: {
-        zIndex: props.indexZ ? '9999' : null,
-        left: props.coordX ? props.coordX : '45%',
-        top:  props.coordY ? props.coordY : '0%',
-}}))`
+const WrapperImg = styled.div.attrs(props => {
+    if (props.mode !== 'production')
+    return ({
+        style: {
+            zIndex: props.indexZ ? '9999' : null,
+            left: props.coordX ? props.coordX : '45%',
+            top:  props.coordY ? props.coordY : '0',
+        }
+    })
+})`
     width: ${props => props.size ? props.size.w + '%' : '30%'};
     height: ${props => props.size ? props.size.h + '%' : '50%'};
     position: absolute;
@@ -22,6 +26,11 @@ const ImageStyle = styled.img`
     border-radius: ${props => props.borderRadius}px;
     pointer-events: none;
     position: absolute;
+`;
+
+const ProductionStyle = styled(WrapperImg)`
+    left: ${props => props.coordX ? props.coordX : '50%'};
+    top:  ${props => props.coordY};
 `;
 
 class Image extends React.PureComponent {
@@ -44,7 +53,7 @@ class Image extends React.PureComponent {
         borderRadius: this.props.borderRadius || 0,
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
-        path: this.props.path,
+        path: this.props.image ? this.props.image : this.props.path,
         size: this.props.size ? this.props.size : {w: 30, h: 50},
         shiftCoords: null,
         posImage: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
@@ -238,9 +247,10 @@ class Image extends React.PureComponent {
             )
         } else if (this.props.mode === 'production'){
             return (
-                <WrapperImg
+                <ProductionStyle
                 ref = {this.refImageComponent}
                 size = {this.state.size}
+                mode = {this.props.mode}
                 coordX = {this.state.posImage ? this.state.posImage.x : null}
                 coordY = {this.state.posImage ? this.state.posImage.y : null}
                 indexZ = {this.state.startDragNdrop}
@@ -252,7 +262,7 @@ class Image extends React.PureComponent {
                         src = {this.state.path}
                         alt = 'img'
                     />
-                </WrapperImg>
+                </ProductionStyle>
             )
         }
     }

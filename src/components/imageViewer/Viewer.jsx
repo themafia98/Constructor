@@ -1,6 +1,5 @@
 import React,{useState} from 'react';
-import eventEmitter from '../../EventEmitter';
-
+import PropTypes from 'prop-types';
 import './Viewer.scss';
 
 function Viewer(props){
@@ -9,7 +8,7 @@ function Viewer(props){
     let [path] = useState(props.path);
 
     const closeViewer = event => {
-        eventEmitter.emit("EventView", { action: false, target: null});
+        props.eventStreamBuild.emit("EventView", { action: false, target: null});
         event.stopPropagation();
     }
 
@@ -27,6 +26,12 @@ function Viewer(props){
             }
         </div>
     )
+}
+
+Viewer.propTypes = {
+    eventStreamBuild: PropTypes.object.isRequired, // events stream
+    mode: PropTypes.string.isRequired, // use mode
+    path: PropTypes.string.isRequired // path to data component
 }
 
 export default Viewer;

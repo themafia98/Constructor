@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import eventEmitter from '../../EventEmitter';
 import {withRouter, Redirect} from 'react-router-dom';
 
@@ -60,6 +61,12 @@ function Item(props) {
                     value = 'Production' />
             </div>
         )
+}
+
+Item.propTypes = {
+    id: PropTypes.number.isRequired, // id item
+    name: PropTypes.string.isRequired, // item name
+    type: PropTypes.string.isRequired, // item type
 }
 
 export default withRouter(Item);

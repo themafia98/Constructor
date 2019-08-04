@@ -1,9 +1,13 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+
 
 import withFirebase from '../../components/firebaseHOC';
+
 import Header from '../../components/header/Header';
+import Loader from '../../components/loading/Loader';
 
 import './about.scss';
 
@@ -22,11 +26,13 @@ class About extends React.PureComponent {
     };
 
     render(){
-        if (this.props.firebase.getCurrentUser()) {
+
+        let user = this.props.firebase.getCurrentUser();
+        if (user && this.props.idUser) {
             const { config } = this.state;
             return (
                 <Fragment>
-                    <Header title = {config.title} />
+                    <Header title = {config.title} idUser = {user.uid} />
                     <section className = 'About'>
                         <div className = 'container'>
                             <div className = 'col-12'>
@@ -40,10 +46,22 @@ class About extends React.PureComponent {
                     </section>
                 </Fragment>
             )
-        } else return <Redirect to = { '/'} />
+        } else if (!user) return <Redirect to = { '/'} />
+        else return <Loader path = '/img/loading.gif' type = 'About' />
 
     }
 
+    componentDidUpdate = (prevProps, prevState) => {
+        console.log('componentDidUpdate')
+    }
+    
+
 }
 
-export default withFirebase(About);
+const mapStateToProps = (state) => {
+    return {
+      idUser: state.cabinet.idUser,
+    }
+  };
+
+export default connect(mapStateToProps)(withFirebase(About));

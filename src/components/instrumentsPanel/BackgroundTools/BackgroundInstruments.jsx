@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {SketchPicker} from 'react-color';
 
 const BackgroundInstruments = props => {
@@ -33,6 +34,13 @@ const BackgroundInstruments = props => {
         </Fragment>
     )
 
+}
+
+BackgroundInstruments.propTypes = {
+    componentStats: PropTypes.object.isRequired, // object with current component data
+    cbSetColor: PropTypes.func.isRequired, // callback set color
+    cbHandleChangeComplete: PropTypes.func.isRequired, // callback picker state change
+    cbSearch: PropTypes.func.isRequired, // callback search
 }
 
 export default BackgroundInstruments;

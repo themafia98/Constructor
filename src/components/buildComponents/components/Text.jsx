@@ -5,12 +5,18 @@ import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 import './components.scss';
 
-const WrapperText = styled.div.attrs(props => ({
-    style: {
-        zIndex: props.indexZ ? '9999' : null,
-        left: props.coordX ? props.coordX : '50%',
-        top:  props.coordY,
-}}))`
+
+
+const WrapperText = styled.div.attrs(props => {
+    if (props.mode !== 'production')
+    return ({
+        style: {
+            zIndex: props.indexZ ? '9999' : null,
+            left: props.coordX ? props.coordX : '50%',
+            top:  props.coordY,
+        }
+    })
+})`
     position: absolute;
     font-size: ${props => props.size ? props.size : '120px'};
     color: ${props => props.textColor};
@@ -25,9 +31,17 @@ const TextStyle = styled.p`
     font-family: ${props => props.font};
     text-align: center;
     margin: 0;
-    -moz-user-select: none;
-    -khtml-user-select: none;
     user-select: none;
+`;
+
+
+const ProductionStyle = styled(WrapperText)`
+    left: ${props => props.coordX ? props.coordX : '50%'};
+    top:  ${props => props.coordY};
+
+    @media ${`screen and (max-width: 500px)`} {
+        font-size: 50px;
+      }
 `;
 
 class TextComponent extends React.PureComponent {
@@ -39,7 +53,6 @@ class TextComponent extends React.PureComponent {
         ]).isRequired,
         targetSection: PropTypes.string.isRequired,
         sizeParentBox: PropTypes.object.isRequired,
-        children: PropTypes.string,
         mode: PropTypes.string.isRequired,
     }
 
@@ -55,7 +68,7 @@ class TextComponent extends React.PureComponent {
         position: this.props.coords,
         font: this.props.font ? this.props.font : 'Arial',
         startDragNdrop: false,
-        contentText: this.props.children ? this.props.children : null,
+        contentText: this.props.content ? this.props.content : null,
         sectionNumber: 0,
         getSizeBool: false
     }
@@ -223,8 +236,9 @@ class TextComponent extends React.PureComponent {
             ) 
         } else if (this.props.mode === 'production'){
             return (
-                <WrapperText
+                <ProductionStyle
                     ref  = {this.refTextComponent}
+                    mode = {this.props.mode}
                     textColor = {this.state.colorText ? this.state.colorText : 'red'}
                     size = {this.state.sizeText ? this.state.sizeText + 'px' : '120px'}
                     coordX = {this.state.position ? this.state.position.x : null}
@@ -232,7 +246,7 @@ class TextComponent extends React.PureComponent {
                     indexZ = {this.state.startDragNdrop}
                 >
                     <TextStyle font = {this.state.font}>{this.state.contentText}</TextStyle>
-                </WrapperText>
+                </ProductionStyle>
             )
         }
 

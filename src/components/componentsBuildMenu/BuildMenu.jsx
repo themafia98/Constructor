@@ -41,7 +41,7 @@ class BuildMenu extends React.PureComponent {
             id: id,
             targetSection: this.props.editComponentName,
         };
-        eventEmitter.emit('EventBuildComponents',{
+        this.props.eventStreamBuild.emit('EventBuildComponents',{
             componentsPattern: componentsPatternText,
             type: componentsPatternText.type,
             component: <TextComponent
@@ -178,7 +178,7 @@ class BuildMenu extends React.PureComponent {
             id: `Section${id}`,
             type: 'background',
         };
-        eventEmitter.emit('EventNewSection', {
+        this.props.eventStreamBuild.emit('EventNewSection', {
             componentsPattern: componentsPatternBackground,
             component: <BackgroundComponent
                             {...componentsPatternBackground}

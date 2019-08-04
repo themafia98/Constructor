@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Confirm.scss';
 
@@ -23,6 +24,11 @@ const Confirm = props => {
             </div>
         </div>
     )
+}
+
+Confirm.propTypes = {
+    cbSaveChanges: PropTypes.func.isRequired, // callback
+    cbCancelSave: PropTypes.func.isRequired // callback
 }
 
 export default Confirm;

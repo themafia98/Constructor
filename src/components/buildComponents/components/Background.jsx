@@ -114,10 +114,8 @@ class BackgroundComponent extends React.PureComponent {
     }
 
     componentDidUpdate = () => {
-        console.log('update');
         this.saveDataParent();
     }
-
 
     componentDidMount = () => {
         this.saveDataParent();

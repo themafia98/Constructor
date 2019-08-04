@@ -1,4 +1,5 @@
 import React,{Fragment} from 'react';
+import PropTypes from 'prop-types';
 import {SketchPicker} from 'react-color';
 
 
@@ -87,5 +88,17 @@ const InputInstruments = props => {
         </Fragment>
     )
 };
+
+InputInstruments.propTypes = {
+    componentStats: PropTypes.object.isRequired, // object with current component data
+    cbSetColor: PropTypes.func.isRequired, // callback set color
+    cbHandleChangeComplete: PropTypes.func.isRequired, // callback state color picker
+    cbSetWidth: PropTypes.func.isRequired, // callback set width
+    cbSetHeight: PropTypes.func.isRequired, // callback set height
+    cbSetSize: PropTypes.func.isRequired, // callback set size
+    cbSetBorderRadius: PropTypes.func.isRequired, // callback set border-radius
+    cbSetContent: PropTypes.func.isRequired, // callback set content input
+    cbDelete: PropTypes.func.isRequired, // callback delete
+}
 
 export default InputInstruments;

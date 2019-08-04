@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import eventEmitter from '../../EventEmitter';
+
 import './registration.scss';
 
 import withFirebase from '../../components/firebaseHOC';
@@ -10,6 +10,7 @@ class Registration extends React.PureComponent {
 
     static propTypes = {
         firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
+        indexStream: PropTypes.object.isRequired /** @Events stream object */
     }
 
     state = {
@@ -36,7 +37,7 @@ class Registration extends React.PureComponent {
             firebase.db.collection("users").doc(response.user.uid).set({
                 'projects': [],
                 'email': email,
-            }).then(() => eventEmitter.emit('EventRegistrationCorrect', response))
+            }).then(() => this.props.indexStream.emit('EventRegistrationCorrect', response))
         })
         .catch((error) => {
         console.error(error.message);

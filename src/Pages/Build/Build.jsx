@@ -3,10 +3,7 @@ import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import eventEmitter from '../../EventEmitter';
-
-
-import {animateScroll as scroll, scroller } from "react-scroll";
-
+import EventBuild from 'events';
 import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
 
 import {middlewareDeleteProjectComponent} from '../../redux/middleware/middlewareDelete';
@@ -15,7 +12,7 @@ import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
 
 import AdditionalTools from '../../components/additionalTools/additionalTools';
-import BuilderComponents from '../../components/componentsBuilder/BuilderComponents';
+import builderHOC from '../../components/builderHOC';
 import Controllers from '../../components/controllers/controllers';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
@@ -24,6 +21,11 @@ import BuildMenu from '../../components/componentsBuildMenu/BuildMenu';
 
 import './build.scss';
 
+import Input from '../../components/buildComponents/components/Input';
+import Media from '../../components/buildComponents/components/Media';
+import Image from '../../components/buildComponents/components/Image';
+import TextComponent from '../../components/buildComponents/components/Text';
+import BackgroundComponent from '../../components/buildComponents/components/Background';
 
 class Build extends React.PureComponent {
 
@@ -41,7 +43,6 @@ class Build extends React.PureComponent {
             idProject: parseInt(this.props.match.params.param),
             editStart: false,
             isChange: false,
-            position: 0,
             isLoadComponents: true,
             projectEmpty: false,
             componentStats: {},
@@ -50,12 +51,6 @@ class Build extends React.PureComponent {
                 colorPickerActive: false,
                 instrumentActive: false,
             },
-            scrollConfig: {
-                duration: 1000,
-                delay: 50,
-                smooth: true,
-                offset: -60, // Scrolls to element -80 pixels down the page
-            },
             editComponentName:  null,
             menuActive: false,
             modalSearch: false,
@@ -63,6 +58,9 @@ class Build extends React.PureComponent {
             modalViewer: {action: false, image: null, mode: null },
             sizeParentBox: null,
         }
+
+        eventEmitterBuild = new EventBuild(); // events stream for controllers
+        timer = null; // save timer
 
     modalSearchOn = itemEvent => {
         const modeHave = itemEvent.hasOwnProperty('mode');
@@ -159,24 +157,28 @@ class Build extends React.PureComponent {
 
         array.forEach(item => {
             if (item.type !== 'background'){
-                let sizeParentBox = {
-                    width: this.mainComponent.data.width,
-                    height: this.mainComponent.data.height,
-                    top: this.mainComponent.data.top,
-                    left: this.mainComponent.data.left,
+
+                let props = {
+                    sizeParentBox: {
+                        width: this.mainComponent.data.width,
+                        height: this.mainComponent.data.height,
+                        top: this.mainComponent.data.top,
+                        left: this.mainComponent.data.left,
+                    },
+                    ...item,
+                    mode: 'dev',
                 }
-                let component =
-                    <BuilderComponents
-                        sizeParentBox = {{...sizeParentBox}}
-                        {...item}
-                        mode = 'dev'
-                        key = {`${item.type}${item.id}`}
-                    />;
+                let Component = null;
+                    if (item.type === 'background') Component = BackgroundComponent;
+                    else if (item.type === 'input') Component = Input;
+                    else if (item.type === 'media') Component = Media;
+                    else if (item.type === 'image') Component = Image;
+                    else if (item.type === 'text') Component = TextComponent;
 
                 const patternJSX = {
                     id: item.id,
                     targetSection: item.targetSection,
-                    component: component
+                    component: builderHOC(props)(Component)
                 };
                 componentsFromDB.push(patternJSX);
             }
@@ -203,11 +205,11 @@ class Build extends React.PureComponent {
             });
     };
 
-    timer = null;
-
     saveChangesComponent = itemEvent => {
-        if (this.timer) clearTimeout(this.timer);
+
         const {ms} = itemEvent;
+        if (this.timer) clearTimeout(this.timer);
+
         this.timer = setTimeout(() => {
             const {currentProjectsData} = this.props.userData;
             const {userData} = this.props;
@@ -225,11 +227,8 @@ class Build extends React.PureComponent {
                 components: _components,
                 sectionsProject: [...currentProjectsData.sectionsProject],
                 idProject: this.state.idProject
-            }))
-            .then(() => {
-                // this.setState({...this.state,isChange: false});
-                eventEmitter.emit('EventRedirectConfirm', {false: false, confirm: false});
-            });
+            })).then(() =>
+                eventEmitter.emit('EventRedirectConfirm', {false: false, confirm: false}));
         },ms);
     };
 
@@ -238,7 +237,7 @@ class Build extends React.PureComponent {
         this.mainComponent = {data: node.getBoundingClientRect(), node: node} : node;
 
     addNewSection = eventItem => {
- 
+
         const {userData} = this.props;
         const {currentProjectsData} = userData;
 
@@ -252,8 +251,7 @@ class Build extends React.PureComponent {
                     eventItem.componentsPattern.id
                 ],
                 idProject: this.state.idProject
-        }))
-        .then(() => {
+        })).then(() => {
             this.setState({
                 ...this.state,
                 componentJSX:[
@@ -263,58 +261,6 @@ class Build extends React.PureComponent {
             })
         });
 }
-
-    moveLocation = event => {
-        if (!this.state.modalSearch){ 
-            const {sectionsProject} = this.props.userData.currentProjectsData;
-            const count = sectionsProject.length-1;
-            const moveDown = this.state.position < count && event.deltaY > 0;
-            const moveUp = event.deltaY < 0 && this.state.position > 0;
-
-
-            let sizeParentBox = {
-                width: this.mainComponent.data.width,
-                height: this.mainComponent.data.height,
-                top: this.mainComponent.data.top,
-                left: this.mainComponent.data.left,
-            }
-
-            if (moveDown){
-                this.setState({
-                    ...this.state,
-                    position: this.state.position + 1,
-                    sizeParentBox: sizeParentBox,
-                    instrumentPanel: {
-                        ...this.state.instrumentPanel,
-                        instrumentActive: false,
-                    },
-                }, () => scroller.scrollTo(`element${this.state.position}`,this.state.scrollConfig));
-            }  else if (moveUp){
-                if (this.state.position === 1){
-                    this.setState({
-                        ...this.state,
-                        position: this.state.position - 1,
-                        sizeParentBox: sizeParentBox,
-                         instrumentPanel: {
-                            ...this.state.instrumentPanel,
-                            instrumentActive: false,
-                        },
-                    }, () => scroll.scrollToTop());
-                } else {
-                    this.setState({
-                        ...this.state,
-                        position: this.state.position - 1,
-                        sizeParentBox: sizeParentBox,
-                        instrumentPanel: {
-                            ...this.state.instrumentPanel,
-                            instrumentActive: false,
-                        },
-                    }, () => scroller.scrollTo(`element${this.state.position}`,this.state.scrollConfig));
-                }
-            }
-        }
-    }
-
 
     render(){
 
@@ -326,13 +272,12 @@ class Build extends React.PureComponent {
         const section = currentProjectsData.sectionsProject;
 
         if (userData.active && currentProjectsData.loadProject){
-
+            console.log(userData);
             return (
                 <Fragment>
-                    <Header key = 'Header' title = "Constructor"  />
+                    <Header key = 'Header' title = "Constructor" idUser = {userData.idUser}  />
                     <div
                         ref = {this.mainRefComponent} 
-                        onWheel = {this.moveLocation}
                         onMouseMove = {this.showAddSection} 
                         className = 'Build' 
                         key = 'Build'
@@ -348,11 +293,15 @@ class Build extends React.PureComponent {
                         }
                             <BuildMenu
                                 key = 'buildMenu'
+                                eventStreamBuild = {this.eventEmitterBuild}
                                 countSection = {this.state.componentJSX.length * 5}
                                 mode = "section"
                                 className = 'menu'
                             />
-                        {instrumentActive && <AdditionalTools key = 'tools' {...this.state} />}
+                        {instrumentActive && <AdditionalTools
+                            eventStreamBuild = {this.eventEmitterBuild}
+                            key = 'tools' {...this.state} 
+                            />}
                         {section.length && <Section mode = 'dev' key = 'section' {...this.state} userData = {userData} />}
                     </div>
                 </Fragment>
@@ -378,13 +327,15 @@ class Build extends React.PureComponent {
 
         if (userData.active && !currentProjectsData.loadProject) {
             const current =  userData.projects.find(item => item.id === this.state.idProject)
-            current ?
-            this.props.dispatch(loadCurrentProjectAction({
-                id: current.id,
-                typeProject: current.type,
-                sectionsProject: [...current.sectionsProject],
-                components: [...current.components]
-            })) : this.setState({...this.state, projectEmpty: true, sizeParentBox: sizeParentBox});
+            if (current){
+                this.props.dispatch(loadCurrentProjectAction({
+                    id: current.id,
+                    typeProject: current.type,
+                    sectionsProject: [...current.sectionsProject],
+                    components: [...current.components]
+                }))
+
+            } else this.setState({...this.state, projectEmpty: true, sizeParentBox: sizeParentBox});
         }
         if (currentProjectsData.loadProject && isLoadComponents) {
             if (this.state.sizeParentBox === null && sizeParentBox !== null)
@@ -393,6 +344,7 @@ class Build extends React.PureComponent {
                 sizeParentBox: sizeParentBox
             }, () => this.addComponentsFromBD([...currentProjectsData.components]));
             else this.addComponentsFromBD([...currentProjectsData.components]);
+            eventEmitter.emit('EventSetState',currentProjectsData.sectionsProject.length-1);
         }
     }
 
@@ -411,15 +363,15 @@ class Build extends React.PureComponent {
             }));
         };
 
-        eventEmitter.on('EventBuildComponents', this.addComponent);
-        eventEmitter.on('EventDeleteComponent', this.deleteComponent);
-        eventEmitter.on('EventNewSection', this.addNewSection);
-        eventEmitter.on('EventSaveChangesComponent', this.saveChangesComponent);
-        eventEmitter.on('EventClosePanel', this.closePanel);
-        eventEmitter.on('EventModalSearchOn', this.modalSearchOn);
         eventEmitter.on('EventInstrumentPanel', this.openInstrument);
-        eventEmitter.on('EventView', this.ViewerSwitch);
         eventEmitter.on('EventModeEdit', this.workModeEdit);
+        this.eventEmitterBuild.on('EventBuildComponents', this.addComponent);
+        this.eventEmitterBuild.on('EventDeleteComponent', this.deleteComponent);
+        this.eventEmitterBuild.on('EventNewSection', this.addNewSection);
+        this.eventEmitterBuild.on('EventSaveChangesComponent', this.saveChangesComponent);
+        this.eventEmitterBuild.on('EventClosePanel', this.closePanel);
+        this.eventEmitterBuild.on('EventModalSearchOn', this.modalSearchOn);
+        this.eventEmitterBuild.on('EventView', this.ViewerSwitch);
     }
 
     componentWillUnmount = () => {
@@ -427,15 +379,15 @@ class Build extends React.PureComponent {
         let {userData} = this.props;
         if (userData.active)  this.props.dispatch(exitProjectAction(true));
 
-        eventEmitter.off('EventBuildComponents', this.addComponent);
-        eventEmitter.off('EventDeleteComponent', this.deleteComponent);
-        eventEmitter.off('EventNewSection', this.addNewSection);
-        eventEmitter.off('EventSaveChangesComponent', this.saveChangesComponent);
-        eventEmitter.off('EventModalSearchOn', this.modalSearchOn);
-        eventEmitter.off('EventClosePanel', this.closePanel);
         eventEmitter.off('EventInstrumentPanel', this.openInstrument);
-        eventEmitter.off('EventView', this.ViewerSwitch);
         eventEmitter.off('EventModeEdit', this.workModeEdit);
+        this.eventEmitterBuild.off('EventBuildComponents', this.addComponent);
+        this.eventEmitterBuild.off('EventDeleteComponent', this.deleteComponent);
+        this.eventEmitterBuild.off('EventNewSection', this.addNewSection);
+        this.eventEmitterBuild.off('EventSaveChangesComponent', this.saveChangesComponent);
+        this.eventEmitterBuild.off('EventModalSearchOn', this.modalSearchOn);
+        this.eventEmitterBuild.off('EventClosePanel', this.closePanel);
+        this.eventEmitterBuild.off('EventView', this.ViewerSwitch);
     }
 }
 

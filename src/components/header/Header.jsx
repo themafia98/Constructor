@@ -24,6 +24,7 @@ class Header extends React.Component {
     };
 
     state = {
+        idUser: this.props.idUser,
         title: this.props.title,
         isChange: false,
         redirectConfirm: false,
@@ -55,7 +56,8 @@ class Header extends React.Component {
     };
 
     logOut = event => {
-        if (this.props.idUser)
+        console.log(this.state);
+        if (this.state.idUser)
             this.props.dispatch(middlewareLogOutUser(this.props.idUser));
         event.stopPropagation();
     };
@@ -77,7 +79,6 @@ class Header extends React.Component {
     redirectCabinet = event => {
         if (event !== 'cancelMode'){
             const isPath = this.props.location.pathname !== this.state.redirectCabinet.path;
-            console.log(isPath);
             if (isPath && this.state.isChange === false)
             this.setState({
                 redirectConfirm: false,

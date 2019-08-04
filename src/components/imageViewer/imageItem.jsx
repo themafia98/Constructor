@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import eventEmitter from '../../EventEmitter';
 
 const ImageItem = props => {
@@ -24,6 +25,16 @@ const ImageItem = props => {
             />
         </div>
     )
+}
+
+ImageItem.propTypes = {
+    id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
+    urls: PropTypes.object, // data with image path
+    isFull: PropTypes.bool, // mode view
+    urlContent: PropTypes.string // content path
 }
 
 export default ImageItem;

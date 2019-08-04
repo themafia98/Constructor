@@ -4,15 +4,24 @@ import eventEmitter from '../../../EventEmitter';
 import styled from 'styled-components';
 
 
-const InputComponent = styled.input.attrs(props => ({
-    style: {
-        zIndex: props.indexZ ? '9999' : null,
-        left: props.coordX ? props.coordX : '45%',
-        top:  props.coordY ? props.coordY : '0%',
-}}))`
+const InputComponent = styled.input.attrs(props => {
+    if (props.mode !== 'production')
+    return ({
+        style: {
+            zIndex: props.indexZ ? '9999' : null,
+            left: props.coordX ? props.coordX : '45%',
+            top:  props.coordY ? props.coordY : '0%',
+        }
+    })
+})`
     width: ${props => props.size ? props.size.w + 'px' : null};
     height: ${props => props.size ? props.size.h + 'px' : null};
     position: absolute;
+`;
+
+const ProductionStyle = styled(InputComponent)`
+    left: ${props => props.coordX ? props.coordX : '45%'};
+    top:  ${props => props.coordY ? props.coordY : '0%'};
 `;
 
 
@@ -162,7 +171,6 @@ class Input extends React.PureComponent {
                     onMouseLeave = {this.stopDragNdrop}
                     onMouseUp = {this.stopDragNdrop}
                     onDragStart = {this.stop}
-                    onWheel = {this.weelResizeText}
                     coordX = {this.state.posInput ? this.state.posInput.x : null}
                     coordY = {this.state.posInput ? this.state.posInput.y : null}
                     indexZ = {this.state.startDragNdrop}
@@ -172,7 +180,7 @@ class Input extends React.PureComponent {
         } else if (this.props.mode === 'production'){
 
             return (
-                <InputComponent
+                <ProductionStyle
                     type = 'button'
                     value = 'Input'
                     ref = {this.refInputComponent}

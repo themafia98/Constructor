@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MainBackground from './MainBackground/MainBackground';
 
 
 const Section = props => {
-
     if (props.mode === 'dev'){
     const {currentProjectsData} = props.userData;
     const section = currentProjectsData.sectionsProject;
@@ -20,9 +20,7 @@ const Section = props => {
                             id = {item}
                             sectionNumber = {i}
                             mode = {props.mode}
-                        >
-                            {{targetSection: props.editComponentName}}
-                        </MainBackground>
+                        />
                 );
             });
     } else if (props.mode === 'production'){
@@ -38,13 +36,21 @@ const Section = props => {
                         countComponents = {props.componentsProdJSX.length}
                         sizeParentBox = {props.sizeParentBox}
                         id = {item}
+                        sectionNumber = {i}
                         mode = {props.mode}
-                    >
-                        {{targetSection: props.editComponentName}}
-                    </MainBackground>
+                    />
             );
         });
     }
+}
+
+Section.propTypes = {
+    componentJSX: PropTypes.array, /// array with jsx components
+    editComponentName: PropTypes.string, // name current edit component
+    menuActive: PropTypes.bool, // build menu
+    mode: PropTypes.string.isRequired, // curent mode
+    sizeParentBox: PropTypes.object, // data with size main component
+    userData: PropTypes.object // users data
 }
 
 export default Section;

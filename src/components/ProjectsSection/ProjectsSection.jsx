@@ -1,7 +1,5 @@
 import React from 'react';
-
 import List from '../List/List.jsx';
-
 import './ProjectsSection.scss';
 
 const ProjectsSection = props => {
@@ -13,7 +11,7 @@ const ProjectsSection = props => {
                             <div className = 'projectsList__about'>
                                 <h3>Your Projects</h3>
                             </div>
-                            {List ? <List /> : null}
+                            <List />
                         </div>
                     </div>
                 </section>

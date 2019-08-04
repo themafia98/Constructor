@@ -5,11 +5,19 @@ import {Redirect} from 'react-router-dom';
 import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
 
 import Section from '../../components/buildComponents/section';
-import BuilderComponents from '../../components/componentsBuilder/BuilderComponents';
+import builderHOC from '../../components/builderHOC';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
 import withFirebase from '../../components/firebaseHOC';
 import {connect} from 'react-redux';
+
+
+
+import Input from '../../components/buildComponents/components/Input';
+import Media from '../../components/buildComponents/components/Media';
+import Image from '../../components/buildComponents/components/Image';
+import TextComponent from '../../components/buildComponents/components/Text';
+import BackgroundComponent from '../../components/buildComponents/components/Background';
 
 import './production.scss';
 
@@ -34,25 +42,29 @@ class Production extends React.PureComponent {
 
         array.forEach(item => {
 
-                let sizeParentBox = {
+            let props = {
+                sizeParentBox: {
                     width: this.prodRef.data.width,
                     height: this.prodRef.data.height,
                     top: this.prodRef.data.top,
                     left: this.prodRef.data.left,
-                }
-                let component =
-                    <BuilderComponents
-                        sizeParentBox = {{...sizeParentBox}}
-                        mode = {this.state.mode}
-                        {...item}
-                        key = {`${item.type}${item.id}`}
-                    />;
+                },
+                ...item,
+                mode: 'dev',
+            }
 
-                const patternJSX = {
-                    id: item.id,
-                    targetSection: item.targetSection,
-                    component: component
-                };
+            let Component = null;
+                if (item.type === 'background') Component = BackgroundComponent;
+                else if (item.type === 'input') Component = Input;
+                else if (item.type === 'media') Component = Media;
+                else if (item.type === 'image') Component = Image;
+                else if (item.type === 'text') Component = TextComponent;
+
+            const patternJSX = {
+                id: item.id,
+                targetSection: item.targetSection,
+                component: builderHOC(props)(Component)
+            };
                 _components.push(patternJSX);
         });
             this.setState({
@@ -77,7 +89,7 @@ class Production extends React.PureComponent {
         if (userData.active && currentProjectsData.loadProject){
             return (
             <Fragment>
-                <Header key = 'Header' title = "Constructor" />
+                <Header key = 'Header' title = "Constructor" idUser = {userData.idUser} />
                 <div
                     ref = {this.mainProductionRef}
                     className = 'Production'

@@ -15,7 +15,10 @@ class ModalWindow extends React.PureComponent {
 
     static propTypes = {
         workMode: PropTypes.string.isRequired, /** @Mode for modal */
-        // idComponent: PropTypes.string || PropTypes.number /** @Id current user project */
+        idComponent: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]) /** @Id current user project */
     }
 
     state = {
@@ -160,7 +163,7 @@ class ModalWindow extends React.PureComponent {
 
         const {showUrl, iframe} = this.state.images;
 
-        eventEmitter.emit("EventView", {
+        this.props.eventStreamBuild.emit("EventView", {
             action: true, 
             target: showUrl ? showUrl : null,
             iframe: iframe,
@@ -264,7 +267,7 @@ class ModalWindow extends React.PureComponent {
     cancel = event => {
 
         if (this.state.workMode === 'Search')
-            eventEmitter.emit("EventModalSearchOn", {action: 'offline', mode: null});
+        this.props.eventStreamBuild.emit("EventModalSearchOn", {action: 'offline', mode: null});
         else  eventEmitter.emit('EventChangeWorkMode',{action: 'default'});
     }
 

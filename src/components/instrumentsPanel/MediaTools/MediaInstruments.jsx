@@ -1,8 +1,8 @@
 import React,{Fragment} from 'react';
+import PropTypes from 'prop-types';
 
 const MediaInstruments = props => {
 
-    // let {content} = props.componentStats;
     let {fontSize} = props.componentStats;
     let {coords} = props.componentStats;
 
@@ -37,5 +37,12 @@ const MediaInstruments = props => {
         </Fragment>
     )
 };
+
+MediaInstruments.propTypes = {
+    componentStats: PropTypes.object.isRequired, // object with current component data
+    cbSearch: PropTypes.func.isRequired, // callback search
+    cbSetSize: PropTypes.func.isRequired, // callback set size
+    cbDelete: PropTypes.func.isRequired, // callback delete
+}
 
 export default MediaInstruments;

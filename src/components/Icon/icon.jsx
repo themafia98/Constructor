@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-
+import PropTypes from 'prop-types';
 import './icon.scss';
 
 function Icon(props){
@@ -16,6 +16,12 @@ function Icon(props){
         src = {process.env.PUBLIC_URL + path } alt = 'icon'>
     </img>
     )
+}
+
+Icon.propTypes = {
+    path: PropTypes.string.isRequired, // icon path
+    className: PropTypes.string, // class
+    draggable: PropTypes.bool // draggable bool
 }
 
 export default Icon;
