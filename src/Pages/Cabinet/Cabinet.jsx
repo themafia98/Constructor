@@ -64,7 +64,7 @@ class Cabinet extends React.PureComponent {
                 workMode = {this.state.workMode} 
               />
             : null}
-              <ProjectsSection />
+              <ProjectsSection cabinetStream = {this.cabinetStream} />
             </div>
         </Fragment>
       )

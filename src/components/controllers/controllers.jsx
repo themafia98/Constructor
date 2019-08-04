@@ -10,6 +10,7 @@ class Controllers extends React.PureComponent {
     static propTypes = {
         countComponents: PropTypes.number.isRequired, /** @number last project id */
         sizeParentBox: PropTypes.object, /** @Object with width and height parent(bg) */
+        eventStreamBuild: PropTypes.object, /** @Events stream */
         menuActive: PropTypes.bool, /** @Bool value active menu or unactive */
     }
 
@@ -46,6 +47,7 @@ class Controllers extends React.PureComponent {
                         <BuildMenu
                             key = {`buildMenu ${this.state.editComponentName}`}
                             mode = 'build'
+                            eventStreamBuild = {this.props.eventStreamBuild}
                             editComponentName = {this.state.editComponentName}
                             sizeParentBox = {this.props.sizeParentBox}
                             countComponents = {this.props.countComponents}

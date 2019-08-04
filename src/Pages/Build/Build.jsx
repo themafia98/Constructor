@@ -191,6 +191,7 @@ class Build extends React.PureComponent {
     };
 
     addComponent = itemEvent => {
+        console.log(itemEvent);
         let {componentJSX} = this.state;
         let {componentsPattern} = itemEvent;
 
@@ -258,7 +259,9 @@ class Build extends React.PureComponent {
                     ...this.state.componentJSX,
                     eventItem.component
                 ]
-            })
+            }, () => {
+                eventEmitter.emit('EventSetState', currentProjectsData.sectionsProject.length);
+            });
         });
 }
 
@@ -284,6 +287,7 @@ class Build extends React.PureComponent {
                         { this.state.editStart &&
                         <Controllers
                             key = 'controllers'
+                            eventStreamBuild = {this.eventEmitterBuild}
                             editComponentName = {this.state.editComponentName}
                             countComponents = {currentProjectsData.components.length}
                             menuActive = {this.state.menuActive}

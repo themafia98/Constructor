@@ -7,7 +7,6 @@ import Image from '../buildComponents/components/Image';
 import TextComponent from '../buildComponents/components/Text';
 import BackgroundComponent from '../buildComponents/components/Background';
 
-import eventEmitter from '../../EventEmitter';
 import './buildMenu.scss';
 
 class BuildMenu extends React.PureComponent {
@@ -15,6 +14,7 @@ class BuildMenu extends React.PureComponent {
     static propTypes = {
         mode: PropTypes.string.isRequired, /** @String work mode component */
         editComponentName: PropTypes.string,
+        eventStreamBuild: PropTypes.object, /** @Events stream build */
         countSection: PropTypes.number, /** @Number for new section id */
         countComponents: PropTypes.number, /** @Number last project */
         sizeParentBox: PropTypes.object /** @Object with width and height parent(bg) */
@@ -36,7 +36,7 @@ class BuildMenu extends React.PureComponent {
             color: null,
             opacity: 1,
             fontSize: null,
-            content: null,
+            content: 'Title',
             coords: {x: null, y: null}, // x, y
             id: id,
             targetSection: this.props.editComponentName,
@@ -66,7 +66,7 @@ class BuildMenu extends React.PureComponent {
             targetSection: this.state.editComponentName,
         };
 
-        eventEmitter.emit('EventBuildComponents',{
+        this.props.eventStreamBuild.emit('EventBuildComponents',{
             componentsPattern: componentsPatternBackground,
             type: componentsPatternBackground.type,
             component: <BackgroundComponent
@@ -94,7 +94,7 @@ class BuildMenu extends React.PureComponent {
             id: id,
             targetSection: this.props.editComponentName,
         };
-        eventEmitter.emit('EventBuildComponents',{
+        this.props.eventStreamBuild.emit('EventBuildComponents',{
             componentsPattern: componentsPatternImage,
             type: componentsPatternImage.type,
             component: <Image
@@ -121,7 +121,7 @@ class BuildMenu extends React.PureComponent {
             targetSection: this.props.editComponentName,
         };
 
-        eventEmitter.emit('EventBuildComponents', {
+        this.props.eventStreamBuild.emit('EventBuildComponents', {
             componentsPattern: componentsPatternMedia,
             type: componentsPatternMedia.type,
             component: <Media
@@ -151,7 +151,7 @@ class BuildMenu extends React.PureComponent {
             targetSection: this.props.editComponentName,
         };
 
-        eventEmitter.emit('EventBuildComponents', {
+        this.props.eventStreamBuild.emit('EventBuildComponents', {
             componentsPattern: componentsPatternInput,
             type: componentsPatternInput.type,
             component: <Input

@@ -214,7 +214,7 @@ class TextComponent extends React.PureComponent {
 
 
     render(){
-
+        console.log(this.props);
         if (this.props.mode === 'dev'){
             return (
                 <WrapperText

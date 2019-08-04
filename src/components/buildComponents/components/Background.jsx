@@ -80,7 +80,7 @@ class BackgroundComponent extends React.PureComponent {
     };
 
     render(){
-   
+        console.log('bg');
             if (this.props.mode === 'dev'){
         return (
             <Background

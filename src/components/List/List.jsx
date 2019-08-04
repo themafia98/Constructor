@@ -7,7 +7,6 @@ import {middlewareCreateProject} from '../../redux/middleware/createProjectMiddl
 import './list.scss';
 
 import Item from './Item';
-import eventEmitter from '../../EventEmitter.js';
 
 class List extends React.PureComponent {
 
@@ -59,11 +58,11 @@ class List extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        eventEmitter.on('EventAddProject',this.addNewProject);
+        this.props.cabinetStream.on('EventAddProject',this.addNewProject);
     }
 
       componentWillUnmount = () => {
-        eventEmitter.off('EventAddProject',this.addNewProject);
+        this.props.cabinetStream.off('EventAddProject',this.addNewProject);
       }
 
 }
