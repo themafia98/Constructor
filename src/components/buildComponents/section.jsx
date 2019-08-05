@@ -19,6 +19,7 @@ const Section = props => {
                             menuActive = {props.menuActive}
                             sizeParentBox = {props.sizeParentBox}
                             id = {item}
+                            countSection = {currentProjectsData.sectionsProject.length}
                             sectionNumber = {i}
                             mode = {props.mode}
                         />

@@ -63,7 +63,6 @@ class Build extends React.PureComponent {
         timer = null; // save timer
 
     modalSearchOn = itemEvent => {
-        console.log(itemEvent);
         const modeHave = itemEvent.hasOwnProperty('mode');
         this.setState({
             ...this.state, 
@@ -175,7 +174,6 @@ class Build extends React.PureComponent {
                     else if (item.type === 'media') Component = Media;
                     else if (item.type === 'image') Component = Image;
                     else if (item.type === 'text') Component = TextComponent;
-
                 const patternJSX = {
                     id: item.id,
                     targetSection: item.targetSection,

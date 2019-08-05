@@ -7,7 +7,6 @@ const TextInstruments = props => {
         let {content} = props.componentStats;
         let {fontSize} = props.componentStats;
         let {coords} = props.componentStats;
-        let {color} = props.componentStats;
         let _content = content !== '' ? 'Title' : '';
 
         return (
@@ -35,7 +34,7 @@ const TextInstruments = props => {
                 { colorPickerActive ?
                     <SketchPicker
                     onChangeComplete={props.cbHandleChangeComplete}
-                    color = {color ? color: 'red'}
+                    color = {props.color ? props.color : 'red'}
                     />
                     : null
                 }

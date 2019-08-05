@@ -15,11 +15,13 @@ const InputComponent = styled.input.attrs(props => {
     })
 })`
     width: ${props => props.size ? props.size.w + 'px' : null};
+    color: white;
     height: ${props => props.size ? props.size.h + 'px' : null};
     font-size: ${props => props.fontSize ? props.fontSize + 'px' : null};
     position: absolute;
     background-color: ${props => props.color || null};
-    border-radius: ${props => props.borderRadius || null};
+    border: ${props => `1px solid ${props.color}`};
+    border-radius: ${props => props.borderRadius + 'px'};
     white-space: normal;
     font-weight: bold;
 `;
@@ -45,11 +47,14 @@ class Input extends React.PureComponent {
         id: this.props.id,
         istrumentsActive: false,
         getSizeBool: false,
+        countSection: 0,
+        borderRadius: this.props.borderRadius,
+        sectionNumber: 0,
+        typeInput: this.props.typeInput || 'button',
         sizeParentBox: this.props.sizeParentBox,
         targetSection: this.props.targetSection,
         size: this.props.size && this.props.size.w ? this.props.size : {w: '100', h:'50'},
         fontSize: this.props.fontSize || 20,
-        borderRadius: this.props.borderRadius || null,
         color: this.props.color || null,
         shiftCoords: null,
         content: this.props.content || 'Input',
@@ -62,6 +67,7 @@ class Input extends React.PureComponent {
         const componentsPatternImage = {
             id: this.state.id,
             targetSection: this.state.targetSection,
+            typeInput: this.state.typeInput,
             type: 'input',
             color: this.state.color,
             borderRadius: this.state.borderRadius,
@@ -120,7 +126,7 @@ class Input extends React.PureComponent {
     };
 
     setBorderRadius = eventItem => {
-
+        console.log(eventItem);
         let radius = eventItem.borderRadius > 200 ? 200 : eventItem.borderRadius;
         radius = eventItem.borderDown < 0 ? 0 : eventItem.borderRadius;
             this.setState({
@@ -166,9 +172,11 @@ class Input extends React.PureComponent {
     moveInput = event => {
 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
-
-            let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
-            let yItem = event.clientY - (this.props.sizeParentBox.top * this.state.sectionNumber);
+            let num = this.state.sectionNumber;
+            if (this.state.sectionNumber === 1 && this.state.countSection-1 === this.state.sectionNumber)  
+                num = this.state.sectionNumber + 1;
+            let xItem = event.clientX - (this.props.sizeParentBox.left  * num);
+            let yItem = event.clientY - (this.props.sizeParentBox.top * num);
 
             let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
             let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
@@ -191,6 +199,7 @@ class Input extends React.PureComponent {
         }
         event.stopPropagation();
     };
+    //currentProjectsData.sectionsProject.length
 
     saveSize = event => {
         const {size} = event;
@@ -198,6 +207,7 @@ class Input extends React.PureComponent {
         this.setState({
             ...this.state,
             getSizeBool: true,
+            countSection: event.countSection,
             sectionNumber: event.sectionNumber,
             sizeParentBox: {width: size.width, height: size.height}});
         } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
@@ -210,6 +220,13 @@ class Input extends React.PureComponent {
                 ...this.state.size,
                 w: width,
             }
+        });
+    }
+
+    setType = eventItem => {
+        this.setState({
+            ...this.state, 
+            typeInput: eventItem
         });
     }
 
@@ -231,7 +248,7 @@ class Input extends React.PureComponent {
         if (this.props.mode === 'dev'){
             return (
                 <InputComponent
-                    type = 'button'
+                    type = {this.state.typeInput}
                     value = {this.state.content}
                     ref = {this.refInputComponent}
                     size = {this.state.size}
@@ -254,7 +271,7 @@ class Input extends React.PureComponent {
 
             return (
                 <ProductionStyle
-                    type = 'button'
+                    type = {this.state.typeInput}
                     value = {this.state.content}
                     ref = {this.refInputComponent}
                     size = {this.state.size}
@@ -272,21 +289,25 @@ class Input extends React.PureComponent {
 
     componentDidMount = () => {
         controllerStream.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
+        controllerStream.on(`EventSetBorderRadius${this.state.id}`, this.setBorderRadius);
         controllerStream.on(`EventChangecolor${this.state.id}`, this.changeColor);
         controllerStream.on(`EventChangeSize${this.state.id}`, this.changeSize);
         controllerStream.on(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
         controllerStream.on(`EventChangeContentText${this.state.id}`, this.changeContent);
         controllerStream.on(`EventSetWidth${this.state.id}`, this.setWidth);
+        controllerStream.on(`EventSetType${this.state.id}`, this.setType);
         controllerStream.on(`EventSetHeight${this.state.id}`, this.setHeight);
     }
 
     componentWillUnmount = () => {
         controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        controllerStream.off(`EventSetBorderRadius${this.state.id}`, this.setBorderRadius);
         controllerStream.off(`EventChangeSize${this.state.id}`, this.changeSize);
         controllerStream.off(`EventChangeSizeText${this.state.id}`, this.changeSizeText);
         controllerStream.off(`EventChangeContentText${this.state.id}`, this.changeContent);
         controllerStream.off(`EventChangecolor${this.state.id}`, this.changeColor);
         controllerStream.off(`EventSetWidth${this.state.id}`, this.setWidth);
+        controllerStream.off(`EventSetType${this.state.id}`, this.setType);
         controllerStream.off(`EventSetHeight${this.state.id}`, this.setHeight);
     }
 }

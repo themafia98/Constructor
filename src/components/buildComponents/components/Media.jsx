@@ -17,10 +17,11 @@ const WrapperMedia = styled.div.attrs(props => {
         }
     })
 })`
-    width: 30%;
-    height: 50%;
+    width: ${props => props.size.w ? props.size.w + '%' : '30%'};
+    height: ${props => props.size.h ? props.size.h + '%' : '50%'};
     position: absolute;
     background: ${props => props.mode === 'dev' ? `url(/img/media.svg)` : null};
+    background-size: cover;
     border: ${props => props.mode === 'dev' ? `1px solid red` : null};
     padding: 10px;
 `;
@@ -52,7 +53,8 @@ class MediaComponent extends React.PureComponent {
         id : this.props.id,
         sizeParentBox: this.props.sizeParentBox,
         shiftCoords: null,
-        size: this.props.size ? this.props.size : 30,
+        countSection: 0,
+        size: this.props.size ? this.props.size : {w: null, h: null},
         posMedia: this.props.coords.x ? {x: this.props.coords.x, y: this.props.coords.y} : null,
         startDragNdrop: false,
         istrumentsActive: false,
@@ -65,6 +67,7 @@ class MediaComponent extends React.PureComponent {
 
         const componentsPatternMedia = {
             id: this.state.id,
+            size: this.state.size,
             targetSection: this.state.targetSection,
             type: 'media',
             zIndex: null,
@@ -76,7 +79,7 @@ class MediaComponent extends React.PureComponent {
             componentStats: componentsPatternMedia,
             targetSection: this.state.targetSection,
             id: this.state.id,
-            sizeTextValue: this.state.size
+            size: this.state.size,
         });
         this.setState({...this.state, istrumentsActive: true});
         event.stopPropagation();
@@ -100,6 +103,26 @@ class MediaComponent extends React.PureComponent {
 
         event.stopPropagation();
     };
+
+    setWidth = eventItem => {
+        const {width} = eventItem;
+        this.setState({...this.state, 
+            size: {
+                ...this.state.size,
+                w: width,
+            }
+        });
+    }
+
+    setHeight = eventItem => {
+        const {height} = eventItem;
+        this.setState({...this.state, 
+            size: {
+                ...this.state.size,
+                h: height,
+            }
+        });
+    }
 
     checkPivotPosition = (coordX, coordY) => {
 
@@ -165,6 +188,7 @@ class MediaComponent extends React.PureComponent {
         this.setState({
             ...this.state,
             getSizeBool: true,
+            countSection: event.countSection,
             sectionNumber: event.sectionNumber + 1,
             sizeParentBox: {width: size.width, height: size.height}});
         } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
@@ -190,6 +214,7 @@ class MediaComponent extends React.PureComponent {
                     indexZ = {this.state.startDragNdrop}
                     coordX = {this.state.posMedia ? this.state.posMedia.x : null}
                     coordY = {this.state.posMedia ? this.state.posMedia.y : null}
+                    size = {this.state.size}
                 >
                 {!this.state.startDragNdrop ? 
                     <Media
@@ -208,6 +233,7 @@ class MediaComponent extends React.PureComponent {
                 <ProductionStyle
                     ref = {this.refMediaComponent}
                     indexZ = {this.state.startDragNdrop}
+                    size = {this.state.size}
                     coordX = {this.state.posMedia ? this.state.posMedia.x : null}
                     coordY = {this.state.posMedia ? this.state.posMedia.y : null}
                     mode = {this.props.mode}
@@ -231,11 +257,15 @@ class MediaComponent extends React.PureComponent {
     componentDidMount = () => {
         controllerStream.on(`EventSetContentMedia${this.state.id}`, this.setContent);
         controllerStream.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
+        controllerStream.on(`EventSetWidth${this.state.id}`, this.setWidth);
+        controllerStream.on(`EventSetHeight${this.state.id}`, this.setHeight); 
     }
 
     componentWillUnmount = () => {
         controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
         controllerStream.off(`EventSetContentMedia${this.state.id}`, this.setContent);
+        controllerStream.off(`EventSetWidth${this.state.id}`, this.setWidth);
+        controllerStream.off(`EventSetHeight${this.state.id}`, this.setHeight); 
     }
 }
 

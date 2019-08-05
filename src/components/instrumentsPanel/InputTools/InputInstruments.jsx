@@ -10,7 +10,6 @@ const InputInstruments = props => {
     let {fontSize} = props.componentStats;
     let {coords} = props.componentStats;
     let {size} = props.componentStats;
-    let {color} = props.componentStats;
 
     let _content = content !== '' ? 'Input' : '';
 
@@ -32,7 +31,7 @@ const InputInstruments = props => {
                     <div className ='wrapperColorPicker'>
                         <SketchPicker
                         onChangeComplete={props.cbHandleChangeComplete}
-                        color = {color ? color: 'red'}
+                        color = {props.color ? props.color : 'white'}
                         />
                     </div>
                     : null
@@ -67,11 +66,23 @@ const InputInstruments = props => {
                 onChange = {props.cbSetBorderRadius}
                 className = 'button_switch radius'
                 type="number"
-                defaultValue = {props.componentStats.borderRadius ?
+                value = {props.componentStats.borderRadius ?
                             props.componentStats.borderRadius : 10
                         }
                 min = '10' max = '200'
             />
+
+            <p className = 'titleInstument'>Type input: </p>
+            <select 
+            value = {props.componentStats.typeInput} 
+            onChange = {props.cbSetType}
+            className = 'button_switch'
+        >
+        <option>button</option>
+        <option>text</option>
+        <option>password</option>
+        </select>
+        />
             <p className = 'titleInstument'>Content: </p>
             <input
             className = 'button_switch'

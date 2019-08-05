@@ -114,7 +114,7 @@ class BuildMenu extends React.PureComponent {
 
         const  componentsPatternMedia = {
             type: 'media',
-            size: null,
+            size: {w: null, h: null},
             content: null,
             coords: {x: null, y: null}, // x, y
             id: id,
@@ -145,6 +145,7 @@ class BuildMenu extends React.PureComponent {
         const  componentsPatternInput = {
             type: 'input',
             size: {w: null, h: null},
+            typeInput: 'button',
             color: null,
             fontSize: null,
             borderRadius: null,

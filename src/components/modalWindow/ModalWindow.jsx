@@ -267,7 +267,6 @@ class ModalWindow extends React.PureComponent {
     refSearch = node => this.inputSearch = node;
 
     render(){
-        console.log(this.state.workMode);
         switch (this.state.workMode){
             case 'newProject':
                 return <CreateProject
@@ -288,23 +287,25 @@ class ModalWindow extends React.PureComponent {
                             loading = {this.state.loading}
                         />
             case 'Search':
-                console.log('search');
                     return (
-                        <SearchModal
-                            images = {this.state.images['images']}
-                            loading = {this.state.images.loading}
-                            view = {this.state.images.imageBoxView}
-                            dissabled = {this.state.images.buttonSearchDisabled}
-                            error = {this.state.images.error}
-                            cbCancel = {this.cancel}
-                            menuActive = {this.state.imageMenuActive}
-                            cbMakeImageResultBox = {this.makeImageResultBox}
-                            cbShowImage = {this.showImage}
-                            cbSetSelectedImage = {this.setSelectedImage}
-                            modalSearchMode = {this.props.modalSearchMode}
-                            cbSearch = {this.searchData}
-                            loader = {this.state.loading}
-                        />
+                        <div className = 'searchWrapper'> 
+                            <SearchModal
+                                images = {this.state.images['images']}
+                                loading = {this.state.images.loading}
+                                view = {this.state.images.imageBoxView}
+                                dissabled = {this.state.images.buttonSearchDisabled}
+                                error = {this.state.images.error}
+                                cbCancel = {this.cancel}
+                                menuActive = {this.state.imageMenuActive}
+                                cbMakeImageResultBox = {this.makeImageResultBox}
+                                cbShowImage = {this.showImage}
+                                cbSetSelectedImage = {this.setSelectedImage}
+                                modalSearchMode = {this.props.modalSearchMode}
+                                cbSearch = {this.searchData}
+                                loader = {this.state.loading}
+                                selectedId = {this.state.images.selectedItem}
+                            />
+                        </div>
                     )
 
             default: return <Fragment></Fragment>

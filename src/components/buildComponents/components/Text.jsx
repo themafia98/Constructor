@@ -69,6 +69,7 @@ class TextComponent extends React.PureComponent {
         font: this.props.font ? this.props.font : 'Arial',
         startDragNdrop: false,
         contentText: this.props.content ? this.props.content : null,
+        countSection: 0,
         sectionNumber: 0,
         getSizeBool: false
     }
@@ -114,6 +115,7 @@ class TextComponent extends React.PureComponent {
         this.setState({
             ...this.state,
             getSizeBool: true,
+            countSection: event.countSection,
             sectionNumber: event.sectionNumber,
             parent: {width: size.width, height: size.height}});
         } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);

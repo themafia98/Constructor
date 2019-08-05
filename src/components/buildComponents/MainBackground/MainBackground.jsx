@@ -7,7 +7,6 @@ import Loader from '../../loading/Loader';
 
 import './MainBackground.scss';
 
-
 class MainBackground extends React.PureComponent {
 
     static propTypes = {
@@ -55,6 +54,7 @@ class MainBackground extends React.PureComponent {
                         <BackgroundComponent 
                             mode = {this.props.mode}
                             sectionNumber = {this.props.sectionNumber}
+                            countSection = {this.props.countSection}
                             {...this.state.component}
                         >
                             {this.state.children || null}
@@ -74,7 +74,7 @@ class MainBackground extends React.PureComponent {
                         data-class = 'production'
                     >
                         <BackgroundComponent
-                            key = {this.props.sectionNumber*2}
+                            key = {this.props.sectionNumber}
                             mode = {this.props.mode}
                             sectionNumber = {this.props.sectionNumber}
                             {...this.state.component}
@@ -86,6 +86,22 @@ class MainBackground extends React.PureComponent {
             );
         }
         else return <Loader type = {`${this.props.mode} components`} />;
+    }
+
+
+    componentDidMount = () => {
+        if (!this.state.component){
+            let component = this.props.currentProjectsData.components.find(item =>
+                                            item.targetSection === this.props.id);
+            const children = this.props.componentJSX.filter(item => 
+                item.targetSection === this.props.id && item.id !== component.id)
+                            .map(item => item.component);
+           this.setState({
+               ...this.state,
+               component: component,
+               children: children,
+           });
+        }
     }
 
     componentDidUpdate = (prevProps) => {
@@ -101,7 +117,6 @@ class MainBackground extends React.PureComponent {
                children: children,
            });
         }
-
         if (needUpdate){
             const children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
             children && this.setState({...this.state,children: children.map(item => item.component) });

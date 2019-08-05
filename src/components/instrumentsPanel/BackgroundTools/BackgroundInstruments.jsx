@@ -3,12 +3,6 @@ import PropTypes from 'prop-types';
 import {SketchPicker} from 'react-color';
 
 const BackgroundInstruments = props => {
-
-    const {componentStats} = props;
-    let color = null;
-    if (componentStats)
-        color = componentStats.backgroundColor;
-
     return (
         <Fragment>
         <p className = 'titleInstument'>Color: </p>
@@ -21,7 +15,7 @@ const BackgroundInstruments = props => {
             { props.colorPickerActive ?
                 <SketchPicker
                     onChangeComplete={props.cbHandleChangeComplete}
-                    color = {color ? color : 'red'}
+                    color = {props.color ? props.color : 'white'}
                 />
                 : null
             }

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 const MediaInstruments = props => {
 
-    let {fontSize} = props.componentStats;
+    let {size} = props.componentStats;
     let {coords} = props.componentStats;
+    console.log(props.componentStats);
 
     return (
         <Fragment>
@@ -13,14 +14,23 @@ const MediaInstruments = props => {
             {coords.x ?
                 coords.x + ' / ' + coords.y : ' drop for active'}
             </span>
-            <p className = 'titleInstument'>Size: </p>
-            <input
-                className = 'button_switch'
-                onChange = {props.cbSetSize}
-                type="number"
-                min = '10' max = '200'
-                defaultValue = {fontSize ? fontSize : 120}
-            />
+            <p className = 'titleInstument'>Size (%):</p>
+            <div className = 'panel__sizes'>
+                <input
+                    className = 'button_switch'
+                    onChange = {props.cbSetWidth}
+                    type="number"
+                    min = '10' max = '100'
+                    value = {size.w ? size.w : 30}
+                />
+                <input 
+                    className = 'button_switch'
+                    onChange = {props.cbSetHeight}
+                    type="number"
+                    min = '10' max = '100'
+                    value = {size.h ? size.h : 50}
+                />
+            </div>
             <p className = 'titleInstument'>Content: </p>
             <input 
                 onClick = {props.cbSearch}
@@ -41,7 +51,8 @@ const MediaInstruments = props => {
 MediaInstruments.propTypes = {
     componentStats: PropTypes.object.isRequired, // object with current component data
     cbSearch: PropTypes.func.isRequired, // callback search
-    cbSetSize: PropTypes.func.isRequired, // callback set size
+    cbSetWidth: PropTypes.func.isRequired, // callback set width
+    cbSetHeight: PropTypes.func.isRequired, // callback set height
     cbDelete: PropTypes.func.isRequired, // callback delete
 }
 

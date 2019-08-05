@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import eventEmitter from '../../../EventEmitter';
 import Icon from '../../Icon/icon';
 import Loader from '../../loading/Loader';
 
@@ -23,7 +23,7 @@ class  SearchModal extends React.PureComponent {
 
     search = event => {
         const value = this.refSearch ? this.refSearch.value : null;
-        this.props.cbSearch(event,value, this.state.modalSearchMode);
+        this.props.cbSearch(event,value, this.props.modalSearchMode);
         event.stopPropagation();
     }
 
@@ -68,12 +68,23 @@ class  SearchModal extends React.PureComponent {
     }
 
     componentDidUpdate = (prevProps) => {
-        if (prevProps.images !== this.props.images && this.props.images){
+        const haveUpdate = prevProps.images !== this.props.images && this.props.images;
+        const isSelected = prevProps.selectedId !== this.props.selectedId;
+
+        if (haveUpdate || isSelected){
             this.setState({
                 ...this.state,
                 items: this.props.cbMakeImageResultBox(this.props.images)
             });
         }
+    }
+
+    componentDidMount = () => {
+        eventEmitter.emit('EventBlockScroll', 'window');
+    }
+
+    componentWillUnmount = () => {
+        eventEmitter.emit('EventBlockScroll', 'default');
     }
 }
 

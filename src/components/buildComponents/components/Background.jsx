@@ -8,9 +8,9 @@ const Background = styled.div`
     position: relative;
     width: ${props => props.width || '100%'};
     height: ${props => props.height || '100%'};
-    background-size: cover;
     background-color: ${props => props.backgroundColor};
     ${props => props.backgroundImage ? `background-image: url(${props.backgroundImage});` : null}
+    background-size: cover;
 `;
 
 class BackgroundComponent extends React.PureComponent {
@@ -41,6 +41,7 @@ class BackgroundComponent extends React.PureComponent {
     saveDataParent = () => {
         let boxInform =  this.boxComponent.getBoundingClientRect();
         controllerStream.emit(`EventSaveWidth${this.state.targetSection}`,{
+            countSection: this.props.countSection,
             sectionNumber: this.props.sectionNumber,
             size: {width: boxInform.width, height: boxInform.height}
         });
@@ -83,6 +84,7 @@ class BackgroundComponent extends React.PureComponent {
             if (this.props.mode === 'dev'){
         return (
             <Background
+                key = {this.state.id}
                 ref  = {this.boxComponentRef}
                 onDoubleClick={this.openBgInstruments}
                 data-name = {this.state.targetSection}
@@ -98,7 +100,8 @@ class BackgroundComponent extends React.PureComponent {
 
         return (
             <Background
-            ref  = {this.boxComponentRef}
+                key = {this.state.id}
+                ref  = {this.boxComponentRef}
                 data-name = {this.state.targetSection}
                 backgroundColor = {this.state.backgroundColor}
                 backgroundImage = {this.state.backgroundImage}

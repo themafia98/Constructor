@@ -48,6 +48,7 @@ class Image extends React.PureComponent {
         id: this.props.id,
         istrumentsActive: false,
         getSizeBool: false,
+        countSection: 0,
         opacity: this.props.opacity || 1,
         sectionNumber: 0,
         borderRadius: this.props.borderRadius || 0,
@@ -187,6 +188,7 @@ class Image extends React.PureComponent {
         this.setState({
             ...this.state,
             getSizeBool: true,
+            countSection: event.countSection,
             sectionNumber: event.sectionNumber,
             sizeParentBox: {width: size.width, height: size.height}});
         } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);

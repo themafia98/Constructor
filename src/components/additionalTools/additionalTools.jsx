@@ -5,7 +5,7 @@ import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel
 import ModalWindow from '../../components/modalWindow/ModalWindow';
 
 const AdditionalTools = props => {
-    console.log(props);
+
     return (
         <Fragment key = 'AdditionalBuild'>
             {   props.modalViewer.action &&

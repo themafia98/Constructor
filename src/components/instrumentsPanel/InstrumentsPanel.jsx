@@ -149,6 +149,22 @@ class InstrumentsPanel extends React.PureComponent {
         if (event) event.stopPropagation();
     };
 
+    setType = event => {
+
+        let {id} = this.state.componentStats;
+        let typeInput = event.target.value;
+
+        this.setState({
+            ...this.state,
+            componentStats: {
+                ...this.state.componentStats,
+                typeInput: typeInput
+            }
+        },
+         () => controllerStream.emit(`EventSetType${id}`, typeInput));
+        if (event) event.stopPropagation();
+    }
+
     setOpacity = event => {
         let {id} = this.state.componentStats;
         let opacity = event.target.value;
@@ -163,6 +179,8 @@ class InstrumentsPanel extends React.PureComponent {
     setBorderRadius = event => {
         let {id} = this.state.componentStats;
         let radius = event.target.value;
+
+        console.log(event);
 
         this.setState({
             ...this.state,
@@ -241,7 +259,7 @@ class InstrumentsPanel extends React.PureComponent {
                 ...this.state.componentStats,
                 id: this.state.componentStats.id,
                 type: this.state.componentStats.type,
-                ms: 1500
+                ms: 1500,
             });
 
         eventEmitter.emit('EventRedirectConfirm', true);
@@ -299,6 +317,7 @@ class InstrumentsPanel extends React.PureComponent {
                         cbSetContent = {this.setContent}
                         cbSetFont = {this.setFont}
                         cbSetOpacity = {this.setOpacity}
+                        color = {this.state.componentStats.color}
                         cbDelete = {this.deleteComponent}
                     />
                    )
@@ -308,6 +327,7 @@ class InstrumentsPanel extends React.PureComponent {
                             colorPickerActive = {this.state.instrumentPanel.colorPickerActive}
                             componentStats = {{...this.state.componentStats}}
                             cbSetColor = {this.setColor}
+                            color = {this.state.componentStats.color}
                             cbHandleChangeComplete = {this.handleChangeComplete}
                             cbSearch = {this.search}
                         />
@@ -333,6 +353,8 @@ class InstrumentsPanel extends React.PureComponent {
                                 instrumentPanel = {{...this.state.instrumentPanel}}
                                 componentStats = {{...this.state.componentStats}}
                                 cbSearch = {this.search}
+                                cbSetWidth = {this.setWidth}
+                                cbSetHeight = {this.setHeight}
                                 cbDelete = {this.deleteComponent}
                             />
                             )
@@ -347,7 +369,9 @@ class InstrumentsPanel extends React.PureComponent {
                                 cbSetSize = {this.setSize}
                                 cbSetWidth = {this.setWidth}
                                 cbSetHeight = {this.setHeight}
+                                color = {this.state.componentStats.color}
                                 cbSetContent = {this.setContent}
+                                cbSetType = {this.setType}
                                 cbDelete = {this.deleteComponent}
                             />
                         )
