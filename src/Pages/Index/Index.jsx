@@ -77,7 +77,8 @@ class Index extends React.PureComponent {
                         <div className = 'LoginBox'>
                         <AnimationText
                             content = 'Build your landing page!'
-                            msAnimation = {100}
+                            msPauseEnd = {1000}
+                            msAnimation = {150}
                         />
                             <div className = 'LoginForm'>
                                 <h3>Connect form</h3>

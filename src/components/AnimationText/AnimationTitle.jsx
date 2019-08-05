@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const AnimationTitle = styled.h3`
     user-select: none;
     transition: .4s linear all;
-    color: ${props => props.color === 'up' ? 'red' : 'blue'};
+    color: ${props => props.dir === 'up' ? 'red' : 'blue'};
 `;
 
 class AnimationText extends React.PureComponent {
@@ -15,6 +15,8 @@ class AnimationText extends React.PureComponent {
         positionTitle: 1,
         directionAnimation: 'up',
         msAnimation: this.props.msAnimation,
+        msTimeout: this.props.msAnimation,
+        msPauseEnd: this.props.msPauseEnd,
     }
 
     timerAnimation = null;
@@ -32,7 +34,8 @@ class AnimationText extends React.PureComponent {
                     currentTitle: self.state.currentTitle + word,
                     positionTitle: self.state.positionTitle + 1,
                     directionAnimation: self.state.positionTitle === counter ? 'down' : 'up',
-                    msAnimation: self.state.positionTitle === counter ? 1000 : 150
+                    msAnimation: self.state.positionTitle === counter ?
+                        self.state.msPauseEnd : self.state.msTimeout
                 });
             }
             if (self.state.directionAnimation === 'down'){
@@ -44,7 +47,8 @@ class AnimationText extends React.PureComponent {
                     currentTitle: _title,
                     positionTitle: self.state.positionTitle - 1,
                     directionAnimation: self.state.positionTitle === 2 ? 'up' : 'down',
-                    msAnimation: self.state.positionTitle === 2 ? 1000 : 150
+                    msAnimation: self.state.positionTitle === 2 ?
+                        self.state.msPauseEnd : self.state.msTimeout
                 });
             }
             timer = setTimeout(tick, self.state.msAnimation);
@@ -54,7 +58,7 @@ class AnimationText extends React.PureComponent {
 
     render(){
         return (
-            <AnimationTitle data-titlebuild color = {this.state.directionAnimation}>
+            <AnimationTitle data-titlebuild dir = {this.state.directionAnimation}>
                 {this.state.currentTitle}
             </AnimationTitle>
         )
