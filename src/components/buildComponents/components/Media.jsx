@@ -20,7 +20,7 @@ const WrapperMedia = styled.div.attrs(props => {
     width: ${props => props.size.w ? props.size.w + '%' : '30%'};
     height: ${props => props.size.h ? props.size.h + '%' : '50%'};
     position: absolute;
-    background: ${props => props.mode === 'dev' ? `url(/img/media.svg)` : null};
+    background: ${props => props.mode === 'dev' ? `url(${process.env.PUBLIC_URL}/img/media.svg)` : null};
     background-size: cover;
     border: ${props => props.mode === 'dev' ? `1px solid red` : null};
     padding: 10px;

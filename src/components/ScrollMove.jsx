@@ -11,7 +11,7 @@ class ScrollMove extends React.PureComponent {
             duration: 1000,
             delay: 50,
             smooth: true,
-            offset: 60
+            offset: -60
         },
         position: 0,
         positionCount: null

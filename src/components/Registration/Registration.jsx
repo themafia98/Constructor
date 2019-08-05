@@ -60,7 +60,13 @@ class Registration extends React.PureComponent {
                         <span>E-mail</span>
                         <input ref = {this.setRefEmail} type = 'text' />
                         <span>Password</span>
-                        <input className = 'password' autoComplete = "off" ref = {this.setRefPassword} type = 'password' />
+                        <input 
+                            className = 'password' 
+                            autoComplete = "off" 
+                            ref = {this.setRefPassword} 
+                            type = 'password' 
+                            placeHolder="Enter the Password"
+                        />
                         <input onClick = {this.createUser}
                                 className = 'loginButton'
                                 type = 'button'

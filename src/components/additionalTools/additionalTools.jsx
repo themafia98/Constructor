@@ -4,6 +4,8 @@ import Viewer from '../imageViewer/Viewer';
 import InstrumentsPanel from '../../components/instrumentsPanel/InstrumentsPanel';
 import ModalWindow from '../../components/modalWindow/ModalWindow';
 
+
+
 const AdditionalTools = props => {
 
     return (

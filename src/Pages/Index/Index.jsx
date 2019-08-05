@@ -68,7 +68,7 @@ class Index extends React.PureComponent {
     passwordRef = node => this.passwordImput = node;
 
     render(){
-        console.log('render');
+
         if (this.props.active) return <Redirect to = { '/Cabinet'} />
         else if (!this.props.active) {
             return (
@@ -80,7 +80,7 @@ class Index extends React.PureComponent {
                             msPauseEnd = {1000}
                             msAnimation = {150}
                         />
-                            <div className = 'LoginForm'>
+                            <form className = 'LoginForm'>
                                 <h3>Connect form</h3>
                                 {
                                     this.props.wrongEnter || this.state.regStatus ?
@@ -90,7 +90,12 @@ class Index extends React.PureComponent {
                                 <p>E-mail</p>
                                 <input ref = {this.emailRef} type = 'text' />
                                 <p>Password</p>
-                                <input ref = {this.passwordRef} type = 'password' />
+                                <input 
+                                    ref = {this.passwordRef} 
+                                    type = 'password' 
+                                    autoComplete = 'off'
+                                    placeholder="Enter the Password"
+                                    />
                                 <input 
                                     onClick = {this.authTo} 
                                     className = 'loginButton enterInput'
@@ -103,7 +108,7 @@ class Index extends React.PureComponent {
                                     type = 'button'
                                     value = 'registration'
                                     />
-                            </div>
+                            </form>
                         </div>
                             <TransitionGroup component={null}>
                             { this.state.registrationActive &&

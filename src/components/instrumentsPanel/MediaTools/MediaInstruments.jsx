@@ -5,7 +5,6 @@ const MediaInstruments = props => {
 
     let {size} = props.componentStats;
     let {coords} = props.componentStats;
-    console.log(props.componentStats);
 
     return (
         <Fragment>

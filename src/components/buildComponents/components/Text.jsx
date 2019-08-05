@@ -39,10 +39,12 @@ const ProductionStyle = styled(WrapperText)`
     left: ${props => props.coordX ? props.coordX : '50%'};
     top:  ${props => props.coordY};
 
-    @media ${`screen and (max-width: 500px)`} {
-        font-size: 50px;
-      }
+
 `;
+
+    // @media ${`screen and (max-width: 500px)`} {
+    //     font-size: 50px;
+    //   }
 
 class TextComponent extends React.PureComponent {
 
@@ -82,7 +84,7 @@ class TextComponent extends React.PureComponent {
             type: 'text',
             font: this.state.font,
             color: this.state.colorText,
-            fontSize: this.state.sizeText,
+            fontSize: this.state.sizeText || 120,
             content: this.state.contentText,
             coords: {...this.state.posText}, // x, y
         };
@@ -181,7 +183,7 @@ class TextComponent extends React.PureComponent {
     move = (x,y) => this.setState({...this.state, position: {x: x, y: y}});
 
     moveText = event => {
-
+ 
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
             let sectionNum = this.state.sectionNumber === 0 ? 1 : this.state.sectionNumber;
@@ -203,10 +205,8 @@ class TextComponent extends React.PureComponent {
     };
 
     stopDragNdrop = event => {
-        if (this.state.startDragNdrop) {
-            this.setState({...this.state, startDragNdrop: false})
-            controllerStream.emit(`EventUpdatePosition${this.state.id}`, this.state.position);
-        }
+            this.setState({...this.state, startDragNdrop: false},
+            () => controllerStream.emit(`EventUpdatePosition${this.state.id}`, this.state.position));
         event.stopPropagation();
     };
 

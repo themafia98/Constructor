@@ -19,40 +19,46 @@ class AnimationText extends React.PureComponent {
         msPauseEnd: this.props.msPauseEnd,
     }
 
+    _isMounted = false;
     timerAnimation = null;
 
     animationTitle = timer => {
         let self = this;
+        if (this._isMounted)
         timer = setTimeout( function tick(){
-            if (self.state.directionAnimation === 'up'){
-                let counter = self.state.tilteContent.length;
-                const word = counter > self.state.positionTitle ?
-                            self.state.tilteContent[self.state.positionTitle] :
-                            self.state.tilteContent[self.state.positionTitle-1];
-                self.setState({
-                    ...self.state,
-                    currentTitle: self.state.currentTitle + word,
-                    positionTitle: self.state.positionTitle + 1,
-                    directionAnimation: self.state.positionTitle === counter ? 'down' : 'up',
-                    msAnimation: self.state.positionTitle === counter ?
-                        self.state.msPauseEnd : self.state.msTimeout
-                });
-            }
-            if (self.state.directionAnimation === 'down'){
-                let _title = self.state.currentTitle;
-                const length = self.state.currentTitle.length;
-                _title = _title.slice(0,length - 1);
-                self.setState({
-                    ...self.state,
-                    currentTitle: _title,
-                    positionTitle: self.state.positionTitle - 1,
-                    directionAnimation: self.state.positionTitle === 2 ? 'up' : 'down',
-                    msAnimation: self.state.positionTitle === 2 ?
-                        self.state.msPauseEnd : self.state.msTimeout
-                });
-            }
+
+            if (self._isMounted) {
+                if (self.state.directionAnimation === 'up'){
+                    let counter = self.state.tilteContent.length;
+                    const word = counter > self.state.positionTitle ?
+                                self.state.tilteContent[self.state.positionTitle] :
+                                self.state.tilteContent[self.state.positionTitle-1];
+                    self.setState({
+                        ...self.state,
+                        currentTitle: self.state.currentTitle + word,
+                        positionTitle: self.state.positionTitle + 1,
+                        directionAnimation: self.state.positionTitle === counter ? 'down' : 'up',
+                        msAnimation: self.state.positionTitle === counter ?
+                            self.state.msPauseEnd : self.state.msTimeout
+                    });
+                }
+                if (self.state.directionAnimation === 'down'){
+                    let _title = self.state.currentTitle;
+                    const length = self.state.currentTitle.length;
+                    _title = _title.slice(0,length - 1);
+                    self.setState({
+                        ...self.state,
+                        currentTitle: _title,
+                        positionTitle: self.state.positionTitle - 1,
+                        directionAnimation: self.state.positionTitle === 2 ? 'up' : 'down',
+                        msAnimation: self.state.positionTitle === 2 ?
+                            self.state.msPauseEnd : self.state.msTimeout
+                    });
+                }
             timer = setTimeout(tick, self.state.msAnimation);
+            }
         }, this.state.msAnimation);
+
     }
 
 
@@ -66,10 +72,12 @@ class AnimationText extends React.PureComponent {
     }
 
     componentDidMount = (e) => {
+        this._isMounted = true;
         this.animationTitle(this.timerAnimation);
     }
 
     componentWillUnmount = (e) => {
+        this._isMounted = false;
         if (this.timerAnimation) clearTimeout(this.timerAnimation);
     }
 }

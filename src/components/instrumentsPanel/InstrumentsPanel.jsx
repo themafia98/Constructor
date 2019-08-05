@@ -180,8 +180,6 @@ class InstrumentsPanel extends React.PureComponent {
         let {id} = this.state.componentStats;
         let radius = event.target.value;
 
-        console.log(event);
-
         this.setState({
             ...this.state,
             componentStats: {...this.state.componentStats,borderRadius: radius}

@@ -8,9 +8,7 @@ class  SearchModal extends React.PureComponent {
 
     static propTypes = {
         modalSearchMode: PropTypes.string.isRequired, // search mode
-        error: PropTypes.string, // about error
-        dissabled: PropTypes.bool, // dissabled buttons
-        images: PropTypes.array, // array of images
+        content: PropTypes.object, // with search data
         cbCancel: PropTypes.func.isRequired, // callback cancel
         cbShowImage: PropTypes.func.isRequired, // callback show image
         cbSetSelectedImage: PropTypes.func.isRequired, // callback show image
@@ -31,16 +29,18 @@ class  SearchModal extends React.PureComponent {
     refSearchFunc = node => this.refSearch = node;
 
     render(){
+
+        let {content} = this.props;
         return (
             <React.Fragment>
                 <div className = 'Modal Modal-search'>
                 <h3>{`Search ${this.props.modalSearchMode}`}</h3>
                 { this.props.error ?
-                    <span className = 'error'>{this.props.error}</span> : null
+                    <span className = 'error'>{content.error}</span> : null
                 }
                     <input ref = {this.refSearchFunc} type = 'text' placeholder = "name" />
                         <input
-                            disabled = {this.props.dissabled}
+                            disabled = {content.dissabled}
                             className = 'acceptButton'
                             type = 'button'
                             value = 'Search'
@@ -67,14 +67,17 @@ class  SearchModal extends React.PureComponent {
         )
     }
 
-    componentDidUpdate = (prevProps) => {
-        const haveUpdate = prevProps.images !== this.props.images && this.props.images;
-        const isSelected = prevProps.selectedId !== this.props.selectedId;
+    componentDidUpdate = (prevProps,prevState) => {
+        let {content} = this.props;
+        let {content: contentPrev} = prevProps;
+        const haveUpdate = (contentPrev.images !== content.images && content.images);
+        const isSelected = contentPrev.selectedId !== content.selectedId;
 
         if (haveUpdate || isSelected){
+            let _items = this.props.cbMakeImageResultBox(content.images);
             this.setState({
                 ...this.state,
-                items: this.props.cbMakeImageResultBox(this.props.images)
+                items: [..._items]
             });
         }
     }

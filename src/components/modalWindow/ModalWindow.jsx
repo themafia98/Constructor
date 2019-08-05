@@ -203,7 +203,7 @@ class ModalWindow extends React.PureComponent {
         if (!items) return null;
         return items.map((item,i) =>{
                 return <ImageItem
-                            key = {`item${i}`}
+                            key = {`item${~~(1 + Math.random() * 999)}`}
                             id = {i}
                             urlContent = {item.videoId ? item.videoId : null}
                             selected = {this.state.images.selectedItem === i ? true : false} 
@@ -305,11 +305,7 @@ class ModalWindow extends React.PureComponent {
                         >
                             <div className = 'searchWrapper'> 
                                 <SearchModal
-                                    images = {this.state.images['images']}
-                                    loading = {this.state.images.loading}
-                                    view = {this.state.images.imageBoxView}
-                                    dissabled = {this.state.images.buttonSearchDisabled}
-                                    error = {this.state.images.error}
+                                    content = {this.state.images}
                                     cbCancel = {this.cancel}
                                     menuActive = {this.state.imageMenuActive}
                                     cbMakeImageResultBox = {this.makeImageResultBox}
@@ -318,7 +314,7 @@ class ModalWindow extends React.PureComponent {
                                     modalSearchMode = {this.props.modalSearchMode}
                                     cbSearch = {this.searchData}
                                     loader = {this.state.loading}
-                                    selectedId = {this.state.images.selectedItem}
+                                  
                                 />
                             </div>
                         </CSSTransition>
@@ -329,7 +325,6 @@ class ModalWindow extends React.PureComponent {
     }
 
     render(){
-        console.log('midal');
         return (
             <TransitionGroup  component = {null}>
                 {this.state.readyAnimation && this.typeRenderModal(this.state.workMode)}
@@ -338,7 +333,6 @@ class ModalWindow extends React.PureComponent {
     }
 
     componentDidUpdate = (nextProps, nextState) => {
-        console.log('componentDidUpdate');
         if (!this.state.readyAnimation)
         this.setState({
             ...this.state,

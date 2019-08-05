@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import './Loader.scss';
 export default function(props) {
-    const [path] = useState(props.path ? props.path : '/img/loading.gif');
+    const [path] = useState(props.path ? props.path : `${process.env.PUBLIC_URL}/img/loading.gif`);
     const [mode] = useState(props.mode ? props.mode : false);
     return (
             <div className = {`loaderBox ${mode && 'specialMode'}`}>

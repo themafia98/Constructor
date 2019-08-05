@@ -132,7 +132,6 @@ class Input extends React.PureComponent {
     };
 
     setBorderRadius = eventItem => {
-        console.log(eventItem);
         let radius = eventItem.borderRadius > 200 ? 200 : eventItem.borderRadius;
         radius = eventItem.borderDown < 0 ? 0 : eventItem.borderRadius;
             this.setState({
