@@ -4,3 +4,11 @@
     height: 100%;
     overflow: auto;
 }
+
+.modalAnimation-enter {
+    opacity: 0;
+}
+.modalAnimation-enter.modalAnimation-enter-active{
+    opacity: 1;
+    transition: opacity .5s;
+}

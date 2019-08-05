@@ -133,4 +133,22 @@
     }
 }
 
+
+.modalAnimation-enter {
+    opacity: 0;
+}
+.modalAnimation-enter.modalAnimation-enter-active{
+    opacity: 1;
+    transition: opacity .5s;
+}
+
+.modalAnimation-exit {
+    opacity: 1;
+  }
+
+  .modalAnimation-exit.boxOpacity-exit-active {
+    opacity: 0;
+    transition: opacity .5s;
+  }
+
 @import './media.scss';

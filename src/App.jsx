@@ -14,7 +14,7 @@ import Production from './Pages/Production/Production';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
 import ErrorPage from './components/ErrorCatch/ErrorPage';
-import ScrollMove from './components/scroll/ScrollMove';
+import ScrollMove from './components/ScrollMove';
 
 class App extends React.PureComponent {
 

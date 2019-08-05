@@ -3,7 +3,7 @@ import React,{Fragment} from 'react';
 import isFetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 import eventEmitter,{controllerStream} from '../../EventEmitter.js';
-
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import ImageItem from '../imageViewer/imageItem';
 
 import CreateProject from './createProject/createProject';
@@ -24,6 +24,7 @@ class ModalWindow extends React.PureComponent {
     }
 
     state = {
+        readyAnimation: false,
         workMode: this.props.workMode,
         loading: false,
         items: [],
@@ -266,55 +267,96 @@ class ModalWindow extends React.PureComponent {
     refSelect = (node) => this.inputSelect = node;
     refSearch = node => this.inputSearch = node;
 
-    render(){
-        switch (this.state.workMode){
+
+    typeRenderModal = workMode => {
+        switch (workMode){
             case 'newProject':
-                return <CreateProject
-                            dissabled = {this.state[this.state.workMode].disabled}
-                            warningNumber = {this.state.warning.warningNumber}
-                            validName = {this.state[this.state.workMode].validateName}
-                            nameLength = {this.state[this.state.workMode].name.length}
-                            name = {this.state[this.state.workMode].name}
-                            validType = {this.state[this.state.workMode].validateType}
-                            warningType = {this.state.warning.type}
-                            typeClassName = {this.state[this.state.workMode].validateName}
-                            warningLengthMin = {this.state.warning.lengthMin}
-                            warningLengthMax = {this.state.warning.lengthMax}
-                            cbValidateName = {this.validateName}
-                            cbSelectOption = {this.selectOption}
-                            cbAddNewProject = {this.addNewProject}
-                            cbCancel = {this.cancel}
-                            loading = {this.state.loading}
+                return (
+                    <CSSTransition
+                            timeout={500}
+                            unmountOnExit
+                            classNames = 'modalAnimation'
+                    >
+                        <CreateProject
+                                dissabled = {this.state[this.state.workMode].disabled}
+                                warningNumber = {this.state.warning.warningNumber}
+                                validName = {this.state[this.state.workMode].validateName}
+                                nameLength = {this.state[this.state.workMode].name.length}
+                                name = {this.state[this.state.workMode].name}
+                                validType = {this.state[this.state.workMode].validateType}
+                                warningType = {this.state.warning.type}
+                                typeClassName = {this.state[this.state.workMode].validateName}
+                                warningLengthMin = {this.state.warning.lengthMin}
+                                warningLengthMax = {this.state.warning.lengthMax}
+                                cbValidateName = {this.validateName}
+                                cbSelectOption = {this.selectOption}
+                                cbAddNewProject = {this.addNewProject}
+                                cbCancel = {this.cancel}
+                                loading = {this.state.loading}
                         />
+                    </CSSTransition>
+                )
             case 'Search':
                     return (
-                        <div className = 'searchWrapper'> 
-                            <SearchModal
-                                images = {this.state.images['images']}
-                                loading = {this.state.images.loading}
-                                view = {this.state.images.imageBoxView}
-                                dissabled = {this.state.images.buttonSearchDisabled}
-                                error = {this.state.images.error}
-                                cbCancel = {this.cancel}
-                                menuActive = {this.state.imageMenuActive}
-                                cbMakeImageResultBox = {this.makeImageResultBox}
-                                cbShowImage = {this.showImage}
-                                cbSetSelectedImage = {this.setSelectedImage}
-                                modalSearchMode = {this.props.modalSearchMode}
-                                cbSearch = {this.searchData}
-                                loader = {this.state.loading}
-                                selectedId = {this.state.images.selectedItem}
-                            />
-                        </div>
+                        <CSSTransition
+                            timeout={500}
+                            unmountOnExit
+                            classNames = 'modalAnimation'
+                        >
+                            <div className = 'searchWrapper'> 
+                                <SearchModal
+                                    images = {this.state.images['images']}
+                                    loading = {this.state.images.loading}
+                                    view = {this.state.images.imageBoxView}
+                                    dissabled = {this.state.images.buttonSearchDisabled}
+                                    error = {this.state.images.error}
+                                    cbCancel = {this.cancel}
+                                    menuActive = {this.state.imageMenuActive}
+                                    cbMakeImageResultBox = {this.makeImageResultBox}
+                                    cbShowImage = {this.showImage}
+                                    cbSetSelectedImage = {this.setSelectedImage}
+                                    modalSearchMode = {this.props.modalSearchMode}
+                                    cbSearch = {this.searchData}
+                                    loader = {this.state.loading}
+                                    selectedId = {this.state.images.selectedItem}
+                                />
+                            </div>
+                        </CSSTransition>
                     )
 
             default: return <Fragment></Fragment>
         }
     }
 
+    render(){
+        console.log('midal');
+        return (
+            <TransitionGroup  component = {null}>
+                {this.state.readyAnimation && this.typeRenderModal(this.state.workMode)}
+            </TransitionGroup>
+        )
+    }
+
+    componentDidUpdate = (nextProps, nextState) => {
+        console.log('componentDidUpdate');
+        if (!this.state.readyAnimation)
+        this.setState({
+            ...this.state,
+            readyAnimation: true,
+        });
+    }
+    
+
     componentDidMount = event => {
         if (this.state.workMode === 'Search')
             eventEmitter.on('EventShowMenuImage', this.showMenuImage);
+
+
+            if (!this.state.readyAnimation)
+            this.setState({
+                ...this.state,
+                readyAnimation: true,
+            });
     }
 
     componentWillUnmount = event => {

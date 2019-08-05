@@ -1,5 +1,5 @@
 import React from 'react';
-import eventEmitter from '../../EventEmitter';
+import eventEmitter from '../EventEmitter';
 
 import {animateScroll as scroll, scroller } from "react-scroll";
 
@@ -11,7 +11,7 @@ class ScrollMove extends React.PureComponent {
             duration: 1000,
             delay: 50,
             smooth: true,
-            offset: -60, // Scrolls to element -80 pixels down the page
+            offset: 60
         },
         position: 0,
         positionCount: null
@@ -68,5 +68,6 @@ class ScrollMove extends React.PureComponent {
         eventEmitter.off('EventSetState', this.setStates);
     }
 }
+
 
 export default ScrollMove;

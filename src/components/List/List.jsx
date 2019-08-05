@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {middlewareCreateProject} from '../../redux/middleware/createProjectMiddleware';
-
+// import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import './list.scss';
 
 import Item from './Item';
