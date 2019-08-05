@@ -21,9 +21,15 @@ const InputComponent = styled.input.attrs(props => {
     position: absolute;
     background-color: ${props => props.color || null};
     border: ${props => `1px solid ${props.color}`};
-    border-radius: ${props => props.borderRadius + 'px'};
+    border-radius: ${props => props.borderRadius ? props.borderRadius + 'px' : null};
     white-space: normal;
     font-weight: bold;
+    transition: .3s transform linear;
+
+    :active {
+        border: ${props =>`2px dotted ${props.color}`};
+        transform: scale(1.05);
+    }
 `;
 
 const ProductionStyle = styled(InputComponent)`

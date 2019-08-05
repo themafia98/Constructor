@@ -146,4 +146,25 @@ input[type='text'], input[type='password']{
     content: '|'
 }
 
+.boxOpacity-enter {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.boxOpacity-enter.boxOpacity-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  .boxOpacity-exit {
+    opacity: 1;
+  }
+
+  .boxOpacity-exit.boxOpacity-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
+
 @import './media.scss';

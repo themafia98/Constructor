@@ -49,7 +49,7 @@ class Registration extends React.PureComponent {
     render(){
         let  { error } = this.state;
         return (
-            <div className = 'RegistrationBox'>
+            <div className ='RegistrationBox'>
                 <div  className = 'RegistrationForm'>
                     <h3>Registration</h3>
                     <form autoComplete = 'off' className = 'RegForm'>
@@ -68,7 +68,7 @@ class Registration extends React.PureComponent {
                         />
                     </form>
                 </div>
-            </div>
+                </div>
         )
     }
 
