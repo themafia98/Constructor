@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/constructor/static/css/main.214a63b3.chunk.css",
+    "main.css": "/constructor/static/css/main.b8aa4499.chunk.css",
     "main.js": "/constructor/static/js/main.484dfe52.chunk.js",
     "main.js.map": "/constructor/static/js/main.484dfe52.chunk.js.map",
     "runtime~main.js": "/constructor/static/js/runtime~main.1bc77161.js",
@@ -9,9 +9,9 @@
     "static/js/2.1501e048.chunk.js": "/constructor/static/js/2.1501e048.chunk.js",
     "static/js/2.1501e048.chunk.js.map": "/constructor/static/js/2.1501e048.chunk.js.map",
     "index.html": "/constructor/index.html",
-    "precache-manifest.d32b37a560973a57382b19adc985c226.js": "/constructor/precache-manifest.d32b37a560973a57382b19adc985c226.js",
+    "precache-manifest.5d1da56183c6e2f0bb0333de97f534a4.js": "/constructor/precache-manifest.5d1da56183c6e2f0bb0333de97f534a4.js",
     "service-worker.js": "/constructor/service-worker.js",
     "static/css/2.764ccc25.chunk.css.map": "/constructor/static/css/2.764ccc25.chunk.css.map",
-    "static/css/main.214a63b3.chunk.css.map": "/constructor/static/css/main.214a63b3.chunk.css.map"
+    "static/css/main.b8aa4499.chunk.css.map": "/constructor/static/css/main.b8aa4499.chunk.css.map"
   }
 }
