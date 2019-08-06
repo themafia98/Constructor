@@ -76,7 +76,7 @@ Array [
           className="flex-column"
         >
           <div
-            className="projectsList__about"
+            className="projectsList__box"
           >
             <h3>
               Your Projects
@@ -193,7 +193,7 @@ Array [
           className="flex-column"
         >
           <div
-            className="projectsList__about"
+            className="projectsList__box"
           >
             <h3>
               Your Projects
@@ -272,7 +272,7 @@ Array [
           className="flex-column"
         >
           <div
-            className="projectsList__about"
+            className="projectsList__box"
           >
             <h3>
               Your Projects
@@ -302,7 +302,7 @@ exports[`Cabinet test 4`] = `
         className="flex-column"
       >
         <div
-          className="projectsList__about"
+          className="projectsList__box"
         >
           <h3>
             Your Projects

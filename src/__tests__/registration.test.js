@@ -16,7 +16,7 @@ test ('registration.js test', function(){
     let snapshotReg = RegistrationComponent.toJSON();
     expect(snapshotReg).toMatchSnapshot();
 
-    const button = RegistrationComponent.root.find(button => button.props.className === 'loginButton');
+    const button = RegistrationComponent.root.find(button => button.props.className === 'RegForm__loginButton');
 
     button.props.onClick({});
 

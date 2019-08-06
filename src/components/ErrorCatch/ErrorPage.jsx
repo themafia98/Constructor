@@ -20,9 +20,9 @@ class ErrorPage extends React.Component {
         if (this.state.redirect) return <Redirect to = '/' />
         return (
         <div class = 'container'>
-            <div class = 'flex-column'>
+            <div class = 'flex-column ErrorPage'>
                 <h1>Application crash</h1>
-                <button className = 'button_updateApp' onClick = {this.update}>Update</button>
+                <button className = 'ErrorPage__button_updateApp' onClick = {this.update}>Update</button>
             </div>
         </div>
         )

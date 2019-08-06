@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from '../Icon/icon';
 import BuildMenu from '../componentsBuildMenu/BuildMenu';
 
+import './controllers.scss';
 
 class Controllers extends React.PureComponent {
 
@@ -40,7 +41,7 @@ class Controllers extends React.PureComponent {
                 >
                     <Icon
                         onClick = {this.componentMenu}
-                        className = 'addButton'
+                        className = 'ControllersEditComponent__addButton'
                         path = '/img/addButton.png'
                     />
                     { this.state.viewComponentMenu ?

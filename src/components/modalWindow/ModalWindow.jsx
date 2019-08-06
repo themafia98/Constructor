@@ -267,7 +267,6 @@ class ModalWindow extends React.PureComponent {
     refSelect = (node) => this.inputSelect = node;
     refSearch = node => this.inputSearch = node;
 
-
     typeRenderModal = workMode => {
         switch (workMode){
             case 'newProject':
@@ -278,14 +277,9 @@ class ModalWindow extends React.PureComponent {
                             classNames = 'modalAnimation'
                     >
                         <CreateProject
-                                dissabled = {this.state[this.state.workMode].disabled}
-                                warningNumber = {this.state.warning.warningNumber}
-                                validName = {this.state[this.state.workMode].validateName}
-                                nameLength = {this.state[this.state.workMode].name.length}
-                                name = {this.state[this.state.workMode].name}
-                                validType = {this.state[this.state.workMode].validateType}
+                                content = {this.state[this.state.workMode]}
                                 warningType = {this.state.warning.type}
-                                typeClassName = {this.state[this.state.workMode].validateName}
+                                warningNumber = {this.state.warning.warningNumber}
                                 warningLengthMin = {this.state.warning.lengthMin}
                                 warningLengthMax = {this.state.warning.lengthMax}
                                 cbValidateName = {this.validateName}

@@ -50,25 +50,25 @@ class Registration extends React.PureComponent {
         let  { error } = this.state;
         return (
             <div className ='RegistrationBox'>
-                <div  className = 'RegistrationForm'>
+                <div  className = 'RegistrationBox__RegistrationForm'>
                     <h3>Registration</h3>
-                    <form autoComplete = 'off' className = 'RegForm'>
+                    <form autoComplete = 'off' className = 'RegistrationForm__RegForm'>
                         { error ?
                             <p className = 'error'>{error}</p>
                             : null
                         }
                         <span>E-mail</span>
-                        <input ref = {this.setRefEmail} type = 'text' />
+                        <input placeHolder="email" ref = {this.setRefEmail} type = 'text' />
                         <span>Password</span>
                         <input 
                             className = 'password' 
                             autoComplete = "off" 
                             ref = {this.setRefPassword} 
                             type = 'password' 
-                            placeHolder="Enter the Password"
+                            placeHolder="password"
                         />
                         <input onClick = {this.createUser}
-                                className = 'loginButton'
+                                className = 'RegForm__loginButton'
                                 type = 'button'
                                 value = 'registration'
                         />

@@ -36,9 +36,14 @@ class About extends React.PureComponent {
                     <section className = 'About'>
                         <div className = 'container'>
                             <div className = 'col-12'>
-                                <div className = 'information'>
-                                <img alt = 'img' className = 'logoAbout' src = {process.env.PUBLIC_URL + '/img/about.jpg'}/>
-                                    <p className ='developer'><span>Developer:</span> {config.about.developer}</p>
+                                <div className = 'About__information'>
+                                <img alt = 'img'
+                                    className = 'information__logoAbout' 
+                                    src = {process.env.PUBLIC_URL + '/img/about.jpg'}
+                                />
+                                    <p className ='developer'><span>Developer:</span>
+                                                            {config.about.developer}
+                                    </p>
                                     <p className = 'year'><span>Year:</span> {config.about.year}</p>
                                 </div>
                             </div>

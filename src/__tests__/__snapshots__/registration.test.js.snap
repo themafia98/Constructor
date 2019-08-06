@@ -5,19 +5,20 @@ exports[`registration.js test 1`] = `
   className="RegistrationBox"
 >
   <div
-    className="RegistrationForm"
+    className="RegistrationBox__RegistrationForm"
   >
     <h3>
       Registration
     </h3>
     <form
       autoComplete="off"
-      className="RegForm"
+      className="RegistrationForm__RegForm"
     >
       <span>
         E-mail
       </span>
       <input
+        placeHolder="email"
         type="text"
       />
       <span>
@@ -26,11 +27,11 @@ exports[`registration.js test 1`] = `
       <input
         autoComplete="off"
         className="password"
-        placeHolder="Enter the Password"
+        placeHolder="password"
         type="password"
       />
       <input
-        className="loginButton"
+        className="RegForm__loginButton"
         onClick={[Function]}
         type="button"
         value="registration"
@@ -45,14 +46,14 @@ exports[`registration.js test 2`] = `
   className="RegistrationBox"
 >
   <div
-    className="RegistrationForm"
+    className="RegistrationBox__RegistrationForm"
   >
     <h3>
       Registration
     </h3>
     <form
       autoComplete="off"
-      className="RegForm"
+      className="RegistrationForm__RegForm"
     >
       <p
         className="error"
@@ -63,6 +64,7 @@ exports[`registration.js test 2`] = `
         E-mail
       </span>
       <input
+        placeHolder="email"
         type="text"
       />
       <span>
@@ -71,11 +73,11 @@ exports[`registration.js test 2`] = `
       <input
         autoComplete="off"
         className="password"
-        placeHolder="Enter the Password"
+        placeHolder="password"
         type="password"
       />
       <input
-        className="loginButton"
+        className="RegForm__loginButton"
         onClick={[Function]}
         type="button"
         value="registration"

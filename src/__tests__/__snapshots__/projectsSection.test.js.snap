@@ -11,7 +11,7 @@ exports[`ProjectsSection.jsx test  1`] = `
       className="flex-column"
     >
       <div
-        className="projectsList__about"
+        className="projectsList__box"
       >
         <h3>
           Your Projects

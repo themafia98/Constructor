@@ -78,13 +78,13 @@ class Index extends React.PureComponent {
             return (
                 <div className = 'LoginPage flex-column'>
                 <h1>{this.state.title}</h1>
-                        <div className = 'LoginBox'>
+                        <div className = 'LoginPage__LoginBox'>
                         <AnimationText
                             content = 'Build your landing page!'
                             msPauseEnd = {1000}
                             msAnimation = {150}
                         />
-                            <form className = 'LoginForm'>
+                            <form className = 'LoginBox__LoginForm'>
                                 <h3>Connect form</h3>
                                 {
                                     this.props.wrongEnter || this.state.regStatus ?
@@ -92,23 +92,30 @@ class Index extends React.PureComponent {
                                     : null
                                 }
                                 <p>E-mail</p>
-                                <input ref = {this.emailRef} type = 'text' />
+                                <input 
+                                    autoComplete = 'off'
+                                    placeHolder="email" 
+                                    ref = {this.emailRef}
+                                     type = 'text' 
+                                />
                                 <p>Password</p>
                                 <input 
                                     ref = {this.passwordRef} 
                                     type = 'password' 
                                     autoComplete = 'off'
-                                    placeholder="Enter the Password"
+                                    placeHolder="password"
                                     />
                                 <input 
                                     onClick = {this.authTo} 
-                                    className = 'loginButton enterInput'
+                                    className = 'LoginForm__loginButton enterInput'
                                     type = 'button'
                                     value = 'enter' />
                                 <input
                                     onClick = {this.showBox}
                                     className = {this.state.registrationActive ?
-                                        `loginButton registration selected` : 'loginButton registration'}
+                                        `LoginForm__loginButton registration selected` : 
+                                        'LoginForm__loginButton registration'
+                                    }
                                     type = 'button'
                                     value = 'registration'
                                     />
@@ -119,7 +126,7 @@ class Index extends React.PureComponent {
                                     <CSSTransition
                                         timeout={300}
                                         unmountOnExit
-                                        classNames="boxOpacity">
+                                        classNames="RegAnim">
                                         <Registration  indexStream = {this.indexStream} />
                                     </CSSTransition>
                             }

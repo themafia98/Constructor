@@ -8,7 +8,7 @@ exports[`Index test 1`] = `
     Constructor
   </h1>
   <div
-    className="LoginBox"
+    className="LoginPage__LoginBox"
   >
     <h3
       className="sc-AykKC cSQYJJ"
@@ -18,7 +18,7 @@ exports[`Index test 1`] = `
       B
     </h3>
     <form
-      className="LoginForm"
+      className="LoginBox__LoginForm"
     >
       <h3>
         Connect form
@@ -27,6 +27,8 @@ exports[`Index test 1`] = `
         E-mail
       </p>
       <input
+        autoComplete="off"
+        placeHolder="email"
         type="text"
       />
       <p>
@@ -34,17 +36,17 @@ exports[`Index test 1`] = `
       </p>
       <input
         autoComplete="off"
-        placeholder="Enter the Password"
+        placeHolder="password"
         type="password"
       />
       <input
-        className="loginButton enterInput"
+        className="LoginForm__loginButton enterInput"
         onClick={[Function]}
         type="button"
         value="enter"
       />
       <input
-        className="loginButton registration"
+        className="LoginForm__loginButton registration"
         onClick={[Function]}
         type="button"
         value="registration"
@@ -62,7 +64,7 @@ exports[`Index test 2`] = `
     Constructor
   </h1>
   <div
-    className="LoginBox"
+    className="LoginPage__LoginBox"
   >
     <h3
       className="sc-AykKC cSQYJJ"
@@ -72,7 +74,7 @@ exports[`Index test 2`] = `
       B
     </h3>
     <form
-      className="LoginForm"
+      className="LoginBox__LoginForm"
     >
       <h3>
         Connect form
@@ -81,6 +83,8 @@ exports[`Index test 2`] = `
         E-mail
       </p>
       <input
+        autoComplete="off"
+        placeHolder="email"
         type="text"
       />
       <p>
@@ -88,17 +92,17 @@ exports[`Index test 2`] = `
       </p>
       <input
         autoComplete="off"
-        placeholder="Enter the Password"
+        placeHolder="password"
         type="password"
       />
       <input
-        className="loginButton enterInput"
+        className="LoginForm__loginButton enterInput"
         onClick={[Function]}
         type="button"
         value="enter"
       />
       <input
-        className="loginButton registration"
+        className="LoginForm__loginButton registration"
         onClick={[Function]}
         type="button"
         value="registration"

@@ -1,17 +1,15 @@
 @media screen and (max-width: 1100px){
-    .information{
-        .logoAbout {
+    .About__information{
+        .information__logoAbout {
             width: 70%;
         }
     }
-
-
 }
 
 @media screen and (max-width: 650px){
 
-    .information{
-        .logoAbout {
+    .About__information{
+        .information__logoAbout {
             width: 100%;
         }
     }

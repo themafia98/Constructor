@@ -1,4 +1,4 @@
-.button_updateApp {
+.ErrorPage__button_updateApp {
     cursor: pointer;
     border: 1px solid red;
     padding: 10px;
@@ -7,7 +7,7 @@
     transition: .3s linear;
     border-radius: 10px;
 }
-.button_updateApp:hover{
+.ErrorPage__button_updateApp:hover{
     border: 1px solid rgb(165, 10, 10);
     background-color: rgb(23, 230, 143);
 }

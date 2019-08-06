@@ -16,6 +16,8 @@ import Build from './Pages/Build/Build';
 import ErrorPage from './components/ErrorCatch/ErrorPage';
 import ScrollMove from './components/ScrollMove';
 
+import './root.scss';
+
 class App extends React.PureComponent {
 
     static propTypes = {

@@ -8,7 +8,7 @@ const ProjectsSection = props => {
             <section className = 'projectsList'>
                 <div className = 'container'>
                     <div className = 'flex-column'>
-                        <div className = 'projectsList__about'>
+                        <div className = 'projectsList__box'>
                             <h3>Your Projects</h3>
                         </div>
                         <List cabinetStream = {props.cabinetStream} />

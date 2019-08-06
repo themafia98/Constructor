@@ -4,70 +4,10 @@
         width: 100%;
         height: 100%;
 
-        .titleCompoentBuild {
-            text-align: center;
-            margin: 0;
-        }
-        
-        .warningEdit {
-            cursor: pointer;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            background: gray;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            font-size: 3rem;
-            color: red;
-            margin: 0;
-            opacity: .7;
-            user-select: none;
-
-            p {
-                font-weight: bold;
-            }
-        }
-        
         .important {
             color: rgb(255, 73, 41);
         }
-        
-        .addButton {
-            width: 72px;
-            transition: .3s linear;
-        }
-        
-        .addButton:hover {
-            filter: sepia(70%);
-            transform:  scale(1.1);
-        }
-        
-        .ControllersEditComponent {
-            position: fixed;
-            z-index: 99;
-            left: 50%;
-            top: 0;
-        
-            p {
-                visibility: hidden;
-                box-sizing: border-box;
-                width: 72px;
-                height: 42px;
-            }
-        }
 }
-
-
-// .Build:after{
-//     content: 'Constructor';
-//     display: block;
-//     height: 60px;
-// }
-
-
 
 @import './media.scss';
 

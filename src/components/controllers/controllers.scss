@@ -1,0 +1,24 @@
+
+.ControllersEditComponent {
+    position: fixed;
+    z-index: 99;
+    left: 50%;
+    top: 0;
+
+    .ControllersEditComponent__addButton {
+        width: 72px;
+        transition: .3s linear;
+    }
+    
+    .ControllersEditComponent__addButton:hover {
+        filter: sepia(70%);
+        transform:  scale(1.1);
+    }
+
+    p {
+        visibility: hidden;
+        box-sizing: border-box;
+        width: 72px;
+        height: 42px;
+    }
+}
