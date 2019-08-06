@@ -26,6 +26,7 @@ exports[`registration.js test 1`] = `
       <input
         autoComplete="off"
         className="password"
+        placeHolder="Enter the Password"
         type="password"
       />
       <input
@@ -70,6 +71,7 @@ exports[`registration.js test 2`] = `
       <input
         autoComplete="off"
         className="password"
+        placeHolder="Enter the Password"
         type="password"
       />
       <input

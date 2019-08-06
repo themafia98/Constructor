@@ -1,6 +1,6 @@
-import configureStore from 'redux-mock-store';
-
-
+import configureStore, {applyMiddleware} from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import firebase from '../Firebase/Firebase';
 const initialStateOffline = {
     cabinet: {
     active: false,
@@ -45,13 +45,18 @@ const initialState = {
         haveUpdateLoading: true,
         idProject: 0,
         typeProject: "portfolio",
-        components: []
+        components: [],
+        sectionsProject: [],
     }
 };
+
+const middlewares = [thunk.withExtraArgument({firebase})] // add your middlewares like `redux-thunk`
 // here it is possible to pass in any middleware if needed into //configureStore
-const mockStore = configureStore();
+const mockStore = configureStore(middlewares);
 
 const store = mockStore(initialState);
+
+
 
 export default store;
 export {initialStateOffline};

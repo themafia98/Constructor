@@ -63,6 +63,235 @@ Array [
       </div>
     </div>
   </header>,
+  <div
+    className="Cabinet"
+  >
+    <section
+      className="projectsList"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="flex-column"
+        >
+          <div
+            className="projectsList__about"
+          >
+            <h3>
+              Your Projects
+            </h3>
+          </div>
+          <div
+            className="projectsList__list"
+          >
+            <div
+              className="item"
+              data-id={0}
+            >
+              <p
+                className="ProjectName"
+              >
+                Test1
+              </p>
+              <p
+                className="ProjectType"
+              >
+                landing
+              </p>
+              <div
+                className="projectController"
+              >
+                <input
+                  className="projectControllerButton_enter"
+                  onClick={[Function]}
+                  type="button"
+                  value="enter build"
+                />
+                <input
+                  className="projectControllerButton_delete"
+                  onClick={[Function]}
+                  type="button"
+                  value="delete"
+                />
+              </div>
+              <input
+                className="productionButton"
+                onClick={[Function]}
+                type="button"
+                value="Production"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>,
+]
+`;
+
+exports[`Cabinet test 2`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <div
+    className="Cabinet"
+  >
+    <section
+      className="projectsList"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="flex-column"
+        >
+          <div
+            className="projectsList__about"
+          >
+            <h3>
+              Your Projects
+            </h3>
+          </div>
+          <div
+            className="projectsList__list"
+          />
+        </div>
+      </div>
+    </section>
+  </div>,
+]
+`;
+
+exports[`Cabinet test 3`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <div
+    className="Cabinet"
+  >
+    <section
+      className="projectsList"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="flex-column"
+        >
+          <div
+            className="projectsList__about"
+          >
+            <h3>
+              Your Projects
+            </h3>
+          </div>
+          <div
+            className="projectsList__list"
+          />
+        </div>
+      </div>
+    </section>
+  </div>,
+]
+`;
+
+exports[`Cabinet test 4`] = `
+<div
+  className="Cabinet"
+>
   <section
     className="projectsList"
   >
@@ -81,47 +310,9 @@ Array [
         </div>
         <div
           className="projectsList__list"
-        >
-          <div
-            className="item"
-            data-id={0}
-          >
-            <p
-              className="ProjectName"
-            >
-              Test1
-            </p>
-            <p
-              className="ProjectType"
-            >
-              landing
-            </p>
-            <div
-              className="projectController"
-            >
-              <input
-                className="projectControllerButton_enter"
-                onClick={[Function]}
-                type="button"
-                value="enter build"
-              />
-              <input
-                className="projectControllerButton_delete"
-                onClick={[Function]}
-                type="button"
-                value="delete"
-              />
-            </div>
-            <input
-              className="productionButton"
-              onClick={[Function]}
-              type="button"
-              value="Show demo"
-            />
-          </div>
-        </div>
+        />
       </div>
     </div>
-  </section>,
-]
+  </section>
+</div>
 `;

@@ -36,10 +36,5 @@ test("Index test", function(){
     snapshotIndex = IndexComponent.toJSON();
     expect(snapshotIndex).toMatchSnapshot();
 
-    const regButton = IndexComponent.root.find(input => input.props.className === 'loginButton registration');
-    regButton.props.onClick({stopPropagation: () => null});
-
-    snapshotIndex = IndexComponent.toJSON();
-    expect(snapshotIndex).toMatchSnapshot();
 
 });

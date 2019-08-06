@@ -1,12 +1,17 @@
 import React from 'react';
 import { MemoryRouter} from 'react-router-dom';
 import renderer from 'react-test-renderer';
-
+import Events from 'events';
 import Item from '../components/List/Item';
+import firebase from '../Firebase/Firebase';
 
 let ItemComponents = renderer.create(
     <MemoryRouter initialEntries = {['/Cabinet/Build/0']}>
-            <Item id = {0} title = {'test1'} type = {"portfolio"}  />
+            <Item firebase = {firebase} name ='super' 
+                cabinetStream = {new Events()} 
+                id = {0} 
+                title = {'test1'} 
+                type = {"portfolio"}  />
     </MemoryRouter>
 )
 

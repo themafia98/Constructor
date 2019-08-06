@@ -51,10 +51,14 @@ class Index extends React.PureComponent {
     }
 
     showBox = event => {
-        this.setState ({
-            ...this.state,
-        registrationActive: this.state.registrationActive ? false : true
-        });
+        try {
+            this.setState ({
+                ...this.state,
+            registrationActive: this.state.registrationActive ? false : true
+            });
+        } catch (e) {
+        console.error('animation fail');
+        }
         event.stopPropagation();
     }
 

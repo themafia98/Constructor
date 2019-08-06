@@ -54,7 +54,7 @@ exports[`ProjectsSection.jsx test  1`] = `
             className="productionButton"
             onClick={[Function]}
             type="button"
-            value="Show demo"
+            value="Production"
           />
         </div>
       </div>

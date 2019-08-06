@@ -7,7 +7,9 @@ exports[`Item.js test  1`] = `
 >
   <p
     className="ProjectName"
-  />
+  >
+    super
+  </p>
   <p
     className="ProjectType"
   >
@@ -33,7 +35,7 @@ exports[`Item.js test  1`] = `
     className="productionButton"
     onClick={[Function]}
     type="button"
-    value="Show demo"
+    value="Production"
   />
 </div>
 `;
@@ -45,7 +47,9 @@ exports[`Item.js test  2`] = `
 >
   <p
     className="ProjectName"
-  />
+  >
+    super
+  </p>
   <p
     className="ProjectType"
   >
@@ -71,7 +75,7 @@ exports[`Item.js test  2`] = `
     className="productionButton"
     onClick={[Function]}
     type="button"
-    value="Show demo"
+    value="Production"
   />
 </div>
 `;
@@ -83,7 +87,9 @@ exports[`Item.js test  3`] = `
 >
   <p
     className="ProjectName"
-  />
+  >
+    super
+  </p>
   <p
     className="ProjectType"
   >
@@ -109,7 +115,7 @@ exports[`Item.js test  3`] = `
     className="productionButton"
     onClick={[Function]}
     type="button"
-    value="Show demo"
+    value="Production"
   />
 </div>
 `;

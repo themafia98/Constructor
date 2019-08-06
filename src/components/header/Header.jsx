@@ -21,7 +21,7 @@ class Header extends React.Component {
         dispatch: PropTypes.func.isRequired, /** @dispatch redux */
         history: PropTypes.object.isRequired, /** @Router HTML5 history */
         location: PropTypes.object.isRequired, /** @Router */
-        match: PropTypes.object.isRequired, /** @Router */
+        match: PropTypes.object, /** @Router */
     };
 
     state = {

@@ -51,18 +51,181 @@ Array [
     </div>
   </header>,
   <div
-    className="Header"
-    onClick={[Function]}
+    className="Build"
   >
     <div
-      className="sc-AykKD jzBScL"
-      onClick={[Function]}
-    />
-    <p
-      className="warningEdit"
+      className="sectionMode"
     >
-      Click for start edit
-    </p>
+      <button
+        className="newSectionTool CompoentnsMenu_button"
+        onClick={[Function]}
+      >
+        <span>
+          New section
+        </span>
+      </button>
+    </div>
+    0
   </div>,
 ]
+`;
+
+exports[`Build test 2`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <div
+    className="Build"
+  >
+    <div
+      className="sectionMode"
+    >
+      <button
+        className="newSectionTool CompoentnsMenu_button"
+        onClick={[Function]}
+      >
+        <span>
+          New section
+        </span>
+      </button>
+    </div>
+    0
+  </div>,
+]
+`;
+
+exports[`Build test 3`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <div
+    className="Build"
+  >
+    <div
+      className="sectionMode"
+    >
+      <button
+        className="newSectionTool CompoentnsMenu_button"
+        onClick={[Function]}
+      >
+        <span>
+          New section
+        </span>
+      </button>
+    </div>
+    0
+  </div>,
+]
+`;
+
+exports[`Build test 4`] = `
+<div
+  className="Build"
+>
+  <div
+    className="sectionMode"
+  >
+    <button
+      className="newSectionTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        New section
+      </span>
+    </button>
+  </div>
+  0
+</div>
 `;
