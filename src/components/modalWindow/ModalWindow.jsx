@@ -33,7 +33,7 @@ class ModalWindow extends React.PureComponent {
             buttonSearchDisabled: false,
             selectedItem: null, 
             showUrl: null, 
-            images: null,
+            images: [],
             urlFull: null,
             imageBoxView: false, 
             iframe: null,
@@ -62,7 +62,7 @@ class ModalWindow extends React.PureComponent {
 
         this.setState({...this.state, 
             images: {
-                ...this.state.inages,
+                ...this.state.images,
                 loading: true,
                 buttonSearchDisabled: true
             }
@@ -203,7 +203,7 @@ class ModalWindow extends React.PureComponent {
         if (!items) return null;
         return items.map((item,i) =>{
                 return <ImageItem
-                            key = {`item${~~(1 + Math.random() * 999)}`}
+                            key = {`item${item.videoId}${i}`}
                             id = {i}
                             urlContent = {item.videoId ? item.videoId : null}
                             selected = {this.state.images.selectedItem === i ? true : false} 
@@ -326,12 +326,13 @@ class ModalWindow extends React.PureComponent {
         )
     }
 
-    componentDidUpdate = (nextProps, nextState) => {
-        if (!this.state.readyAnimation)
-        this.setState({
-            ...this.state,
-            readyAnimation: true,
-        });
+    componentDidUpdate = () => {
+        if (!this.state.readyAnimation){
+            this.setState({
+                ...this.state,
+                readyAnimation: true,
+            });
+        }
     }
     
 

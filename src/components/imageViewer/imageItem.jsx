@@ -4,6 +4,7 @@ import eventEmitter from '../../EventEmitter';
 
 const ImageItem = props => {
 
+    const {selected} = props;
     const [id] = useState(props.id);
     const [urlRegular] = useState(props.urls.regular);
     const [urlFull] = useState(props.urls.full);
@@ -17,12 +18,11 @@ const ImageItem = props => {
             urlFull: urlFull,
             iframe: urlContent
         });
-
         event.stopPropagation();
     }
 
     return (
-        <div className = {props.selected ? 'ItemBox selected' : 'ItemBox'}>
+        <div className = {selected ? 'ItemBox selected' : 'ItemBox'}>
             <img
                 className = 'ImageItem'
                 onClick = {showImageMenu}

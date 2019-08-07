@@ -37,7 +37,7 @@ class Production extends React.PureComponent {
             const itemHash = {
                 props: {
                     ...item,
-                    mode: 'dev',
+                    mode: 'production',
                 },
                 type: item.type,
                 id: item.id,

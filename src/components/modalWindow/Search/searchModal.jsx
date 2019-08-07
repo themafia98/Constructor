@@ -38,7 +38,7 @@ class  SearchModal extends React.PureComponent {
                 { this.props.error ?
                     <span className = 'error'>{content.error}</span> : null
                 }
-                    <input ref = {this.refSearchFunc} type = 'text' placeHolder = "name" />
+                    <input ref = {this.refSearchFunc} type = 'text' />
                         <input
                             disabled = {content.dissabled}
                             className = 'acceptButton'
@@ -71,7 +71,7 @@ class  SearchModal extends React.PureComponent {
         let {content} = this.props;
         let {content: contentPrev} = prevProps;
         const haveUpdate = (contentPrev.images !== content.images && content.images);
-        const isSelected = contentPrev.selectedId !== content.selectedId;
+        const isSelected = contentPrev.selectedItem !== content.selectedItem;
 
         if (haveUpdate || isSelected){
             let _items = this.props.cbMakeImageResultBox(content.images);
