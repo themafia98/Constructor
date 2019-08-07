@@ -34,7 +34,11 @@ class  SearchModal extends React.PureComponent {
         return (
             <React.Fragment>
                 <div className = 'Modal Modal-search'>
-                <h3>{`Search ${this.props.modalSearchMode}`}</h3>
+                <h3>
+                {this.props.modalSearchMode ? 
+                    `Search ${this.props.modalSearchMode}` : '' 
+                }
+                </h3>
                 { this.props.error ?
                     <span className = 'error'>{content.error}</span> : null
                 }

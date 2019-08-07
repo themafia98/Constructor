@@ -30,8 +30,8 @@ function Viewer(props){
 
 Viewer.propTypes = {
     eventStreamBuild: PropTypes.object.isRequired, // events stream
-    mode: PropTypes.string.isRequired, // use mode
-    path: PropTypes.string.isRequired // path to data component
+    mode: PropTypes.string, // use mode
+    path: PropTypes.string // path to data component
 }
 
 export default Viewer;

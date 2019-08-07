@@ -3,7 +3,6 @@ import React,{Fragment} from 'react';
 import isFetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 import eventEmitter,{controllerStream} from '../../EventEmitter.js';
-import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import ImageItem from '../imageViewer/imageItem';
 
 import CreateProject from './createProject/createProject';
@@ -261,7 +260,7 @@ class ModalWindow extends React.PureComponent {
 
         if (this.state.workMode === 'Search')
         this.props.eventStreamBuild.emit("EventModalSearchOn", {action: 'offline', mode: null});
-        else  this.props.cabinetStream.emit('EventChangeWorkMode',{action: 'default'});
+        else  this.props.cabinetStream.emit('EventChangeWorkMode',{active: false, action: 'default'});
     }
 
     refSelect = (node) => this.inputSelect = node;
@@ -271,11 +270,6 @@ class ModalWindow extends React.PureComponent {
         switch (workMode){
             case 'newProject':
                 return (
-                    <CSSTransition
-                            timeout={500}
-                            unmountOnExit
-                            classNames = 'modalAnimation'
-                    >
                         <CreateProject
                                 content = {this.state[this.state.workMode]}
                                 warningType = {this.state.warning.type}
@@ -288,15 +282,10 @@ class ModalWindow extends React.PureComponent {
                                 cbCancel = {this.cancel}
                                 loading = {this.state.loading}
                         />
-                    </CSSTransition>
                 )
             case 'Search':
                     return (
-                        <CSSTransition
-                            timeout={500}
-                            unmountOnExit
-                            classNames = 'modalAnimation'
-                        >
+    
                             <div className = 'searchWrapper'> 
                                 <SearchModal
                                     content = {this.state.images}
@@ -311,7 +300,6 @@ class ModalWindow extends React.PureComponent {
                                   
                                 />
                             </div>
-                        </CSSTransition>
                     )
 
             default: return <Fragment></Fragment>
@@ -319,10 +307,12 @@ class ModalWindow extends React.PureComponent {
     }
 
     render(){
+
+        console.log('modal');
         return (
-            <TransitionGroup  component = {null}>
-                {this.state.readyAnimation && this.typeRenderModal(this.state.workMode)}
-            </TransitionGroup>
+           <Fragment>
+                {this.typeRenderModal(this.state.workMode)}
+            </Fragment>
         )
     }
 

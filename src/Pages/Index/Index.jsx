@@ -94,7 +94,7 @@ class Index extends React.PureComponent {
                                 <p>E-mail</p>
                                 <input 
                                     autoComplete = 'off'
-                                    placeHolder="email" 
+                                    placeholder="email" 
                                     ref = {this.emailRef}
                                      type = 'text' 
                                 />
@@ -103,7 +103,7 @@ class Index extends React.PureComponent {
                                     ref = {this.passwordRef} 
                                     type = 'password' 
                                     autoComplete = 'off'
-                                    placeHolder="password"
+                                    placeholder="password"
                                     />
                                 <input 
                                     onClick = {this.authTo} 

@@ -2,6 +2,7 @@ import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
+import {CSSTransition} from 'react-transition-group';
 /* ------- Event stream ------- */
 import Events from 'events';
 /* ------- HOC for het firebase controll object ------- */
@@ -33,6 +34,7 @@ class Cabinet extends React.PureComponent {
   cabinetStream = new Events();
 
   state = {
+	modalActive: false,
     workMode: 'default',
   }
 
@@ -44,12 +46,14 @@ class Cabinet extends React.PureComponent {
     this.props.dispatch(middlewareDelete({...event, uid: this.props.firebase.getCurrentUser().uid}));
   };
 
-  changeWorkMode = event => {
+  	changeWorkMode = event => {
     this.setState ({
-      ...this.state,
-      workMode: event.action,
-    });
-  };
+	  ...this.state,
+	  modalActive: event.active,
+	  workMode: event.action
+	});
+	}
+
 
   render(){
 
@@ -61,12 +65,18 @@ class Cabinet extends React.PureComponent {
                   idUser = {this.props.idUser} 
           />
           <div className = 'Cabinet'>
-            {(this.state.workMode === 'newProject') ?
-              <Modal
-                cabinetStream = {this.cabinetStream}
-                workMode = {this.state.workMode} 
-              />
-            : null}
+		  <CSSTransition
+				in={this.state.modalActive}
+				timeout={300}
+				classNames="modalAnimation"
+				unmountOnExit
+				appear
+        	>
+                <Modal
+                  cabinetStream = {this.cabinetStream}
+                  workMode = {this.state.workMode} 
+                />
+            </CSSTransition>
               <ProjectsSection cabinetStream = {this.cabinetStream} />
             </div>
         </Fragment>
@@ -78,12 +88,12 @@ class Cabinet extends React.PureComponent {
 
   componentDidMount = () => {
     this.cabinetStream.on('EventDeleteItem', this.deletItem);
-    this.cabinetStream.on('EventChangeWorkMode', this.changeWorkMode);
+	this.cabinetStream.on('EventChangeWorkMode', this.changeWorkMode);
   };
 
   componentWillUnmount = () => {
     this.cabinetStream.off('EventDeleteItem', this.deletItem);
-    this.cabinetStream.off('EventChangeWorkMode', this.changeWorkMode);
+	this.cabinetStream.off('EventChangeWorkMode', this.changeWorkMode);
   }
 }
 

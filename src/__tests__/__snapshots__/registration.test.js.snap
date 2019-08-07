@@ -18,7 +18,7 @@ exports[`registration.js test 1`] = `
         E-mail
       </span>
       <input
-        placeHolder="email"
+        placeholder="email"
         type="text"
       />
       <span>
@@ -27,7 +27,7 @@ exports[`registration.js test 1`] = `
       <input
         autoComplete="off"
         className="password"
-        placeHolder="password"
+        placeholder="password"
         type="password"
       />
       <input
@@ -64,7 +64,7 @@ exports[`registration.js test 2`] = `
         E-mail
       </span>
       <input
-        placeHolder="email"
+        placeholder="email"
         type="text"
       />
       <span>
@@ -73,7 +73,7 @@ exports[`registration.js test 2`] = `
       <input
         autoComplete="off"
         className="password"
-        placeHolder="password"
+        placeholder="password"
         type="password"
       />
       <input

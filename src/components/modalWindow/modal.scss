@@ -29,7 +29,7 @@
         width: 50%;
     }
 
-    ::placeHolder, select {
+    :placeholder, select {
         font-weight: bold;
         text-align: center;
     }
@@ -149,6 +149,7 @@
   .modalAnimation-exit.modalAnimation-exit-active {
     opacity: 0;
     transition: opacity .5s;
-  }
+}
+
 
 @import './media.scss';

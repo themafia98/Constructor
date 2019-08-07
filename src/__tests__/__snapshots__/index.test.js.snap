@@ -28,7 +28,7 @@ exports[`Index test 1`] = `
       </p>
       <input
         autoComplete="off"
-        placeHolder="email"
+        placeholder="email"
         type="text"
       />
       <p>
@@ -36,7 +36,7 @@ exports[`Index test 1`] = `
       </p>
       <input
         autoComplete="off"
-        placeHolder="password"
+        placeholder="password"
         type="password"
       />
       <input
@@ -84,7 +84,7 @@ exports[`Index test 2`] = `
       </p>
       <input
         autoComplete="off"
-        placeHolder="email"
+        placeholder="email"
         type="text"
       />
       <p>
@@ -92,7 +92,7 @@ exports[`Index test 2`] = `
       </p>
       <input
         autoComplete="off"
-        placeHolder="password"
+        placeholder="password"
         type="password"
       />
       <input

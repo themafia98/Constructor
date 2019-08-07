@@ -100,7 +100,7 @@ class Header extends React.Component {
     }
 
     add = event => {
-        this.props.cabinetStream.emit('EventChangeWorkMode',{action: 'newProject'});
+        this.props.cabinetStream.emit('EventChangeWorkMode',{active: true, action: 'newProject'});
         event.stopPropagation()
     };
 

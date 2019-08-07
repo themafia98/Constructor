@@ -49,37 +49,11 @@ class Build extends React.PureComponent {
             },
             editComponentName:  null, /** @String | @null name current edit component */
             menuActive: false, /** @bool active menu or no */
-            modalSearch: false, /** @bool active modal search image/media */
-            modalSearchMode: null, /** @String work mode of search modal */
-            modalViewer: {action: false, image: null, mode: null }, /** @Object data with viewer data */
             sizeParentBox: null, /** @Object size store */
         }
 
         eventEmitterBuild = new EventBuild(); // events stream for controllers
         timer = null; // save timer
-
-    modalSearchOn = itemEvent => {
-        const modeHave = itemEvent.hasOwnProperty('mode');
-        this.setState({
-            ...this.state, 
-            modalSearch: !this.state.modalSearch,
-            modalSearchMode: modeHave ? itemEvent.mode : null
-        });
-    }
-
-    ViewerSwitch = itemEvent => {
-        /* set settings for viewer */
-        this.setState({
-            ...this.state,
-            modalViewer: {
-                ...this.state.modalViewer,
-                action: itemEvent.action,
-                target: itemEvent.target,
-                mode: itemEvent.mode,
-                iframe: itemEvent.iframe
-            }
-        });
-    };
 
     workModeEdit = itemEvent => {
         /* set edit mode */
@@ -295,12 +269,9 @@ class Build extends React.PureComponent {
                         {instrumentActive && 
                             <AdditionalTools key = 'tools'
                                 eventStreamBuild = {this.eventEmitterBuild}
-                                modalViewer = {this.state.modalViewer}
                                 componentStats = {this.state.componentStats}
                                 editComponentName = {this.state.editComponentName}
                                 instrumentPanel = {this.state.instrumentPanel}
-                                modalSearchMode = {this.state.modalSearchMode}
-                                modalSearch = {this.state.modalSearch}
                             />
                         }
                         {section.length &&
@@ -379,8 +350,6 @@ class Build extends React.PureComponent {
             this.eventEmitterBuild.on('EventNewSection', this.addNewSection);
             this.eventEmitterBuild.on('EventSaveChangesComponent', this.saveChangesComponent);
             this.eventEmitterBuild.on('EventClosePanel', this.closePanel);
-            this.eventEmitterBuild.on('EventModalSearchOn', this.modalSearchOn);
-            this.eventEmitterBuild.on('EventView', this.ViewerSwitch);
         }; /** else redirect */
     }
 
@@ -395,9 +364,7 @@ class Build extends React.PureComponent {
             this.eventEmitterBuild.off('EventDeleteComponent', this.deleteComponent);
             this.eventEmitterBuild.off('EventNewSection', this.addNewSection);
             this.eventEmitterBuild.off('EventSaveChangesComponent', this.saveChangesComponent);
-            this.eventEmitterBuild.off('EventModalSearchOn', this.modalSearchOn);
             this.eventEmitterBuild.off('EventClosePanel', this.closePanel);
-            this.eventEmitterBuild.off('EventView', this.ViewerSwitch);
         }
     }
 }
