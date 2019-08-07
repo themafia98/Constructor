@@ -38,7 +38,7 @@ class  SearchModal extends React.PureComponent {
                 { this.props.error ?
                     <span className = 'error'>{content.error}</span> : null
                 }
-                    <input ref = {this.refSearchFunc} type = 'text' placeholder = "name" />
+                    <input ref = {this.refSearchFunc} type = 'text' placeHolder = "name" />
                         <input
                             disabled = {content.dissabled}
                             className = 'acceptButton'

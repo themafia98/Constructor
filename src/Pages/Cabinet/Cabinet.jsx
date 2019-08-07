@@ -1,21 +1,21 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-import Events from 'events';
+import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
+/* ------- Event stream ------- */
+import Events from 'events';
+/* ------- HOC for het firebase controll object ------- */
 import withFirebase from '../../components/firebaseHOC';
-
+/* ------- Moddlewares ------- */
 import {middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
 import middlewareDelete from '../../redux/middleware/middlewareDelete';
+/* ------- Child components ------- */
 import Loader from '../../components/loading/Loader';
-import {connect} from 'react-redux';
-
 import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
 import ProjectsSection from '../../components/ProjectsSection/ProjectsSection';
 
 import './Cabinet.scss';
-
-const title = require('../../config.json').title;
 
 class Cabinet extends React.PureComponent {
 
@@ -56,7 +56,10 @@ class Cabinet extends React.PureComponent {
     if (this.props.active){
       return (
         <Fragment>
-          <Header cabinetStream = {this.cabinetStream} title = {title} idUser = {this.props.idUser} />
+          <Header cabinetStream = {this.cabinetStream} 
+                  title = {this.props.config.title} 
+                  idUser = {this.props.idUser} 
+          />
           <div className = 'Cabinet'>
             {(this.state.workMode === 'newProject') ?
               <Modal

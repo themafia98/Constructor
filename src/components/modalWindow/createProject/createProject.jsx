@@ -28,7 +28,7 @@ const CreateProject = props => {
             value = {props.name}
             onChange = {props.cbValidateName}
             type = 'text'
-            placeholder = "Project name"
+            placeHolder = "Project name"
         />
         { !validateType ?
             <span className = 'warning'>{props.warningType}</span> : null

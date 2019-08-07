@@ -1,23 +1,15 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-
 import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+/** Redux actions */
 import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
-
+/* ------- Child components ------- */
 import Section from '../../components/buildComponents/section';
 import builderHOC from '../../components/builderHOC';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
 import withFirebase from '../../components/firebaseHOC';
-import {connect} from 'react-redux';
-
-
-
-import Input from '../../components/buildComponents/components/Input';
-import Media from '../../components/buildComponents/components/Media';
-import Image from '../../components/buildComponents/components/Image';
-import TextComponent from '../../components/buildComponents/components/Text';
-import BackgroundComponent from '../../components/buildComponents/components/Background';
 
 import './production.scss';
 
@@ -28,42 +20,32 @@ class Production extends React.PureComponent {
     }
 
     state = {
-        idProject: parseInt(this.props.match.params.param),
-        mode: 'production',
-        projectEmpty: false,
-        isLoadComponents: true,
-        componentsProdJSX: []
+        idProject: parseInt(this.props.match.params.param), /** @Id project */
+        mode: 'production', /** @workMode */
+        projectEmpty: false, /** @Bool detected project undefiend */
+        isLoadComponents: true, /** @Bool load all necessary components  */
+        componentsProdJSX: [] /** @Array with JSX */
     }
 
-    makeProduction = array => {
-
+    makeProduction = (array) => {
+        /* build components */
         let {componentsProdJSX} = this.state;
         let _components = [];
 
         array.forEach(item => {
 
-            let props = {
-                sizeParentBox: {
-                    width: this.prodRef.data.width,
-                    height: this.prodRef.data.height,
-                    top: this.prodRef.data.top,
-                    left: this.prodRef.data.left,
+            const itemHash = {
+                props: {
+                    ...item,
+                    mode: 'dev',
                 },
-                ...item,
-                mode: 'production',
+                type: item.type,
+                id: item.id,
             }
-
-            let Component = null;
-                if (item.type === 'background') Component = BackgroundComponent;
-                else if (item.type === 'input') Component = Input;
-                else if (item.type === 'media') Component = Media;
-                else if (item.type === 'image') Component = Image;
-                else if (item.type === 'text') Component = TextComponent;
-
             const patternJSX = {
                 id: item.id,
                 targetSection: item.targetSection,
-                component: builderHOC(props)(Component)
+                component: builderHOC(itemHash)(Fragment)
             };
                 _components.push(patternJSX);
         });
@@ -113,11 +95,12 @@ class Production extends React.PureComponent {
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'production' />
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = () => {
         let {userData} = this.props;
         let {currentProjectsData} = userData;
 
         if (userData.active && !currentProjectsData.loadProject) {
+            /** load current project of user session active and load project - false */
             const current =  userData.projects.find(item => item.id === this.state.idProject)
             if (current)
             this.props.dispatch(loadCurrentProjectAction({
@@ -125,11 +108,12 @@ class Production extends React.PureComponent {
                 typeProject: current.type,
                 sectionsProject: [...current.sectionsProject],
                 components: [...current.components]
-            }))
+            })) /* else redirect */
             else this.setState({...this.state, projectEmpty: true});
         }
 
-        if (this.state.isLoadComponents && currentProjectsData.loadProject) 
+        if (this.state.isLoadComponents && currentProjectsData.loadProject)
+            /* if all components load build our JSX */
             this.makeProduction(currentProjectsData.components);
 
     }
@@ -140,19 +124,19 @@ class Production extends React.PureComponent {
         let {currentProjectsData} = userData;
 
         if (userData.active && !currentProjectsData.loadProject) {
+            /** if user active and project load - false */
             const current =  userData.projects.find(item => item.id === this.state.idProject)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 sectionsProject: [...current.sectionsProject],
                 typeProject: current.type,
                 components: [...current.components]
-            }));
+            })); /** else render loader */
         };
 
     }
 
     componentWillUnmount = () => {
-
         let {userData} = this.props;
         if (userData.active)  this.props.dispatch(exitProjectAction(true));
     }

@@ -46,7 +46,7 @@ class Input extends React.PureComponent {
             PropTypes.number
         ]).isRequired,
         targetSection: PropTypes.string.isRequired,
-        sizeParentBox: PropTypes.object.isRequired,
+        sizeParentBox: PropTypes.object,
     }
 
     state = {

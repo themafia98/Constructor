@@ -16,6 +16,7 @@ const middlewareLogin = (email,password) => async (dispatch,getState, {firebase}
     }
 
 const middlewareLoadUserData = (uid) => async (dispatch,getState, {firebase}) => {
+        let isError = null;
         await firebase.db.collection("users").doc(uid).get()
         .then(docUser => {
             let user = docUser.data();
@@ -24,7 +25,11 @@ const middlewareLoadUserData = (uid) => async (dispatch,getState, {firebase}) =>
         .catch((error) => {
             console.error(error.message);
             dispatch(errorAction(error.message));
+            isError = true;
         });
+
+        if (!isError) return true;
+        else return false;
     }
 
 const middlewareLogOutUser = (uid) => async (dispatch,getState, {firebase}) => {
