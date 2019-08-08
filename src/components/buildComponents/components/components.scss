@@ -1,3 +1,16 @@
+[data-textcomponent]{
+
+    .resizeDoted{
+        position: absolute;
+        width: 12px;
+        left: 97%;
+        bottom: -2%;
+        height: 12px;
+        border-radius: 11px;
+        background: red;
+    }
+}
+
 [data-textcomponent]:hover{
     border: 1px solid red;
     cursor: move;

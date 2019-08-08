@@ -5,7 +5,7 @@ import {Route, Switch} from 'react-router-dom';
 
 import {middlewareLoadUserData} from './redux/middleware/loadUserMiddleware';
 import {connect} from 'react-redux';
-import withFirebase from './components/firebaseHOC';
+import withFirebase from './components/withFirebase';
 import Loader from './components/loading/Loader';
 
 import Index from './Pages/Index/Index';
@@ -14,7 +14,6 @@ import Production from './Pages/Production/Production';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
 import ErrorPage from './components/ErrorCatch/ErrorPage';
-import ScrollMove from './components/ScrollMove';
 import './root.scss';
 
 class App extends React.PureComponent {
@@ -61,7 +60,7 @@ class App extends React.PureComponent {
                             render = {(props) => <About {...props} config = {this.state.config} />}
                         />
                         <Route path = {'/Cabinet/Build/:param'} exact
-                            render = {(props) => <ScrollMove><Build {...props}></Build></ScrollMove>}
+                            render = {(props) => <Build {...props} />}
                         />
                         <Route path = {'/Cabinet/Build/:param/Production'} exact component = {Production} />
                         <Route path = {'*'} component = {Index} />

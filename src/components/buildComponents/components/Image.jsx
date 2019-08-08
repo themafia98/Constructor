@@ -9,8 +9,10 @@ const WrapperImg = styled.div.attrs(props => {
     return ({
         style: {
             zIndex: props.indexZ ? '9999' : null,
+            transform: `rotateZ(${props.rotate}deg) scale(${props.scale})`,
             left: props.coordX ? props.coordX : '45%',
             top:  props.coordY ? props.coordY : '0',
+            transition: `transform  0.3s linear`,
         }
     })
 })`
@@ -31,6 +33,7 @@ const ImageStyle = styled.img`
 const ProductionStyle = styled(WrapperImg)`
     left: ${props => props.coordX ? props.coordX : '50%'};
     top:  ${props => props.coordY};
+    transform: rotate(${props => props.rotate}deg) scale(${props => props.scale});
 `;
 
 class Image extends React.PureComponent {
@@ -50,6 +53,8 @@ class Image extends React.PureComponent {
         getSizeBool: false,
         countSection: 0,
         opacity: this.props.opacity || 1,
+        transformValue: this.props.rotate || 0,
+        scaleValue: this.props.scale || 1,
         sectionNumber: 0,
         borderRadius: this.props.borderRadius || 0,
         sizeParentBox: this.props.sizeParentBox,
@@ -68,6 +73,8 @@ class Image extends React.PureComponent {
             targetSection: this.state.targetSection,
             size: {...this.state.size},
             type: 'image',
+            rotate: this.state.transformValue,
+            scale: this.state.scaleValue,
             borderRadius: this.state.borderRadius,
             opacity: this.state.opacity,
             zIndex: null,
@@ -120,12 +127,22 @@ class Image extends React.PureComponent {
         return {x: coordX, y: coordY};
     }
 
-    delta = (trans,transT) => {
-        return {
-            x: 0,
-            y: 0,
-        }
+    rotateEvent = eventItem => {
+        const angle = eventItem.angle;
+        this.setState({
+            ...this.state,
+            transformValue: angle,
+        });
     }
+
+    scaleEvent = eventItem => {
+        const scale = eventItem.scale;
+        this.setState({
+            ...this.state,
+            scaleValue: scale,
+        });
+    }
+
     move = (x,y) => this.setState({...this.state, posImage: {x: x, y: y}});
 
     moveText = event => {
@@ -135,8 +152,8 @@ class Image extends React.PureComponent {
             let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
             let yItem = event.clientY - (this.props.sizeParentBox.top * this.state.sectionNumber);
 
-            let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
-            let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
+            let coordX = xItem - this.state.shiftCoords.x;
+            let coordY = yItem - this.state.shiftCoords.y;
 
             let coords = this.checkPivotPosition(coordX,coordY);
 
@@ -227,6 +244,8 @@ class Image extends React.PureComponent {
                 <WrapperImg
                 ref = {this.refImageComponent}
                 size = {this.state.size}
+                rotate = {this.state.transformValue}
+                scale = {this.state.scaleValue}
                 onClick = {this.openImageInstruments}
                 onMouseDown = {this.saveCoords}
                 onMouseMove= {this.moveText}
@@ -252,6 +271,8 @@ class Image extends React.PureComponent {
                 <ProductionStyle
                 ref = {this.refImageComponent}
                 size = {this.state.size}
+                rotate = {this.state.transformValue}
+                scale = {this.state.scaleValue}
                 mode = {this.props.mode}
                 coordX = {this.state.posImage ? this.state.posImage.x : null}
                 coordY = {this.state.posImage ? this.state.posImage.y : null}
@@ -276,6 +297,8 @@ class Image extends React.PureComponent {
         controllerStream.on(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         controllerStream.on(`EventSetWidth${this.state.id}`, this.setWidth);
         controllerStream.on(`EventSetHeight${this.state.id}`, this.setHeight); 
+        controllerStream.on(`EventResize${this.state.id}`,this.rotateEvent);
+        controllerStream.on(`EventScale${this.state.id}`,this.scaleEvent);
         controllerStream.on(`EventSaveWidth${this.state.targetSection}`, this.saveSize);
     }
 
@@ -287,6 +310,8 @@ class Image extends React.PureComponent {
         controllerStream.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
         controllerStream.off(`EventSetWidth${this.state.id}`, this.setWidth);
         controllerStream.off(`EventSetHeight${this.state.id}`, this.setHeight); 
+        controllerStream.off(`EventResize${this.state.id}`,this.rotateEvent);
+        controllerStream.off(`EventScale${this.state.id}`,this.scaleEvent);
         controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 }

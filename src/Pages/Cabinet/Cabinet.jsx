@@ -7,7 +7,7 @@ import {CSSTransition} from 'react-transition-group';
 /* ------- Event stream ------- */
 import Events from 'events';
 /* ------- HOC for het firebase controll object ------- */
-import withFirebase from '../../components/firebaseHOC';
+import withFirebase from '../../components/withFirebase';
 /* ------- Moddlewares ------- */
 import {middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
 import middlewareDelete from '../../redux/middleware/middlewareDelete';

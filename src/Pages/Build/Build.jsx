@@ -12,7 +12,8 @@ import {loadCurrentProjectAction, exitProjectAction} from '../../redux/actions';
 import {middlewareDeleteProjectComponent} from '../../redux/middleware/middlewareDelete';
 import updateMiddleware from '../../redux/middleware/updateMiddleware';
 /* ------- HOC for het firebase controll object ------- */
-import withFirebase from '../../components/firebaseHOC';
+import withScroll from '../../components/withScroll';
+import withFirebase from '../../components/withFirebase';
 /* ------- Child components ------- */
 import AdditionalTools from '../../components/additionalTools/additionalTools';
 import builderHOC from '../../components/builderHOC';
@@ -338,4 +339,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(withFirebase(Build));
+export default connect(mapStateToProps)(withFirebase(withScroll(Build)));

@@ -10,8 +10,8 @@ import Section from '../../components/buildComponents/section';
 import builderHOC from '../../components/builderHOC';
 import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
-import withFirebase from '../../components/firebaseHOC';
-
+/* HOC */
+import withFirebase from '../../components/withFirebase';
 import './production.scss';
 
 class Production extends React.PureComponent {

@@ -113,7 +113,7 @@ class Header extends React.Component {
 
         return (
             <React.Fragment>
-            {this.state.isChange && this.state.redirectConfirm ? 
+            {this.state.isChange && this.state.redirectConfirm ?
                 <Confirm 
                     cbSaveChanges = {this.confirmSaveDetectChanges}
                     cbCancelSave = {() => this.redirectCabinet('cancelMode')}

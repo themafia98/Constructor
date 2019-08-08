@@ -2,7 +2,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import eventEmitter,{controllerStream} from '../../../EventEmitter';
+import Events from 'events';
 import styled from 'styled-components';
+
 import './components.scss';
 
 
@@ -12,8 +14,10 @@ const WrapperText = styled.div.attrs(props => {
     return ({
         style: {
             zIndex: props.indexZ ? '9999' : null,
+            transform: `rotateZ(${props.rotate}deg) scale(${props.scale})`,
             left: props.coordX ? props.coordX : '50%',
             top:  props.coordY,
+            transition: `transform  0.3s linear`,
         }
     })
 })`
@@ -38,15 +42,13 @@ const TextStyle = styled.p`
 const ProductionStyle = styled(WrapperText)`
     left: ${props => props.coordX ? props.coordX : '50%'};
     top:  ${props => props.coordY};
-
-
+    transform: rotate(${props => props.rotate}deg) scale(${props => props.scale});
 `;
 
-    // @media ${`screen and (max-width: 500px)`} {
-    //     font-size: 50px;
-    //   }
 
 class TextComponent extends React.PureComponent {
+
+    resizeStream = new Events();
 
     static propTypes = {
         id: PropTypes.oneOfType([
@@ -68,25 +70,28 @@ class TextComponent extends React.PureComponent {
         sizeText: this.props.fontSize || this.props.size,
         shiftCoords: null,
         position: this.props.coords,
+        transformValue: this.props.rotate || 0,
+        scaleValue: this.props.scale || 1,
         font: this.props.font ? this.props.font : 'Arial',
         startDragNdrop: false,
         contentText: this.props.content ? this.props.content : null,
         countSection: 0,
         sectionNumber: 0,
-        getSizeBool: false
+        getSizeBool: false,
     }
 
     openTitleInstruments = event => {
-
          const componentsPatternText = {
             id: this.state.id,
             targetSection: this.state.targetSection,
             type: 'text',
+            rotate: this.state.transformValue,
+            scale: this.state.scaleValue,
             font: this.state.font,
             color: this.state.colorText,
             fontSize: this.state.sizeText || 120,
             content: this.state.contentText,
-            coords: {...this.state.posText}, // x, y
+            coords: {...this.state.position}, // x, y
         };
         eventEmitter.emit(`EventInstrumentPanel`,{
                 type: 'text',
@@ -133,9 +138,7 @@ class TextComponent extends React.PureComponent {
     };
 
     saveCoords = event => {
-        if (event.nativeEvent.which !== 1) return false;
         const element = this.refText.getBoundingClientRect();
-
         const cords = {
             left: element.left,
             top: element.top,
@@ -143,10 +146,13 @@ class TextComponent extends React.PureComponent {
             height: element.bottom - element.top
         }
 
+        const resizeStart = event.target.classList[0] === 'resizeDoted'
+
         this.setState({
             ...this.state,
             shiftCoords: {x: event.clientX - cords.left, y: event.clientY - cords.top},
-            startDragNdrop: !this.state.startDragNdrop ? true : false
+            startDragNdrop: !this.state.startDragNdrop ? true : false,
+            resizeStart: resizeStart,
         });
 
         event.stopPropagation();
@@ -160,7 +166,6 @@ class TextComponent extends React.PureComponent {
     };
 
     checkPivotPosition = (coordX, coordY) => {
-
         const element = this.refText.getBoundingClientRect();
         const borderTopLeft = 0;
         const borderDown = 800 - element.height;
@@ -174,24 +179,18 @@ class TextComponent extends React.PureComponent {
         return {x: coordX, y: coordY};
     }
 
-    delta = (trans,transT) => {
-        return {
-            x: 0,
-            y: 0,
-        }
-    }
     move = (x,y) => this.setState({...this.state, position: {x: x, y: y}});
 
     moveText = event => {
- 
+
         if (this.state.startDragNdrop && this.state.istrumentsActive){
 
             let sectionNum = this.state.sectionNumber === 0 ? 1 : this.state.sectionNumber;
             let xItem = event.clientX - (this.props.sizeParentBox.left  * sectionNum);
             let yItem = event.clientY - (this.props.sizeParentBox.top * sectionNum);
 
-            let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
-            let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
+            let coordX = xItem - this.state.shiftCoords.x;
+            let coordY = yItem - this.state.shiftCoords.y;
 
             let coords = this.checkPivotPosition(coordX,coordY);
 
@@ -204,7 +203,27 @@ class TextComponent extends React.PureComponent {
         event.stopPropagation();
     };
 
+
+    rotateEvent = eventItem => {
+        const angle = eventItem.angle;
+        this.setState({
+            ...this.state,
+            transformValue: angle,
+        });
+    }
+
+    scaleEvent = eventItem => {
+        const scale = eventItem.scale;
+        this.setState({
+            ...this.state,
+            scaleValue: scale,
+        });
+    }
+
+
     stopDragNdrop = event => {
+
+        if (this.state.startDragNdrop)
             this.setState({...this.state, startDragNdrop: false},
             () => controllerStream.emit(`EventUpdatePosition${this.state.id}`, this.state.position));
         event.stopPropagation();
@@ -226,6 +245,8 @@ class TextComponent extends React.PureComponent {
                     onMouseMove= {this.moveText}
                     onMouseLeave = {this.stopDragNdrop}
                     onMouseUp = {this.stopDragNdrop}
+                    rotate = {this.state.transformValue}
+                    scale = {this.state.scaleValue}
                     coordX = {this.state.position ? this.state.position.x : null}
                     coordY = {this.state.position ? this.state.position.y : null}
                     indexZ = {this.state.startDragNdrop}
@@ -239,6 +260,8 @@ class TextComponent extends React.PureComponent {
                 <ProductionStyle
                     ref  = {this.refTextComponent}
                     mode = {this.props.mode}
+                    scale = {this.state.scaleValue}
+                    rotate = {this.state.transformValue}
                     textColor = {this.state.colorText ? this.state.colorText : 'red'}
                     size = {this.state.sizeText ? this.state.sizeText + 'px' : '120px'}
                     coordX = {this.state.position ? this.state.position.x : null}
@@ -258,6 +281,8 @@ class TextComponent extends React.PureComponent {
         controllerStream.on(`EventChangeSize${this.state.id}`, this.changeSizeText);
         controllerStream.on(`EventChangeContentText${this.state.id}`, this.changeContentText);
         controllerStream.on(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        controllerStream.on(`EventResize${this.state.id}`,this.rotateEvent);
+        controllerStream.on(`EventScale${this.state.id}`,this.scaleEvent);
     }
 
     componentWillUnmount = () => {
@@ -266,6 +291,8 @@ class TextComponent extends React.PureComponent {
         controllerStream.off(`EventChangeSize${this.state.id}`, this.changeSizeText);
         controllerStream.off(`EventChangeContentText${this.state.id}`, this.changeContentText);
         controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
+        controllerStream.off(`EventResize${this.state.id}`,this.rotateEvent);
+        controllerStream.on(`EventScale${this.state.id}`,this.scaleEvent);
     }
 }
 

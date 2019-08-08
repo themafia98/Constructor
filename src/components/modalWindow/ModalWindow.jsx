@@ -266,8 +266,10 @@ class ModalWindow extends React.PureComponent {
     refSelect = (node) => this.inputSelect = node;
     refSearch = node => this.inputSearch = node;
 
-    typeRenderModal = workMode => {
-        switch (workMode){
+
+
+    render(){
+           switch (this.state.workMode){
             case 'newProject':
                 return (
                         <CreateProject
@@ -285,7 +287,6 @@ class ModalWindow extends React.PureComponent {
                 )
             case 'Search':
                     return (
-    
                             <div className = 'searchWrapper'> 
                                 <SearchModal
                                     content = {this.state.images}
@@ -297,23 +298,12 @@ class ModalWindow extends React.PureComponent {
                                     modalSearchMode = {this.props.modalSearchMode}
                                     cbSearch = {this.searchData}
                                     loader = {this.state.loading}
-                                  
                                 />
                             </div>
                     )
 
             default: return <Fragment></Fragment>
         }
-    }
-
-    render(){
-
-        console.log('modal');
-        return (
-           <Fragment>
-                {this.typeRenderModal(this.state.workMode)}
-            </Fragment>
-        )
     }
 
     componentDidUpdate = () => {

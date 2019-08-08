@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './registration.scss';
 
-import withFirebase from '../../components/firebaseHOC';
+import withFirebase from '../withFirebase';
 
 
 class Registration extends React.PureComponent {

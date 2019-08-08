@@ -12,6 +12,7 @@ import Icon from '../Icon/icon';
 import './instrumentsPanel.scss';
 
 
+
 class InstrumentsPanel extends React.PureComponent {
 
     static propTypes = {
@@ -63,6 +64,30 @@ class InstrumentsPanel extends React.PureComponent {
                 targetSection: this.state.editComponentName, font: fontName
             })
         );
+    }
+
+    rotate = event => {
+        let {id} = this.state.componentStats;
+        let angle = event.target.value;
+        this.setState({
+            ...this.state, 
+            instrumentPanel: {...this.state.instrumentPanel},
+            componentStats: {...this.state.componentStats, rotate: angle}
+        },
+        () => controllerStream.emit(`EventResize${id}`,{angle: angle}));
+        event.stopPropagation();
+    }
+
+    scale = event => {
+        let {id} = this.state.componentStats;
+        let scale = event.target.value;
+        this.setState({
+            ...this.state, 
+            instrumentPanel: {...this.state.instrumentPanel},
+            componentStats: {...this.state.componentStats, scale: scale}
+        },
+        () => controllerStream.emit(`EventScale${id}`,{scale: scale}));
+        event.stopPropagation();
     }
 
     setIframeContent = eventItem => {
@@ -124,6 +149,7 @@ class InstrumentsPanel extends React.PureComponent {
     }
 
     updatePosition = eventItem => {
+        console.log('updatePosition')
         if (!eventItem) return;
         this.setState({
             ...this.state, 
@@ -274,7 +300,10 @@ class InstrumentsPanel extends React.PureComponent {
     search = event => {
 
         let {id} = this.state.componentStats;
-        this.props.eventStreamBuild.emit('EventModalSearchOn', {idComponent: id, mode: this.state.componentStats.type});
+        this.props.eventStreamBuild.emit('EventModalSearchOn',{
+            idComponent: id,
+            mode: this.state.componentStats.type
+        });
 
         event.stopPropagation();
     };
@@ -316,6 +345,8 @@ class InstrumentsPanel extends React.PureComponent {
                         cbSetOpacity = {this.setOpacity}
                         color = {this.state.componentStats.color}
                         cbDelete = {this.deleteComponent}
+                        cbRotate = {this.rotate}
+                        cbScale = {this.scale}
                     />
                    )
                 case 'background':
@@ -342,6 +373,8 @@ class InstrumentsPanel extends React.PureComponent {
                                 cbSetHeight = {this.setHeight}
                                 cbLoadFile = {this.loadFile}
                                 cbDelete = {this.deleteComponent}
+                                cbRotate = {this.rotate}
+                                cbScale = {this.scale}
                             />
                         )
                 case 'media':

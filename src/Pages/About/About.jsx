@@ -5,7 +5,7 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 
-import withFirebase from '../../components/firebaseHOC';
+import withFirebase from '../../components/withFirebase';
 import Header from '../../components/header/Header';
 import Loader from '../../components/loading/Loader';
 

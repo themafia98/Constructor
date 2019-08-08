@@ -34,6 +34,8 @@ class BuildMenu extends React.PureComponent {
             type: 'text',
             font: 'Arial',
             color: null,
+            rotate: 0,
+            scale: 1,
             opacity: 1,
             fontSize: null,
             content: 'Title',
@@ -88,6 +90,7 @@ class BuildMenu extends React.PureComponent {
             type: 'image',
             size: {w: 30, h: 50},
             opacity: 1,
+            rotate: 0,
             zIndex: null,
             image: '/img/photoPattern.svg',
             coords: {x: null, y: null}, // x, y

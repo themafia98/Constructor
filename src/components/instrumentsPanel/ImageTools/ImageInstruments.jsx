@@ -5,6 +5,8 @@ const ImageInstruments = props => {
 
     let {coords} = props.componentStats;
     let {size} = props.componentStats;
+    let {rotate} = props.componentStats;
+    let {scale} = props.componentStats;
     let fileRef = React.createRef();
     return (
         <Fragment>
@@ -30,6 +32,23 @@ const ImageInstruments = props => {
                 value = {size.h ? size.h : 30}
             />
         </div>
+        <p className = 'titleInstument'>Rotate: </p>
+        <input
+        className = 'button_switch rotate'
+        onChange = {props.cbRotate}
+        type="number"
+        min = '0' max = '360'
+        value = {rotate ? rotate : 0}
+        />
+        <p className = 'titleInstument'>Scale: </p>
+        <input
+        className = 'button_switch scale'
+        onChange = {props.cbScale}
+        type="number"
+        step = '0.1'
+        min = '0' max = '2'
+        value = {scale ? scale : 1}
+        />
         <p className = 'titleInstument'>Border radius: </p>
             <input
                 onChange = {props.cbSetBorderRadius}
