@@ -9,8 +9,6 @@ class AdditionalTools extends React.PureComponent{
 
     static propTypes = {
         eventStreamBuild: PropTypes.object.isRequired, // events stream
-        componentStats: PropTypes.object.isRequired, // current components data
-        instrumentPanel: PropTypes.object.isRequired, // instruments data
     }
 
     state = {
@@ -23,18 +21,18 @@ class AdditionalTools extends React.PureComponent{
             colorPickerActive: false,
             instrumentActive: false,
         },
-        editComponentName:  null, /** @String | @null name current edit component */
+        componentStats: {}, /** @Object with data about components */
+        editComponentName:  this.props.editComponentName, /** @String | @null name current edit component */
     }
 
     modalSearchOn = itemEvent => {
-        const modeHave = itemEvent.hasOwnProperty('mode');
         console.log(itemEvent);
         this.setState({
             ...this.state,
             modal:{
                 ...this.state.modal,
                 modalSearch: !this.state.modal.modalSearch,
-                modalSearchMode: modeHave ? itemEvent.mode : null
+                modalSearchMode: itemEvent.mode || null
             }
         });
     }
@@ -53,58 +51,94 @@ class AdditionalTools extends React.PureComponent{
         });
     };
 
+    openInstrument = itemEvent => {
+        /* build instrument panel component */
+           const idEqual = this.state.componentStats.id === itemEvent.componentStats.id;
+           if (!idEqual || !this.state.instrumentPanel.instrumentActive)
+           this.setState({
+               ...this.state,
+               editComponentName: itemEvent.targetSection,
+               componentStats: {
+                   ...this.state.componentStats,
+                   ...itemEvent.componentStats
+               },
+               instrumentPanel: {
+                   ...this.state.instrumentPanel,
+                   instrumentActive: true,
+               }
+           });
+   }
+
+   closePanel = itemEvent => {
+        /* unmount unstrument panel component */
+       this.setState({
+           ...this.state,
+           instrumentPanel: {
+               ...this.state.instrumentPanel,
+               colorPickerActive: false,
+               instrumentActive: itemEvent.close
+           }
+       });
+   };
+
     render(){
         const props = this.props;
-        return (
-            <Fragment key = 'AdditionalBuild'>
-                <CSSTransition
-                    in={this.state.modalViewer.action}
-                    timeout={300}
-                    classNames="modalAnimation"
-                    unmountOnExit
-                    appear
-                >
-                    <Viewer
-                        key = 'ImageViewer'
-                        eventStreamBuild = {props.eventStreamBuild}
-                        mode = {this.state.modalViewer.mode}
-                        path = {this.state.modalViewer.target}
-                        iframe = {this.state.modalViewer.iframe}
-                    />
-                </CSSTransition>
-                <CSSTransition
-                    in={this.state.modal.modalSearch}
-                    timeout={300}
-                    classNames="modalAnimation"
-                    unmountOnExit
-                    appear
-                >
-                        <ModalWindow
+        if (this.state.instrumentPanel.instrumentActive){
+            return (
+                <Fragment key = 'AdditionalBuild'>
+                    <CSSTransition
+                        in={this.state.modalViewer.action}
+                        timeout={300}
+                        classNames="modalAnimation"
+                        unmountOnExit
+                        appear
+                    >
+                        <Viewer
+                            key = 'ImageViewer'
                             eventStreamBuild = {props.eventStreamBuild}
-                            idComponent = {props.componentStats.id}
-                            modalSearchMode = {this.state.modal.modalSearchMode}
-                            key = 'ModalWindow' workMode = 'Search'
+                            mode = {this.state.modalViewer.mode}
+                            path = {this.state.modalViewer.target}
+                            iframe = {this.state.modalViewer.iframe}
                         />
-                </CSSTransition>
-                    <InstrumentsPanel
-                        key = {`InstrumentsPanel${props.componentStats.id}`}
-                        eventStreamBuild = {props.eventStreamBuild}
-                        editComponentName = {props.editComponentName}
-                        componentStats = {props.componentStats}
-                        instrumentPanel = {props.instrumentPanel}
-                    />
-            </Fragment>
-        )
+                    </CSSTransition>
+                    <CSSTransition
+                        in={this.state.modal.modalSearch}
+                        timeout={300}
+                        classNames="modalAnimation"
+                        unmountOnExit
+                        appear
+                    >
+                            <ModalWindow
+                                eventStreamBuild = {props.eventStreamBuild}
+                                idComponent = {this.state.componentStats.id}
+                                modalSearchMode = {this.state.modal.modalSearchMode}
+                                key = 'ModalWindow' workMode = 'Search'
+                            />
+                    </CSSTransition>
+                        <InstrumentsPanel
+                            key = {`InstrumentsPanel${this.state.componentStats.id}`}
+                            eventStreamBuild = {props.eventStreamBuild}
+                            editComponentName = {this.state.editComponentName}
+                            componentStats = {this.state.componentStats}
+                            instrumentPanel = {this.state.instrumentPanel}
+                        />
+                </Fragment>
+            )
+        } else return <Fragment></Fragment>;
     }
 
     componentDidMount = () => {
         this.props.eventStreamBuild.on('EventModalSearchOn', this.modalSearchOn);
         this.props.eventStreamBuild.on('EventView', this.ViewerSwitch);
+        this.props.eventStreamBuild.on('EventClosePanel', this.closePanel);
+        this.props.eventEmitter.on('EventInstrumentPanel', this.openInstrument);
     }
 
-    componentWillMount = () => {
+    componentWillUnmount = () => {
         this.props.eventStreamBuild.off('EventModalSearchOn', this.modalSearchOn);
+        this.props.eventEmitter.off('EventInstrumentPanel', this.openInstrument);
         this.props.eventStreamBuild.off('EventView', this.ViewerSwitch);
+        this.props.eventStreamBuild.off('EventClosePanel', this.closePanel);
     }
 
 }

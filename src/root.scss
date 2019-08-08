@@ -42,3 +42,18 @@ input {
 .col-6 {
     flex: 0 0 50%;
 }
+
+    .fade {
+        animation: transitionComponents .3s linear;
+    }
+
+    @keyframes transitionComponents {
+        from { 
+            opacity: 0;
+         }
+        to {
+           opacity: 1;
+        }
+    }
+
+

@@ -15,7 +15,6 @@ import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
 import ErrorPage from './components/ErrorCatch/ErrorPage';
 import ScrollMove from './components/ScrollMove';
-
 import './root.scss';
 
 class App extends React.PureComponent {
@@ -49,25 +48,26 @@ class App extends React.PureComponent {
         if (this.state.firebaseLoadState){
             return (
                 <Switch>
-                    <Route
-                        path = {'/'} exact
-                        render = {(props) => <Index {...props} config = {this.state.config} />}
-                    />
-                    <Route 
-                        path = '/Cabinet/' exact 
-                        render = {(props) => <Cabinet {...props} config = {this.state.config} />}
-                    />
-                    <Route
-                        path = {'/Cabinet/About'}
-                        render = {(props) => <About {...props} config = {this.state.config} />}
-                    />
-                    <Route path = {'/Cabinet/Build/:param'} exact
-                        render = {(props) => <ScrollMove><Build {...props}></Build></ScrollMove>}
-                    />
-                    <Route path = {'/Cabinet/Build/:param/Production'} exact component = {Production} />
-                    <Route path = {'*'} component = {Index} />
-                    <Route path = {'/crashPage'} component = {ErrorPage} />
+                        <Route
+                            path = {'/'} exact
+                            render = {(props) => <Index {...props} config = {this.state.config} />}
+                        />
+                        <Route 
+                            path = '/Cabinet/' exact 
+                            render = {(props) => <Cabinet {...props} config = {this.state.config} />}
+                        />
+                        <Route
+                            path = {'/Cabinet/About'}
+                            render = {(props) => <About {...props} config = {this.state.config} />}
+                        />
+                        <Route path = {'/Cabinet/Build/:param'} exact
+                            render = {(props) => <ScrollMove><Build {...props}></Build></ScrollMove>}
+                        />
+                        <Route path = {'/Cabinet/Build/:param/Production'} exact component = {Production} />
+                        <Route path = {'*'} component = {Index} />
+                        <Route path = {'/crashPage'} component = {ErrorPage} />
                 </Switch>
+
             )
         } else return <Loader path = { '/img/loading.gif'} type = 'application' />
     }

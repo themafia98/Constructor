@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Reveal from 'react-reveal/Reveal';
 import {Redirect} from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import AnimationText from '../../components/AnimationText/AnimationTitle';
@@ -76,62 +77,63 @@ class Index extends React.PureComponent {
         if (this.props.active) return <Redirect to = { '/Cabinet'} />
         else if (!this.props.active) {
             return (
-                <div className = 'LoginPage flex-column'>
-                <h1>{this.state.title}</h1>
+                <Reveal effect="fade">
+                    <div className = 'LoginPage flex-column'>
+                        <h1>{this.state.title}</h1>
                         <div className = 'LoginPage__LoginBox'>
-                        <AnimationText
-                            content = 'Build your landing page!'
-                            msPauseEnd = {1000}
-                            msAnimation = {150}
-                        />
+                            <AnimationText
+                                content = 'Build your landing page!'
+                                msPauseEnd = {1000}
+                                msAnimation = {150}
+                            />
                             <form className = 'LoginBox__LoginForm'>
                                 <h3>Connect form</h3>
-                                {
-                                    this.props.wrongEnter || this.state.regStatus ?
+                                {this.props.wrongEnter || this.state.regStatus ?
                                     <p className = 'error'>{this.props.wrongEnter}</p>
                                     : null
                                 }
-                                <p>E-mail</p>
-                                <input 
-                                    autoComplete = 'off'
-                                    placeholder="email" 
-                                    ref = {this.emailRef}
-                                     type = 'text' 
-                                />
-                                <p>Password</p>
-                                <input 
-                                    ref = {this.passwordRef} 
-                                    type = 'password' 
-                                    autoComplete = 'off'
-                                    placeholder="password"
+                                    <p>E-mail</p>
+                                    <input 
+                                        autoComplete = 'off'
+                                        placeholder="email" 
+                                        ref = {this.emailRef}
+                                        type = 'text' 
                                     />
-                                <input 
-                                    onClick = {this.authTo} 
-                                    className = 'LoginForm__loginButton enterInput'
-                                    type = 'button'
-                                    value = 'enter' />
-                                <input
-                                    onClick = {this.showBox}
-                                    className = {this.state.registrationActive ?
-                                        `LoginForm__loginButton registration selected` : 
-                                        'LoginForm__loginButton registration'
-                                    }
-                                    type = 'button'
-                                    value = 'registration'
+                                    <p>Password</p>
+                                    <input 
+                                        ref = {this.passwordRef} 
+                                        type = 'password' 
+                                        autoComplete = 'off'
+                                        placeholder="password"
+                                    />
+                                    <input 
+                                        onClick = {this.authTo} 
+                                        className = 'LoginForm__loginButton enterInput'
+                                        type = 'button'
+                                        value = 'enter' />
+                                    <input
+                                        onClick = {this.showBox}
+                                        className = {this.state.registrationActive ?
+                                            `LoginForm__loginButton registration selected` : 
+                                            'LoginForm__loginButton registration'
+                                        }
+                                        type = 'button'
+                                        value = 'registration'
                                     />
                             </form>
                         </div>
                             <TransitionGroup component={null}>
-                            { this.state.registrationActive &&
+                                {this.state.registrationActive &&
                                     <CSSTransition
                                         timeout={300}
                                         unmountOnExit
                                         classNames="RegAnim">
                                         <Registration  indexStream = {this.indexStream} />
                                     </CSSTransition>
-                            }
+                                }
                             </TransitionGroup>
-                </div>
+                    </div>
+                </Reveal>
             )
         } else  return <Loader path = '/img/loading.gif' type = 'session' />
     }

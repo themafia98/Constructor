@@ -1,11 +1,11 @@
-import React, {Fragment} from 'react';
+import React from 'react';
+import Reveal from 'react-reveal/Reveal';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 
 import withFirebase from '../../components/firebaseHOC';
-
 import Header from '../../components/header/Header';
 import Loader from '../../components/loading/Loader';
 
@@ -31,7 +31,7 @@ class About extends React.PureComponent {
         if (user && this.props.idUser) {
             const { config } = this.state;
             return (
-                <Fragment>
+                <Reveal effect="fade">
                     <Header title = {config.title} idUser = {user.uid} />
                     <section className = 'About'>
                         <div className = 'container'>
@@ -49,7 +49,7 @@ class About extends React.PureComponent {
                             </div>
                         </div>
                     </section>
-                </Fragment>
+                </Reveal>
             )
         } else if (!user) return <Redirect to = { '/'} />
         else return <Loader path = '/img/loading.gif' type = 'About' />

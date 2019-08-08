@@ -1,7 +1,8 @@
-import React,{Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
+import Reveal from 'react-reveal/Reveal';
 import {CSSTransition} from 'react-transition-group';
 /* ------- Event stream ------- */
 import Events from 'events';
@@ -15,7 +16,6 @@ import Loader from '../../components/loading/Loader';
 import Header from '../../components/header/Header';
 import Modal from '../../components/modalWindow/ModalWindow';
 import ProjectsSection from '../../components/ProjectsSection/ProjectsSection';
-
 import './Cabinet.scss';
 
 class Cabinet extends React.PureComponent {
@@ -59,27 +59,27 @@ class Cabinet extends React.PureComponent {
 
     if (this.props.active){
       return (
-        <Fragment>
-          <Header cabinetStream = {this.cabinetStream} 
-                  title = {this.props.config.title} 
-                  idUser = {this.props.idUser} 
-          />
-          <div className = 'Cabinet'>
-		  <CSSTransition
-				in={this.state.modalActive}
-				timeout={300}
-				classNames="modalAnimation"
-				unmountOnExit
-				appear
-        	>
-                <Modal
-                  cabinetStream = {this.cabinetStream}
-                  workMode = {this.state.workMode} 
-                />
-            </CSSTransition>
-              <ProjectsSection cabinetStream = {this.cabinetStream} />
-            </div>
-        </Fragment>
+        <Reveal effect="fade">
+			<Header cabinetStream = {this.cabinetStream} 
+					title = {this.props.config.title} 
+					idUser = {this.props.idUser} 
+			/>
+			<div className = 'Cabinet'>
+			<CSSTransition
+					in={this.state.modalActive}
+					timeout={300}
+					classNames="modalAnimation"
+					unmountOnExit
+					appear
+				>
+				<Modal
+					cabinetStream = {this.cabinetStream}
+					workMode = {this.state.workMode} 
+				/>
+				</CSSTransition>
+				<ProjectsSection cabinetStream = {this.cabinetStream} />
+			</div>
+          </Reveal>
       )
     } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
     else return <Loader path = '/img/loading.gif' type = 'Cabinet' />

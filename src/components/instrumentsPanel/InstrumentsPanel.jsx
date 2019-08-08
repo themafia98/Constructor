@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import eventEmitter,{controllerStream} from '../../EventEmitter';
 import PropTypes from 'prop-types';
 
@@ -7,7 +7,6 @@ import MediaInstruments from './MediaTools/MediaInstruments';
 import ImageInstruments from './ImageTools/ImageInstruments';
 import BackgroundInstruments from './BackgroundTools/BackgroundInstruments';
 import TextInstruments from './TextTools/TextInstruments';
-
 import Icon from '../Icon/icon';
 
 import './instrumentsPanel.scss';
@@ -380,7 +379,7 @@ class InstrumentsPanel extends React.PureComponent {
     render(){
         let { instrumentActive } = this.state.instrumentPanel;
         return (
-            <Fragment>
+
                 <div  className = 'instumentsPanel'>
                     <button
                         onClick = {this.closePanel}
@@ -402,7 +401,6 @@ class InstrumentsPanel extends React.PureComponent {
                         : null
                     }
                 </div>
-            </Fragment>
         )
     };
 

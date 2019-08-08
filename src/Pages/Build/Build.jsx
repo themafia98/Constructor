@@ -2,6 +2,7 @@ import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import Reveal from 'react-reveal/Reveal';
 /* ------- Events streams ------- */
 import eventEmitter from '../../EventEmitter'; // common
 import EventBuild from 'events'; // for builder controllers
@@ -41,12 +42,7 @@ class Build extends React.PureComponent {
             isChange: false, /** @Bool detected changes */
             isLoadComponents: true, /** @Bool load all necessary components  */
             projectEmpty: false, /** @Bool detected project undefiend */
-            componentStats: {}, /** @Object with data about components */
             componentJSX: [], /** @Array with JSX */
-            instrumentPanel: { /** @Object with data controll instrument panel */
-                colorPickerActive: false,
-                instrumentActive: false,
-            },
             editComponentName:  null, /** @String | @null name current edit component */
             menuActive: false, /** @bool active menu or no */
             sizeParentBox: null, /** @Object size store */
@@ -64,38 +60,7 @@ class Build extends React.PureComponent {
             editComponentName: itemEvent.targetSection,
             menuActive: true,
         });
-
     }
-
-    openInstrument = itemEvent => {
-         /* build instrument panel component */
-            const idEqual = this.state.componentStats.id === itemEvent.componentStats.id;
-            if (!idEqual || !this.state.instrumentPanel.instrumentActive)
-            this.setState({
-                ...this.state,
-                editComponentName: itemEvent.targetSection,
-                componentStats: {
-                    ...this.state.componentStats,
-                    ...itemEvent.componentStats
-                },
-                instrumentPanel: {
-                    ...this.state.instrumentPanel,
-                    instrumentActive: true,
-                }
-            });
-    }
-
-    closePanel = itemEvent => {
-         /* unmount unstrument panel component */
-        this.setState({
-            ...this.state,
-            instrumentPanel: {
-                ...this.state.instrumentPanel,
-                colorPickerActive: false,
-                instrumentActive: itemEvent.close
-            }
-        });
-    };
 
     deleteComponent = eventItem => {
         /* delete component from DB and from JSX array */
@@ -234,14 +199,13 @@ class Build extends React.PureComponent {
 
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
 
-        const {instrumentActive} = this.state.instrumentPanel;
         const {userData} = this.props;
         const {currentProjectsData} = userData;
         const section = currentProjectsData.sectionsProject;
 
         if (userData.active && currentProjectsData.loadProject){
             return (
-                <Fragment>
+                <Reveal effect="fade">
                     <Header key = 'Header' title = "Constructor" idUser = {userData.idUser}  />
                     <div
                         ref = {this.mainRefComponent} 
@@ -266,14 +230,11 @@ class Build extends React.PureComponent {
                                 mode = "section"
                                 className = 'menu'
                             />
-                        {instrumentActive && 
                             <AdditionalTools key = 'tools'
                                 eventStreamBuild = {this.eventEmitterBuild}
-                                componentStats = {this.state.componentStats}
+                                eventEmitter = {eventEmitter}
                                 editComponentName = {this.state.editComponentName}
-                                instrumentPanel = {this.state.instrumentPanel}
                             />
-                        }
                         {section.length &&
                             <Section mode = 'dev' key = 'section'
                                 componentJSX = {this.state.componentJSX}
@@ -284,7 +245,7 @@ class Build extends React.PureComponent {
                             />
                         }
                     </div>
-                </Fragment>
+                </Reveal>
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
@@ -343,13 +304,11 @@ class Build extends React.PureComponent {
                 components: [...current.components]
             }));
 
-            eventEmitter.on('EventInstrumentPanel', this.openInstrument);
             eventEmitter.on('EventModeEdit', this.workModeEdit);
             this.eventEmitterBuild.on('EventBuildComponents', this.addComponent);
             this.eventEmitterBuild.on('EventDeleteComponent', this.deleteComponent);
             this.eventEmitterBuild.on('EventNewSection', this.addNewSection);
             this.eventEmitterBuild.on('EventSaveChangesComponent', this.saveChangesComponent);
-            this.eventEmitterBuild.on('EventClosePanel', this.closePanel);
         }; /** else redirect */
     }
 
@@ -358,13 +317,11 @@ class Build extends React.PureComponent {
         let {userData} = this.props;
         if (userData.active){
             this.props.dispatch(exitProjectAction(true));
-            eventEmitter.off('EventInstrumentPanel', this.openInstrument);
             eventEmitter.off('EventModeEdit', this.workModeEdit);
             this.eventEmitterBuild.off('EventBuildComponents', this.addComponent);
             this.eventEmitterBuild.off('EventDeleteComponent', this.deleteComponent);
             this.eventEmitterBuild.off('EventNewSection', this.addNewSection);
             this.eventEmitterBuild.off('EventSaveChangesComponent', this.saveChangesComponent);
-            this.eventEmitterBuild.off('EventClosePanel', this.closePanel);
         }
     }
 }

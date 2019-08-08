@@ -1,5 +1,6 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
+import Reveal from 'react-reveal/Reveal';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 /** Redux actions */
@@ -70,7 +71,7 @@ class Production extends React.PureComponent {
 
         if (userData.active && currentProjectsData.loadProject){
             return (
-            <Fragment>
+            <Reveal effect="fade">
                 <Header key = 'Header' title = "Constructor" idUser = {userData.idUser} />
                 <div
                     ref = {this.mainProductionRef}
@@ -89,7 +90,7 @@ class Production extends React.PureComponent {
                         : null
                     }
                 </div>
-            </Fragment>
+            </Reveal>
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'production' />
