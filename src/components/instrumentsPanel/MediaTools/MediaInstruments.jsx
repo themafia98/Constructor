@@ -14,7 +14,7 @@ const MediaInstruments = props => {
                 coords.x + ' / ' + coords.y : ' drop for active'}
             </span>
             <p className = 'titleInstument'>Size (%):</p>
-            <div className = 'panel__sizes'>
+            <div className = 'controllersText media'>
                 <input
                     className = 'button_switch'
                     onChange = {props.cbSetWidth}

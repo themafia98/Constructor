@@ -11,6 +11,15 @@
     }
 }
 
+.resize{
+    position: absolute;
+    background: red;
+    width: 20px;
+    bottom: 0px;
+    left: 94%;
+    height: 20px;
+}
+
 [data-textcomponent]:hover{
     border: 1px solid red;
     cursor: move;

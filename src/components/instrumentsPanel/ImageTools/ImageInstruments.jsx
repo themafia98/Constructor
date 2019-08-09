@@ -16,39 +16,40 @@ const ImageInstruments = props => {
             coords.x + ' / ' + coords.y : ' drop for active'}
         </span>
         <p className = 'titleInstument'>Size (%):</p>
-        <div className = 'panel__sizes'>
+        <div className = 'controllersText'>
             <input
-                className = 'button_switch'
+                className = 'button_switch size'
                 onChange = {props.cbSetWidth}
                 type="number"
                 min = '10' max = '100'
                 value = {size.w ? size.w : 30}
             />
             <input 
-                className = 'button_switch'
+                className = 'button_switch size'
                 onChange = {props.cbSetHeight}
                 type="number"
                 min = '10' max = '100'
                 value = {size.h ? size.h : 30}
             />
         </div>
-        <p className = 'titleInstument'>Rotate: </p>
-        <input
-        className = 'button_switch rotate'
-        onChange = {props.cbRotate}
-        type="number"
-        min = '0' max = '360'
-        value = {rotate ? rotate : 0}
-        />
-        <p className = 'titleInstument'>Scale: </p>
-        <input
-        className = 'button_switch scale'
-        onChange = {props.cbScale}
-        type="number"
-        step = '0.1'
-        min = '0' max = '2'
-        value = {scale ? scale : 1}
-        />
+        <p className = 'titleInstument'>Rotate/Scale:</p>
+        <div className = 'controllersText'>
+            <input
+            className = 'button_switch rotate'
+            onChange = {props.cbRotate}
+            type="number"
+            min = '0' max = '360'
+            value = {rotate ? rotate : 0}
+            />
+            <input
+            className = 'button_switch scale'
+            onChange = {props.cbScale}
+            type="number"
+            step = '0.1'
+            min = '0' max = '2'
+            value = {scale ? scale : 1}
+            />
+        </div>
         <p className = 'titleInstument'>Border radius: </p>
             <input
                 onChange = {props.cbSetBorderRadius}
@@ -71,27 +72,28 @@ const ImageInstruments = props => {
                 min = '0' max = '1'
             />
             <p className = 'titleInstument titleInstrument__opacity'>Loader: </p>
-            <div className = 'fileLoader'>
-            <input
-                ref = {fileRef}
-                className = 'fileInput'
-                onChange = {props.cbLoadFile}
-                accept="image/*"
-                type="file"
-            />
-                <input
-                        // onClick = {simulateClickFile}
-                        className = 'ImageSearchButton'
+            <div className = 'controllersText'>
+                <div className = 'fileLoader'>
+                    <input
+                        ref = {fileRef}
+                        className = 'fileInput'
+                        onChange = {props.cbLoadFile}
+                        accept="image/*"
+                        type="file"
+                    />
+                    <input
+                        className = 'ImageSearchButton file'
                         type = 'button'
                         value = 'loading file'
+                    />
+                </div>
+                <input 
+                    onClick = {props.cbSearch}
+                    className = 'ImageSearchButton file'
+                    type="button"
+                    value = 'search image'
                 />
             </div>
-            <input 
-                onClick = {props.cbSearch}
-                className = 'ImageSearchButton'
-                type="button"
-                value = 'search image'
-            />
             <input 
                 onClick = {props.cbDelete}
                 className = 'instrumentPanel__deleteComponentButton'

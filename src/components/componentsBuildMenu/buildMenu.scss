@@ -121,19 +121,19 @@
 
 .ButtonTool:before{
     background: url('/img/ButtonTool.png');
-//    background-image: url('/constructor/img/ButtonTool.png');
+    // background-image: url('/constructor/img/ButtonTool.png');
     content: '';
 }
 
 .VideoTool:before{
     background-image: url('/img/VideoTool.png');
-    // background: url('/constructor/img/VideoTool.png');
+    //  background: url('/constructor/img/VideoTool.png');
     content: '';
 }
 
 .TextTool:before{
     background-image: url('/img/TextTool.png');
-//    background: url('/constructor/img/TextTool.png');
+    // background: url('/constructor/img/TextTool.png');
     content: '';
 }
 
@@ -148,3 +148,5 @@
     // background: url('/constructor/img/newSectionIcon.svg');
     content:"";
 }
+
+@import './media.scss';

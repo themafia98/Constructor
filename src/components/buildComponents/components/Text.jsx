@@ -182,15 +182,15 @@ class TextComponent extends React.PureComponent {
     move = (x,y) => this.setState({...this.state, position: {x: x, y: y}});
 
     moveText = event => {
-
         if (this.state.startDragNdrop && this.state.istrumentsActive){
-
+            const element = this.refText.getBoundingClientRect();
             let sectionNum = this.state.sectionNumber === 0 ? 1 : this.state.sectionNumber;
             let xItem = event.clientX - (this.props.sizeParentBox.left  * sectionNum);
             let yItem = event.clientY - (this.props.sizeParentBox.top * sectionNum);
+            let factorCoord = this.delta(parseInt(this.state.transformValue),element.height,element.width);
 
-            let coordX = xItem - this.state.shiftCoords.x;
-            let coordY = yItem - this.state.shiftCoords.y;
+            let coordX = xItem - this.state.shiftCoords.x + factorCoord.xFacotr;
+            let coordY = yItem - this.state.shiftCoords.y + factorCoord.yFactor;
 
             let coords = this.checkPivotPosition(coordX,coordY);
 
@@ -199,7 +199,7 @@ class TextComponent extends React.PureComponent {
 
             this.move(convertToPercentX.toFixed(2) + '%',
                       convertToPercentY.toFixed(2) + '%');
-    }
+        }
         event.stopPropagation();
     };
 
@@ -219,6 +219,34 @@ class TextComponent extends React.PureComponent {
             scaleValue: scale,
         });
     }
+
+    delta = (transform, height, width) => {
+
+        let powHeight = height * height;
+        let powWidth =  width * width;
+
+        let pythagoras = Math.sqrt(powHeight + powWidth) / 2;
+        let _angle = Math.atan(height / width);
+        let angle = Math.atan(width / height);
+
+        let _biasFactor = 1;
+        let biasFactor = 1;
+
+        if (transform < 0 || transform > 180)
+            _biasFactor = - 1;
+        if (transform > 90 && transform < 270)
+            biasFactor= -1;
+
+        transform = transform * (Math.PI/180);
+
+        let sinX = Math.sin(biasFactor * angle + _biasFactor * transform);
+        let sinY = Math.sin(biasFactor* _angle + _biasFactor * transform);
+
+        let xFacotr = pythagoras*(-Math.sin(angle)+sinX);
+        let yFactor = pythagoras*(-Math.sin(_angle)+sinY);
+
+        return {xFacotr, yFactor}
+    };
 
 
     stopDragNdrop = event => {

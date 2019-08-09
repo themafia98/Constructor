@@ -1,0 +1,65 @@
+@media screen and (max-width: 1050px){
+    .instumentsPanel {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 850px){
+    .instumentsPanel {
+        top: 90%;
+        left: 0;
+        width: 100%;
+        transform: translate(0);
+        height: 10%;
+        z-index: 999;
+        transition: all .5s linear;
+
+        .closeInstrumentsPanel {
+            visibility: hidden;
+        }
+    }
+
+    .instumentsPanel:hover,.instumentsPanel:active, .instumentsPanel:focus {
+        top: 0;
+        height: 100%;
+        .closeInstrumentsPanel {
+            top: 10px;
+        }
+
+        .instumentsPanel .instrumentPanel__deleteComponentButton {
+            padding: 20px;
+            border-radius: 0;
+        }
+
+        .fileLoader {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .titleInstument {
+            margin: 0;
+        }
+
+        .closeInstrumentsPanel {
+            visibility: visible;
+        }
+
+        .instuments {
+            overflow: scroll;
+            position: absolute;
+            height: 70%;
+            .controllersText {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .saveButtonInstument, .button_switch, .ImageSearchButton {
+                width: 40%;
+                margin: 5px;
+            }
+        }
+    }
+}

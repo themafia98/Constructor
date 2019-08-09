@@ -37,7 +37,6 @@ class Controllers extends React.PureComponent {
                 <div
                 ref = {this.refControll}
                 className = 'ControllersEditComponent'
-                onClick = {this.componentMenu}
                 >
                     <Icon
                         onClick = {this.componentMenu}

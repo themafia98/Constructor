@@ -37,7 +37,7 @@ const InputInstruments = props => {
                     : null
                 }
             <p className = 'titleInstument'>Size (%):</p>
-            <div className = 'panel__sizes'>
+            <div className = 'controllersText'>
                 <input
                     className = 'button_switch'
                     onChange = {props.cbSetWidth}

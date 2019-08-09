@@ -18,23 +18,24 @@ const TextInstruments = props => {
             {coords.x ?
                 coords.x + ' / ' + coords.y : ' drop for active'}
             </span>
-            <p className = 'titleInstument'>Rotate: </p>
-            <input
-            className = 'button_switch rotate'
-            onChange = {props.cbRotate}
-            type="number"
-            min = '0' max = '360'
-            value = {rotate ? rotate : 0}
-            />
-            <p className = 'titleInstument'>Scale: </p>
-            <input
-            className = 'button_switch scale'
-            onChange = {props.cbScale}
-            type="number"
-            step = '0.1'
-            min = '0' max = '2'
-            value = {scale ? scale : 1}
-            />
+            <p className = 'titleInstument'>Rotate/Scale:</p>
+            <div className = 'controllersText'>
+                <input
+                className = 'button_switch rotate'
+                onChange = {props.cbRotate}
+                type="number"
+                min = '0' max = '360'
+                value = {rotate ? rotate : 0}
+                />
+                <input
+                className = 'button_switch scale'
+                onChange = {props.cbScale}
+                type="number"
+                step = '0.1'
+                min = '0' max = '2'
+                value = {scale ? scale : 1}
+                />
+            </div>
             <p className = 'titleInstument'>Color: </p>
             <input 
                 onClick = {props.cbSetColor}

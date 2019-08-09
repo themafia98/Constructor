@@ -199,7 +199,7 @@ class Build extends React.PureComponent {
     render(){
 
         if (this.state.projectEmpty) return <Redirect to = '/Cabinet' />
-
+        
         const {userData} = this.props;
         const {currentProjectsData} = userData;
         const section = currentProjectsData.sectionsProject;
@@ -266,6 +266,8 @@ class Build extends React.PureComponent {
                 top: this.mainComponent.data.top,
                 left: this.mainComponent.data.left,
             }
+
+            console.log(this.mainComponent.data);
 
         if (userData.active && !currentProjectsData.loadProject) {
             /** load current project of user session active and load project - false */
