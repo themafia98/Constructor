@@ -257,6 +257,11 @@ class TextComponent extends React.PureComponent {
         event.stopPropagation();
     };
 
+    
+    stopDrag = event => {
+        event.preventDefault();
+    }
+
     refText = null;
     refTextComponent = node => this.refText = node;
 
@@ -274,6 +279,7 @@ class TextComponent extends React.PureComponent {
                     onMouseLeave = {this.stopDragNdrop}
                     onMouseUp = {this.stopDragNdrop}
                     rotate = {this.state.transformValue}
+                    onDragStart = {this.stopDrag}
                     scale = {this.state.scaleValue}
                     coordX = {this.state.position ? this.state.position.x : null}
                     coordY = {this.state.position ? this.state.position.y : null}
