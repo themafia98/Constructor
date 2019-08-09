@@ -13,6 +13,13 @@ $closeSize: 25px;
     animation: movePanel forwards .3s ease-in-out;
     background-color: $bgColor;
 
+    .wrapperColorPicker{
+        position: absolute;
+        top: 30%;
+    }
+    .wrapperColorPicker.text{
+        top: 45%;
+    }
 
     h3 {
         font-size: 1.5rem;

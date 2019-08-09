@@ -1,6 +1,8 @@
 @media screen and (max-width: 860px){
     .ControllersEditComponent {
         display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: 25%;
         flex-direction: column;
@@ -12,15 +14,16 @@
 
         .ComponentsMenu {
             display: flex;
-            justify-content: flex-end;
-            transform: translate(11%);
+            justify-content: center;
+            transform: translate(0);
             width: 80%;
-            height: auto;
+            height: 60px;
 
             .CompoentnsMenu_button{
                 position: static;
                 margin: 1px;
                 width: 50px;
+                transform: translate(0);
             }
             .CompoentnsMenu_button:before{
                 display: none;

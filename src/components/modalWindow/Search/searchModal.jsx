@@ -42,6 +42,7 @@ class  SearchModal extends React.PureComponent {
                 { this.props.error ?
                     <span className = 'error'>{content.error}</span> : null
                 }
+                <div className = 'Modal-search__controllers'>
                     <input ref = {this.refSearchFunc} type = 'text' />
                         <input
                             disabled = {content.dissabled}
@@ -51,6 +52,7 @@ class  SearchModal extends React.PureComponent {
                             onClick = {this.search}
                         />
                     <input onClick = {this.props.cbCancel} type ='button' value = 'Cancel' />
+                </div>
                 <div className = 'searchResultBox'>
                     {this.state.items}
                     {this.props.loading ? <Loader type = 'images' /> : null}

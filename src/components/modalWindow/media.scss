@@ -6,16 +6,42 @@
             width: 65%;
         }
     }
+
+    .ActionModalSearch{
+        width: 25%;
+    }
+}
+
+@media screen and (max-width: 850px){
+    
+    .searchWrapper {
+        z-index: 9999;
+    }
 }
 
 
 @media screen and (max-width: 650px) {
+
+    .Modal-search {
+        transform: translate(-53%, -50%);
+        padding: 0;
+        .searchResultBox {
+            grid-auto-rows: 8rem;
+        }
+    }
     .Modal {
         width: 90%;
+        height: 90%;
+        left: 52%;
 
-        input, select {
-            width: 65%;
-        }
+    }
+
+    div.Modal__create{
+        height: 50%;
+    }
+
+    .ActionModalSearch{
+        width: 40%;
     }
 
 }

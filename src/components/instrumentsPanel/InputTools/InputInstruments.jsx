@@ -21,12 +21,14 @@ const InputInstruments = props => {
                 coords.x + ' / ' + coords.y : ' drop for active'}
             </span>
             <p className = 'titleInstument'>Color: </p>
-            <input 
-                onClick = {props.cbSetColor}
-                className = 'button_switch'
-                type = 'button'
-                value = 'color pick'
-            />
+            <div className = 'controllersText'>
+                <input 
+                    onClick = {props.cbSetColor}
+                    className = 'button_switch color_switch'
+                    type = 'button'
+                    value = 'color pick'
+                />
+            </div>
                 { colorPickerActive ?
                     <div className ='wrapperColorPicker'>
                         <SketchPicker
@@ -76,13 +78,11 @@ const InputInstruments = props => {
             <select 
             value = {props.componentStats.typeInput} 
             onChange = {props.cbSetType}
-            className = 'button_switch'
-        >
-        <option>button</option>
-        <option>text</option>
-        <option>password</option>
-        </select>
-        />
+            className = 'button_switch button_switch_type'>
+                <option>button</option>
+                <option>text</option>
+                <option>password</option>
+            </select>
             <p className = 'titleInstument'>Content: </p>
             <input
             className = 'button_switch'

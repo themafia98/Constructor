@@ -74,6 +74,12 @@ const ImageInstruments = props => {
             <p className = 'titleInstument titleInstrument__opacity'>Loader: </p>
             <div className = 'controllersText'>
                 <div className = 'fileLoader'>
+                    <input 
+                        onClick = {props.cbSearch}
+                        className = 'ImageSearchButton file'
+                        type="button"
+                        value = 'search image'
+                    />
                     <input
                         ref = {fileRef}
                         className = 'fileInput'
@@ -86,13 +92,8 @@ const ImageInstruments = props => {
                         type = 'button'
                         value = 'loading file'
                     />
+
                 </div>
-                <input 
-                    onClick = {props.cbSearch}
-                    className = 'ImageSearchButton file'
-                    type="button"
-                    value = 'search image'
-                />
             </div>
             <input 
                 onClick = {props.cbDelete}

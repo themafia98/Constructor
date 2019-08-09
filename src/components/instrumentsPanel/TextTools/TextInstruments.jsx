@@ -52,10 +52,12 @@ const TextInstruments = props => {
                 value = {fontSize ? fontSize : 120}
             />
                 { colorPickerActive ?
-                    <SketchPicker
-                    onChangeComplete={props.cbHandleChangeComplete}
-                    color = {props.color ? props.color : 'red'}
-                    />
+                    <div className ='wrapperColorPicker text'>
+                        <SketchPicker
+                            onChangeComplete={props.cbHandleChangeComplete}
+                            color = {props.color ? props.color : 'red'}
+                        />
+                    </div>
                     : null
                 }
                 <p className = 'titleInstument'>Font: </p>

@@ -11,7 +11,7 @@ const CreateProject = props => {
     let isNumber = props.nameLength >= 4 && props.nameLength <= 20;
 
     return (
-    <div className = 'Modal'>
+    <div className = 'Modal Modal__create'>
         <h3>Create new Project</h3>
         { nameLength <= 3 ?
             <span className = 'warning'>{props.warningLengthMin}</span> : null
