@@ -71,8 +71,8 @@ class Header extends React.Component {
                    ...this.state.redirectAbout,
                    redirectA: true
                }
-           });
-           else this.setState({redirectConfirm: true});
+           }); else if (!this.state.redirectConfirm) 
+                this.setState({redirectConfirm: true});
         event.stopPropagation()
     };
 

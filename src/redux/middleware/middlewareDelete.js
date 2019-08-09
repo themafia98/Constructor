@@ -1,6 +1,5 @@
 
 import {errorAction, loadUserAction, loadUpdateCurrentProject} from '../actions';
-console.log('test');
 const middlewareDelete = item => async (dispatch,getState, {firebase}) => {
     /** Delete some components from project */
     await firebase.db.collection('users').doc(item.uid).get()
