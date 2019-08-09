@@ -21,7 +21,6 @@
     "react-transition-group": "^4.2.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "smoothscroll-polyfill": "^0.4.4",
     "styled-components": "^4.3.2"
   },
   "scripts": {
