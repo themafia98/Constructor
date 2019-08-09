@@ -1,6 +1,6 @@
 import {LOAD_CURRENT,LOAD_UPDATE_PROJECT, EXIT_PROJECT} from './actions';
 
-const initialState = {
+const initialState = { /** @Builder reducer for build mode */
     loadProject: false,
     idProject: null,
     typeProject: null,
@@ -12,6 +12,7 @@ export default (state = initialState, action) => {
     switch (action.type){
 
         case LOAD_CURRENT: {
+            /** load data */
             return {
                 ...state,
                 loadProject: true,
@@ -23,6 +24,7 @@ export default (state = initialState, action) => {
         }
 
         case LOAD_UPDATE_PROJECT: {
+             /** load update for project */
             return {
                 ...state,
                 components: [...action.components],
@@ -31,6 +33,7 @@ export default (state = initialState, action) => {
         }
 
         case EXIT_PROJECT: {
+             /** if user exit from edit mode */
             if (action.exit)
             return {
                 ...state,

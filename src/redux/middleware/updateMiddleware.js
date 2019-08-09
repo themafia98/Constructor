@@ -1,7 +1,7 @@
 import {errorAction, loadUpdateCurrentProject} from '../actions';
 
 const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
- 
+    /** Save new updates for projects */
     let newProjects = item.projects.map(project => {
         if (project.id === item.idProject) {
             project.components = [...item.components]
@@ -13,6 +13,7 @@ const updateMiddleware = (item) => async (dispatch,getState, {firebase}) => {
         'projects': JSON.parse(JSON.stringify(newProjects))
     })
     .then(response => {
+        /** find and save updates */
         let project = item.projects.find(itemdb => itemdb.id === item.idProject);
         dispatch(loadUpdateCurrentProject({
             components: [...project.components],

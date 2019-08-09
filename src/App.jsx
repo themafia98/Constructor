@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import {Route, Switch} from 'react-router-dom';
-
-import {middlewareLoadUserData} from './redux/middleware/loadUserMiddleware';
 import {connect} from 'react-redux';
+import {Route, Switch} from 'react-router-dom';
+/* ------- Moddlewares ------- */
+import {middlewareLoadUserData} from './redux/middleware/loadUserMiddleware';
+/* ------- Child components ------- */
 import withFirebase from './components/withFirebase';
 import Loader from './components/loading/Loader';
-
 import Index from './Pages/Index/Index';
 import Cabinet from './Pages/Cabinet/Cabinet';
 import Production from './Pages/Production/Production';
@@ -31,13 +30,14 @@ class App extends React.PureComponent {
     }
 
     componentDidMount(){
-
+        /** Listening firebase answer after first load app */
         this.props.firebase.auth.onAuthStateChanged((user) => {
             if (!this.state.firebaseLoadState){
+                /** if user - true, loading data in store */
                 if (user) this.props.dispatch(middlewareLoadUserData(user.uid))
-                .then((res) =>  {
+                .then((res) =>  { /** show loader */
                     this.setState({...this.state, firebaseLoadState: res});
-                });
+                }); /** if loading = redirect */
                 else  this.setState({...this.state, firebaseLoadState: true});
             }
         });

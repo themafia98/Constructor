@@ -11,8 +11,8 @@ import store from './redux/store';
 import App from './App.jsx';
 import 'normalize.css';
 
-import firebaseContext from './Firebase/firebaseContext';
-import config from './config.json';
+import firebaseContext from './Firebase/firebaseContext'; /** firebase contect API */
+import config from './config.json'; /** app config file */
 
 ReactDOM.render(
         <HashRouter>
@@ -28,5 +28,5 @@ ReactDOM.render(
 );
 
 
-serviceWorker.register();
+serviceWorker.unregister();
 

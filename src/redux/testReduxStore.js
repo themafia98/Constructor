@@ -1,6 +1,9 @@
-import configureStore, {applyMiddleware} from 'redux-mock-store';
+import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import firebase from '../Firebase/Firebase';
+
+/** stores for  jest */
+
 const initialStateOffline = {
     cabinet: {
     active: false,
@@ -50,13 +53,10 @@ const initialState = {
     }
 };
 
-const middlewares = [thunk.withExtraArgument({firebase})] // add your middlewares like `redux-thunk`
-// here it is possible to pass in any middleware if needed into //configureStore
-const mockStore = configureStore(middlewares);
+const middlewares = [thunk.withExtraArgument({firebase})] /** test middlewares */
+const mockStore = configureStore(middlewares); /** test config store */
 
-const store = mockStore(initialState);
-
-
+const store = mockStore(initialState); /** init test store */
 
 export default store;
 export {initialStateOffline};

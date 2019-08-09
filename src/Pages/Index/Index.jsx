@@ -13,6 +13,7 @@ import Registration from '../../components/Registration/Registration';
 import {connect} from 'react-redux';
 
 import './index.scss';
+import Icon from '../../components/Icon/icon';
 
 
 class Index extends React.PureComponent {
@@ -31,6 +32,7 @@ class Index extends React.PureComponent {
 
     state = {
         title:  "Constructor",
+        tryAuth: false,
         registrationActive: false,
         regStatus: false,
         wrongEnter: false,
@@ -64,8 +66,15 @@ class Index extends React.PureComponent {
     }
 
     authTo = event => {
-            if (this.emailImput && this.passwordImput)
-            this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value));
+            if (this.emailImput && this.passwordImput){
+                this.setState({
+                    ...this.state,
+                    tryAuth: true,
+                }, () => {
+                     this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value))
+                     .then((res) => this.setState({...this.state,  tryAuth: false}));
+                });
+            }
             event.stopPropagation();
     }
 
@@ -88,7 +97,13 @@ class Index extends React.PureComponent {
                             />
                             <form className = 'LoginBox__LoginForm'>
                                 <h3>Connect form</h3>
-                                {this.props.wrongEnter || this.state.regStatus ?
+                                {this.state.tryAuth &&
+                                <Icon
+                                    className = 'LoginBox__LoginForm__loader'
+                                    path = '/img/loading.gif'
+                                />
+                                }
+                                {(this.props.wrongEnter || this.state.regStatus) && !this.state.tryAuth ?
                                     <p className = 'error'>{this.props.wrongEnter}</p>
                                     : null
                                 }
@@ -136,6 +151,10 @@ class Index extends React.PureComponent {
                 </Reveal>
             )
         } else  return <Loader path = '/img/loading.gif' type = 'session' />
+    }
+
+    componentDidUpdate = () => {
+
     }
 
     componentDidMount = (e) => {

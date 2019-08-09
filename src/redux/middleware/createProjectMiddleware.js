@@ -1,12 +1,13 @@
 import {createProjectAction, errorAction} from '../actions';
 
 
-function random(min){
+function random(min){ /** Generate keys */
     return `${Math.floor(min + Math.random() * (10000-min))}`
 }
 
 
 const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getState, {firebase}) => {
+    /** Create new project */
     let lastProject = [...list];
     const lastIndex = lastProject.length  ? lastProject[lastProject.length-1].id + 1 : 0;
     const sectionsProject = [];
@@ -27,7 +28,7 @@ const middlewareCreateProject = (uid, list, title, type) => async (dispatch,getS
         components: [header],
         sectionsProject: [...sectionsProject],
     });
-
+    /** Load project in database */
     await firebase.db.collection("users").doc(uid).update({
         'projects': lastProject,
     })

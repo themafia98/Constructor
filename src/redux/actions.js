@@ -7,6 +7,7 @@ const ERROR_CABINET = 'ERROR_CABINET';
 const EXIT_PROJECT = 'EXIT_PROJECT';
 
 const createProjectAction = (state) => {
+    /** action for create project */
     return {
         type: CREATE_PROJECT,
         projects: state,
@@ -14,6 +15,7 @@ const createProjectAction = (state) => {
 }
 
 const exitProjectAction = (state) => {
+       /** action for exit from editable or prod project */
     return {
         type: EXIT_PROJECT,
         exit: state
@@ -21,6 +23,7 @@ const exitProjectAction = (state) => {
 }
 
 const loadCurrentProjectAction = (state) => {
+    /** action for load current editable or prod project */
     return {
         type: LOAD_CURRENT,
         id: state.id,
@@ -31,6 +34,7 @@ const loadCurrentProjectAction = (state) => {
 }
 
 const loadUpdateCurrentProject = (state) => {
+    /** action for update editable project */
     return {
         type: LOAD_UPDATE_PROJECT,
         idProject: state.idProject,
@@ -40,6 +44,7 @@ const loadUpdateCurrentProject = (state) => {
 }
 
 const loadUserAction = (state) => {
+    /** action for load user data */
     return {
         type: LOAD_USER_CABINET,
         active: true,
@@ -50,7 +55,7 @@ const loadUserAction = (state) => {
 }
 
 const logOutAction = (state) => {
-
+    /** action for clear session */
     return {
         type: LOG_OUT_CABINET,
         active: false,
@@ -61,6 +66,7 @@ const logOutAction = (state) => {
 }
 
 const errorAction = (state) => {
+    /** action catch errors */
     return {
         type: ERROR_CABINET,
         error: state

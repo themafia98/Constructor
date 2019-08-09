@@ -21,6 +21,11 @@
             flex-direction: column;
             width: 50%;
 
+            .LoginBox__LoginForm__loader{
+                width: 20px;
+                align-self: center;
+            }
+
             h3 {
                 margin: 0;
                 text-align: center;

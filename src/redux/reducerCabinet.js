@@ -1,6 +1,9 @@
-import {LOAD_USER_CABINET, LOG_OUT_CABINET, ERROR_CABINET, CREATE_PROJECT, LOAD_UPDATE_PROJECT} from './actions';
+import {    LOAD_USER_CABINET, LOG_OUT_CABINET,
+            ERROR_CABINET, CREATE_PROJECT,
+            LOAD_UPDATE_PROJECT
+        } from './actions';
 
-const initialState = {
+const initialState = { /** Cabinet reducer (root) */
     active: false,
     idUser: null,
     projects: [],
@@ -10,7 +13,7 @@ const initialState = {
 export default (state = initialState, action) => {
     switch(action.type) {
         case LOAD_USER_CABINET: {
-
+            /** load user data if user auth - true */
             return {
                 ...state,
                 active: action.active,
@@ -20,6 +23,7 @@ export default (state = initialState, action) => {
         }
 
         case CREATE_PROJECT: {
+             /** create new project */
             return {
                 ...state,
                 projects: [...action.projects]
@@ -27,6 +31,7 @@ export default (state = initialState, action) => {
         }
 
         case LOAD_UPDATE_PROJECT: {
+              /** update project in cabinet */
             return {
                 ...state,
                 projects: state.projects.map(item => {
@@ -38,6 +43,7 @@ export default (state = initialState, action) => {
         }
 
         case LOG_OUT_CABINET: {
+            /** clear session */
             return {
                 ...state,
                 active: false,
@@ -47,6 +53,7 @@ export default (state = initialState, action) => {
         }
 
         case ERROR_CABINET: {
+            /** catch error in cabinet */
             return {
                 ...state,
                 error: action.error

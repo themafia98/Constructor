@@ -2,17 +2,19 @@
 import {errorAction, loadUserAction, loadUpdateCurrentProject} from '../actions';
 
 const middlewareDelete = item => async (dispatch,getState, {firebase}) => {
-
+    /** Delete some components from project */
     await firebase.db.collection('users').doc(item.uid).get()
     .then(user => user.data())
     .then(data => {
         return {id: item.uid, projects: data.projects.filter(itemdb => itemdb.id !== item.id)};
     })
     .then(data => {
+        /** Load update in database */
         firebase.db.collection("users").doc(item.uid).update({
             "projects": data.projects
         })
         .then(response => {
+            /** update user data */
             dispatch(loadUserAction({uid: item.uid, projects: data.projects}));
         });
     })
@@ -23,6 +25,7 @@ const middlewareDelete = item => async (dispatch,getState, {firebase}) => {
 }
 
 const middlewareDeleteProjectComponent = item => async (dispatch, getState, {firebase}) => {
+    /** Delete project */
     await firebase.db.collection('users').doc(item.uid).get()
     .then(user => user.data())
     .then(data => {
@@ -37,10 +40,12 @@ const middlewareDeleteProjectComponent = item => async (dispatch, getState, {fir
     .then(data => {
         let {dataUpdate} = data;
         let {findProject} = data;
+        /** update data in database */
         firebase.db.collection("users").doc(item.uid).update({
             "projects": dataUpdate.projects
         })
         .then(response => {
+            /** update user data */
             dispatch(loadUpdateCurrentProject({
                 components: [...findProject.components],
                 idProject: item.id,
