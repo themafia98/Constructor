@@ -358,6 +358,7 @@ class InstrumentsPanel extends React.PureComponent {
                             color = {this.state.componentStats.color}
                             cbHandleChangeComplete = {this.handleChangeComplete}
                             cbSearch = {this.search}
+                            cbDelete = {this.deleteComponent}
                         />
                     )
                 case 'image':

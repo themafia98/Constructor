@@ -25,6 +25,12 @@ const BackgroundInstruments = props => {
                 type = 'button'
                 value = 'background-image'
             />
+            <input 
+                onClick = {props.cbDelete}
+                className = 'instrumentPanel__deleteComponentButton'
+                type="button"
+                value = 'delete'
+            />
         </Fragment>
     )
 

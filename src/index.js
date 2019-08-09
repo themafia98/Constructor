@@ -12,10 +12,8 @@ import App from './App.jsx';
 import 'normalize.css';
 
 import firebaseContext from './Firebase/firebaseContext';
+import config from './config.json';
 
-firebase.saveSession('SESSION');
-const config = require('./config.json');
-console.time();
 ReactDOM.render(
         <HashRouter>
             <ErrorBoundary>

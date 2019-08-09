@@ -1,6 +1,10 @@
 {
     "title": "Constructor",
     "CabinetIcon": "/img/logo.svg",
+    "firebase": {
+        "session": "SESSION",
+        "lowConnection": "true"
+    },
     "about": {
         "developer": "Pavel Petrovich",
         "year": "2019"
