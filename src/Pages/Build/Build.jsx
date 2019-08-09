@@ -65,6 +65,7 @@ class Build extends React.PureComponent {
 
     deleteComponent = eventItem => {
         /* delete component from DB and from JSX array */
+        console.log(eventItem);
         let {currentProjectsData} = this.props.userData;
         let {componentJSX} = this.state;
 
@@ -298,6 +299,13 @@ class Build extends React.PureComponent {
             else this.addComponentsFromBD([...currentProjectsData.components]);
             /** For scroll component */
             eventEmitter.emit('EventSetState',currentProjectsData.sectionsProject.length-1);
+        }
+
+        // if delete section change count for scroller
+        const currentSection = currentProjectsData.sectionsProject.length;
+        const  prevSection = prevProps.userData.currentProjectsData.sectionsProject.length;
+        if (currentSection !== prevSection){
+        eventEmitter.emit('EventSetState', currentProjectsData.sectionsProject.length-1);
         }
     }
 
