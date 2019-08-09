@@ -187,7 +187,7 @@ class TextComponent extends React.PureComponent {
             let sectionNum = this.state.sectionNumber === 0 ? 1 : this.state.sectionNumber;
             let xItem = event.clientX - (this.props.sizeParentBox.left  * sectionNum);
             let yItem = event.clientY - (this.props.sizeParentBox.top * sectionNum);
-            let factorCoord = this.delta(parseInt(this.state.transformValue),element.height,element.width);
+            let factorCoord = this.diffAngle(parseInt(this.state.transformValue),element.height,element.width);
 
             let coordX = xItem - this.state.shiftCoords.x + factorCoord.xFacotr;
             let coordY = yItem - this.state.shiftCoords.y + factorCoord.yFactor;
@@ -220,10 +220,10 @@ class TextComponent extends React.PureComponent {
         });
     }
 
-    delta = (transform, height, width) => {
+    diffAngle = (transform, height, width) => {
 
-        let powHeight = height * height;
-        let powWidth =  width * width;
+        let powHeight = height**2;
+        let powWidth =  width**2;
 
         let pythagoras = Math.sqrt(powHeight + powWidth) / 2;
         let _angle = Math.atan(height / width);
@@ -242,8 +242,8 @@ class TextComponent extends React.PureComponent {
         let sinX = Math.sin(biasFactor * angle + _biasFactor * transform);
         let sinY = Math.sin(biasFactor* _angle + _biasFactor * transform);
 
-        let xFacotr = pythagoras*(-Math.sin(angle)+sinX);
-        let yFactor = pythagoras*(-Math.sin(_angle)+sinY);
+        const xFacotr = pythagoras * (-Math.sin(angle) + sinX);
+        const yFactor = pythagoras * (-Math.sin(_angle) + sinY);
 
         return {xFacotr, yFactor}
     };

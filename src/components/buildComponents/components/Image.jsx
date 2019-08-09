@@ -26,7 +26,6 @@ const ImageStyle = styled.img`
     height: 100%;
     opacity: ${props => props.opacity};
     border-radius: ${props => props.borderRadius}px;
-    pointer-events: none;
     position: absolute;
 `;
 
@@ -151,7 +150,7 @@ class Image extends React.PureComponent {
             const element = this.refImage.getBoundingClientRect();
             let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
             let yItem = event.clientY - (this.props.sizeParentBox.top * this.state.sectionNumber);
-            let factorCoord = this.delta(parseInt(this.state.transformValue),element.height,element.width);
+            let factorCoord = this.diffAngle(parseInt(this.state.transformValue),element.height,element.width);
 
             let coordX = xItem - this.state.shiftCoords.x + factorCoord.xFacotr;
             let coordY = yItem - 61 - this.state.shiftCoords.y + factorCoord.yFactor;
@@ -168,10 +167,10 @@ class Image extends React.PureComponent {
     };
 
 
-    delta = (transform, height, width) => {
+    diffAngle = (transform, height, width) => {
 
-        let powHeight = height * height;
-        let powWidth =  width * width;
+        let powHeight = height**2;
+        let powWidth =  width**2;
 
         let pythagoras = Math.sqrt(powHeight + powWidth) / 2;
         let _angle = Math.atan(height / width);
@@ -263,6 +262,10 @@ class Image extends React.PureComponent {
                 opacity: opacity
             });
     }
+
+    stopDrag = event => {
+        event.preventDefault();
+    }
  
     refImage = null;
     refImageComponent = node => this.refImage = node;
@@ -281,7 +284,7 @@ class Image extends React.PureComponent {
                 onMouseMove= {this.moveText}
                 onMouseLeave = {this.stopDragNdrop}
                 onMouseUp = {this.stopDragNdrop}
-                onDragStart = {this.stop}
+                onDragStart = {this.stopDrag}
                 coordX = {this.state.posImage ? this.state.posImage.x : null}
                 coordY = {this.state.posImage ? this.state.posImage.y : null}
                 indexZ = {this.state.startDragNdrop}
@@ -290,6 +293,7 @@ class Image extends React.PureComponent {
                     <ImageStyle
                         data-imagecomponent
                         borderRadius = {this.state.borderRadius}
+                        onDragStart = {this.stopDrag}
                         opacity = {this.state.opacity}
                         src = {this.state.path}
                         alt = 'img'

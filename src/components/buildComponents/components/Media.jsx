@@ -139,12 +139,7 @@ class MediaComponent extends React.PureComponent {
         return {x: coordX, y: coordY};
     }
 
-    delta = (trans,transT) => {
-        return {
-            x: 0,
-            y: 0,
-        }
-    }
+
     move = (x,y) => this.setState({...this.state, posMedia: {x: x, y: y}});
 
     moveMedia = event => {
@@ -154,8 +149,8 @@ class MediaComponent extends React.PureComponent {
             let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
             let yItem = event.clientY - (this.props.sizeParentBox.top * this.state.sectionNumber);
 
-            let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
-            let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
+            let coordX = xItem - this.state.shiftCoords.x;
+            let coordY = yItem - this.state.shiftCoords.y;
 
             let coords = this.checkPivotPosition(coordX,coordY);
 

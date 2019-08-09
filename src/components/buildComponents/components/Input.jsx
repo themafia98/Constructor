@@ -166,12 +166,7 @@ class Input extends React.PureComponent {
         return {x: coordX, y: coordY};
     }
 
-    delta = (trans,transT) => {
-        return {
-            x: 0,
-            y: 0,
-        }
-    }
+
     move = (x,y) => this.setState({...this.state, posInput: {x: x, y: y}});
 
     moveInput = event => {
@@ -183,8 +178,8 @@ class Input extends React.PureComponent {
             let xItem = event.clientX - (this.props.sizeParentBox.left  * num);
             let yItem = event.clientY - (this.props.sizeParentBox.top * num);
 
-            let coordX = xItem - this.state.shiftCoords.x + this.delta().x;
-            let coordY = yItem - this.state.shiftCoords.y + this.delta().y;
+            let coordX = xItem - this.state.shiftCoords.x;
+            let coordY = yItem - this.state.shiftCoords.y;
 
             let coords = this.checkPivotPosition(coordX,coordY);
 
