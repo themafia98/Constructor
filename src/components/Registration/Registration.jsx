@@ -25,7 +25,7 @@ class Registration extends React.PureComponent {
     setRefPassword = (node) => this.passwordRef = node;
 
     createUser = event => {
-
+        /** try to create new user */
         const email = this.emailRef ? this.emailRef.value : null;
         const password = this.passwordRef ? this.passwordRef.value : null;
         const { firebase } = this.props;
@@ -34,6 +34,7 @@ class Registration extends React.PureComponent {
         firebase.registration(email, password)
         .then(response => {
             if (!response) throw new Error('Ivaid registration')
+            /** if response - true update data user else throw error */
             firebase.db.collection("users").doc(response.user.uid).set({
                 'projects': [],
                 'email': email,

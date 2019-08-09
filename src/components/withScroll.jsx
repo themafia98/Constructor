@@ -21,15 +21,17 @@ const withScroll = Component => {
         }
 
         setStates = event => {
+            /** Count all positions */
             this.setState({...this.state,positionCount: event});
         }
 
         blockMove = event => {
+            /** block for move */
             this.setState({...this.state, mode: event})
         }
 
         moveLocation = event => {
-
+            /** Scrolling */
             if (this.state.mode === 'default'){
                 const count = this.state.positionCount;
                 const moveDown = this.state.position < count && event.deltaY > 0;

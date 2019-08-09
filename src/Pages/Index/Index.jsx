@@ -31,7 +31,7 @@ class Index extends React.PureComponent {
     indexStream = new Events();
 
     state = {
-        title:  "Constructor",
+        title:  this.props.config.title,
         tryAuth: false,
         registrationActive: false,
         regStatus: false,
@@ -43,6 +43,7 @@ class Index extends React.PureComponent {
     passwordImput = null;
 
     statusRegistration = event => {
+        /** Update registration status */
         event.additionalUserInfo.isNewUser ?
             this.setState({
                 ...this.state,
@@ -54,6 +55,7 @@ class Index extends React.PureComponent {
     }
 
     showBox = event => {
+         /** Show registration box */
         try {
             this.setState ({
                 ...this.state,
@@ -66,6 +68,7 @@ class Index extends React.PureComponent {
     }
 
     authTo = event => {
+          /** Auth user */
             if (this.emailImput && this.passwordImput){
                 this.setState({
                     ...this.state,

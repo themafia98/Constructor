@@ -20,6 +20,7 @@ class  SearchModal extends React.PureComponent {
     }
 
     search = event => {
+        /** event search on */
         const value = this.refSearch ? this.refSearch.value : null;
         this.props.cbSearch(event,value, this.props.modalSearchMode);
         event.stopPropagation();
@@ -78,7 +79,7 @@ class  SearchModal extends React.PureComponent {
         let {content: contentPrev} = prevProps;
         const haveUpdate = (contentPrev.images !== content.images && content.images);
         const isSelected = contentPrev.selectedItem !== content.selectedItem;
-
+        /** update if selected */
         if (haveUpdate || isSelected){
             let _items = this.props.cbMakeImageResultBox(content.images);
             this.setState({

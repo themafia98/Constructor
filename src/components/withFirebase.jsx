@@ -3,7 +3,7 @@ import firebaseContext from '../Firebase/firebaseContext';
 
 
 const withFirebase = Component => props => {
-        return (
+        return ( /** Context API */
             <firebaseContext.Consumer>
                 {firebase => <Component {...props} firebase = {firebase} /> }
             </firebaseContext.Consumer>

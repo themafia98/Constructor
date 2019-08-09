@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {withRouter, Redirect} from 'react-router-dom';
 
 function Item(props) {
-
+    /** Project item in cabinet */
     const [path] = useState( `/Cabinet/Build/${props.id}`);
     const [productionPath] = useState(`/Cabinet/Build/${props.id}/Production/`);
 

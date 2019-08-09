@@ -23,7 +23,6 @@ class ModalWindow extends React.PureComponent {
     }
 
     state = {
-        readyAnimation: false,
         workMode: this.props.workMode,
         loading: false,
         items: [],
@@ -58,7 +57,7 @@ class ModalWindow extends React.PureComponent {
     inputSelect = null;
 
     searchData = (event,value, mode) => {
-
+        /** search images or media */
         this.setState({...this.state, 
             images: {
                 ...this.state.images,
@@ -82,7 +81,7 @@ class ModalWindow extends React.PureComponent {
         })
         .then(response => {
             let {results} = response;
-            if (results.length)
+            if (results.length) /** save results */
             this.setState({
                 ...this.state,
                 images: {
@@ -111,9 +110,9 @@ class ModalWindow extends React.PureComponent {
         } else this.searchYouTubeAPI(search);
     }
 
-    
-    searchYouTubeAPI = (search) => {
 
+    searchYouTubeAPI = (search) => {
+        /** search media */
         const API = `https://www.googleapis.com/youtube/v3/search?part=snippet`;
         const RAITE = `&maxResults=25&order=date&q=${search}`;
         const KEY = `&key=${process.env.REACT_APP_YOUTUBE_SEARCH_TOKEN}`;
@@ -134,7 +133,7 @@ class ModalWindow extends React.PureComponent {
             return arrayItems;
         })
         .then(results => {
-            this.setState({
+            this.setState({ /** save results */
                 ...this.state,
                 images: {
                     ...this.state.images,
@@ -150,6 +149,7 @@ class ModalWindow extends React.PureComponent {
     }
 
     showMenuImage = event => {
+        /** tools for show or set content */
         this.setState({
             ...this.state, 
             imageMenuActive: true,
@@ -165,7 +165,7 @@ class ModalWindow extends React.PureComponent {
     }
 
     showImage = event => {
-
+        /** on viewer */
         const {showUrl, iframe} = this.state.images;
 
         this.props.eventStreamBuild.emit("EventView", {
@@ -178,7 +178,7 @@ class ModalWindow extends React.PureComponent {
     }
 
     setSelectedImage = event => {
-
+        /** set current selected content */
         let data = {...this.state.images};
         if (this.props.modalSearchMode === 'background'){
             controllerStream.emit(`EventSetBackgroundImage${this.props.idComponent}`,data);
@@ -199,6 +199,7 @@ class ModalWindow extends React.PureComponent {
     };
 
     makeImageResultBox = (items) => {
+        /** make results */
         if (!items) return null;
         return items.map((item,i) =>{
                 return <ImageItem
@@ -214,6 +215,7 @@ class ModalWindow extends React.PureComponent {
     }
 
     addNewProject = event => {
+        /** create new projects modal */
         let mode = this.state[this.state.workMode];
         if (mode.validateType &&  mode.validateName) {
 
@@ -232,7 +234,7 @@ class ModalWindow extends React.PureComponent {
     }
 
     selectOption = event => {
-
+        /** type project */
         let inputs = {...this.state[this.state.workMode]};
         inputs.type = event.target.value;
         inputs.validateType = inputs.type !== 'empty';
@@ -244,7 +246,7 @@ class ModalWindow extends React.PureComponent {
     }
 
     validateName = event => {
-
+        /** validate name project */
         let inputs = {...this.state[this.state.workMode]};
         inputs.name = event.target.value;
         inputs.validateName = /^\D{4,20}$/i.test(inputs.name);
@@ -257,7 +259,7 @@ class ModalWindow extends React.PureComponent {
     };
 
     cancel = event => {
-
+        /** remove modal */
         if (this.state.workMode === 'Search')
         this.props.eventStreamBuild.emit("EventModalSearchOn", {action: 'offline', mode: null});
         else  this.props.cabinetStream.emit('EventChangeWorkMode',{active: false, action: 'default'});
@@ -306,26 +308,9 @@ class ModalWindow extends React.PureComponent {
         }
     }
 
-    componentDidUpdate = () => {
-        if (!this.state.readyAnimation){
-            this.setState({
-                ...this.state,
-                readyAnimation: true,
-            });
-        }
-    }
-    
-
     componentDidMount = event => {
         if (this.state.workMode === 'Search')
             eventEmitter.on('EventShowMenuImage', this.showMenuImage);
-
-
-            if (!this.state.readyAnimation)
-            this.setState({
-                ...this.state,
-                readyAnimation: true,
-            });
     }
 
     componentWillUnmount = event => {

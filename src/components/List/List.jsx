@@ -9,7 +9,7 @@ import './list.scss';
 import Item from './Item';
 
 class List extends React.PureComponent {
-
+    /** List of projects items in cabinet */
     static propTypes = {
         dispatch: PropTypes.func.isRequired, /** @dispatch redux */
         idUser: PropTypes.string.isRequired, /** @UID current user */

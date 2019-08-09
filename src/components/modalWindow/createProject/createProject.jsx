@@ -4,9 +4,9 @@ import Loader from '../../loading/Loader';
 
 const CreateProject = props => {
 
-    const content = props.content;
+    const content = props.content; /** Content */
     const {disabled,validateName,name,validateType,typeClassName} = content;
-    const nameLength = name.length;
+    const nameLength = name.length; /** Length */
 
     let isNumber = props.nameLength >= 4 && props.nameLength <= 20;
 

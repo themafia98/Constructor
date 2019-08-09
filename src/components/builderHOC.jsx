@@ -7,6 +7,7 @@ import TextComponent from './buildComponents/components/Text';
 import BackgroundComponent from './buildComponents/components/Background';
 
 const builderHOC = item => Component => {
+        /** Builder editable components */
         if (item.type === 'background') Component = BackgroundComponent;
         else if (item.type === 'input') Component = Input;
         else if (item.type === 'media') Component = Media;

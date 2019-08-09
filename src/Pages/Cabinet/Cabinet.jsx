@@ -39,20 +39,23 @@ class Cabinet extends React.PureComponent {
   }
 
   logOut = () => {
+    /** destroy session */
     this.props.dispatch(middlewareLogOutUser(this.props.idUser));
   }
 
   deletItem = event => {
+      /** destroy project */
     this.props.dispatch(middlewareDelete({...event, uid: this.props.firebase.getCurrentUser().uid}));
   };
 
   	changeWorkMode = event => {
-    this.setState ({
-	  ...this.state,
-	  modalActive: event.active,
-	  workMode: event.action
-	});
-	}
+      /** workMode changes */
+      this.setState ({
+      ...this.state,
+      modalActive: event.active,
+      workMode: event.action
+      });
+	  }
 
 
   render(){
