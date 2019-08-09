@@ -1,8 +1,13 @@
 
+/** IE supports polyfills */
+import 'core-js/es/map';
+import 'core-js/es/set';
+import 'core-js/es/symbol';
+import smoothscroll from 'smoothscroll-polyfill';
+/** --------------------- */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-
 import firebase from './Firebase/Firebase';
 import ErrorBoundary from './components/ErrorCatch/ErrorBoundary';
 import {HashRouter } from 'react-router-dom';
@@ -13,6 +18,10 @@ import 'normalize.css';
 
 import firebaseContext from './Firebase/firebaseContext'; /** firebase contect API */
 import config from './config.json'; /** app config file */
+
+
+// kick off the polyfill!
+smoothscroll.polyfill();
 
 ReactDOM.render(
         <HashRouter>

@@ -149,7 +149,7 @@ class Header extends React.Component {
         )
     }
 
-    componentWillMount = () => {
+    componentDidlMount = () => {
         eventEmitter.on('EventRedirectConfirm', this.confirm);
     }
 

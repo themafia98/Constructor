@@ -1,6 +1,5 @@
 import React from 'react';
 import eventEmitter from '../EventEmitter';
-
 import {animateScroll as scroll, scroller } from "react-scroll";
 
 
@@ -55,10 +54,12 @@ const withScroll = Component => {
 
         render(){
             return (
-                <div key = 'moveScroll' onWheel = {this.moveLocation} onTouchStart = {() => false}
-                >
-                    {<Component {...this.props} />}
-                </div>
+                <React.Fragment>
+                        <div key = 'moveScroll' onWheel = {this.moveLocation} onTouchStart = {() => false}
+                        >
+                            {<Component {...this.props} />}
+                        </div>
+                </React.Fragment>
             )
         }
 

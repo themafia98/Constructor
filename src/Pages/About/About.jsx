@@ -1,5 +1,4 @@
-import React from 'react';
-import Reveal from 'react-reveal/Reveal';
+import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -31,7 +30,7 @@ class About extends React.PureComponent {
         if (user && this.props.idUser) {
             const { config } = this.state;
             return (
-                <Reveal effect="fade">
+                <Fragment>
                     <Header title = {config.title} idUser = {user.uid} />
                     <section className = 'About'>
                         <div className = 'container'>
@@ -49,7 +48,7 @@ class About extends React.PureComponent {
                             </div>
                         </div>
                     </section>
-                </Reveal>
+                </Fragment>
             )
         } else if (!user) return <Redirect to = { '/'} />
         else return <Loader path = '/img/loading.gif' type = 'About' />

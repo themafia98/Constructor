@@ -2,7 +2,7 @@ import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import Reveal from 'react-reveal/Reveal';
+import RenderInBrowser from 'react-render-in-browser';
 /* ------- Events streams ------- */
 import eventEmitter from '../../EventEmitter'; // common
 import EventBuild from 'events'; // for builder controllers
@@ -206,47 +206,56 @@ class Build extends React.PureComponent {
 
         if (userData.active && currentProjectsData.loadProject){
             return (
-                <Reveal effect="fade">
+                <Fragment>
                     <Header key = 'Header' title = "Constructor" idUser = {userData.idUser}  />
-                    <div
-                        ref = {this.mainRefComponent} 
-                        onMouseMove = {this.showAddSection} 
-                        className = 'Build' 
-                        key = 'Build'
-                    >
-                        { this.state.editStart &&
-                            <Controllers
-                                key = 'controllers'
-                                eventStreamBuild = {this.eventEmitterBuild}
-                                editComponentName = {this.state.editComponentName}
-                                countComponents = {currentProjectsData.components.length}
-                                menuActive = {this.state.menuActive}
-                                sizeParentBox = {this.state.sizeParentBox}
-                            />
-                        }
-                            <BuildMenu
-                                key = 'buildMenu'
-                                eventStreamBuild = {this.eventEmitterBuild}
-                                countSection = {this.state.componentJSX.length * 5}
-                                mode = "section"
-                                className = 'menu'
-                            />
-                            <AdditionalTools key = 'tools'
-                                eventStreamBuild = {this.eventEmitterBuild}
-                                eventEmitter = {eventEmitter}
-                                editComponentName = {this.state.editComponentName}
-                            />
-                        {section.length &&
-                            <Section mode = 'dev' key = 'section'
-                                componentJSX = {this.state.componentJSX}
-                                editComponentName = {this.state.editComponentName}
-                                menuActive = {this.state.menuActive}
-                                sizeParentBox = {this.state.sizeParentBox}
-                                userData = {userData}
-                            />
-                        }
-                    </div>
-                </Reveal>
+                    <RenderInBrowser ie only>
+                        <h2 className = 'ie'>
+                            All the magic tricks in this app work best in Chrome/Firefox/Opera and other.
+                            <hr/>
+                            Internet explorer deprecated.
+                        </h2>
+                    </RenderInBrowser>
+                    <RenderInBrowser except ie>
+                        <div
+                            ref = {this.mainRefComponent} 
+                            onMouseMove = {this.showAddSection} 
+                            className = 'Build' 
+                            key = 'Build'
+                        >
+                            { this.state.editStart &&
+                                <Controllers
+                                    key = 'controllers'
+                                    eventStreamBuild = {this.eventEmitterBuild}
+                                    editComponentName = {this.state.editComponentName}
+                                    countComponents = {currentProjectsData.components.length}
+                                    menuActive = {this.state.menuActive}
+                                    sizeParentBox = {this.state.sizeParentBox}
+                                />
+                            }
+                                <BuildMenu
+                                    key = 'buildMenu'
+                                    eventStreamBuild = {this.eventEmitterBuild}
+                                    countSection = {this.state.componentJSX.length * 5}
+                                    mode = "section"
+                                    className = 'menu'
+                                />
+                                <AdditionalTools key = 'tools'
+                                    eventStreamBuild = {this.eventEmitterBuild}
+                                    eventEmitter = {eventEmitter}
+                                    editComponentName = {this.state.editComponentName}
+                                />
+                            {section.length &&
+                                <Section mode = 'dev' key = 'section'
+                                    componentJSX = {this.state.componentJSX}
+                                    editComponentName = {this.state.editComponentName}
+                                    menuActive = {this.state.menuActive}
+                                    sizeParentBox = {this.state.sizeParentBox}
+                                    userData = {userData}
+                                />
+                            }
+                        </div>
+                    </RenderInBrowser>
+                </Fragment>
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
@@ -267,7 +276,6 @@ class Build extends React.PureComponent {
                 left: this.mainComponent.data.left,
             }
 
-            console.log(this.mainComponent.data);
 
         if (userData.active && !currentProjectsData.loadProject) {
             /** load current project of user session active and load project - false */

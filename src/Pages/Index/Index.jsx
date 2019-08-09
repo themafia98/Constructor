@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Reveal from 'react-reveal/Reveal';
 import {Redirect} from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import AnimationText from '../../components/AnimationText/AnimationTitle';
@@ -89,7 +88,6 @@ class Index extends React.PureComponent {
         if (this.props.active) return <Redirect to = { '/Cabinet'} />
         else if (!this.props.active) {
             return (
-                <Reveal effect="fade">
                     <div className = 'LoginPage flex-column'>
                         <h1>{this.state.title}</h1>
                         <div className = 'LoginPage__LoginBox'>
@@ -151,7 +149,6 @@ class Index extends React.PureComponent {
                                 }
                             </TransitionGroup>
                     </div>
-                </Reveal>
             )
         } else  return <Loader path = '/img/loading.gif' type = 'session' />
     }

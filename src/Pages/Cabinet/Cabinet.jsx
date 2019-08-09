@@ -1,8 +1,7 @@
-import React from 'react';
+import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
-import Reveal from 'react-reveal/Reveal';
 import {CSSTransition} from 'react-transition-group';
 /* ------- Event stream ------- */
 import Events from 'events';
@@ -20,55 +19,55 @@ import './Cabinet.scss';
 
 class Cabinet extends React.PureComponent {
 
-  static propTypes = {
-    firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
-    active: PropTypes.bool, /** @active - status firebase auth */
-    dispatch: PropTypes.func.isRequired, /** @dispatch - redux */
-    history: PropTypes.object.isRequired, /** @Router HTML5 history */
-    location: PropTypes.object.isRequired, /** @Router */
-    match: PropTypes.object.isRequired, /** @Router */
-    idUser: PropTypes.string, /** @Session user id from redux */
-    projects: PropTypes.arrayOf(PropTypes.object).isRequired /** @Projects array with user projects from redux */
-  }
+	static propTypes = {
+		firebase: PropTypes.object.isRequired, /** @firebase class for use firebase functions */
+		active: PropTypes.bool, /** @active - status firebase auth */
+		dispatch: PropTypes.func.isRequired, /** @dispatch - redux */
+		history: PropTypes.object.isRequired, /** @Router HTML5 history */
+		location: PropTypes.object.isRequired, /** @Router */
+		match: PropTypes.object.isRequired, /** @Router */
+		idUser: PropTypes.string, /** @Session user id from redux */
+		projects: PropTypes.arrayOf(PropTypes.object).isRequired /** @Projects array with user projects from redux */
+	}
 
-  cabinetStream = new Events();
+	cabinetStream = new Events();
 
-  state = {
-	modalActive: false,
-    workMode: 'default',
-  }
+	state = {
+		modalActive: false,
+		workMode: 'default',
+	}
 
-  logOut = () => {
-    /** destroy session */
-    this.props.dispatch(middlewareLogOutUser(this.props.idUser));
-  }
+	logOut = () => {
+		/** destroy session */
+		this.props.dispatch(middlewareLogOutUser(this.props.idUser));
+	}
 
-  deletItem = event => {
-      /** destroy project */
-    this.props.dispatch(middlewareDelete({...event, uid: this.props.firebase.getCurrentUser().uid}));
-  };
+	deletItem = event => {
+		/** destroy project */
+		this.props.dispatch(middlewareDelete({...event, uid: this.props.firebase.getCurrentUser().uid}));
+	};
 
-  	changeWorkMode = event => {
-      /** workMode changes */
-      this.setState ({
-      ...this.state,
-      modalActive: event.active,
-      workMode: event.action
-      });
-	  }
+		changeWorkMode = event => {
+		/** workMode changes */
+		this.setState ({
+		...this.state,
+		modalActive: event.active,
+		workMode: event.action
+		});
+		}
 
 
-  render(){
+	render(){
 
-    if (this.props.active){
-      return (
-        <Reveal effect="fade">
-			<Header cabinetStream = {this.cabinetStream} 
+		if (this.props.active){
+		return (
+		<Fragment>
+				<Header cabinetStream = {this.cabinetStream} 
 					title = {this.props.config.title} 
 					idUser = {this.props.idUser} 
-			/>
-			<div className = 'Cabinet'>
-			<CSSTransition
+				/>
+				<div className = 'Cabinet'>
+				<CSSTransition
 					in={this.state.modalActive}
 					timeout={300}
 					classNames="modalAnimation"
@@ -81,31 +80,31 @@ class Cabinet extends React.PureComponent {
 				/>
 				</CSSTransition>
 				<ProjectsSection cabinetStream = {this.cabinetStream} />
-			</div>
-          </Reveal>
-      )
-    } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
-    else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
-  }
+				</div>
+			</Fragment>
+		)
+		} else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
+		else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
+	}
 
 
-  componentDidMount = () => {
-    this.cabinetStream.on('EventDeleteItem', this.deletItem);
-	this.cabinetStream.on('EventChangeWorkMode', this.changeWorkMode);
-  };
+	componentDidMount = () => {
+		this.cabinetStream.on('EventDeleteItem', this.deletItem);
+		this.cabinetStream.on('EventChangeWorkMode', this.changeWorkMode);
+	};
 
-  componentWillUnmount = () => {
-    this.cabinetStream.off('EventDeleteItem', this.deletItem);
-	this.cabinetStream.off('EventChangeWorkMode', this.changeWorkMode);
-  }
+	componentWillUnmount = () => {
+		this.cabinetStream.off('EventDeleteItem', this.deletItem);
+		this.cabinetStream.off('EventChangeWorkMode', this.changeWorkMode);
+	}
 }
 
-const mapStateToProps = (state) => {
-  return {
-    idUser: state.cabinet.idUser,
-    projects: [...state.cabinet.projects],
-    active: state.cabinet.active
-  }
-};
+	const mapStateToProps = (state) => {
+	return {
+		idUser: state.cabinet.idUser,
+		projects: [...state.cabinet.projects],
+		active: state.cabinet.active
+	}
+	};
 
-export default connect(mapStateToProps)(withFirebase(Cabinet));
+	export default connect(mapStateToProps)(withFirebase(Cabinet));

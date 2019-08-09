@@ -26,7 +26,6 @@ class AdditionalTools extends React.PureComponent{
     }
 
     modalSearchOn = itemEvent => {
-        console.log(itemEvent);
         this.setState({
             ...this.state,
             modal:{

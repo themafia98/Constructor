@@ -1,6 +1,5 @@
 import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
-import Reveal from 'react-reveal/Reveal';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 /** Redux actions */
@@ -71,26 +70,26 @@ class Production extends React.PureComponent {
 
         if (userData.active && currentProjectsData.loadProject){
             return (
-            <Reveal effect="fade">
-                <Header key = 'Header' title = "Constructor" idUser = {userData.idUser} />
-                <div
-                    ref = {this.mainProductionRef}
-                    className = 'Production'
-                    key = 'Production'
-                    >
-                    {!this.state.isLoadComponents ?
-                        section.length &&
-                            <Section 
-                                key = 'section'
-                                mode = {this.state.mode}
-                                currentProjectsData = {currentProjectsData}
-                                componentsProdJSX = {this.state.componentsProdJSX}
-                                section = {section}
-                            />
-                        : null
-                    }
-                </div>
-            </Reveal>
+                <Fragment>
+                    <Header key = 'Header' title = "Constructor" idUser = {userData.idUser} />
+                    <div
+                        ref = {this.mainProductionRef}
+                        className = 'Production'
+                        key = 'Production'
+                        >
+                        {!this.state.isLoadComponents ?
+                            section.length &&
+                                <Section 
+                                    key = 'section'
+                                    mode = {this.state.mode}
+                                    currentProjectsData = {currentProjectsData}
+                                    componentsProdJSX = {this.state.componentsProdJSX}
+                                    section = {section}
+                                />
+                            : null
+                        }
+                    </div>
+                </Fragment>
             )
         } else if (!this.props.firebase.getCurrentUser()) return <Redirect to = '/' />
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'production' />
