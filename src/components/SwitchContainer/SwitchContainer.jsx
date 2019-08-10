@@ -65,7 +65,7 @@ class SwitchContainer extends React.PureComponent {
             <div className = 'switchContainer'>
                 <div className = 'col--17 col-sm-10 switchContainer__controllers'>
                     <Icon className = 'switchContainer__menu' path = '/img/Menu_Burder.png' />
-                    <ul>
+                    <ul className = 'guide_list list'>
                         <li>
                             <input
                                 onClick = {this.changeWorkMode}
@@ -133,7 +133,7 @@ class SwitchContainer extends React.PureComponent {
                         </li>
                     </ul>
                 </div>
-                <div className = 'col--80--1 col-sm-12'>
+                <div className = 'col--80--1'>
                     {this.state.mode === 'panel' &&
                         <OpenPanel />
                     }

@@ -8,7 +8,7 @@ import ImageItem from '../imageViewer/imageItem';
 import CreateProject from './createProject/createProject';
 import SearchModal from './Search/searchModal';
 import './modal.scss';
-require('es6-promise').polyfill();
+
 
 class ModalWindow extends React.PureComponent {
 
@@ -251,7 +251,6 @@ class ModalWindow extends React.PureComponent {
         inputs.name = event.target.value;
         inputs.validateName = /^\D{4,20}$/i.test(inputs.name);
         inputs.disabled = inputs.validateType && inputs.validateName ? false : true;
-
         this.setState({
             ...this.state,
             [this.state.workMode]: inputs
@@ -272,6 +271,7 @@ class ModalWindow extends React.PureComponent {
 
     render(){
            switch (this.state.workMode){
+              
             case 'newProject':
                 return (
                         <CreateProject

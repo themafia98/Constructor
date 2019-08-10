@@ -11,7 +11,7 @@
         display: none;
     }
 
-    ul {
+    .guide_list {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -40,8 +40,8 @@
         }
     }
 
-    ul::before,
-    ul::after {
+   .guide_list::before,
+   .guide_list::after {
         content: '';
     }
 

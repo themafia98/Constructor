@@ -5,10 +5,11 @@ import Loader from '../../loading/Loader';
 const CreateProject = props => {
 
     const content = props.content; /** Content */
-    const {disabled,validateName,name,validateType,typeClassName} = content;
+    const {disabled,validateName,name,validateType} = content;
     const nameLength = name.length; /** Length */
 
-    let isNumber = props.nameLength >= 4 && props.nameLength <= 20;
+
+    let isNumber = nameLength >= 4 && nameLength <= 20;
 
     return (
     <div className = 'Modal Modal__create'>
@@ -24,7 +25,7 @@ const CreateProject = props => {
             <span className = 'warning'>{props.warningNumber}</span> : null
         }
         <input
-            className = {typeClassName ? 'ready' : 'wrong'}
+            className = {validateName ? 'ready' : 'wrong'}
             value = {props.name}
             onChange = {props.cbValidateName}
             type = 'text'
