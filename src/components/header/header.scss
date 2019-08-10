@@ -34,15 +34,14 @@ header {
         transform: translate(-50%);
         cursor: pointer;
 
-        img[alt='icon'], i{
+        img[alt='icon'], svg{
             margin-right: 5px;
             transform: translate(0,30%);
             height: 45px;
             transition: 0.3s linear;
         }
-        i{
+        svg{
             color: #81919b;
-            height: 4rem;
         }
         img[alt='icon']:hover,i:hover {
             transform: translate(0,30%) scale(1.1);

@@ -11,6 +11,9 @@ import eventEmitter from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
 import Confirm from '../confirmBox/Confirm';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
+
 const iconPath = require('../../config.json').CabinetIcon;
 
 class Header extends React.Component {
@@ -152,8 +155,10 @@ class Header extends React.Component {
                                     : null
                                 }
                                     <div  className = 'Navigator'>
-                                        <i title = 'Guide' onClick = {this.redirectGuide} 
-                                            className=" about fas fa-2x fa-book"
+                                    <FontAwesomeIcon 
+                                        className=" about fas fa-2x fa-book"  
+                                        icon = {faBook} 
+                                        onClick = {this.redirectGuide} 
                                         />
                                         <Icon className = 'about' onClick = {this.redirectAbout}
                                             title = 'about'
