@@ -14,15 +14,18 @@
     ul {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         justify-content: space-evenly;
         list-style-type: none;
         min-height: 100%;
+        height: 100%;
         margin: 0;
         border-right: 5px dotted grey;
         padding-right: 10px;
 
         .switch__button {
             font-weight: bold;
+            width: 95%;
             height: 70px;
             border: 1px solid grey;
             background: whitesmoke;
@@ -35,6 +38,11 @@
             color: rgb(43, 48, 40);
             background: rgb(192, 230, 190);
         }
+    }
+
+    ul::before,
+    ul::after {
+        content: '';
     }
 
 }

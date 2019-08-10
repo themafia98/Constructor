@@ -152,9 +152,8 @@ class Header extends React.Component {
                                     : null
                                 }
                                     <div  className = 'Navigator'>
-                                    <Icon className = 'about' onClick = {this.redirectGuide}
-                                            title = 'Guide'
-                                            path = '/img/user-guide.svg'
+                                        <i title = 'Guide' onClick = {this.redirectGuide} 
+                                            className=" about fas fa-2x fa-book"
                                         />
                                         <Icon className = 'about' onClick = {this.redirectAbout}
                                             title = 'about'
