@@ -4,9 +4,10 @@
     height: 100%;
     overflow: auto;
 
-    .cabinet_action_loader{
+    div.cabinet_action_loader{
         position: absolute;
         width: 50px;
+        height: 50px;
         top: 0;
         left: 0;
     }

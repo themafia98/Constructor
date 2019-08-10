@@ -72,6 +72,13 @@ class Cabinet extends React.PureComponent {
 					idUser = {this.props.idUser} 
 				/>
 				<div className = 'Cabinet'>
+				{this.state.loader &&
+					<Loader
+					mode = 'abinet_action_loader'
+					type = 'data'
+					path = '/img/loading.gif'
+					/>
+				}
 				<CSSTransition
 					in={this.state.modalActive}
 					timeout={300}
@@ -84,12 +91,6 @@ class Cabinet extends React.PureComponent {
 					workMode = {this.state.workMode} 
 				/>
 				</CSSTransition>
-				{this.state.loader &&
-					<Loader
-					type = 'data'
-					path = '/img/loading.gif'
-					/>
-				}
 				<ProjectsSection cabinetStream = {this.cabinetStream} />
 				</div>
 			</Fragment>
@@ -99,7 +100,6 @@ class Cabinet extends React.PureComponent {
 	}
 
 	componentDidUpdate = (prevProps) => {
-		console.log(prevProps.projects.length !== this.props.projects.length);
 		if (prevProps.projects.length !== this.props.projects.length)
 			this.setState({
 				...this.state,
