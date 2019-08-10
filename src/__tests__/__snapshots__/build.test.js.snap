@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Build test 1`] = `
-Array [
+<div
+  onTouchStart={[Function]}
+  onWheel={[Function]}
+>
   <header>
     <div
       className="container"
@@ -30,6 +33,11 @@ Array [
         <div
           className="Navigator"
         >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
           <img
             alt="icon"
             className="about"
@@ -49,7 +57,7 @@ Array [
         </div>
       </div>
     </div>
-  </header>,
+  </header>
   <div
     className="Build"
   >
@@ -66,12 +74,15 @@ Array [
       </button>
     </div>
     0
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`Build test 2`] = `
-Array [
+<div
+  onTouchStart={[Function]}
+  onWheel={[Function]}
+>
   <header>
     <div
       className="container"
@@ -100,6 +111,11 @@ Array [
         <div
           className="Navigator"
         >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
           <img
             alt="icon"
             className="about"
@@ -119,7 +135,7 @@ Array [
         </div>
       </div>
     </div>
-  </header>,
+  </header>
   <div
     className="Build"
   >
@@ -136,12 +152,15 @@ Array [
       </button>
     </div>
     0
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`Build test 3`] = `
-Array [
+<div
+  onTouchStart={[Function]}
+  onWheel={[Function]}
+>
   <header>
     <div
       className="container"
@@ -170,6 +189,11 @@ Array [
         <div
           className="Navigator"
         >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
           <img
             alt="icon"
             className="about"
@@ -189,7 +213,7 @@ Array [
         </div>
       </div>
     </div>
-  </header>,
+  </header>
   <div
     className="Build"
   >
@@ -206,26 +230,31 @@ Array [
       </button>
     </div>
     0
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`Build test 4`] = `
 <div
-  className="Build"
+  onTouchStart={[Function]}
+  onWheel={[Function]}
 >
   <div
-    className="sectionMode"
+    className="Build"
   >
-    <button
-      className="newSectionTool CompoentnsMenu_button"
-      onClick={[Function]}
+    <div
+      className="sectionMode"
     >
-      <span>
-        New section
-      </span>
-    </button>
+      <button
+        className="newSectionTool CompoentnsMenu_button"
+        onClick={[Function]}
+      >
+        <span>
+          New section
+        </span>
+      </button>
+    </div>
+    0
   </div>
-  0
 </div>
 `;

@@ -29,6 +29,11 @@ exports[`Header.js test 1`] = `
       <div
         className="Navigator"
       >
+        <i
+          className=" about fas fa-2x fa-book"
+          onClick={[Function]}
+          title="Guide"
+        />
         <img
           alt="icon"
           className="about"
@@ -80,6 +85,11 @@ exports[`Header.js test 2`] = `
       <div
         className="Navigator"
       >
+        <i
+          className=" about fas fa-2x fa-book"
+          onClick={[Function]}
+          title="Guide"
+        />
         <img
           alt="icon"
           className="about"

@@ -66,7 +66,7 @@ class Image extends React.PureComponent {
     }
 
     openImageInstruments = event => {
-
+        /** open panel instruments */
         const componentsPatternImage = {
             id: this.state.id,
             targetSection: this.state.targetSection,
@@ -92,6 +92,7 @@ class Image extends React.PureComponent {
     };
 
     saveCoords = event => {
+          /** save current coords */
         if (event.nativeEvent.which !== 1) return false;
         const element = this.refImage.getBoundingClientRect();
 
@@ -112,7 +113,7 @@ class Image extends React.PureComponent {
     };
 
     checkPivotPosition = (coordX, coordY) => {
-
+          /** Checking the boundaries */
         const element = this.refImage.getBoundingClientRect();
         const borderTopLeft = 0;
         const borderDown = 800 - element.height;
@@ -127,6 +128,7 @@ class Image extends React.PureComponent {
     }
 
     rotateEvent = eventItem => {
+         /** transform - rotate */
         const angle = eventItem.angle;
         this.setState({
             ...this.state,
@@ -135,6 +137,7 @@ class Image extends React.PureComponent {
     }
 
     scaleEvent = eventItem => {
+         /** transform - scale */
         const scale = eventItem.scale;
         this.setState({
             ...this.state,
@@ -145,8 +148,8 @@ class Image extends React.PureComponent {
     move = (x,y) => this.setState({...this.state, posImage: {x: x, y: y}});
 
     moveText = event => {
-
-        if (this.state.startDragNdrop && this.state.istrumentsActive){
+          /** move element event */
+        if (this.state.startDragNdrop && this.state.istrumentsActive){ /** if key down - false */
             const element = this.refImage.getBoundingClientRect();
             let xItem = event.clientX - (this.props.sizeParentBox.left  * this.state.sectionNumber);
             let yItem = event.clientY - (this.props.sizeParentBox.top * this.state.sectionNumber);
@@ -168,7 +171,7 @@ class Image extends React.PureComponent {
 
 
     diffAngle = (transform, height, width) => {
-
+          /** if user use transform rotate - coordinate recount */
         let powHeight = height**2;
         let powWidth =  width**2;
 
@@ -196,6 +199,7 @@ class Image extends React.PureComponent {
     };
 
     stopDragNdrop = event => {
+        /** end move element */
         if (this.state.startDragNdrop) {
             this.setState({...this.state, startDragNdrop: false})
             controllerStream.emit(`EventUpdatePosition${this.state.id}`, this.state.posImage);
@@ -204,11 +208,13 @@ class Image extends React.PureComponent {
     };
 
     setCurrentImage = event => {
+        /** set content */
         const {urlFull} = event;
         this.setState({...this.state, path: urlFull});
     };
 
     setWidth = eventItem => {
+        /** set size w */
         const {width} = eventItem;
         this.setState({...this.state, 
             size: {
@@ -219,6 +225,7 @@ class Image extends React.PureComponent {
     }
 
     setHeight = eventItem => {
+          /** set size h */
         const {height} = eventItem;
         this.setState({...this.state, 
             size: {
@@ -229,6 +236,7 @@ class Image extends React.PureComponent {
     }
 
     saveSize = event => {
+         /** save sizes  */
         const {size} = event;
         if (!this.state.getSizeBool){
         this.setState({
@@ -240,14 +248,10 @@ class Image extends React.PureComponent {
         } else controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
     }
 
-    changeSizeImage = eventItem => {
-        this.setState({...this.state, size: eventItem.size});
-    };
-
     setBorderRadius = eventItem => {
-
-    let radius = eventItem.borderRadius > 200 ? 200 : eventItem.borderRadius;
-    radius = eventItem.borderDown < 0 ? 0 : eventItem.borderRadius;
+        //** saet border-radius */
+        let radius = eventItem.borderRadius > 200 ? 200 : eventItem.borderRadius;
+        radius = eventItem.borderDown < 0 ? 0 : eventItem.borderRadius;
         this.setState({
             ...this.state,
             borderRadius: radius
@@ -255,6 +259,7 @@ class Image extends React.PureComponent {
     };
 
     setOpacity = eventItem => {
+        //** saet opacity */
         let opacity = eventItem.opacity > 1 ? 1 : eventItem.opacity;
         opacity = eventItem.opacity < 0 ? 0 : eventItem.opacity;
             this.setState({
@@ -326,7 +331,6 @@ class Image extends React.PureComponent {
 
     componentDidMount = () => {
         controllerStream.on(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);
-        controllerStream.on(`EventChangeSize${this.state.id}`, this.changeSizeImage);
         controllerStream.on(`EventSetOpacity${this.state.id}`, this.setOpacity);
         controllerStream.on(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         controllerStream.on(`EventSetWidth${this.state.id}`, this.setWidth);
@@ -337,8 +341,7 @@ class Image extends React.PureComponent {
     }
 
     componentWillUnmount = () => {
-       
-        controllerStream.off(`EventChangeSize${this.state.id}`, this.changeSizeImage);
+
         controllerStream.off(`EventSetOpacity${this.state.id}`, this.setOpacity);
         controllerStream.off(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         controllerStream.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);

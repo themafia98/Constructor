@@ -70,7 +70,6 @@ class App extends React.PureComponent {
                         <Route path = {'*'} component = {Index} />
                         <Route path = {'/crashPage'} component = {ErrorPage} />
                 </Switch>
-
             )
         } else return <Loader path = { '/img/loading.gif'} type = 'application' />
     }

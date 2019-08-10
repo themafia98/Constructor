@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import firebaseConfig from './firebaseConfig';
 import config from '../config.json';
 const auth = require('firebase/auth');
@@ -13,17 +13,9 @@ class Firebase {
         this.auth = firebase.auth();
         this.db = firebase.firestore();
 
-        if (config.firebase.lowConnection === 'true'){
+        if (config.firebase.lowConnection === 'true' 
+        && (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'production'))
         this.db.enablePersistence() /** if user use low internet connection */
-            .catch(function(err) {
-                if (err.code === 'failed-precondition') {
-                    console.error('failed-precondition: Multiple tabs open,' +
-                                'persistence can only be enabled in one tab at a a time.');
-                } else if (err.code === 'unimplemented') {
-                    console.error('failed-precondition: The current browser does not support');
-                }
-            });
-        }
     }
 
     saveSession(rules){
@@ -57,6 +49,8 @@ class Firebase {
     }
 }
 let firebaseInterface = new Firebase(firebaseConfig);
+
+if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'production')
 firebaseInterface.saveSession(config.firebase.session);
 
 export default firebaseInterface;

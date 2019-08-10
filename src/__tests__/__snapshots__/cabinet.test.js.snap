@@ -43,6 +43,11 @@ Array [
         <div
           className="Navigator"
         >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
           <img
             alt="icon"
             className="about"
@@ -160,6 +165,11 @@ Array [
         <div
           className="Navigator"
         >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
           <img
             alt="icon"
             className="about"
@@ -239,6 +249,11 @@ Array [
         <div
           className="Navigator"
         >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
           <img
             alt="icon"
             className="about"

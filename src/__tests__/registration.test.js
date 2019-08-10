@@ -6,7 +6,7 @@ import renderer from 'react-test-renderer';
 
 import Registration from '../components/Registration/Registration';
 
-firebase.saveSession("NONE");
+// firebase.saveSession("NONE");
 
 const RegistrationComponent = renderer.create(
         <Registration indexStream = {new Events()} firebase = {firebase} />

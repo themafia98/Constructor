@@ -159,6 +159,7 @@ class TextComponent extends React.PureComponent {
     };
 
     setFont = eventItem => {
+        /** set type font */
         this.setState({
             ...this.state,
             font: eventItem.font
@@ -257,7 +258,6 @@ class TextComponent extends React.PureComponent {
         event.stopPropagation();
     };
 
-    
     stopDrag = event => {
         event.preventDefault();
     }

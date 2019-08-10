@@ -11,7 +11,7 @@ exports[`Index test 1`] = `
     className="LoginPage__LoginBox"
   >
     <h3
-      className="sc-AykKC cSQYJJ"
+      className="sc-bdVaJa joCsl"
       data-titlebuild={true}
       dir="up"
     >
@@ -67,7 +67,7 @@ exports[`Index test 2`] = `
     className="LoginPage__LoginBox"
   >
     <h3
-      className="sc-AykKC cSQYJJ"
+      className="sc-bdVaJa joCsl"
       data-titlebuild={true}
       dir="up"
     >

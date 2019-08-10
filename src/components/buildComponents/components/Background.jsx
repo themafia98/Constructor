@@ -39,6 +39,7 @@ class BackgroundComponent extends React.PureComponent {
     boxComponentRef = node => this.boxComponent = node;
 
     saveDataParent = () => {
+        /** "memorize" paren sizes  */
         let boxInform =  this.boxComponent.getBoundingClientRect();
         controllerStream.emit(`EventSaveWidth${this.state.targetSection}`,{
             countSection: this.props.countSection,
@@ -48,7 +49,7 @@ class BackgroundComponent extends React.PureComponent {
     };
 
     openBgInstruments = event => {
-
+        /** open panel instrument trigger */
         const componentsPatternBackground = {
             id: this.state.id,
             targetSection: this.state.targetSection,
@@ -66,6 +67,7 @@ class BackgroundComponent extends React.PureComponent {
     };
 
     changeColor = eventItem => {
+         /** change bg color */
         this.setState({
             ...this.state,
             backgroundColor: eventItem.colorRGB
@@ -73,6 +75,7 @@ class BackgroundComponent extends React.PureComponent {
     };
 
     setBackgroundImage = event => {
+         /** change bg image */
         const {urlFull} = event;
         this.setState({
             ...this.state,

@@ -90,7 +90,7 @@ class MainBackground extends React.PureComponent {
 
 
     componentDidMount = () => {
-        if (!this.state.component){
+        if (!this.state.component){ /** create bg */
             let component = this.props.currentProjectsData.components.find(item =>
                                             item.targetSection === this.props.id);
             const children = this.props.componentJSX.filter(item => 
@@ -106,7 +106,7 @@ class MainBackground extends React.PureComponent {
 
     componentDidUpdate = (prevProps) => {
         const needUpdate = this.props.countComponents !== prevProps.countComponents;
-        if (!this.state.component){
+        if (!this.state.component){ /** if need create new section */
             let component = this.props.currentProjectsData.components.find(item =>
                                             item.targetSection === this.props.id);
             const children = this.props.componentJSX.filter(item => item.targetSection === this.props.id)
