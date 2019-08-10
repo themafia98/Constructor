@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchModal test 1`] = `
+<div
+  className="Modal Modal-search"
+>
+  <h3>
+    Search image
+  </h3>
+  <div
+    className="Modal-search__controllers"
+  >
+    <input
+      type="text"
+    />
+    <input
+      className="acceptButton"
+      onClick={[Function]}
+      type="button"
+      value="Search"
+    />
+    <input
+      onClick={[Function]}
+      type="button"
+      value="Cancel"
+    />
+  </div>
+  <div
+    className="searchResultBox"
+  />
+</div>
+`;
+
+exports[`SearchModal test 2`] = `
+<div
+  className="Modal Modal-search"
+>
+  <h3>
+    Search image
+  </h3>
+  <div
+    className="Modal-search__controllers"
+  >
+    <input
+      type="text"
+    />
+    <input
+      className="acceptButton"
+      onClick={[Function]}
+      type="button"
+      value="Search"
+    />
+    <input
+      onClick={[Function]}
+      type="button"
+      value="Cancel"
+    />
+  </div>
+  <div
+    className="searchResultBox"
+  />
+</div>
+`;

@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error catch test 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="flex-column ErrorPage"
+  >
+    <h1>
+      Application crash
+    </h1>
+    <button
+      className="ErrorPage__button_updateApp"
+      onClick={[Function]}
+    >
+      Update
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Error catch test 2`] = `
+<div
+  class="container"
+>
+  <div
+    class="flex-column ErrorPage"
+  >
+    <h1>
+      Application crash
+    </h1>
+    <button
+      className="ErrorPage__button_updateApp"
+      onClick={[Function]}
+    >
+      Update
+    </button>
+  </div>
+</div>
+`;

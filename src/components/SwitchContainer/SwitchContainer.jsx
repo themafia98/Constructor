@@ -71,8 +71,8 @@ class SwitchContainer extends React.PureComponent {
                                 onClick = {this.changeWorkMode}
                                 className = {
                                     this.state.mode !== 'panel' ?
-                                    'switch__button'
-                                    : 'switch__button activeButton'
+                                    'switch__button panel'
+                                    : 'switch__button panel activeButton'
                                 }
                                 type = 'button'
                                 ref = {this.refOpenPanel}
@@ -84,8 +84,8 @@ class SwitchContainer extends React.PureComponent {
                                 onClick = {this.changeWorkMode}
                                 className = {
                                     this.state.mode !== 'search' ?
-                                    'switch__button'
-                                    : 'switch__button activeButton'
+                                    'switch__button search'
+                                    : 'switch__button search activeButton'
                                 }
                                 type = 'button'
                                 ref = {this.refSearch}
@@ -97,8 +97,8 @@ class SwitchContainer extends React.PureComponent {
                                 onClick = {this.changeWorkMode}
                                 className = {
                                     this.state.mode !== 'add' ?
-                                    'switch__button'
-                                    : 'switch__button activeButton'
+                                    'switch__button add'
+                                    : 'switch__button add activeButton'
                                 }
                                 type = 'button'
                                 ref = {this.refAdd}
@@ -110,8 +110,8 @@ class SwitchContainer extends React.PureComponent {
                                 onClick = {this.changeWorkMode}
                                 className = {
                                     this.state.mode !== 'section' ?
-                                    'switch__button'
-                                    : 'switch__button activeButton'
+                                    'switch__button section'
+                                    : 'switch__button section activeButton'
                                 }
                                 type = 'button'
                                 ref = {this.refSection}
@@ -123,8 +123,8 @@ class SwitchContainer extends React.PureComponent {
                                 onClick = {this.changeWorkMode}
                                 className = {
                                     this.state.mode !== 'project' ?
-                                    'switch__button'
-                                    : 'switch__button activeButton'
+                                    'switch__button project'
+                                    : 'switch__button project activeButton'
                                 }
                                 type = 'button'
                                 ref = {this.refProject}

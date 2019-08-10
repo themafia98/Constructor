@@ -34,7 +34,7 @@ const CreateProject = props => {
         { !validateType ?
             <span className = 'warning'>{props.warningType}</span> : null
         }
-        <select onChange = {props.cbSelectOption} >
+        <select className = 'projectSelect' onChange = {props.cbSelectOption} >
             <option value = 'empty'>--------</option>
             <option value = 'landing'>Landing</option>
         </select>

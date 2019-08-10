@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnimationText test 1`] = `
+<h3
+  className="sc-bdVaJa joCsl"
+  data-titlebuild={true}
+  dir="up"
+>
+  B
+</h3>
+`;

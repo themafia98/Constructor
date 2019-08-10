@@ -42,7 +42,7 @@ class Image extends React.PureComponent {
             PropTypes.string,
             PropTypes.number
         ]).isRequired,
-        targetSection: PropTypes.string.isRequired,
+        targetSection: PropTypes.string,
         sizeParentBox: PropTypes.object,
     }
 

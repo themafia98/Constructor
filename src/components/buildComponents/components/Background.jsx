@@ -17,7 +17,7 @@ class BackgroundComponent extends React.PureComponent {
 
     static propTypes = {
         id: PropTypes.string.isRequired,
-        targetSection: PropTypes.string.isRequired,
+        targetSection: PropTypes.string,
         background: PropTypes.string,
         backgroundImage: PropTypes.string,
         width: PropTypes.string,

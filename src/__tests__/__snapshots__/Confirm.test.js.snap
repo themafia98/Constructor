@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Confirm test  1`] = `
+<div
+  className="wrapperConfirm"
+>
+  <div
+    className="confirmSave"
+  >
+    <span>
+      Detected new changes
+    </span>
+    <input
+      className="saveCofirm"
+      onClick={[Function]}
+      type="button"
+      value="Save changes"
+    />
+    <input
+      className="cancelCofirm"
+      onClick={[Function]}
+      type="button"
+      value="Cancel"
+    />
+  </div>
+</div>
+`;
+
+exports[`Confirm test  2`] = `
+<div
+  className="wrapperConfirm"
+>
+  <div
+    className="confirmSave"
+  >
+    <span>
+      Detected new changes
+    </span>
+    <input
+      className="saveCofirm"
+      onClick={[Function]}
+      type="button"
+      value="Save changes"
+    />
+    <input
+      className="cancelCofirm"
+      onClick={[Function]}
+      type="button"
+      value="Cancel"
+    />
+  </div>
+</div>
+`;
+
+exports[`Confirm test  3`] = `
+<div
+  className="wrapperConfirm"
+>
+  <div
+    className="confirmSave"
+  >
+    <span>
+      Detected new changes
+    </span>
+    <input
+      className="saveCofirm"
+      onClick={[Function]}
+      type="button"
+      value="Save changes"
+    />
+    <input
+      className="cancelCofirm"
+      onClick={[Function]}
+      type="button"
+      value="Cancel"
+    />
+  </div>
+</div>
+`;

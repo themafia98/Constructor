@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BuildMenu test 1`] = `
+<div
+  className="ComponentsMenu"
+>
+  <button
+    className="ImageTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Image
+    </span>
+  </button>
+  <button
+    className="TextTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Text
+    </span>
+  </button>
+  <button
+    className="ButtonTool CompoentnsMenu_button"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span>
+      Button
+    </span>
+  </button>
+  <button
+    className="VideoTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Video
+    </span>
+  </button>
+</div>
+`;
+
+exports[`BuildMenu test 2`] = `
+<div
+  className="ComponentsMenu"
+>
+  <button
+    className="ImageTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Image
+    </span>
+  </button>
+  <button
+    className="TextTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Text
+    </span>
+  </button>
+  <button
+    className="ButtonTool CompoentnsMenu_button"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span>
+      Button
+    </span>
+  </button>
+  <button
+    className="VideoTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Video
+    </span>
+  </button>
+</div>
+`;
+
+exports[`BuildMenu test 3`] = `
+<div
+  className="ComponentsMenu"
+>
+  <button
+    className="ImageTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Image
+    </span>
+  </button>
+  <button
+    className="TextTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Text
+    </span>
+  </button>
+  <button
+    className="ButtonTool CompoentnsMenu_button"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span>
+      Button
+    </span>
+  </button>
+  <button
+    className="VideoTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Video
+    </span>
+  </button>
+</div>
+`;
+
+exports[`BuildMenu test 4`] = `
+<div
+  className="ComponentsMenu"
+>
+  <button
+    className="ImageTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Image
+    </span>
+  </button>
+  <button
+    className="TextTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Text
+    </span>
+  </button>
+  <button
+    className="ButtonTool CompoentnsMenu_button"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span>
+      Button
+    </span>
+  </button>
+  <button
+    className="VideoTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Video
+    </span>
+  </button>
+</div>
+`;
+
+exports[`BuildMenu test 5`] = `
+<div
+  className="ComponentsMenu"
+>
+  <button
+    className="ImageTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Image
+    </span>
+  </button>
+  <button
+    className="TextTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Text
+    </span>
+  </button>
+  <button
+    className="ButtonTool CompoentnsMenu_button"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span>
+      Button
+    </span>
+  </button>
+  <button
+    className="VideoTool CompoentnsMenu_button"
+    onClick={[Function]}
+  >
+    <span>
+      Video
+    </span>
+  </button>
+</div>
+`;

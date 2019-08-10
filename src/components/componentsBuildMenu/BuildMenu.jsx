@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import Input from '../buildComponents/components/Input';
@@ -241,7 +241,7 @@ class BuildMenu extends React.PureComponent {
                     </button>
                 </div>
             )
-        }
+        } else return <Fragment></Fragment>
     }
 }
 

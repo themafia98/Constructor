@@ -15,7 +15,7 @@ const AboutComponent = renderer.create(
     <MemoryRouter initialEntries = {['/Cabinet/About']}>
     <Route path = "/Cabinet/About" exact >
         <Provider store = {store}>
-            <About config = {config} firebase = {firebase} />
+            <About config = {config} idUser = {'asdasd'} firebase = {firebase} />
         </Provider>
     </Route>
     </MemoryRouter>

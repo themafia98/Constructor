@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalWindow test 1`] = `
+<div
+  className="Modal Modal__create"
+>
+  <h3>
+    Create new Project
+  </h3>
+  <span
+    className="warning"
+  >
+    Min length: 4 letters
+  </span>
+  <input
+    className="wrong"
+    onChange={[Function]}
+    placeholder="Project name"
+    type="text"
+  />
+  <span
+    className="warning"
+  >
+    Select type of webpage
+  </span>
+  <select
+    className="projectSelect"
+    onChange={[Function]}
+  >
+    <option
+      value="empty"
+    >
+      --------
+    </option>
+    <option
+      value="landing"
+    >
+      Landing
+    </option>
+  </select>
+  <input
+    className="acceptButton"
+    disabled={true}
+    onClick={[Function]}
+    type="button"
+    value="Submit"
+  />
+  <input
+    onClick={[Function]}
+    type="button"
+    value="Cancel"
+  />
+</div>
+`;
+
+exports[`ModalWindow test 2`] = `
+<div
+  className="Modal Modal__create"
+>
+  <h3>
+    Create new Project
+  </h3>
+  <span
+    className="warning"
+  >
+    Min length: 4 letters
+  </span>
+  <input
+    className="wrong"
+    onChange={[Function]}
+    placeholder="Project name"
+    type="text"
+  />
+  <span
+    className="warning"
+  >
+    Select type of webpage
+  </span>
+  <select
+    className="projectSelect"
+    onChange={[Function]}
+  >
+    <option
+      value="empty"
+    >
+      --------
+    </option>
+    <option
+      value="landing"
+    >
+      Landing
+    </option>
+  </select>
+  <input
+    className="acceptButton"
+    disabled={true}
+    onClick={[Function]}
+    type="button"
+    value="Submit"
+  />
+  <input
+    onClick={[Function]}
+    type="button"
+    value="Cancel"
+  />
+</div>
+`;

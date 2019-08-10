@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Controllers test 1`] = `
+<div
+  className="ControllersEditComponent"
+>
+  <img
+    alt="icon"
+    className="ControllersEditComponent__addButton"
+    draggable={false}
+    onClick={[Function]}
+    src="/img/addButton.png"
+    title={null}
+  />
+</div>
+`;
+
+exports[`Controllers test 2`] = `
+<div
+  className="ControllersEditComponent"
+>
+  <img
+    alt="icon"
+    className="ControllersEditComponent__addButton"
+    draggable={false}
+    onClick={[Function]}
+    src="/img/addButton.png"
+    title={null}
+  />
+  <div
+    className="ComponentsMenu"
+  >
+    <button
+      className="ImageTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Image
+      </span>
+    </button>
+    <button
+      className="TextTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Text
+      </span>
+    </button>
+    <button
+      className="ButtonTool CompoentnsMenu_button"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <span>
+        Button
+      </span>
+    </button>
+    <button
+      className="VideoTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Video
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Controllers test 3`] = `
+<div
+  className="ControllersEditComponent"
+>
+  <img
+    alt="icon"
+    className="ControllersEditComponent__addButton"
+    draggable={false}
+    onClick={[Function]}
+    src="/img/addButton.png"
+    title={null}
+  />
+  <div
+    className="ComponentsMenu"
+  >
+    <button
+      className="ImageTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Image
+      </span>
+    </button>
+    <button
+      className="TextTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Text
+      </span>
+    </button>
+    <button
+      className="ButtonTool CompoentnsMenu_button"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <span>
+        Button
+      </span>
+    </button>
+    <button
+      className="VideoTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Video
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Controllers test 4`] = `
+<div
+  className="ControllersEditComponent"
+>
+  <img
+    alt="icon"
+    className="ControllersEditComponent__addButton"
+    draggable={false}
+    onClick={[Function]}
+    src="/img/addButton.png"
+    title={null}
+  />
+  <div
+    className="ComponentsMenu"
+  >
+    <button
+      className="ImageTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Image
+      </span>
+    </button>
+    <button
+      className="TextTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Text
+      </span>
+    </button>
+    <button
+      className="ButtonTool CompoentnsMenu_button"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <span>
+        Button
+      </span>
+    </button>
+    <button
+      className="VideoTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Video
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Controllers test 5`] = `
+<div
+  className="ControllersEditComponent"
+>
+  <img
+    alt="icon"
+    className="ControllersEditComponent__addButton"
+    draggable={false}
+    onClick={[Function]}
+    src="/img/addButton.png"
+    title={null}
+  />
+  <div
+    className="ComponentsMenu"
+  >
+    <button
+      className="ImageTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Image
+      </span>
+    </button>
+    <button
+      className="TextTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Text
+      </span>
+    </button>
+    <button
+      className="ButtonTool CompoentnsMenu_button"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <span>
+        Button
+      </span>
+    </button>
+    <button
+      className="VideoTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Video
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Controllers test 6`] = `
+<div
+  className="ControllersEditComponent"
+>
+  <img
+    alt="icon"
+    className="ControllersEditComponent__addButton"
+    draggable={false}
+    onClick={[Function]}
+    src="/img/addButton.png"
+    title={null}
+  />
+  <div
+    className="ComponentsMenu"
+  >
+    <button
+      className="ImageTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Image
+      </span>
+    </button>
+    <button
+      className="TextTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Text
+      </span>
+    </button>
+    <button
+      className="ButtonTool CompoentnsMenu_button"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <span>
+        Button
+      </span>
+    </button>
+    <button
+      className="VideoTool CompoentnsMenu_button"
+      onClick={[Function]}
+    >
+      <span>
+        Video
+      </span>
+    </button>
+  </div>
+</div>
+`;

@@ -1,0 +1,821 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Guide test 1`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <section
+    className="Guide"
+  >
+    <div
+      className="container guide--flex"
+    >
+      <div
+        className="Guide__about"
+      >
+        <h2>
+          Documentation
+        </h2>
+        <p>
+          Get started with 
+          Constructor
+        </p>
+        <p
+          className="Guide__about__rev"
+        >
+          The Constructor guides are step-by-step walkthroughs that help you get started using Constructor.
+        </p>
+      </div>
+      <div
+        className="switchContainer"
+      >
+        <div
+          className="col--17 col-sm-10 switchContainer__controllers"
+        >
+          <img
+            alt="icon"
+            className="switchContainer__menu"
+            draggable={false}
+            onClick={null}
+            src="/img/Menu_Burder.png"
+            title={null}
+          />
+          <ul
+            className="guide_list list"
+          >
+            <li>
+              <input
+                className="switch__button panel activeButton"
+                onClick={[Function]}
+                type="button"
+                value="Open panel for edit"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button search"
+                onClick={[Function]}
+                type="button"
+                value="Search image/media"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button add"
+                onClick={[Function]}
+                type="button"
+                value="Adding components"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button section"
+                onClick={[Function]}
+                type="button"
+                value="Adding new section"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button project"
+                onClick={[Function]}
+                type="button"
+                value="Create new project"
+              />
+            </li>
+          </ul>
+        </div>
+        <div
+          className="col--80--1"
+        >
+          <div
+            className="guide openPanelGuide"
+          >
+            <h4
+              className="guide__title"
+            >
+              Open panel
+            </h4>
+            <p
+              className="guide_content"
+            >
+              If you want to open the toolbar, you should double-click on the background.
+            </p>
+            <img
+              alt="guide"
+              src="/img/guideOpenPanel.gif"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;
+
+exports[`Guide test 2`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <section
+    className="Guide"
+  >
+    <div
+      className="container guide--flex"
+    >
+      <div
+        className="Guide__about"
+      >
+        <h2>
+          Documentation
+        </h2>
+        <p>
+          Get started with 
+          Constructor
+        </p>
+        <p
+          className="Guide__about__rev"
+        >
+          The Constructor guides are step-by-step walkthroughs that help you get started using Constructor.
+        </p>
+      </div>
+      <div
+        className="switchContainer"
+      >
+        <div
+          className="col--17 col-sm-10 switchContainer__controllers"
+        >
+          <img
+            alt="icon"
+            className="switchContainer__menu"
+            draggable={false}
+            onClick={null}
+            src="/img/Menu_Burder.png"
+            title={null}
+          />
+          <ul
+            className="guide_list list"
+          >
+            <li>
+              <input
+                className="switch__button panel activeButton"
+                onClick={[Function]}
+                type="button"
+                value="Open panel for edit"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button search"
+                onClick={[Function]}
+                type="button"
+                value="Search image/media"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button add"
+                onClick={[Function]}
+                type="button"
+                value="Adding components"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button section"
+                onClick={[Function]}
+                type="button"
+                value="Adding new section"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button project"
+                onClick={[Function]}
+                type="button"
+                value="Create new project"
+              />
+            </li>
+          </ul>
+        </div>
+        <div
+          className="col--80--1"
+        >
+          <div
+            className="guide openPanelGuide"
+          >
+            <h4
+              className="guide__title"
+            >
+              Open panel
+            </h4>
+            <p
+              className="guide_content"
+            >
+              If you want to open the toolbar, you should double-click on the background.
+            </p>
+            <img
+              alt="guide"
+              src="/img/guideOpenPanel.gif"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;
+
+exports[`Guide test 3`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <section
+    className="Guide"
+  >
+    <div
+      className="container guide--flex"
+    >
+      <div
+        className="Guide__about"
+      >
+        <h2>
+          Documentation
+        </h2>
+        <p>
+          Get started with 
+          Constructor
+        </p>
+        <p
+          className="Guide__about__rev"
+        >
+          The Constructor guides are step-by-step walkthroughs that help you get started using Constructor.
+        </p>
+      </div>
+      <div
+        className="switchContainer"
+      >
+        <div
+          className="col--17 col-sm-10 switchContainer__controllers"
+        >
+          <img
+            alt="icon"
+            className="switchContainer__menu"
+            draggable={false}
+            onClick={null}
+            src="/img/Menu_Burder.png"
+            title={null}
+          />
+          <ul
+            className="guide_list list"
+          >
+            <li>
+              <input
+                className="switch__button panel activeButton"
+                onClick={[Function]}
+                type="button"
+                value="Open panel for edit"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button search"
+                onClick={[Function]}
+                type="button"
+                value="Search image/media"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button add"
+                onClick={[Function]}
+                type="button"
+                value="Adding components"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button section"
+                onClick={[Function]}
+                type="button"
+                value="Adding new section"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button project"
+                onClick={[Function]}
+                type="button"
+                value="Create new project"
+              />
+            </li>
+          </ul>
+        </div>
+        <div
+          className="col--80--1"
+        >
+          <div
+            className="guide openPanelGuide"
+          >
+            <h4
+              className="guide__title"
+            >
+              Open panel
+            </h4>
+            <p
+              className="guide_content"
+            >
+              If you want to open the toolbar, you should double-click on the background.
+            </p>
+            <img
+              alt="guide"
+              src="/img/guideOpenPanel.gif"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;
+
+exports[`Guide test 4`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <section
+    className="Guide"
+  >
+    <div
+      className="container guide--flex"
+    >
+      <div
+        className="Guide__about"
+      >
+        <h2>
+          Documentation
+        </h2>
+        <p>
+          Get started with 
+          Constructor
+        </p>
+        <p
+          className="Guide__about__rev"
+        >
+          The Constructor guides are step-by-step walkthroughs that help you get started using Constructor.
+        </p>
+      </div>
+      <div
+        className="switchContainer"
+      >
+        <div
+          className="col--17 col-sm-10 switchContainer__controllers"
+        >
+          <img
+            alt="icon"
+            className="switchContainer__menu"
+            draggable={false}
+            onClick={null}
+            src="/img/Menu_Burder.png"
+            title={null}
+          />
+          <ul
+            className="guide_list list"
+          >
+            <li>
+              <input
+                className="switch__button panel activeButton"
+                onClick={[Function]}
+                type="button"
+                value="Open panel for edit"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button search"
+                onClick={[Function]}
+                type="button"
+                value="Search image/media"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button add"
+                onClick={[Function]}
+                type="button"
+                value="Adding components"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button section"
+                onClick={[Function]}
+                type="button"
+                value="Adding new section"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button project"
+                onClick={[Function]}
+                type="button"
+                value="Create new project"
+              />
+            </li>
+          </ul>
+        </div>
+        <div
+          className="col--80--1"
+        >
+          <div
+            className="guide openPanelGuide"
+          >
+            <h4
+              className="guide__title"
+            >
+              Open panel
+            </h4>
+            <p
+              className="guide_content"
+            >
+              If you want to open the toolbar, you should double-click on the background.
+            </p>
+            <img
+              alt="guide"
+              src="/img/guideOpenPanel.gif"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;
+
+exports[`Guide test 5`] = `
+Array [
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="flex-row"
+      >
+        <div
+          className="header__CabinetInfo"
+          onClick={[Function]}
+        >
+          <img
+            alt="icon"
+            className="mainIcon"
+            draggable={false}
+            onClick={null}
+            src="/img/logo.svg"
+            title={null}
+          />
+          <h3
+            className="tilteApp"
+          >
+            Constructor
+          </h3>
+        </div>
+        <div
+          className="Navigator"
+        >
+          <i
+            className=" about fas fa-2x fa-book"
+            onClick={[Function]}
+            title="Guide"
+          />
+          <img
+            alt="icon"
+            className="about"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/about_logo.svg"
+            title="about"
+          />
+          <img
+            alt="icon"
+            className="logoutButton"
+            draggable={false}
+            onClick={[Function]}
+            src="/img/logOut.svg"
+            title="logOut"
+          />
+        </div>
+      </div>
+    </div>
+  </header>,
+  <section
+    className="Guide"
+  >
+    <div
+      className="container guide--flex"
+    >
+      <div
+        className="Guide__about"
+      >
+        <h2>
+          Documentation
+        </h2>
+        <p>
+          Get started with 
+          Constructor
+        </p>
+        <p
+          className="Guide__about__rev"
+        >
+          The Constructor guides are step-by-step walkthroughs that help you get started using Constructor.
+        </p>
+      </div>
+      <div
+        className="switchContainer"
+      >
+        <div
+          className="col--17 col-sm-10 switchContainer__controllers"
+        >
+          <img
+            alt="icon"
+            className="switchContainer__menu"
+            draggable={false}
+            onClick={null}
+            src="/img/Menu_Burder.png"
+            title={null}
+          />
+          <ul
+            className="guide_list list"
+          >
+            <li>
+              <input
+                className="switch__button panel activeButton"
+                onClick={[Function]}
+                type="button"
+                value="Open panel for edit"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button search"
+                onClick={[Function]}
+                type="button"
+                value="Search image/media"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button add"
+                onClick={[Function]}
+                type="button"
+                value="Adding components"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button section"
+                onClick={[Function]}
+                type="button"
+                value="Adding new section"
+              />
+            </li>
+            <li>
+              <input
+                className="switch__button project"
+                onClick={[Function]}
+                type="button"
+                value="Create new project"
+              />
+            </li>
+          </ul>
+        </div>
+        <div
+          className="col--80--1"
+        >
+          <div
+            className="guide openPanelGuide"
+          >
+            <h4
+              className="guide__title"
+            >
+              Open panel
+            </h4>
+            <p
+              className="guide_content"
+            >
+              If you want to open the toolbar, you should double-click on the background.
+            </p>
+            <img
+              alt="guide"
+              src="/img/guideOpenPanel.gif"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InstrumentsPanel test 1`] = `
+<div
+  className="instumentsPanel"
+>
+  <button
+    className="closeInstrumentsPanel"
+    onClick={[Function]}
+  >
+    <img
+      alt="icon"
+      className={null}
+      draggable={false}
+      onClick={null}
+      src="/img/close.svg"
+      title={null}
+    />
+  </button>
+  <h3>
+    Instruments
+  </h3>
+</div>
+`;
+
+exports[`InstrumentsPanel test 2`] = `
+<div
+  className="instumentsPanel"
+>
+  <button
+    className="closeInstrumentsPanel"
+    onClick={[Function]}
+  >
+    <img
+      alt="icon"
+      className={null}
+      draggable={false}
+      onClick={null}
+      src="/img/close.svg"
+      title={null}
+    />
+  </button>
+  <h3>
+    Instruments
+  </h3>
+</div>
+`;
