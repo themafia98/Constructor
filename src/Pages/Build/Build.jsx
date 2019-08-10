@@ -65,7 +65,7 @@ class Build extends React.PureComponent {
 
     deleteComponent = eventItem => {
         /* delete component from DB and from JSX array */
-        console.log(eventItem);
+        if (eventItem.id === 'Header' && eventItem.type === 'background') return;
         let {currentProjectsData} = this.props.userData;
         let {componentJSX} = this.state;
 

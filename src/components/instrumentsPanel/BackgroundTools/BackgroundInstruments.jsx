@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {SketchPicker} from 'react-color';
 
 const BackgroundInstruments = props => {
+    let  {targetSection} = props.componentStats;
     return (
         <Fragment>
         <p className = 'titleInstument'>Color: </p>
@@ -25,7 +26,8 @@ const BackgroundInstruments = props => {
                 type = 'button'
                 value = 'background-image'
             />
-            <input 
+            <input
+                disabled = {targetSection === 'Header'}
                 onClick = {props.cbDelete}
                 className = 'instrumentPanel__deleteComponentButton'
                 type="button"

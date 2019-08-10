@@ -1,0 +1,40 @@
+
+.Guide{
+
+    .guide--flex{
+        display: flex;
+        flex-direction: column;
+    }
+    .Guide__about{
+        text-align: center;
+        font-size: 1.3rem;
+        p:not(.Guide__about__rev) {
+            padding: 0;
+            margin: 0;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .Guide__about__rev {
+            font-weight: bold;
+        }
+    }
+
+    .guide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-left: 2px;
+
+        .guide__title {
+            margin: 0;
+            margin-top: 15px;
+            font-size: 1.3rem;
+        }
+        .guide_content{
+            font-size: 1rem;
+            font-weight: bold;
+        }
+    }
+}

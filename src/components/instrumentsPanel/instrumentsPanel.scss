@@ -81,6 +81,11 @@ $closeSize: 25px;
         input{
             transition: .3s linear;
         }
+
+        input:disabled {
+            border: 1px solid grey;
+            background: grey;
+        }
         input[type = 'text'],[type="number"] {
             border: 1px solid  rgb(0, 241, 121);
         }
@@ -157,11 +162,11 @@ $closeSize: 25px;
         border-radius: 0;
     }
 
-    input[type = 'button']:hover {
+    input[type = 'button']:hover:not(:disabled) {
         transform: scale(1.05);
     }
 
-    .instrumentPanel__deleteComponentButton:hover {
+    .instrumentPanel__deleteComponentButton:hover:not(:disabled) {
         border: 2px solid rgb(199, 243, 182);
     }
 

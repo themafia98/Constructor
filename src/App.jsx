@@ -12,6 +12,7 @@ import Cabinet from './Pages/Cabinet/Cabinet';
 import Production from './Pages/Production/Production';
 import About from './Pages/About/About';
 import Build from './Pages/Build/Build';
+import Guide from './Pages/Guide/Guide';
 import ErrorPage from './components/ErrorCatch/ErrorPage';
 import './root.scss';
 
@@ -63,6 +64,9 @@ class App extends React.PureComponent {
                             render = {(props) => <Build {...props} />}
                         />
                         <Route path = {'/Cabinet/Build/:param/Production'} exact component = {Production} />
+                        <Route path = {'/Cabinet/Guide'} exact 
+                        render = {(props) => <Guide {...props} config = {this.state.config} />}
+                        />
                         <Route path = {'*'} component = {Index} />
                         <Route path = {'/crashPage'} component = {ErrorPage} />
                 </Switch>

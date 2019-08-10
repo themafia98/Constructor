@@ -36,6 +36,10 @@ class Header extends React.Component {
         redirectCabinet: {
             path:  '/Cabinet',
             redirectC: false,
+        },
+        redirectGuide: {
+            path:  '/Cabinet/Guide',
+            redirectG: false,
         }
     };
 
@@ -76,6 +80,20 @@ class Header extends React.Component {
         event.stopPropagation()
     };
 
+    redirectGuide = event => {
+        const isPath = this.props.location.pathname !== this.state.redirectGuide.path;
+        if (isPath && !this.state.isChange)
+           this.setState({
+                redirectConfirm: false,
+                redirectGuide: {
+                   ...this.state.redirectGuide,
+                   redirectG: true
+               }
+           }); else if (!this.state.redirectConfirm) 
+                this.setState({redirectConfirm: true});
+        event.stopPropagation()
+    };
+
     redirectCabinet = event => {
         if (event !== 'cancelMode'){
             const isPath = this.props.location.pathname !== this.state.redirectCabinet.path;
@@ -107,9 +125,11 @@ class Header extends React.Component {
     render(){
         let {redirectA} = this.state.redirectAbout;
         let {redirectC} = this.state.redirectCabinet;
+        let {redirectG} = this.state.redirectGuide;
 
         if (redirectA) return <Redirect to = {this.state.redirectAbout.path} />
-        if(redirectC) return <Redirect to = {this.state.redirectCabinet.path} />
+        if (redirectC) return <Redirect to = {this.state.redirectCabinet.path} />
+        if (redirectG) return <Redirect to = {this.state.redirectGuide.path} />
 
         return (
             <React.Fragment>
@@ -132,6 +152,10 @@ class Header extends React.Component {
                                     : null
                                 }
                                     <div  className = 'Navigator'>
+                                    <Icon className = 'about' onClick = {this.redirectGuide}
+                                            title = 'Guide'
+                                            path = '/img/user-guide.svg'
+                                        />
                                         <Icon className = 'about' onClick = {this.redirectAbout}
                                             title = 'about'
                                             path = '/img/about_logo.svg'
