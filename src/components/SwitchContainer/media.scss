@@ -41,7 +41,7 @@
 
         .switchContainer__menu{
             width: 40px;
-            height: 40px;
+            height: 30px;
             display: block;
         }
 
@@ -53,6 +53,13 @@
                 display: flex;
                 align-items: flex-end;
                 flex-wrap: wrap;
+
+                li {
+                    .switch__button {
+                        height: 40px;
+                        padding: 5px;
+                    }
+                }
             }
             .switchContainer__menu {
                 width: 40px;
