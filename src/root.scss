@@ -43,29 +43,33 @@ input {
     flex: 0 0 17%
 }
 
-.col--80 {
-    flex: 0 0 80%;
+.col--80--1 {
+    flex: 0 1 80%;
 }
 
-.col--82 {
-    flex: 0 0 82%;
-}
 
 .col-6 {
     flex: 0 0 50%;
 }
 
-    .fade {
+.fade {
         animation: transitionComponents .3s linear;
+}
+
+@keyframes transitionComponents {
+    from { 
+        opacity: 0.3;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 950px){
+    .col-sm-12{
+        flex: 0 0 100%;
     }
 
-    @keyframes transitionComponents {
-        from { 
-            opacity: 0.3;
-         }
-        to {
-           opacity: 1;
-        }
-    }
+}
 
 

@@ -6,7 +6,7 @@ import SearchGuide from './Guides/SearchGuide';
 import AddComponents from './Guides/AddComponents';
 import AddNewSection from './Guides/AddNewSection';
 import CreateNewProject from './Guides/CreateNewProject';
-
+import Icon from '../Icon/icon';
 import './switchContainer.scss';
 
 class SwitchContainer extends React.PureComponent {
@@ -63,7 +63,8 @@ class SwitchContainer extends React.PureComponent {
     render(){
         return(
             <div className = 'switchContainer'>
-                <div className = 'col--17'>
+                <div className = 'col--17 col-sm-10 switchContainer__controllers'>
+                    <Icon className = 'switchContainer__menu' path = '/img/Menu_Burder.png' />
                     <ul>
                         <li>
                             <input
@@ -132,7 +133,7 @@ class SwitchContainer extends React.PureComponent {
                         </li>
                     </ul>
                 </div>
-                <div className = 'col--82'>
+                <div className = 'col--80--1 col-sm-12'>
                     {this.state.mode === 'panel' &&
                         <OpenPanel />
                     }

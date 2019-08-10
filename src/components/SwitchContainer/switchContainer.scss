@@ -5,6 +5,11 @@
     align-self: center;
     background: white;
     box-shadow:  0 0 5px;
+    overflow: hidden;
+
+    .switchContainer__menu{
+        display: none;
+    }
 
     ul {
         display: flex;
@@ -14,6 +19,7 @@
         min-height: 100%;
         margin: 0;
         border-right: 5px dotted grey;
+        padding-right: 10px;
 
         .switch__button {
             font-weight: bold;
@@ -31,11 +37,6 @@
         }
     }
 
-    .guide {
-        height: 100%;
-        [alt = 'guide']{
-            width: 100%;
-            height: 85%;
-        }
-    }
 }
+
+@import './media.scss';

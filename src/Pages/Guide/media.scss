@@ -1,0 +1,22 @@
+@media screen and (max-width: 600px){
+    .Guide{
+        .Guide__about {
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .guide_content {
+            text-align: center;
+            width: 50%;
+            margin: 0;
+            margin-bottom: 5px;
+        }
+
+        .guide{
+            [alt='guide'] {
+                width: 95%;
+                height: 50%;
+            }
+        }
+    }
+}
