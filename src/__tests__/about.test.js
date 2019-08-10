@@ -6,7 +6,7 @@ import About from '../Pages/About/About';
 import store from '../redux/testReduxStore';
 
 
-const firebase = {
+const firebaseAbout = {
     getCurrentUser: () => true
 };
 const config = require('../config.json');
@@ -15,7 +15,7 @@ const AboutComponent = renderer.create(
     <MemoryRouter initialEntries = {['/Cabinet/About']}>
     <Route path = "/Cabinet/About" exact >
         <Provider store = {store}>
-            <About config = {config} idUser = {'asdasd'} firebase = {firebase} />
+            <About config = {config} idUser = {'asdasd'} firebase = {firebaseAbout} />
         </Provider>
     </Route>
     </MemoryRouter>

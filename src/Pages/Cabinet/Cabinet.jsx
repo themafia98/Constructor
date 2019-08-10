@@ -33,6 +33,7 @@ class Cabinet extends React.PureComponent {
 	cabinetStream = new Events();
 
 	state = {
+		loader: false,
 		modalActive: false,
 		workMode: 'default',
 	}
@@ -44,21 +45,25 @@ class Cabinet extends React.PureComponent {
 
 	deletItem = event => {
 		/** destroy project */
+		this.setState({
+			...this.state,
+			loader: true,
+		});
 		this.props.dispatch(middlewareDelete({...event, uid: this.props.firebase.getCurrentUser().uid}));
 	};
 
 		changeWorkMode = event => {
 		/** workMode changes */
-		this.setState ({
-		...this.state,
-		modalActive: event.active,
-		workMode: event.action
-		});
+			this.setState ({
+			...this.state,
+			modalActive: event.active,
+			workMode: event.action,
+			loader: event.loading || false,
+			});
 		}
 
 
 	render(){
-
 		if (this.props.active){
 		return (
 		<Fragment>
@@ -79,12 +84,27 @@ class Cabinet extends React.PureComponent {
 					workMode = {this.state.workMode} 
 				/>
 				</CSSTransition>
+				{this.state.loader &&
+					<Loader
+					type = 'data'
+					path = '/img/loading.gif'
+					/>
+				}
 				<ProjectsSection cabinetStream = {this.cabinetStream} />
 				</div>
 			</Fragment>
 		)
 		} else if (!this.props.firebase.getCurrentUser()) return <Redirect to = { '/'} />
 		else return <Loader path = '/img/loading.gif' type = 'Cabinet' />
+	}
+
+	componentDidUpdate = (prevProps) => {
+		console.log(prevProps.projects.length !== this.props.projects.length);
+		if (prevProps.projects.length !== this.props.projects.length)
+			this.setState({
+				...this.state,
+				loader: false,
+			});
 	}
 
 

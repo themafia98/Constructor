@@ -92,7 +92,7 @@ class BuildMenu extends React.PureComponent {
             opacity: 1,
             rotate: 0,
             zIndex: null,
-            image: '/img/photoPattern.svg',
+            image: process.env.PUBLIC_URL + '/img/photoPattern.svg',
             coords: {x: null, y: null}, // x, y
             id: id,
             targetSection: this.props.editComponentName,

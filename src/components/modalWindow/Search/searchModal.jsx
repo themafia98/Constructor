@@ -7,7 +7,7 @@ import Loader from '../../loading/Loader';
 class  SearchModal extends React.PureComponent {
 
     static propTypes = {
-        modalSearchMode: PropTypes.string.isRequired, // search mode
+        modalSearchMode: PropTypes.string, // search mode
         content: PropTypes.object, // with search data
         cbCancel: PropTypes.func.isRequired, // callback cancel
         cbShowImage: PropTypes.func.isRequired, // callback show image

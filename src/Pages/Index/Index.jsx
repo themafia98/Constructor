@@ -84,7 +84,6 @@ class Index extends React.PureComponent {
     passwordRef = node => this.passwordImput = node;
 
     render(){
-
         if (this.props.active) return <Redirect to = { '/Cabinet'} />
         else if (!this.props.active) {
             return (

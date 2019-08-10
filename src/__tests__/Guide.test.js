@@ -1,12 +1,13 @@
 import React from 'react';
-import firebase from 'firebase';
 import {Provider} from 'react-redux';
 import {MemoryRouter, Route} from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import Guide from '../Pages/Guide/Guide';
 import store from '../redux/testReduxStore';
 
-
+const firebaseGuide = {
+    getCurrentUser: () => true
+};
 
 const config = require('../config.json');
 
@@ -14,7 +15,7 @@ const GuideComponent = renderer.create(
     <MemoryRouter initialEntries = {['/Cabinet/Guide']}>
     <Route path = "/Cabinet/Guide" exact >
         <Provider store = {store}>
-            <Guide config = {config} firebase = {firebase} />
+            <Guide config = {config} firebase = {firebaseGuide} />
         </Provider>
     </Route>
     </MemoryRouter>

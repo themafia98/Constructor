@@ -49,8 +49,8 @@
 
         .switchContainer__menu{
             width: 40px;
-            padding-top: 10px;
-            height: 31px;
+            padding-top: 1px;
+            height: 28px;
             margin: 0 auto;
             display: block;
         }
@@ -59,7 +59,7 @@
         .switchContainer__controllers:active,
         .switchContainer__controllers:focus{
             position: absolute;
-            height: 40%;
+            height: 50%;
                 ul.guide_list.list {
                     padding: 0;
                     visibility: visible;

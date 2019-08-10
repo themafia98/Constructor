@@ -6,6 +6,7 @@
 /.pnp
 .pnp.js
 .idea
+.vscode
 /build
 # testing
 /coverage
@@ -23,5 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 .env
 tokens.env
-yarn.lock
 

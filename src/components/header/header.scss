@@ -28,6 +28,7 @@ header {
     .Navigator {
         display: flex;
         position: absolute;
+        width: 132px;
         height: 100%;
         top: 0;
         left: 98%;
@@ -43,7 +44,7 @@ header {
         svg{
             color: #81919b;
         }
-        img[alt='icon']:hover,i:hover {
+        img[alt='icon']:hover,svg:hover {
             transform: translate(0,30%) scale(1.1);
         }
     }

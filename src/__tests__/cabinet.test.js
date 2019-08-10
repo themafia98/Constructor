@@ -19,7 +19,7 @@ const CabinetComponent = renderer.create(
     <MemoryRouter initialEntries = {['/Cabinet']}>
         <Route path = "/Cabinet" exact >
             <Provider store = {store}>
-                <Cabinet   {...props} config = {config} firebase = {firebase} />
+                <Cabinet match = {{params: {param: 1}}}  {...props} config = {config} firebase = {firebase} />
             </Provider>
         </Route>
     </MemoryRouter>

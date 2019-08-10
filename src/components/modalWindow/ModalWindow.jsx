@@ -58,6 +58,7 @@ class ModalWindow extends React.PureComponent {
 
     searchData = (event,value, mode) => {
         /** search images or media */
+        if (!event.target.value || !value) return;
         this.setState({...this.state, 
             images: {
                 ...this.state.images,
@@ -219,17 +220,13 @@ class ModalWindow extends React.PureComponent {
         let mode = this.state[this.state.workMode];
         if (mode.validateType &&  mode.validateName) {
 
-            this.setState({
-                ...this.state,
-                loading: true,
-            });
+            this.props.cabinetStream.emit('EventChangeWorkMode',{action: 'default', loading: true});
+
             this.props.cabinetStream.emit('EventAddProject',
             {
                 title: this.state[this.state.workMode].name,
                 type: this.state[this.state.workMode].type
             });
-
-            this.props.cabinetStream.emit('EventChangeWorkMode',{action: 'default'});
         }
     }
 
