@@ -263,7 +263,6 @@ class Build extends React.PureComponent {
     }
 
     componentDidUpdate = (prevProps) => {
-        console.log('componentDidUpdate')
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         const isLoadComponents = this.state.isLoadComponents;
@@ -310,7 +309,6 @@ class Build extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        console.log('componentDidMount')
         let {userData} = this.props;
         let {currentProjectsData} = userData;
         /**  If the session is already active, immediately load */
