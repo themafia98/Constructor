@@ -173,7 +173,7 @@ class Build extends React.PureComponent {
     /* create new project section */
         const {userData} = this.props;
         const {currentProjectsData} = userData;
-
+        console.log(eventItem);
         this.props.dispatch(updateMiddleware({
                 uid: userData.idUser,
                 projects: [...userData.projects],

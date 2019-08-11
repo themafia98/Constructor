@@ -35,8 +35,10 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 projects: state.projects.map(item => {
-                    if (item.id === action.idProject)
+                    if (item.id === action.idProject){
                         item.components = [...action.components]
+                        item.sectionsProject = [...action.sectionsProject]
+                    }
                 return item;
                 })
             }

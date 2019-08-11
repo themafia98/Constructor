@@ -106,6 +106,7 @@ class MainBackground extends React.PureComponent {
 
     componentDidUpdate = (prevProps) => {
         const needUpdate = this.props.countComponents !== prevProps.countComponents;
+        console.log('componentDidUpdate')
         if (!this.state.component){ /** if need create new section */
             let component = this.props.currentProjectsData.components.find(item =>
                                             item.targetSection === this.props.id);
