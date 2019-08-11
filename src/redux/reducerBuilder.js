@@ -40,7 +40,8 @@ export default (state = initialState, action) => {
                 loadProject: false,
                 idProject: null,
                 typeProject: null,
-                components: []
+                components: [],
+                sectionsProject: []
             }
             else return state;
         }
