@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Redirect} from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import AnimationText from '../../components/AnimationText/AnimationTitle';
 import Events from 'events';
@@ -68,24 +67,18 @@ class Index extends React.PureComponent {
 
     authTo = event => {
           /** Auth user */
-            if (this.emailImput && this.passwordImput){
-                this.setState({
-                    ...this.state,
-                    tryAuth: true,
-                }, () => {
-                     this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value))
-                     .then((res) => this.setState({...this.state,  tryAuth: false}));
-                });
-            }
-            event.stopPropagation();
+            if (this.emailImput && this.passwordImput)
+                    this.props.dispatch(middlewareLogin(this.emailImput.value, this.passwordImput.value))
+        event.stopPropagation();
     }
 
     emailRef = node => this.emailImput = node;
     passwordRef = node => this.passwordImput = node;
 
     render(){
-        if (this.props.active) return <Redirect to = { '/Cabinet'} />
-        else if (!this.props.active) {
+
+
+        if (!this.props.active){
             return (
                     <div className = 'LoginPage flex-column'>
                         <h1>{this.state.title}</h1>
@@ -149,14 +142,16 @@ class Index extends React.PureComponent {
                             </TransitionGroup>
                     </div>
             )
-        } else  return <Loader path = '/img/loading.gif' type = 'session' />
+        }
+         else  return <Loader path = '/img/loading.gif' type = 'session' />
     }
 
     componentDidUpdate = () => {
-
+        if (this.props.active) this.props.history.push('/Cabinet');
     }
 
     componentDidMount = (e) => {
+        if (this.props.active) this.props.history.push('/Cabinet');
         this.indexStream.on('EventRegistrationCorrect', this.statusRegistration);
     }
     componentWillUnmount = (e) => {

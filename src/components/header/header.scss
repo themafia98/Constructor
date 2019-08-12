@@ -4,6 +4,17 @@ header {
     height: 60px;
     border-bottom: 1px solid grey;
 
+    .switcher{
+        transform: translate(50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 30px;
+        border: 1px solid black;
+        background: lightblue;
+        cursor: pointer;
+        transition: 0.3s linear;
+    }
+
     .tilteApp {
         cursor: pointer;
     }

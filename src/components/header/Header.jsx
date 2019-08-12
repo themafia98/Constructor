@@ -5,14 +5,14 @@ import './header.scss';
 
 import {middlewareLogOutUser} from '../../redux/middleware/loadUserMiddleware';
 import {connect} from 'react-redux';
-import {Redirect, withRouter} from 'react-router-dom';
-
+import {withRouter} from 'react-router-dom';
+import {exitProjectAction} from '../../redux/actions';
 import eventEmitter from '../../EventEmitter.js';
 import Icon from '../Icon/icon';
 import Confirm from '../confirmBox/Confirm';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const iconPath = require('../../config.json').CabinetIcon;
 
@@ -72,27 +72,17 @@ class Header extends React.Component {
     redirectAbout = event => {
         const isPath = this.props.location.pathname !== this.state.redirectAbout.path;
         if (isPath && !this.state.isChange)
-           this.setState({
-                redirectConfirm: false,
-                redirectAbout: {
-                   ...this.state.redirectAbout,
-                   redirectA: true
-               }
-           }); else if (!this.state.redirectConfirm) 
-                this.setState({redirectConfirm: true});
+            this.props.history.push(this.state.redirectAbout.path);
+         else if (!this.state.redirectConfirm)
+            this.setState({redirectConfirm: true});
         event.stopPropagation()
     };
 
     redirectGuide = event => {
         const isPath = this.props.location.pathname !== this.state.redirectGuide.path;
         if (isPath && !this.state.isChange)
-           this.setState({
-                redirectConfirm: false,
-                redirectGuide: {
-                   ...this.state.redirectGuide,
-                   redirectG: true
-               }
-           }); else if (!this.state.redirectConfirm) 
+            this.props.history.push(this.state.redirectGuide.path);
+        else if (!this.state.redirectConfirm) 
                 this.setState({redirectConfirm: true});
         event.stopPropagation()
     };
@@ -101,13 +91,7 @@ class Header extends React.Component {
         if (event !== 'cancelMode'){
             const isPath = this.props.location.pathname !== this.state.redirectCabinet.path;
             if (isPath && this.state.isChange === false)
-            this.setState({
-                redirectConfirm: false,
-                redirectCabinet: {
-                    ...this.state.redirectCabinet,
-                    redirectC: true
-                }
-            });
+                this.props.history.push(this.state.redirectCabinet.path);
             else if (!this.state.redirectConfirm) this.setState({redirectConfirm: true});
             event.stopPropagation();
 
@@ -120,19 +104,26 @@ class Header extends React.Component {
         });
     }
 
+    exit = async () => await this.props.dispatch(exitProjectAction(true));
+
     add = event => {
         this.props.cabinetStream.emit('EventChangeWorkMode',{active: true, action: 'newProject'});
         event.stopPropagation()
     };
 
-    render(){
-        let {redirectA} = this.state.redirectAbout;
-        let {redirectC} = this.state.redirectCabinet;
-        let {redirectG} = this.state.redirectGuide;
+    prevProject = event => {
+        if (this.props.idProject !== 0){
+                this.props.history.push(`/Cabinet/Build/${this.props.idProject - 1}`);
+        }
+        event.stopPropagation();
+    }
 
-        if (redirectA) return <Redirect to = {this.state.redirectAbout.path} />
-        if (redirectC) return <Redirect to = {this.state.redirectCabinet.path} />
-        if (redirectG) return <Redirect to = {this.state.redirectGuide.path} />
+    nextProject = event => {
+        if (this.props.idProject < this.props.counterProjects)
+        this.props.history.push(`/Cabinet/Build/${this.props.idProject + 1}`)
+    }
+
+    render(){
 
         return (
             <React.Fragment>
@@ -146,8 +137,22 @@ class Header extends React.Component {
                         <div className = 'flex-row'>
                                 <div onClick = {this.redirectCabinet} className = 'header__CabinetInfo'>
                                     <Icon className ='mainIcon' path = {iconPath} />
-                                    <h3 className = 'tilteApp'>{this.state.title}</h3>
+                                    <h3 className = 'tilteApp'>{this.state.title} </h3>
                                 </div>
+                                {this.props.location.pathname === `/Cabinet/Build/${this.props.idProject}` &&
+                                    <FontAwesomeIcon 
+                                            className=" switcher fas fa-2x"
+                                            icon = {faChevronLeft} 
+                                            onClick = {this.prevProject}
+                                    />
+                                }
+                                {this.props.location.pathname === `/Cabinet/Build/${this.props.idProject}` &&
+                                    <FontAwesomeIcon
+                                        className=" switcher fas fa-2x"
+                                        icon = {faChevronRight} 
+                                        onClick = {this.nextProject}
+                                    />
+                                }
                                 {this.props.location.pathname === '/Cabinet' ?
                                     <div onClick = {this.add} className = 'header__newProject__AddButton'>
                                         <Icon className = 'Cabinet' path = '/img/plus.png' />
@@ -156,7 +161,7 @@ class Header extends React.Component {
                                 }
                                     <div  className = 'Navigator'>
                                     <FontAwesomeIcon 
-                                        className=" about fas fa-2x fa-book"  
+                                        className=" about fas fa-2x"  
                                         icon = {faBook} 
                                         onClick = {this.redirectGuide} 
                                         />

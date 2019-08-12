@@ -38,7 +38,6 @@ class Build extends React.PureComponent {
     }
 
     state = {
-            idProject: parseInt(this.props.match.params.param), /** @Id project */
             editStart: false, /** @Bool start edit or no */
             isChange: false, /** @Bool detected changes */
             isLoadComponents: true, /** @Bool load all necessary components  */
@@ -70,7 +69,7 @@ class Build extends React.PureComponent {
         let {componentJSX} = this.state;
 
         const data = {
-            id: this.state.idProject,
+            id: parseInt(this.props.match.params.param),
             uid: this.props.userData.idUser,
             idComponent: eventItem.id,
             sectionsProject: [...currentProjectsData.sectionsProject],
@@ -89,7 +88,7 @@ class Build extends React.PureComponent {
         });
     }
 
-    addComponentsFromBD = (array, sizeParentBox) => {
+    addComponentsFromBD = (array, sizeParentBox, isNext) => {
         /* build JSX components from DB */
         if (!sizeParentBox) sizeParentBox = this.state.sizeParentBox;
         let {componentJSX} = this.state;
@@ -114,12 +113,20 @@ class Build extends React.PureComponent {
                 componentsFromDB.push(patternJSX);
             }
         });
-            this.setState({
-                ...this.state,
-                isLoadComponents: false,
-                sizeParentBox: {...sizeParentBox},
-                componentJSX: [...componentJSX, ...componentsFromDB],
-            });
+
+        if (isNext === true)
+        this.setState({
+            ...this.state,
+            isLoadComponents: false,
+            sizeParentBox: {...sizeParentBox},
+            componentJSX: [...componentsFromDB],
+        });
+        else  this.setState({
+            ...this.state,
+            isLoadComponents: false,
+            sizeParentBox: {...sizeParentBox},
+            componentJSX: [...componentJSX, ...componentsFromDB],
+        });
     };
 
     addComponent = itemEvent => {
@@ -159,7 +166,7 @@ class Build extends React.PureComponent {
                 projects: [...userData.projects],
                 components: _components,
                 sectionsProject: [...currentProjectsData.sectionsProject],
-                idProject: this.state.idProject
+                idProject: parseInt(this.props.match.params.param)
             })).then(() =>
                 eventEmitter.emit('EventRedirectConfirm', {false: false, confirm: false}));
         },ms);
@@ -173,7 +180,6 @@ class Build extends React.PureComponent {
     /* create new project section */
         const {userData} = this.props;
         const {currentProjectsData} = userData;
-        console.log(eventItem);
         this.props.dispatch(updateMiddleware({
                 uid: userData.idUser,
                 projects: [...userData.projects],
@@ -183,7 +189,7 @@ class Build extends React.PureComponent {
                     ...currentProjectsData.sectionsProject,
                     eventItem.componentsPattern.id
                 ],
-                idProject: this.state.idProject
+                idProject: parseInt(this.props.match.params.param)
         })).then(() => {
             this.setState({
                 ...this.state,
@@ -208,7 +214,13 @@ class Build extends React.PureComponent {
         if (userData.active && currentProjectsData.loadProject){
             return (
                 <Fragment>
-                    <Header key = 'Header' title = "Constructor" idUser = {userData.idUser}  />
+                    <Header
+                        idProject = {parseInt(this.props.match.params.param)}
+                        counterProjects = {userData.projects.length-1}
+                        key = 'Header'
+                        title = "Constructor"
+                        idUser = {userData.idUser}
+                    />
                     <RenderInBrowser ie only>
                         <h2 className = 'ie'>
                             All the magic tricks in this app work best in Chrome/Firefox/Opera and other.
@@ -246,7 +258,9 @@ class Build extends React.PureComponent {
                                     editComponentName = {this.state.editComponentName}
                                 />
                             {section.length &&
-                                <Section mode = 'dev' key = 'section'
+                                <Section mode = 'dev' 
+                                    key = {`section${parseInt(this.props.match.params.param)}`}
+                                    keyMain = {parseInt(this.props.match.params.param)}
                                     componentJSX = {this.state.componentJSX}
                                     editComponentName = {this.state.editComponentName}
                                     menuActive = {this.state.menuActive}
@@ -262,50 +276,85 @@ class Build extends React.PureComponent {
         else return <Loader  key = 'Loader' path = '/img/loading.gif' type = 'build' />
     }
 
-    componentDidUpdate = (prevProps) => {
-        let {userData} = this.props;
-        let {currentProjectsData} = userData;
-        const isLoadComponents = this.state.isLoadComponents;
-        let sizeParentBox = null;
 
-        if (this.mainComponent && this.state.sizeParentBox === null)
-            sizeParentBox = {
-                width: this.mainComponent.data.width,
-                height: this.mainComponent.data.height,
-                top: this.mainComponent.data.top,
-                left: this.mainComponent.data.left,
+    componentDidUpdate = (prevProps) => {
+
+        const isNext = prevProps.location.pathname !== this.props.location.pathname;
+        const {userData} = this.props;
+        let {currentProjectsData} = userData;
+
+        if (isNext || (isNext && this.props.history.action === 'PUSH')){
+            this.setState({
+                ...this.state,
+                editStart: false,
+                isChange: false,
+                isLoadComponents: true,
+                projectEmpty: false,
+                componentJSX: [],
+                editComponentName:  null,
+                menuActive: false,
+            }, () => {
+                let idProject = parseInt(this.props.match.params.param);
+                const current =  userData.projects.find(item => /* find current project */
+                    item.id === idProject)
+                if (current){ /* load data */
+                this.props.dispatch(loadCurrentProjectAction({
+                id: current.id,
+                typeProject: current.type,
+                sectionsProject: [...current.sectionsProject],
+                components: [...current.components]
+                }));
+            }
+        });
+        } else if (currentProjectsData.idProject === parseInt(this.props.match.params.param)){
+
+            const isLoadComponents = this.state.isLoadComponents;
+            let sizeParentBox = null;
+
+            if (this.mainComponent && this.state.sizeParentBox === null)
+                sizeParentBox = {
+                    width: this.mainComponent.data.width,
+                    height: this.mainComponent.data.height,
+                    top: this.mainComponent.data.top,
+                    left: this.mainComponent.data.left,
+                }
+
+
+            if (userData.active && (!currentProjectsData.loadProject && isNext)) {
+                let idProject = parseInt(this.props.match.params.param);
+                /** load current project of user session active and load project - false */
+                const current =  userData.projects.find(item => /* find current project */
+                                                item.id === idProject)
+                if (current){ /* load data */
+                    this.props.dispatch(loadCurrentProjectAction({
+                        id: current.id,
+                        typeProject: current.type,
+                        sectionsProject: [...current.sectionsProject],
+                        components: [...current.components]
+                    }))
+                    /* else redirect */
+                } else this.setState({...this.state, projectEmpty: true});
+            }
+            if ((currentProjectsData.loadProject && isLoadComponents) || isNext) {
+                /* if all components load build our JSX */
+                if (isNext)
+                currentProjectsData = userData.projects.find(item => /* find current project */
+                                        item.id === parseInt(this.props.match.params.param));
+
+                (this.state.sizeParentBox === null && sizeParentBox !== null) ?
+                    this.addComponentsFromBD([...currentProjectsData.components], sizeParentBox , isNext)
+                :  this.addComponentsFromBD([...currentProjectsData.components],false,isNext);
+                /** For scroll component */
+                eventEmitter.emit('EventSetState',currentProjectsData.sectionsProject.length-1);
             }
 
-
-        if (userData.active && !currentProjectsData.loadProject) {
-            /** load current project of user session active and load project - false */
-            const current =  userData.projects.find(item => /* find current project */
-                                                    item.id === this.state.idProject)
-            if (current){ /* load data */
-                this.props.dispatch(loadCurrentProjectAction({
-                    id: current.id,
-                    typeProject: current.type,
-                    sectionsProject: [...current.sectionsProject],
-                    components: [...current.components]
-                }))
-                /* else redirect */
-            } else this.setState({...this.state, projectEmpty: true});
-        }
-        if (currentProjectsData.loadProject && isLoadComponents) {
-             /* if all components load build our JSX */
-            if (this.state.sizeParentBox === null && sizeParentBox !== null)
-                this.addComponentsFromBD([...currentProjectsData.components], sizeParentBox);
-            else this.addComponentsFromBD([...currentProjectsData.components]);
-            /** For scroll component */
-            eventEmitter.emit('EventSetState',currentProjectsData.sectionsProject.length-1);
-        }
-
-        // if delete section change count for scroller
-        const currentSection = currentProjectsData.sectionsProject.length;
-        const  prevSection = prevProps.userData.currentProjectsData.sectionsProject.length;
-        if (currentSection !== prevSection){
-        eventEmitter.emit('EventSetState', currentProjectsData.sectionsProject.length-1);
-        }
+            // if delete section change count for scroller
+            const currentSection = currentProjectsData.sectionsProject.length;
+            const  prevSection = prevProps.userData.currentProjectsData.sectionsProject.length;
+            if (currentSection !== prevSection){
+            eventEmitter.emit('EventSetState', currentProjectsData.sectionsProject.length-1);
+            }
+    }
     }
 
     componentDidMount = () => {
@@ -313,15 +362,18 @@ class Build extends React.PureComponent {
         let {currentProjectsData} = userData;
         /**  If the session is already active, immediately load */
         if (userData.active && !currentProjectsData.loadProject) {
+            let idProject = parseInt(this.props.match.params.param);
         /** load current project of user session active and load project - false */
-            const current =  userData.projects.find(item => item.id === this.state.idProject)
+            const current =  userData.projects.find(item => item.id === idProject);
+
+            if (current)
             this.props.dispatch(loadCurrentProjectAction({
                 id: current.id,
                 sectionsProject: [...current.sectionsProject],
                 typeProject: current.type,
                 components: [...current.components]
             }));
-
+        else this.setState({...this.state, projectEmpty: true});
             eventEmitter.on('EventModeEdit', this.workModeEdit);
             this.eventEmitterBuild.on('EventBuildComponents', this.addComponent);
             this.eventEmitterBuild.on('EventDeleteComponent', this.deleteComponent);

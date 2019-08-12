@@ -5,13 +5,17 @@ import MainBackground from './MainBackground/MainBackground';
 
 const Section = props => {
     if (props.mode === 'dev'){
-    const {currentProjectsData} = props.userData;
+
+    const currentProjectsData = props.userData.projects.find(item => {
+        return item.id === props.keyMain;
+    })
     const section = currentProjectsData.sectionsProject;
+
 
             return section.map((item,i) => {
                 return (
                         <MainBackground
-                            key = {item}
+                            key = {item + props.keyMain}
                             componentJSX = {props.componentJSX}
                             currentProjectsData = {currentProjectsData}
                             editComponentName = {props.editComponentName}
@@ -31,7 +35,8 @@ const Section = props => {
         return section.map((item,i) => {
             return (
                     <MainBackground
-                        key = {item}
+                        key = {item + props.keyMain}
+                        keyMain = {props.keyMain}
                         componentJSX = {props.componentsProdJSX}
                         currentProjectsData = {currentProjectsData}
                         editComponentName = {props.editComponentName}

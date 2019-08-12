@@ -341,7 +341,6 @@ class Image extends React.PureComponent {
     }
 
     componentWillUnmount = () => {
-
         controllerStream.off(`EventSetOpacity${this.state.id}`, this.setOpacity);
         controllerStream.off(`EventSetBorderRadius${this.state.id}`,this.setBorderRadius);
         controllerStream.off(`EventSetCurrentImage${this.state.id}`, this.setCurrentImage);

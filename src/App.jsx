@@ -60,14 +60,13 @@ class App extends React.PureComponent {
                             path = {'/Cabinet/About'}
                             render = {(props) => <About {...props} config = {this.state.config} />}
                         />
+                        <Route path = {'/Cabinet/Guide'} exact 
+                        render = {(props) => <Guide {...props} config = {this.state.config} />}
+                        />
                         <Route path = {'/Cabinet/Build/:param'} exact
                             render = {(props) => <Build {...props} />}
                         />
                         <Route path = {'/Cabinet/Build/:param/Production'} exact component = {Production} />
-                        <Route path = {'/Cabinet/Guide'} exact 
-                        render = {(props) => <Guide {...props} config = {this.state.config} />}
-                        />
-                        <Route path = {'*'} component = {Index} />
                         <Route path = {'/crashPage'} component = {ErrorPage} />
                 </Switch>
             )

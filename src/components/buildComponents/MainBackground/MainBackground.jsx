@@ -45,13 +45,14 @@ class MainBackground extends React.PureComponent {
             return (
                 <Fragment>
                     <section
-                        key = {this.props.sectionNumber}
+                        key = {this.props.sectionNumber + this.props.keyMain}
                         className = {`element${this.props.sectionNumber}`} 
                         ref={this.refSectionFunc}
                         data-class = 'editable' 
                         onClick = {this.changeMode}
                     >
                         <BackgroundComponent 
+                            key = {this.props.sectionNumber + this.props.keyMain}
                             mode = {this.props.mode}
                             sectionNumber = {this.props.sectionNumber}
                             countSection = {this.props.countSection}

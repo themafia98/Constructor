@@ -326,7 +326,7 @@ class TextComponent extends React.PureComponent {
         controllerStream.off(`EventChangeContentText${this.state.id}`, this.changeContentText);
         controllerStream.off(`EventSaveWidth${this.state.targetSection}`,this.saveSize);
         controllerStream.off(`EventResize${this.state.id}`,this.rotateEvent);
-        controllerStream.on(`EventScale${this.state.id}`,this.scaleEvent);
+        controllerStream.off(`EventScale${this.state.id}`,this.scaleEvent);
     }
 }
 
