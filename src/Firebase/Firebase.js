@@ -13,13 +13,15 @@ class Firebase {
         this.auth = firebase.auth();
         this.db = firebase.firestore();
 
-        if (config.firebase.lowConnection === 'true' 
+        if (config.firebase.lowConnection === 'true'
         && (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production'))
         this.db.enablePersistence() /** if user use low internet connection */
+            .then(res => console.warn(res))
+            .catch(er => console.error(er));
     }
 
     saveSession(rules){
-        /** Set forebase type session */
+        /** Set firebase type session */
         return this.auth.setPersistence(firebase.auth.Auth.Persistence[rules]);
     }
 
