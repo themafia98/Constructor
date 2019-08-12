@@ -298,14 +298,14 @@ class Build extends React.PureComponent {
                 const current =  userData.projects.find(item => /* find current project */
                     item.id === idProject)
                 if (current){ /* load data */
-                this.props.dispatch(loadCurrentProjectAction({
-                id: current.id,
-                typeProject: current.type,
-                sectionsProject: [...current.sectionsProject],
-                components: [...current.components]
-                }));
-            }
-        });
+                    this.props.dispatch(loadCurrentProjectAction({
+                    id: current.id,
+                    typeProject: current.type,
+                    sectionsProject: [...current.sectionsProject],
+                    components: [...current.components]
+                    }));
+                }   
+            });
         } else if (currentProjectsData.idProject === parseInt(this.props.match.params.param)){
 
             const isLoadComponents = this.state.isLoadComponents;
@@ -354,7 +354,7 @@ class Build extends React.PureComponent {
             if (currentSection !== prevSection){
             eventEmitter.emit('EventSetState', currentProjectsData.sectionsProject.length-1);
             }
-    }
+        }
     }
 
     componentDidMount = () => {
